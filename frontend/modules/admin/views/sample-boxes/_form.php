@@ -18,7 +18,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name_ru')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'state')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\StatusList::find()->all(),'id','name')) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('cp.sample_boxes', 'Saqlash'), ['class' => 'btn btn-success']) ?>

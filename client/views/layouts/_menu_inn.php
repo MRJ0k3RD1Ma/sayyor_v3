@@ -11,21 +11,25 @@
                 <li class="menu-title" data-key="t-menu">Menu</li>
 
                 <li>
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/client/legal'])?>">
+                    <a href="<?= Yii::$app->urlManager->createUrl(['/legal'])?>">
                         <i data-feather="home"></i>
                         <span data-key="t-dashboard"><?= Yii::t('client','Bosh sahifa')?></span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/client/legal/list'])?>">
-                        <i data-feather="mail"></i>
-                        <span data-key="t-dashboard"><?= Yii::t('client','Arizalar ro\'yhati')?></span>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="bar-chart-2"></i>
+                        <span data-key="t-tables"><?= Yii::t('cp.menu','Arizalar ro\'yhati')?></span>
                     </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/legal/listanimal'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Hayvon kasalliklari tashhilari')?></a></li>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/legal/listproduct'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Oziq-ovqat ekspertizalari')?></a></li>
+                    </ul>
                 </li>
 
                 <li>
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/site/create'])?>">
+                    <a href="<?= Yii::$app->urlManager->createUrl(['/legal/create'])?>">
                         <i data-feather="mail"></i>
                         <span data-key="t-dashboard"><?= Yii::t('client','Ariza berish')?></span>
                     </a>

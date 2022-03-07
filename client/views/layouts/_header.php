@@ -64,26 +64,32 @@
                     </a>
 
                     <?php
-                    echo Yii::$app->urlManager->createUrl([
-                        Yii::$app->controller->id.'/'.Yii::$app->controller->action->id,
-                        $_GET
-                    ]);
 
-                        $url = Yii::$app->request->url;
-
-
-                        $site = Yii::$app->urlManager->createUrl(['/site/changelanguage']);
-                        $this->registerJs("
+                    $site = Yii::$app->urlManager->createUrl(['/site/changelanguage']);
+                    $this->registerJs("
                             $('.language').click(function(){
                                 var lang = this.getAttribute('data-lang');
-                                $.get('{$site}?lang='+lang).done(function(data){
-                                    if(data == 1){
-                                        location.reload();
-                                    }
-                                })
+                                var url = document.URL;
+                                if(url.substr(url.length - 1) != '/'){
+                                    url  = url + '/';
+                                }
+                                
+                                if(lang == 'uz'){
+                                    url = url.replace('/oz/','/'+lang+'/');
+                                    url = url.replace('/ru/','/'+lang+'/');
+                                   
+                                }
+                                if(lang == 'oz'){
+                                    url = url.replace('/uz/','/'+lang+'/');
+                                    url = url.replace('/ru/','/'+lang+'/');
+                                }
+                                if(lang == 'ru'){
+                                    url = url.replace('/uz/','/'+lang+'/');
+                                    url = url.replace('/oz/','/'+lang+'/');
+                                }
+                                window.location.replace(url);
                             })
                         ");
-
                     ?>
 
                 </div>

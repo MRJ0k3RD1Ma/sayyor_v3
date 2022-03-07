@@ -25,7 +25,7 @@ use Yii;
  */
 class Sertificates extends \yii\db\ActiveRecord
 {
-    public $ownertype;
+    public $district,$region,$qfi;
     /**
      * {@inheritdoc}
      */
@@ -40,13 +40,12 @@ class Sertificates extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sert_id'], 'required'],
+//            [['sert_id'], 'required'],
             [['sert_date'], 'safe'],
-            [['organization_id', 'vet_site_id', 'operator','ownertype'], 'integer'],
+            [['organization_id', 'vet_site_id', 'operator','district','region','qfi'], 'integer'],
             [['sert_id', 'sert_num'], 'string', 'max' => 100],
             [['pnfl', 'owner_name','inn'], 'string', 'max' => 255],
             [['sert_id'], 'unique'],
-            [['operator'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['operator' => 'id']],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['organization_id' => 'id']],
         ];
     }
@@ -65,8 +64,10 @@ class Sertificates extends \yii\db\ActiveRecord
             'owner_name' => Yii::t('model.sertificates', 'Egasi'),
             'vet_site_id' => Yii::t('model.sertificates', 'Vet uchstka'),
             'operator' => Yii::t('model.sertificates', 'Operator'),
-            'ownertype' => Yii::t('model.sertificates', 'Kontragent turi'),
             'inn' => Yii::t('model.sertificates', 'INN(STIR)'),
+            'region' => Yii::t('model.sertificates', 'Viloyat'),
+            'district' => Yii::t('model.sertificates', 'Tuman'),
+            'qfi' => Yii::t('model.sertificates', 'QFI'),
         ];
     }
 

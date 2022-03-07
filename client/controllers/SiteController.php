@@ -8,6 +8,7 @@ use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\QfiView;
 use common\models\Sertificates;
+use common\models\VetSites;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -115,6 +116,10 @@ class SiteController extends Controller
     public function actionAnimal(){
         $model = new Sertificates();
         $ind = new Individuals();
+
+
+
+
         return $this->render('animal',['model'=>$model,'ind'=>$ind]);
     }
 
@@ -122,7 +127,7 @@ class SiteController extends Controller
         $this->layout = 'update';
         if($model = LegalEntities::findOne(['inn'=>$inn])){
             Yii::$app->session->set('doc_type','inn');
-            Yii::$app->session->set('doc_pnfl',$model->inn);
+            Yii::$app->session->set('doc_inn',$model->inn);
             Yii::$app->session->set('doc_name',$model->name);
             return $this->redirect(['index']);
         }else{
@@ -428,6 +433,18 @@ class SiteController extends Controller
                 $name = $item->name_lot;
             }
             $res .= "<option value='{$item->MHOBT_cod}'>{$name}</option>";
+        }
+        echo $res;
+        exit;
+    }
+
+    public function actionGetVet($id){
+        $model = VetSites::find()->where(['soato'=>$id])->all();
+        $text = Yii::t('cp.vetsites','- Vet uchastkani tanlang -');
+        $res = "<option value=''>{$text}</option>";
+        $lang = Yii::$app->language;
+        foreach ($model as $item){
+            $res .= "<option value='{$item->id}'>{$item->name}</option>";
         }
         echo $res;
         exit;

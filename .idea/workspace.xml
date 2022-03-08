@@ -2,35 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91b10bac-fe1c-44c0-a8e6-2b4e7481b6db" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/client/views/legal/listfood.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/views/legal/product.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/views/legal/viewfood.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/models/ProductExpertise.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sayyor.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sayyor.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/controllers/LegalController.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/controllers/LegalController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/views/layouts/_menu_inn.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/layouts/_menu_inn.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/views/legal/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/legal/add.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/views/legal/send.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/legal/send.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/views/legal/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/legal/view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/models/FoodSamplingCertificate.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/models/FoodSamplingCertificate.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/models/SampleRegistration.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/models/SampleRegistration.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/models/Samples.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/models/Samples.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/models/Sertificates.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/models/Sertificates.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/web/sayyor_adv" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/web/sayyor_adv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/web/sayyor_adv/common/models/ProductExpertise.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/web/sayyor_adv/common/models/ProductExpertise.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/ClassLoader.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/ClassLoader.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/InstalledVersions.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/InstalledVersions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_files.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_files.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_psr4.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_psr4.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_real.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_real.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/installed.json" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/installed.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/installed.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/installed.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/platform_check.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/platform_check.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

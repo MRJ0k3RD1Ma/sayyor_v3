@@ -16,6 +16,7 @@ use Yii;
  * @property int|null $sert_id
  * @property int|null $suspected_disease_id
  * @property int|null $test_mehod_id
+ * @property int|null $samp_id
  *
  * @property Animals $animal
  * @property SampleBoxes $sampleBox
@@ -40,7 +41,7 @@ class Samples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sample_type_is', 'sample_box_id', 'animal_id', 'sert_id', 'suspected_disease_id', 'test_mehod_id'], 'integer'],
+            [['sample_type_is', 'sample_box_id', 'animal_id', 'sert_id','samp_id', 'suspected_disease_id', 'test_mehod_id'], 'integer'],
             [['kod', 'label'], 'string', 'max' => 255],
             [['animal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animals::className(), 'targetAttribute' => ['animal_id' => 'id']],
             [['sample_box_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleBoxes::className(), 'targetAttribute' => ['sample_box_id' => 'id']],

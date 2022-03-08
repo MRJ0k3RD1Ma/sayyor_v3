@@ -19,6 +19,7 @@ use Yii;
  * @property string|null $reg_date
  * @property int|null $disease_id
  * @property int|null $composite_sample_id
+ * @property int|null $reg_id
  *
  * @property CompositeSamples $compositeSample
  * @property Organizations $organization
@@ -40,7 +41,7 @@ class SampleRegistration extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['is_research', 'research_category_id', 'results_conformity_id', 'organization_id', 'emp_id', 'disease_id', 'composite_sample_id'], 'integer'],
+            [['is_research','reg_id', 'research_category_id', 'results_conformity_id', 'organization_id', 'emp_id', 'disease_id', 'composite_sample_id'], 'integer'],
             [['reg_date'], 'safe'],
             [['pnfl', 'inn', 'code'], 'string', 'max' => 255],
             [['composite_sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => CompositeSamples::className(), 'targetAttribute' => ['composite_sample_id' => 'id']],

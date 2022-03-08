@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
 
         <?= $form->field($reg,'is_research')->radioList([1=>Yii::t('client','Tekshiriladi'),0=>Yii::t('client','Tekshirilmaydi')])?>
 
-        <?= $form->field($reg,'research_category_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\ResearchCategory::find()->all(),'id','name_'.$res))?>
+        <?= $form->field($reg,'research_category_id')->radioList(\yii\helpers\ArrayHelper::map(\common\models\ResearchCategory::find()->all(),'id','name_'.$res))?>
 
         <?= $form->field($reg,'disease_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Diseases::find()->all(),'id','name_'.$res))?>
 

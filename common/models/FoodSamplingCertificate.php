@@ -17,6 +17,7 @@ use Yii;
  * @property int|null $sampler_person_pnfl
  * @property int|null $unit_id
  * @property float|null $count
+ * @property int|null $food_id
  * @property int|null $verification_sample
  * @property string|null $producer
  * @property string|null $serial_num
@@ -58,13 +59,12 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['organization_id', 'sampling_site', 'sampler_organization_code', 'sampler_person_pnfl', 'unit_id', 'verification_sample', 'verification_pupose_id', 'sample_box_id', 'sample_condition_id', 'based_public_information', 'message_number', 'laboratory_test_type_id'], 'integer'],
+            [['organization_id', 'food_id','sampling_site', 'sampler_organization_code', 'sampler_person_pnfl', 'unit_id', 'verification_sample', 'verification_pupose_id', 'sample_box_id', 'sample_condition_id', 'based_public_information', 'message_number', 'laboratory_test_type_id'], 'integer'],
             [['count'], 'number'],
             [['manufacture_date', 'sell_by', 'sampling_date', 'send_sample_date'], 'safe'],
             [['kod', 'pnfl', 'sampling_adress', 'producer', 'serial_num', 'coments', 'explanations'], 'string', 'max' => 255],
             [['laboratory_test_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => LaboratoryTestType::className(), 'targetAttribute' => ['laboratory_test_type_id' => 'id']],
             [['verification_pupose_id'], 'exist', 'skipOnError' => true, 'targetClass' => VerificationPurposes::className(), 'targetAttribute' => ['verification_pupose_id' => 'id']],
-            [['pnfl'], 'exist', 'skipOnError' => true, 'targetClass' => Individuals::className(), 'targetAttribute' => ['pnfl' => 'pnfl']],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['organization_id' => 'id']],
             [['sample_box_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleBoxes::className(), 'targetAttribute' => ['sample_box_id' => 'id']],
             [['unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => Units::className(), 'targetAttribute' => ['unit_id' => 'id']],

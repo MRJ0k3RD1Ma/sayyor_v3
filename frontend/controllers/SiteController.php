@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\EmpPosts;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -88,6 +89,11 @@ class SiteController extends Controller
         $this->layout = 'login';
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            foreach (EmpPosts::find()->where(['emp_id'=>Yii::$app->user->getId()])->andWhere(['state_id'=>1])->all() as $item){
+                if($item->post_id == 5){
+                    return $this->redirect(['/cp/default/index']);
+                }
+            }
             return $this->goBack();
         }
 

@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 <div class="organizations-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
+    <?= $form->field($model,'type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\OrganizationType::find()->all(),'id','name'),['prompt'=>Yii::t('client','Tashkilot turi')])?>
     <?= $form->field($model, 'id_from_api',['options'=>['hidden'=>true]])->textInput() ?>
 
     <?= $form->field($model, 'TIN')->textInput(['length'=>9]) ?>
@@ -44,6 +44,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'GD_TIN')->textInput() ?>
 
+    <?= $form->field($model, 'GD_MOBILE')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'GD_TEL_WORK')->textInput() ?>
 
     <?= $form->field($model, 'GD_TEL_HOME')->textInput() ?>
@@ -57,6 +59,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'GB_TEL_WORK')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'GB_TEL_HOME')->textInput(['maxlength' => true,]) ?>
+
 
     <?= $form->field($model, 'OKED')->textInput() ?>
 
@@ -74,7 +77,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'CHANGED',['options'=>['hidden'=>true]])->textInput() ?>
 
-    <?= $form->field($model, 'GD_MOBILE')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'BUDJET')->checkbox() ?>
 

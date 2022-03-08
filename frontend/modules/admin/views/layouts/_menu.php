@@ -1,4 +1,14 @@
+<?php
 
+use common\models\EmpPosts;
+$u = false;
+foreach (EmpPosts::find()->where(['state_id'=>1])->andWhere(['emp_id'=>Yii::$app->user->id])->all() as $item){
+    if($item->post_id==5){
+        $u = true; break;
+    }
+}
+if($u){
+?>
 <!-- ========== Left Sidebar Start ========== -->
 <div class="vertical-menu">
 
@@ -73,3 +83,4 @@
     </div>
 </div>
 <!-- Left Sidebar End -->
+<?php }?>

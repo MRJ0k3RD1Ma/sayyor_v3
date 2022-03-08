@@ -7,6 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Sertificates */
 /* @var $animal common\models\Animals */
 /* @var $sample common\models\Samples */
+/* @var $reg common\models\SampleRegistration */
 
 $this->title = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Dalolatnomalar'), 'url' => ['index']];
@@ -16,8 +17,6 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
     <div class="sertificates-update">
 
         <?php $form = ActiveForm::begin(); ?>
-
-        <?= $form->field($sample, 'kod')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($sample, 'label')->textInput(['maxlength' => true]) ?>
 
@@ -54,6 +53,11 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
 
         <?= $form->field($sample, 'suspected_disease_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Diseases::find()->all(),'id','name_uz'),['prompt'=>'Kasallik turini tanlang','class'=>'form-control select2list']) ?>
 
+        <?= $form->field($reg,'is_research')->radioList([1=>Yii::t('client','Tekshiriladi'),0=>Yii::t('client','Tekshirilmaydi')])?>
+
+        <?= $form->field($reg,'research_category_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\ResearchCategory::find()->all(),'id','name_'.$res))?>
+
+        <?= $form->field($reg,'disease_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Diseases::find()->all(),'id','name_'.$res))?>
 
         <div class="form-group">
             <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>

@@ -7,6 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Sertificates */
 /* @var $ind common\models\Individuals */
 /* @var $legal common\models\LegalEntities */
+/* @var $reg common\models\SampleRegistration */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -37,7 +38,7 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'vet_site_id')->dropDownList([]) ?>
 
         <h3>Probalarni tekshiruvchi tashkilotni tanlang</h3>
-        <?= $form->field($model, 'organization_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->all(),'id','NAME_FULL'),['prompt'=>Yii::t('client','Tashkilotni tanlang')]) ?>
+        <?= $form->field($model, 'organization_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->all(),'id','NAME_FULL'),['prompt'=>Yii::t('client','Tashkilotni tanlang'),'class'=>'form-control select2list']) ?>
 
         <div class="form-group">
             <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>

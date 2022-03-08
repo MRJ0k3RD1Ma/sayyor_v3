@@ -12,11 +12,13 @@ use Yii;
  * @property string|null $sert_date
  * @property int|null $organization_id Бу ерда асли стир бўлиши керак.
  * @property string $inn
+ * @property string|null $sert_full
  * @property string $pnfl
  * @property string|null $owner_name
  * @property int|null $vet_site_id
  * @property int|null $operator
  * @property int $ownertype
+ * @property int $status_id
  *
  * @property Employees $operator0
  * @property Organizations $organization
@@ -42,10 +44,11 @@ class Sertificates extends \yii\db\ActiveRecord
         return [
 //            [['sert_id'], 'required'],
             [['sert_date'], 'safe'],
-            [['organization_id', 'vet_site_id', 'operator','district','region','qfi'], 'integer'],
+            [['organization_id', 'vet_site_id', 'operator','district','region','qfi','status_id'], 'integer'],
             [['sert_id', 'sert_num'], 'string', 'max' => 100],
-            [['pnfl', 'owner_name','inn'], 'string', 'max' => 255],
+            [['pnfl', 'owner_name','inn','sert_full'], 'string', 'max' => 255],
             [['sert_id'], 'unique'],
+            ['status_id','default','value'=>1],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['organization_id' => 'id']],
         ];
     }
@@ -57,6 +60,7 @@ class Sertificates extends \yii\db\ActiveRecord
     {
         return [
             'sert_id' => Yii::t('model.sertificates', 'Dalolatnoma'),
+            'sert_full' => Yii::t('model.sertificates', 'Dalolatnoma'),
             'sert_num' => Yii::t('model.sertificates', 'Dalolatnoma raqami(Qog\'ozdagi yoki registondagi)'),
             'sert_date' => Yii::t('model.sertificates', 'Sana'),
             'organization_id' => Yii::t('model.sertificates', 'Tashkilot'),
@@ -81,6 +85,9 @@ class Sertificates extends \yii\db\ActiveRecord
         return $this->hasOne(Employees::className(), ['id' => 'operator']);
     }
 
+    public function getStatus(){
+        return $this->hasOne(SertStatus::className(),['id'=>'status_id']);
+    }
     /**
      * Gets query for [[Organization]].
      *
@@ -112,5 +119,9 @@ class Sertificates extends \yii\db\ActiveRecord
     }
     public function getInn0(){
         return $this->hasOne(LegalEntities::className(),['inn'=>'inn']);
+    }
+
+    public function getSamples(){
+        return $this->hasMany(Samples::className(),['sert_id'=>'id']);
     }
 }

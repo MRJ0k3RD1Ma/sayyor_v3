@@ -2,11 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91b10bac-fe1c-44c0-a8e6-2b4e7481b6db" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/client/views/layouts/_menu.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/views/legal/index.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/views/legal/send.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/views/layouts/main.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/layouts/main.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/web/eimzo/services/eimzo/eimzo_old.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/web/eimzo/services/eimzo/eimzo_old.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/controllers/LegalController.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/controllers/LegalController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/views/legal/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/legal/add.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/views/legal/animal.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/legal/animal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/views/legal/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/legal/view.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/models/Organizations.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/models/Organizations.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/models/ResearchCategory.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/models/ResearchCategory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/models/Sertificates.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/models/Sertificates.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/config/main.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/config/main.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/controllers/SiteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/controllers/SiteController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/modules/admin/Module.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/modules/admin/Module.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/modules/admin/views/layouts/_menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/modules/admin/views/layouts/_menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/modules/admin/views/organizations/_form.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/modules/admin/views/organizations/_form.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/modules/imtodb/Module.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/modules/imtodb/controllers/DefaultController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/modules/imtodb/views/default/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/modules/imtodb/views/layouts/_header.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/modules/imtodb/views/layouts/_menu.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/modules/imtodb/views/layouts/login.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/modules/imtodb/views/layouts/main.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/views/layouts/_header.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/views/layouts/_header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/yiisoft/yii2/base/Application.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/yiisoft/yii2/base/Application.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/yiisoft/yii2/i18n/I18N.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/yiisoft/yii2/i18n/I18N.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,7 +185,7 @@
       <updated>1646584204424</updated>
       <workItem from="1646584206149" duration="8793000" />
       <workItem from="1646629513532" duration="10301000" />
-      <workItem from="1646721752469" duration="480000" />
+      <workItem from="1646721752469" duration="13148000" />
     </task>
     <servers />
   </component>

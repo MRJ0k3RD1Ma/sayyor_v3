@@ -41,6 +41,7 @@ use Yii;
  * @property string $CHANGED
  * @property string $GD_MOBILE
  * @property bool $BUDJET
+ * @property int $type_id
  *
  * @property EmpPosts[] $empPosts
  * @property EmpPostsHistory[] $empPostsHistories
@@ -62,7 +63,7 @@ class Organizations extends \yii\db\ActiveRecord
     {
         return [
             [['id_from_api', 'TIN', 'NA1_CODE', 'NS10_CODE', 'NS11_CODE', 'TELEFON', 'GD_TIN', 'GD_TEL_WORK', 'OKED', 'OKPO', 'OKONX', 'soato'], 'integer'],
-            [['TIN', 'NA1_CODE', 'NS10_CODE', 'NS11_CODE', 'NAME_FULL', 'GD_FULL_NAME', 'GD_TIN', 'GD_TEL_WORK', 'GD_EMAIL', 'GB_FULL_NAME', 'GB_TIN', 'OKED', 'OKPO', 'OKONX', 'soato', 'DATE_END', 'CREATED', 'CHANGED', 'GD_MOBILE'], 'required'],
+            [['TIN',  'NAME_FULL', 'GD_FULL_NAME', 'GD_TIN', 'OKED', 'OKPO', 'OKONX', 'soato', ], 'required'],
             [['REG_DATE', 'DATE_TIN', 'DATE_END', 'CREATED', 'CHANGED'], 'safe'],
             [['BUDJET'], 'boolean'],
             [['NAME_FULL', 'ADDRESS', 'GD_FULL_NAME', 'GB_FULL_NAME'], 'string', 'max' => 255],
@@ -109,8 +110,9 @@ class Organizations extends \yii\db\ActiveRecord
             'DATE_END' => Yii::t('app', 'Date  End'),
             'CREATED' => Yii::t('app', 'Created'),
             'CHANGED' => Yii::t('app', 'Changed'),
-            'GD_MOBILE' => Yii::t('app', 'Buxgalter Telefoni'),
+            'GD_MOBILE' => Yii::t('app', 'Direktor qo\'l Telefoni'),
             'BUDJET' => Yii::t('app', 'Budjet'),
+            'type_id' => Yii::t('app', 'Tashkilot turi'),
         ];
     }
 

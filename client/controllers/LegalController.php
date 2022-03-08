@@ -10,6 +10,7 @@ use common\models\Emlash;
 use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\QfiView;
+use common\models\SampleRegistration;
 use common\models\Samples;
 use common\models\Sertificates;
 use common\models\Vaccination;
@@ -109,9 +110,6 @@ class LegalController extends Controller
 
     }
 
-    public function actionSend($id){
-
-    }
 
     /**
      * Displays homepage.
@@ -135,23 +133,30 @@ class LegalController extends Controller
         $legal = LegalEntities::findOne(['inn'=>Yii::$app->session->get('doc_inn')]);
         $model->sert_date = date('Y-m-d');
         if($model->load(Yii::$app->request->post())){
-           $org = $model->organization_id;
+
+            $org = $model->organization_id;
 
             $num = Sertificates::find()->where(['organization_id'=>$org])->andFilterWhere(['like','sert_date',date('Y')])->max('sert_id');
 
-            $num = $num+1;
+            $code = substr(date('Y'),2,2).'-1-'.get3num($org).'-';
 
+            $num = $num+1;
+            $code .= $num;
             $model->sert_id = "$num";
             $model->inn = $legal->inn;
+            $model->sert_full = $code;
             $model->sert_num = "{$model->sert_num}";
             if($model->save()){
+                Yii::$app->session->setFlash('success','Proba tekshiruvchi tashkilotga muvoffaqtiyatli yuborildi');
                 return $this->redirect(['view','id'=>$model->id]);
             }else{
                 Yii::$app->session->setFlash('error','Ma\'lumotlarni to\'ldirishda xatolik yuzaga keldi');
             }
         }
 
-        return $this->render('animal',['model'=>$model]);
+        return $this->render('animal',[
+            'model'=>$model,
+        ]);
     }
 
     public function actionView($id)
@@ -185,12 +190,13 @@ class LegalController extends Controller
         $model = $this->findModel($id);
 
         $animal = new Animals();
-
+        $reg = new SampleRegistration();
         $sample = new Samples();
         $animal->pnfl = $model->pnfl;
         $animal->inn = $model->organization->TIN;
         $sample->animal_id = -1;
         $sample->sert_id = intval($id);
+        $reg->code = $model->sert_full;
         if(Yii::$app->request->isPost){
 
             if($animal->load(Yii::$app->request->post())){
@@ -204,17 +210,14 @@ class LegalController extends Controller
                     }
                 }
             }
-            /*echo "<pre>";
-//            var_dump($animal);
-            echo "________________<br><br><hr>";
-            var_dump($sample);
-            exit;*/
+
         }
 
         return $this->render('add',[
             'model'=>$model,
             'animal'=>$animal,
-            'sample'=>$sample
+            'sample'=>$sample,
+            'reg'=>$reg
         ]);
     }
     protected function findModel($id)
@@ -285,4 +288,7 @@ class LegalController extends Controller
         echo $res;
         exit;
     }
+
+
+
 }

@@ -15,9 +15,6 @@ return [
         'cp' => [
             'class' => 'app\modules\admin\Module',
         ],
-        'imtodb' => [
-            'class' => 'app\modules\imtodb\Module',
-        ],
     ],
     'components' => [
         'request' => [
@@ -64,7 +61,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'class' => 'codemix\localeurls\UrlManager',
-            'languages' => ['uz', 'oz','ru' ],
+            'languages' => ['uz', 'oz','ru'],
             'enableDefaultLanguageUrlCode' => true,
             'enableLanguagePersistence' => false,
             'rules' => [

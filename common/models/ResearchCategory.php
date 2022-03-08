@@ -40,9 +40,9 @@ class ResearchCategory extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name_uz' => 'Name Uz',
-            'name_ru' => 'Name Ru',
+            'id' => Yii::t('app', 'ID'),
+            'name_uz' => Yii::t('app', 'Name Uz'),
+            'name_ru' => Yii::t('app', 'Name Ru'),
         ];
     }
 

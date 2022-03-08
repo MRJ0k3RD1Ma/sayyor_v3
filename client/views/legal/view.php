@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Sertificates */
 
-$this->title = $model->sert_id;
+$this->title = $model->sert_full;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Dalolatnomalar'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -39,6 +39,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'vet_site_id',
                 'value'=>function($d){
                     return $d->vetSite->name;
+                }
+            ],
+            [
+                'attribute'=>'status_id',
+                'value'=>function($d){
+                    if(Yii::$app->language == 'ru'){
+                        return $d->status->name_ru;
+                    }
+                    return $d->status->name_uz;
+                }
+            ],
+            [
+                'label'=>Yii::t('client','Arizani kuzatish'),
+                'value'=>function($d){
+
                 }
             ],
 //            'operator',

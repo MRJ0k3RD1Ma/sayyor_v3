@@ -72,6 +72,7 @@ class Sertificates extends \yii\db\ActiveRecord
             'region' => Yii::t('model.sertificates', 'Viloyat'),
             'district' => Yii::t('model.sertificates', 'Tuman'),
             'qfi' => Yii::t('model.sertificates', 'QFI'),
+            'status_id' => Yii::t('model.sertificates', 'Status'),
         ];
     }
 

@@ -39,7 +39,7 @@ AppAsset::register($this);
 
     <?php if(Yii::$app->session->has('doc_type')){
        echo $this->render('_menu_'.Yii::$app->session->get('doc_type'));
-    }?>
+    }else{echo $this->render('_menu_'.Yii::$app->session->get('doc_type'));}?>
 
 
     <!-- ============================================================== -->

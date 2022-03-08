@@ -2,31 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91b10bac-fe1c-44c0-a8e6-2b4e7481b6db" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/client/models/search/SertificatesSearch.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/views/legal/add.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/views/legal/animal.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/views/legal/emlash.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/views/legal/indextest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/views/legal/vaccination.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/views/legal/view.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/views/layouts/_menu.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/views/legal/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/controllers/LegalController.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/controllers/LegalController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/controllers/SiteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/controllers/SiteController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/views/layouts/_header.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/layouts/_header.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/views/layouts/_menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/layouts/_menu_pnfl.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/views/layouts/_menu_inn.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/layouts/_menu_inn.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/views/layouts/main.php" beforeDir="false" afterPath="$PROJECT_DIR$/client/views/layouts/main.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/models/SampleBoxes.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/models/SampleBoxes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/models/SampleTypes.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/models/SampleTypes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/models/Sertificates.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/models/Sertificates.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/models/search/SampleBoxesSearch.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/models/search/SampleBoxesSearch.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/modules/admin/views/sample-boxes/_form.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/modules/admin/views/sample-boxes/_form.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/modules/admin/views/sample-boxes/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/modules/admin/views/sample-boxes/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/modules/admin/views/sample-boxes/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/modules/admin/views/sample-boxes/view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/modules/admin/views/sample-types/_form.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/modules/admin/views/sample-types/_form.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/modules/admin/views/sample-types/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/modules/admin/views/sample-types/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/modules/admin/views/sample-types/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/modules/admin/views/sample-types/view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/views/layouts/_header.php" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/views/layouts/_header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/web/eimzo/services/eimzo/eimzo_old.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/web/eimzo/services/eimzo/eimzo_old.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,21 +129,22 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/client/views/legal" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/client/views/layouts" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ACS_H\project\md\2021\sayyoradv\client\views\layouts" />
       <recent name="C:\Users\ACS_H\project\md\2021\sayyoradv\client\views\legal" />
       <recent name="C:\Users\ACS_H\project\md\2021\sayyoradv\client\models\search" />
       <recent name="C:\Users\Dilmurod\projects\sayyor\client\assets" />
       <recent name="C:\Users\Dilmurod\projects\sayyor\client\views\layouts" />
-      <recent name="C:\Users\Dilmurod\projects\sayyor\client\views\legal" />
     </key>
   </component>
   <component name="RunManager">
@@ -184,7 +165,8 @@
       <option name="presentableId" value="Default" />
       <updated>1646584204424</updated>
       <workItem from="1646584206149" duration="8793000" />
-      <workItem from="1646629513532" duration="9636000" />
+      <workItem from="1646629513532" duration="10301000" />
+      <workItem from="1646721752469" duration="480000" />
     </task>
     <servers />
   </component>
@@ -201,5 +183,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

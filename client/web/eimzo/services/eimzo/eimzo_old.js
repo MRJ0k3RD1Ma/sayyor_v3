@@ -264,6 +264,7 @@ var uiLoadCaptcha = function (askCaptcha) {
 };
 
 var uiCreateItem = function (itmkey, vo, lang) {
+
 	var now = new Date();
 	vo.expired = dates.compare(now, vo.validTo) > 0;
 	var itm = "<li><a href=\"#\" ";
@@ -327,6 +328,7 @@ var uiCreateItem = function (itmkey, vo, lang) {
 	itm += "<div id='" + itmkey + "' class='hidden-value' style='display: none'>" + JSON.stringify(vo) + "</div>";
 	itm += "</a></li>";
 	return itm;
+
 };
 
 var isLegalEntity = function (tin) {

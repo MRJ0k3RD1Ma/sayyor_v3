@@ -8,9 +8,11 @@ use common\models\TestMethod;
 
 /**
  * TestMethodSearch represents the model behind the search form of `app\models\TestMethod`.
+ * @var $q
  */
 class TestMethodSearch extends TestMethod
 {
+    public $q;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +20,7 @@ class TestMethodSearch extends TestMethod
     {
         return [
             [['id', 'state'], 'integer'],
-            [['name_uz', 'name_ru'], 'safe'],
+            [['name_uz', 'name_ru','q'], 'safe'],
         ];
     }
 
@@ -62,8 +64,8 @@ class TestMethodSearch extends TestMethod
             'state' => $this->state,
         ]);
 
-        $query->andFilterWhere(['like', 'name_uz', $this->name_uz])
-            ->andFilterWhere(['like', 'name_ru', $this->name_ru]);
+        $query->orFilterWhere(['like', 'name_uz', $this->q])
+            ->orFilterWhere(['like', 'name_ru', $this->q]);
 
         return $dataProvider;
     }

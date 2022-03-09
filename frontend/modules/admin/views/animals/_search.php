@@ -13,35 +13,42 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'id' => 'animals-grid-filters',
+        'fieldConfig' => [
+        ],
     ]); ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header flex">
+                    <div></div>
+                    <div class="btns flex">
+                        <div class="search" style="margin-bottom: -1rem!important;">
+                            <?= $form->field($model, 'q')->label(false) ?>
+                            <!--                            <span class="fa fa-search"></span>-->
+                            <!--                            <input type="search">-->
+                            <!--                            <button class="btn"></button>-->
 
-    <?= $form->field($model, 'id') ?>
+                        </div>
 
-    <?= $form->field($model, 'name') ?>
+                        <div class="export">
+                            <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
+                            </button>
+                            <div class="export-btn">
+                                <button class=""><span class="fa fa-file-excel"></span> Excel</button>
+                                <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
+                            </div>
 
-    <?= $form->field($model, 'cat_id') ?>
+                        </div>
+                        <?= Html::a(Yii::t('cp.animals', 'Hayvon qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
+                    </div>
+                </div>
+                <div class="card-body">
 
-    <?= $form->field($model, 'gender') ?>
-
-    <?= $form->field($model, 'birthday') ?>
-
-    <?php // echo $form->field($model, 'inn') ?>
-
-    <?php // echo $form->field($model, 'pnfl') ?>
-
-    <?php // echo $form->field($model, 'adress') ?>
-
-    <?php // echo $form->field($model, 'vet_site_id') ?>
-
-    <?php // echo $form->field($model, 'bsual_tag') ?>
-
-    <?php // echo $form->field($model, 'type_id') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('cp.animals', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('cp.animals', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+                </div>
+            </div>
+        </div>
     </div>
-
     <?php ActiveForm::end(); ?>
 
 </div>

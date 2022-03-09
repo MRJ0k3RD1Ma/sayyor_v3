@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\DiseasesSearch */
@@ -15,29 +16,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header flex">
-                    <div></div>
-                    <div class="btns flex">
-                        <div class="search">
 
-                            <input type="search">
-                            <button class="btn"><span class="fa fa-search"></span></button>
-
-                        </div>
-                        <div class="export">
-                            <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export</button>
-                            <div class="export-btn">
-                                <button class=""><span class="fa fa-file-excel"></span> Excel</button>
-                                <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
+                <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+                <?php echo $this->render('_search', [
+                    'model' => $searchModel,
+                ]);
+                ?>
                 <div class="card-body">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
+                        'id' => 'disease-grid',
 //                        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
@@ -62,16 +50,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute'=>'group_id',
                                 'value'=>function($d){
                                     $lang = Yii::$app->language;
-                                    if($lang == 'ru'){
+                                    if($lang === 'ru'){
                                         return $d->group->name_ru;
-                                    }else{
-                                        return $d->group->name_uz;
                                     }
+
+                                    return $d->group->name_uz;
                                 }
                             ],
                             ['class' => 'yii\grid\ActionColumn'],
                         ],
-                    ]); ?>
+                    ]) ?>
+                    <?php Pjax::end(); ?>
                 </div>
             </div>
         </div>

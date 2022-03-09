@@ -65,7 +65,7 @@ class DiseasesSearch extends Diseases
             'group_id' => $this->group_id,
         ]);
 
-        $query->orFilterWhere(['ilike', 'name_uz', $this->q])
+        $query->orFilterWhere(['like', 'name_uz', $this->q])
             ->orFilterWhere(['like', 'name_ru', $this->q]);
 
         return $dataProvider;

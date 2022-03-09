@@ -8,9 +8,11 @@ use common\models\DiseaseCategory;
 
 /**
  * DiseaseCategorySearch represents the model behind the search form of `app\models\DiseaseCategory`.
+ *  * @var $q;
  */
 class DiseaseCategorySearch extends DiseaseCategory
 {
+    public $q;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +20,7 @@ class DiseaseCategorySearch extends DiseaseCategory
     {
         return [
             [['id'], 'integer'],
-            [['name_uz', 'name_ru'], 'safe'],
+            [['name_uz', 'name_ru','q'], 'safe'],
         ];
     }
 
@@ -61,8 +63,8 @@ class DiseaseCategorySearch extends DiseaseCategory
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'name_uz', $this->name_uz])
-            ->andFilterWhere(['like', 'name_ru', $this->name_ru]);
+        $query->orFilterWhere(['like', 'name_uz', $this->q])
+            ->orFilterWhere(['like', 'name_ru', $this->q]);
 
         return $dataProvider;
     }

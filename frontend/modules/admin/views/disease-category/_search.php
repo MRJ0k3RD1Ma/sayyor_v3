@@ -13,19 +13,29 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'id' => 'disease-category-grid-filters',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="card-header flex">
+        <div></div>
+        <div class="btns flex">
+            <div class="search">
 
-    <?= $form->field($model, 'name_uz') ?>
+                <?= $form->field($model, 'q')->label(false) ?>
 
-    <?= $form->field($model, 'name_ru') ?>
+            </div>
+            <div class="export">
+                <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export</button>
+                <div class="export-btn">
+                    <button class=""><span class="fa fa-file-excel"></span> Excel</button>
+                    <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
+                </div>
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('cp.disease_category', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('cp.disease_category', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+            </div>
+            <?= Html::a(Yii::t('cp.disease_category', 'Kasallik toyifasini qo`shish'), ['create'], ['class' => 'btn btn-success']) ?>
+
+        </div>
     </div>
-
     <?php ActiveForm::end(); ?>
 
 </div>

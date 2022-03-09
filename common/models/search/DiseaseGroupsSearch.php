@@ -20,7 +20,7 @@ class DiseaseGroupsSearch extends DiseaseGroups
     {
         return [
             [['id'], 'integer'],
-            [['name_uz', 'name_ru'], 'safe'],
+            [['name_uz', 'name_ru','q'], 'safe'],
         ];
     }
 

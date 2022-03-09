@@ -13,21 +13,42 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'id' => 'animals-category-grid-filters',
+        'fieldConfig' => [
+        ],
     ]); ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header flex">
+                    <div></div>
+                    <div class="btns flex">
+                        <div class="search" style="margin-bottom: -1rem!important;">
+                            <?= $form->field($model, 'q')->label(false) ?>
+                            <!--                            <span class="fa fa-search"></span>-->
+                            <!--                            <input type="search">-->
+                            <!--                            <button class="btn"></button>-->
 
-    <?= $form->field($model, 'id') ?>
+                        </div>
 
-    <?= $form->field($model, 'code') ?>
+                        <div class="export">
+                            <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
+                            </button>
+                            <div class="export-btn">
+                                <button class=""><span class="fa fa-file-excel"></span> Excel</button>
+                                <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
+                            </div>
 
-    <?= $form->field($model, 'name_uz') ?>
+                        </div>
+                        <?= Html::a(Yii::t('cp.animal', 'Hayvon kategoriyasini yaratish'), ['create'], ['class' => 'btn btn-success']) ?>
+                    </div>
+                </div>
+                <div class="card-body">
 
-    <?= $form->field($model, 'name_ru') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('cp', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('cp', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+                </div>
+            </div>
+        </div>
     </div>
-
     <?php ActiveForm::end(); ?>
 
 </div>

@@ -6,11 +6,14 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\AnimalCategory;
 
+
 /**
  * AnimalCategorySearch represents the model behind the search form of `app\models\AnimalCategory`.
+ *  @var $q
  */
 class AnimalCategorySearch extends AnimalCategory
 {
+    public  $q;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +21,7 @@ class AnimalCategorySearch extends AnimalCategory
     {
         return [
             [['id', 'code'], 'integer'],
-            [['name_uz', 'name_ru'], 'safe'],
+            [['name_uz', 'name_ru','q'], 'safe'],
         ];
     }
 
@@ -62,8 +65,9 @@ class AnimalCategorySearch extends AnimalCategory
             'code' => $this->code,
         ]);
 
-        $query->andFilterWhere(['like', 'name_uz', $this->name_uz])
-            ->andFilterWhere(['like', 'name_ru', $this->name_ru]);
+        $query->orFilterWhere(['like', 'name_uz', $this->q])
+            ->orFilterWhere(['like', 'name_ru', $this->q])
+            ->orFilterWhere(['like', 'code', $this->q]);
 
         return $dataProvider;
     }

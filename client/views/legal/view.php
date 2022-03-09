@@ -3,10 +3,18 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
+
 /* @var $this yii\web\View */
 /* @var $model common\models\Sertificates */
 
-$this->title = $model->sert_id;
+$this->title = $model->sert_full;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Dalolatnomalar'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -16,7 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('cp.sertificates', 'O\'zgartirish'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('cp.sertificates', 'Arizani yuborish'), ['send', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?php if($model->status_id == 1){?>
+            <?= Html::a(Yii::t('cp.sertificates', 'Arizani yuborish'), ['send', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?php }?>
     </p>
 
     <?= DetailView::widget([
@@ -40,6 +50,37 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>function($d){
                     return $d->vetSite->name;
                 }
+            ],
+            [
+                'attribute'=>'status_id',
+                'value'=>function($d){
+                    if(Yii::$app->language == 'ru'){
+                        return $d->status->name_ru;
+                    }
+                    return $d->status->name_uz;
+                }
+            ],
+            [
+                'label'=>Yii::t('client','Arizani kuzatish'),
+                'value'=>function($d){
+                    $result = Builder::create()
+                        ->writer(new PngWriter())
+                        ->writerOptions([])
+                        ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsert','id'=>$d->id]))
+                        ->encoding(new Encoding('UTF-8'))
+                        ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+                        ->size(100)
+                        ->margin(3)
+                        ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+//                        ->logoPath(Yii::$app->basePath.'/web/favicon.ico')
+                        ->labelText('')
+                        ->labelFont(new NotoSans(20))
+                        ->labelAlignment(new LabelAlignmentCenter())
+                        ->build();
+                    return "<img src='{$result->getDataUri()}'>";
+
+                },
+                'format'=>'raw'
             ],
 //            'operator',
         ],

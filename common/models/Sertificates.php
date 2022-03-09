@@ -44,8 +44,8 @@ class Sertificates extends \yii\db\ActiveRecord
         return [
 //            [['sert_id'], 'required'],
             [['sert_date'], 'safe'],
-            [['organization_id', 'vet_site_id', 'operator','district','region','qfi','status_id'], 'integer'],
-            [['sert_id', 'sert_num'], 'string', 'max' => 100],
+            [['sert_id','organization_id', 'vet_site_id', 'operator','district','region','qfi','status_id'], 'integer'],
+            [[ 'sert_num'], 'string', 'max' => 100],
             [['pnfl', 'owner_name','inn','sert_full'], 'string', 'max' => 255],
             [['sert_id'], 'unique'],
             ['status_id','default','value'=>1],
@@ -72,6 +72,7 @@ class Sertificates extends \yii\db\ActiveRecord
             'region' => Yii::t('model.sertificates', 'Viloyat'),
             'district' => Yii::t('model.sertificates', 'Tuman'),
             'qfi' => Yii::t('model.sertificates', 'QFI'),
+            'status_id' => Yii::t('model.sertificates', 'Status'),
         ];
     }
 

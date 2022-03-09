@@ -5,13 +5,17 @@ namespace client\controllers;
 use client\models\InnForm;
 use client\models\search\SertificatesSearch;
 use common\models\Animals;
+use common\models\CompositeSamples;
 use common\models\DistrictView;
 use common\models\Emlash;
+use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
 use common\models\LegalEntities;
+use common\models\ProductExpertise;
 use common\models\QfiView;
 use common\models\SampleRegistration;
 use common\models\Samples;
+use common\models\search\FoodSamplingCertificateSearch;
 use common\models\Sertificates;
 use common\models\Vaccination;
 use frontend\models\ResendVerificationEmailForm;
@@ -185,6 +189,15 @@ class LegalController extends Controller
         }
     }
 
+    public function actionSend($id){
+        $model = $this->findModel($id);
+        if($model->status_id == 1){
+            $model->status_id = 2;
+            $model->save();
+        }
+
+        return $this->redirect(['view','id'=>$id]);
+    }
 
     public function actionAdd($id){
         $model = $this->findModel($id);
@@ -192,20 +205,38 @@ class LegalController extends Controller
         $animal = new Animals();
         $reg = new SampleRegistration();
         $sample = new Samples();
-        $animal->pnfl = $model->pnfl;
-        $animal->inn = $model->organization->TIN;
+
+        $animal->inn = Yii::$app->session->get('doc_inn');
         $sample->animal_id = -1;
         $sample->sert_id = intval($id);
-        $reg->code = $model->sert_full;
+
+        $reg->inn = $animal->inn;
+        $org = $model->organization_id;
+        $reg->organization_id = $model->organization_id;
+        $num = SampleRegistration::find()->where(['organization_id'=>$org])->andFilterWhere(['like','reg_date',date('Y')])->max('reg_id');
+
+        $code = substr(date('Y'),2,2).'-1-'.get3num($org).'-';
+
+        $num = $num+1;
+        $code .= $num;
+        $reg->reg_id = $num;
+        $reg->code = $code;
         if(Yii::$app->request->isPost){
 
-            if($animal->load(Yii::$app->request->post())){
+            if($animal->load(Yii::$app->request->post()) and $reg->load(Yii::$app->request->post())){
                 $animal->inn = "{$animal->inn}";
-                if($animal->save()){}
-                if($sample->load(Yii::$app->request->post())){
+                $sample->kod = $reg->code;
+                if($animal->save() and $sample->load(Yii::$app->request->post())){
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if($sample->save(false)){
+                        $com = new CompositeSamples();
+                        $com->sample_id = $sample->id;
+                        $com->status_id = 1;
+                        $com->save();
+                        $reg->composite_sample_id = $com->id;
+                        $reg->save();
+                        Yii::$app->session->setFlash('success',Yii::t('client','Namuna muvoffaqiyatli saqlandi'));
                         return $this->redirect(['view','id'=>$id]);
                     }
                 }
@@ -289,6 +320,49 @@ class LegalController extends Controller
         exit;
     }
 
+    public function actionProduct(){
+        $model = new FoodSamplingCertificate();
+        $pro = new ProductExpertise();
+        $model->inn = Yii::$app->session->get('doc_inn');
+        if($model->load(Yii::$app->request->post())){
 
+            $org = $model->organization_id;
+
+            $num = FoodSamplingCertificate::find()->where(['organization_id'=>$org])->andFilterWhere(['like','food_id',date('Y')])->max('food_id');
+
+            $code = substr(date('Y'),2,2).'-2-'.get3num($org).'-';
+
+            $num = $num+1;
+            $code .= $num;
+            $model->kod = $code;
+            $model->food_id = $num;
+            $pro->orgaization_id = $model->organization_id;
+            $pro->inn = $model->inn;
+            $pro->vet_site_id = $model->sampling_site;
+            if($model->save() and $pro->load(Yii::$app->request->post())){
+                $pro->food_sampling_certificate = $model->id;
+                $pro->save();
+                return $this->redirect(['viewfood','id'=>$model->id]);
+            }
+        }
+        return $this->render('product',['model'=>$model,'pro'=>$pro]);
+    }
+
+    public function actionViewfood($id){
+        $model = FoodSamplingCertificate::findOne($id);
+        return $this->render('viewfood',[
+            'model'=>$model
+        ]);
+    }
+
+    public function actionListfood(){
+        $searchModel = new FoodSamplingCertificateSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('listfood', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
 }

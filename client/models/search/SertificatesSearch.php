@@ -17,7 +17,7 @@ class SertificatesSearch extends Sertificates
     public function rules()
     {
         return [
-            [['sert_id', 'sert_num', 'sert_date', 'pnfl', 'owner_name'], 'safe'],
+            [['sert_id', 'sert_num', 'sert_date', 'pnfl', 'owner_name','status_id'], 'safe'],
             [['organization_id', 'vet_site_id', 'operator'], 'integer'],
         ];
     }
@@ -67,6 +67,7 @@ class SertificatesSearch extends Sertificates
             'organization_id' => $this->organization_id,
             'vet_site_id' => $this->vet_site_id,
             'operator' => $this->operator,
+            'status_id' => $this->status_id,
         ]);
 
         $query->andFilterWhere(['like', 'sert_id', $this->sert_id])

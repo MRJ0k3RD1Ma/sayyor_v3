@@ -8,9 +8,11 @@ use common\models\Animaltype;
 
 /**
  * AnimaltypeSearch represents the model behind the search form of `app\models\Animaltype`.
+ * @var $q
  */
 class AnimaltypeSearch extends Animaltype
 {
+    public $q;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +20,7 @@ class AnimaltypeSearch extends Animaltype
     {
         return [
             [['id', 'code'], 'integer'],
-            [['name_uz', 'name_ru'], 'safe'],
+            [['name_uz', 'name_ru','q'], 'safe'],
         ];
     }
 
@@ -62,8 +64,8 @@ class AnimaltypeSearch extends Animaltype
             'code' => $this->code,
         ]);
 
-        $query->andFilterWhere(['like', 'name_uz', $this->name_uz])
-            ->andFilterWhere(['like', 'name_ru', $this->name_ru]);
+        $query->orFilterWhere(['ilike', 'name_uz', $this->q])
+            ->orFilterWhere(['ilike', 'name_ru', $this->q]);
 
         return $dataProvider;
     }

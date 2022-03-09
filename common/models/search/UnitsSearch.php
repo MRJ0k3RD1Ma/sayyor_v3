@@ -8,9 +8,11 @@ use common\models\Units;
 
 /**
  * UnitsSearch represents the model behind the search form of `app\models\Units`.
+ * @var $q;
  */
 class UnitsSearch extends Units
 {
+    public $q;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +20,7 @@ class UnitsSearch extends Units
     {
         return [
             [['id', 'code'], 'integer'],
-            [['name_uz', 'name_ru'], 'safe'],
+            [['name_uz', 'name_ru','q'], 'safe'],
         ];
     }
 
@@ -62,8 +64,8 @@ class UnitsSearch extends Units
             'code' => $this->code,
         ]);
 
-        $query->andFilterWhere(['like', 'name_uz', $this->name_uz])
-            ->andFilterWhere(['like', 'name_ru', $this->name_ru]);
+        $query->orFilterWhere(['like', 'name_uz', $this->q])
+            ->orFilterWhere(['like', 'name_ru', $this->q]);
 
         return $dataProvider;
     }

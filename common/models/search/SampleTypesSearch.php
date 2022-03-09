@@ -8,17 +8,19 @@ use common\models\SampleTypes;
 
 /**
  * SampleTypesSearch represents the model behind the search form of `app\models\SampleTypes`.
+ * @var $q;
  */
 class SampleTypesSearch extends SampleTypes
 {
+    public $q;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'state'], 'integer'],
-            [['name_uz', 'name_ru'], 'safe'],
+            [['id'], 'integer'],
+            [['name_uz', 'name_ru','q'], 'safe'],
         ];
     }
 
@@ -59,11 +61,10 @@ class SampleTypesSearch extends SampleTypes
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'state' => $this->state,
         ]);
 
-        $query->andFilterWhere(['like', 'name_uz', $this->name_uz])
-            ->andFilterWhere(['like', 'name_ru', $this->name_ru]);
+        $query->orFilterWhere(['like', 'name_uz', $this->q])
+            ->orFilterWhere(['like', 'name_ru', $this->q]);
 
         return $dataProvider;
     }

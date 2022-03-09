@@ -13,7 +13,7 @@ class InnForm extends Model
     public $name;
     public $inn;
     public $pnfl;
-    public $document;
+    public $passport;
     public $type;
 
 
@@ -24,7 +24,7 @@ class InnForm extends Model
     {
         return [
             // name, email, subject and body are required
-            [['name', 'inn', 'pnfl', 'document','type'], 'string'],
+            [['name', 'inn', 'pnfl', 'passport','type'], 'string'],
             // email has to be a valid email address
             // verifyCode needs to be entered correctly
         ];

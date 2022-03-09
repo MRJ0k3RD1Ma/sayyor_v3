@@ -12,6 +12,7 @@ use common\models\VetSites;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
+use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -146,6 +147,41 @@ class SiteController extends Controller
             return $this->render('legal',['model'=>$model]);
         }
     }
+
+    public function actionIndividual(){
+        $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'].'?pinfl='.Yii::$app->session->get('doc_pnfl').'&document='.Yii::$app->session->get('doc_document'),'hamsa');
+        $model = new Individuals();
+        $res = json_decode($res,true);
+        if($res['code']['result']!=2200 or (isset($res['data']['result']) and $res['data']['result']==0)){
+            return $this->render('individual',[
+                'model'=>$model,
+            ]);
+        }
+
+        $model->passport = $res['data']['inf']['document'];
+        $model->surname = $res['data']['inf']['surname_latin'];
+        $model->name = $res['data']['inf']['name_latin'];
+        $model->middlename = $res['data']['inf']['patronym_latin'];
+        $model->pnfl = Yii::$app->session->get('doc_pnfl');
+
+        if($model->load(Yii::$app->request->post()) ){
+            if($model->save()){
+                Yii::$app->session->set('doc_type','pnfl');
+                Yii::$app->session->set('doc_pnfl',$model->pnfl);
+                Yii::$app->session->set('doc_document',$model->passport);
+                Yii::$app->session->set('doc_name',$model->name.' '.$model->surname);
+                Yii::$app->session->setFlash('success',Yii::t('client','Ma\'lumotlaringiz muvoffaqiyatli saqlandi'));
+                return $this->goHome();
+            }else{
+                Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni saqlashda xatolik'));
+            }
+        }
+
+        return $this->render('individual',[
+            'ind'=>$model
+        ]);
+    }
+
     /**
      * Logs in a user.
      *
@@ -155,91 +191,46 @@ class SiteController extends Controller
     {
         $model = new InnForm();
         $this->layout = "login";
-        $ind = new Individuals();
-        $legal = new LegalEntities();
+        Yii::$app->session->remove('doc_name');
+        Yii::$app->session->remove('doc_type');
+        Yii::$app->session->remove('doc_inn');
+        Yii::$app->session->remove('doc_pnfl');
+        Yii::$app->session->remove('doc_document');
         if($model->load(Yii::$app->request->post())){
-            if($model->type == 'inn'){
-                if($legal->load(Yii::$app->request->post())){
-                    // legal save yoziladi
+            if($model->type == 'pnfl'){
+                if($in = Individuals::find()->where(['pnfl'=>$model->pnfl])->andWhere(['passport'=>$model->passport])->one()){
+                    Yii::$app->session->set('doc_type','pnfl');
+                    Yii::$app->session->set('doc_pnfl',$in->pnfl);
+                    Yii::$app->session->set('doc_document',$in->passport);
+                    Yii::$app->session->set('doc_name',$in->name.' '.$in->surname);
+                }else{
+                    $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'].'?pinfl='.$model->pnfl.'&document='.$model->passport,'hamsa');
+
+                    $res = json_decode($res,true);
+
+                    if($res['code']['result']!=2200 or (isset($res['data']['result']) and $res['data']['result']==0)){
+
+                        Yii::$app->session->setFlash('error',Yii::t('client','Pasport ma\'lumotlari topilmadi'));
+                        return $this->render('login',[
+                            'model'=>$model,
+                        ]);
+                    }else{
+                        Yii::$app->session->set('doc_type','pnfl');
+                        Yii::$app->session->set('doc_pnfl',$model->pnfl);
+                        Yii::$app->session->set('doc_document',$model->passport);
+                        return $this->redirect(['individual']);
+                    }
                 }
-                Yii::$app->session->set('doc_type','inn');
-                Yii::$app->session->set('doc_inn',$model->inn);
-            }else{
-                if($ind->load(Yii::$app->request->post())){
-                    $in = Individuals::find()->where(['pnfl'=>$ind->pnfl])->andWhere(['passport'=>$ind->passport])->one();
-                    $in->soato_id = $ind->soato_id;
-                    $in->adress = $ind->adress;
-                    $in->save();
-                }
-                Yii::$app->session->set('doc_type','pnfl');
-                Yii::$app->session->set('doc_pnfl',$in->pnfl);
-                Yii::$app->session->set('doc_document',$in->passport);
-                Yii::$app->session->set('doc_name',$in->name.' '.$in->surname);
             }
 
             return $this->goHome();
         }
+
         return $this->render('login',[
             'model'=>$model,
-            'ind'=>$ind,
-            'legal'=>$legal
         ]);
     }
 
-    public function actionGetind($passport,$pnfl){
-        if($model = Individuals::find()->where(['passport'=>$passport])->andWhere(['pnfl'=>$pnfl])->one()){
-            $res = "{";
-            $res .= '"code":{"result":200},';
-            $res .= '"data":{';
-            $res .= '"inf":{';
-            $res .= '"document":"'.$model->passport.'",';
-            $res .= '"surname":"'.$model->surname.'",';
-            $res .= '"name":"'.$model->name.'",';
-            $res .= '"middlename":"'.$model->middlename.'",';
-            $res .= '"pnfl":"'.$model->pnfl.'",';
-            $res .= '"adress":"'.$model->adress.'",';
-            $res .= '"region_id":"'.$model->soato->region_id.'",';
-            $res .= '"district_id":"'.$model->soato->district_id.'",';
-            $res .= '"soato_id":"'.$model->soato_id.'"';
-            $res .= "}";
-            $res .= "}";
-            $res .= "}";
-            return $res;
-        }else{
-            $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'].'?pinfl='.$pnfl.'&document='.$passport,'hamsa');
-
-
-            $res = json_decode($res,true);
-            if($res['code']['result']!=2200){
-                return "-1";
-            }
-
-            $model = new Individuals();
-            $model->passport = $res['data']['inf']['document'];
-            $model->surname = $res['data']['inf']['surname_latin'];
-            $model->name = $res['data']['inf']['name_latin'];
-            $model->middlename = $res['data']['inf']['patronym_latin'];
-            $model->pnfl = $pnfl;
-            $model->adress = '-';
-            $model->soato_id = 1735401554;
-            $model->save();
-            $res = "{";
-            $res .= '"code":{"result":200},';
-            $res .= '"data":{';
-            $res .= '"inf":{';
-            $res .= '"document":"'.$model->passport.'",';
-            $res .= '"surname":"'.$model->surname.'",';
-            $res .= '"name":"'.$model->name.'",';
-            $res .= '"middlename":"'.$model->middlename.'",';
-            $res .= '"pnfl":"'.$model->pnfl.'",';
-            $res .= '"adress":"'.$model->adress.'",';
-            $res .= '"soato_id":"-1"';
-            $res .= "}";
-            $res .= "}";
-            $res .= "}";
-            return $res;
-        }
-    }
     /**
      * Logs out the current user.
      *

@@ -8,9 +8,11 @@ use common\models\Samples;
 
 /**
  * SamplesSearch represents the model behind the search form of `app\models\Samples`.
+ * @var $q
  */
 class SamplesSearch extends Samples
 {
+    public $q;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +20,7 @@ class SamplesSearch extends Samples
     {
         return [
             [['id', 'sample_type_is', 'sample_box_id', 'animal_id', 'sert_id'], 'integer'],
-            [['kod', 'label'], 'safe'],
+            [['kod', 'label','q'], 'safe'],
         ];
     }
 
@@ -65,8 +67,8 @@ class SamplesSearch extends Samples
             'sert_id' => $this->sert_id,
         ]);
 
-        $query->andFilterWhere(['like', 'kod', $this->kod])
-            ->andFilterWhere(['like', 'label', $this->label]);
+        $query->orFilterWhere(['like', 'kod', $this->q])
+            ->orFilterWhere(['like', 'label', $this->q]);
 
         return $dataProvider;
     }

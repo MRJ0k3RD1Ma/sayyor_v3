@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\VerificationPurposesSearch */
@@ -16,31 +17,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header flex">
-                    <div></div>
-                    <div class="btns flex">
-                        <div class="search">
-
-                            <input type="text">
-                            <button class="btn" type="submit"><span class="fa fa-search"></span></button>
-
-                        </div>
-                        <div class="export">
-
-                            <button class="btn btn-primary"> <span class="fa fa-cloud-download-alt"></span> <?= Yii::t('cp','Export')?></button>
-                            <div class="export-btn">
-                                <button value="excel" class="export"><span class="fa fa-file-excel"></span>  <?= Yii::t('cp','Excel')?></button>
-                                <button value="excel" class="export"><span class="fa fa-file-pdf"></span>  <?= Yii::t('cp','Pdf')?></button>
-                            </div>
-                        </div>
-                        <?= Html::a(Yii::t('cp.verification_purposes', 'Tekshirish maqsadi qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
-
-                    </div>
-
-                </div><!-- end card header -->
+                <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+                <?php echo $this->render('_search', [
+                    'model' => $searchModel,
+                ]); ?>
                 <div class="card-body">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
+                        'id' => 'verification-purposes-grid',
 //                        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
@@ -52,7 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             ['class' => 'yii\grid\ActionColumn'],
                         ],
-                    ]); ?>
+                    ]) ?>
+                    <?php Pjax::end(); ?>
 
                 </div>
             </div>

@@ -8,9 +8,11 @@ use common\models\Vaccines;
 
 /**
  * VaccinesSearch represents the model behind the search form of `app\models\Vaccines`.
+ * @var $q;
  */
 class VaccinesSearch extends Vaccines
 {
+    public $q;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +20,7 @@ class VaccinesSearch extends Vaccines
     {
         return [
             [['id'], 'integer'],
-            [['name'], 'safe'],
+            [['name','q'], 'safe'],
         ];
     }
 
@@ -61,7 +63,7 @@ class VaccinesSearch extends Vaccines
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->orFilterWhere(['like', 'name', $this->q]);
 
         return $dataProvider;
     }

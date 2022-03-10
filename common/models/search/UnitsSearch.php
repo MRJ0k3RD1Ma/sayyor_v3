@@ -87,6 +87,7 @@ class UnitsSearch extends Units
         $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "#", DataType::TYPE_STRING);
         $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Nomi(O'zbek)", DataType::TYPE_STRING);
         $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Nomi(Rus)", DataType::TYPE_STRING);
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Code", DataType::TYPE_STRING);
         $key = 0;
         $models = $query->all();
         foreach ($models as $item) {
@@ -99,6 +100,7 @@ class UnitsSearch extends Units
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_NUMERIC);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->name_uz, DataType::TYPE_STRING);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->name_ru, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->code, DataType::TYPE_STRING);
         }
         $name = 'ExcelReport.xlsx';
         $writer = new Xlsx($speadsheet);

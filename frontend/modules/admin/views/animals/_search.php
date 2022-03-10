@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\search\AnimalsSearch */
+/* @var $model common\models\search\AnimalsSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -24,11 +24,9 @@ use yii\widgets\ActiveForm;
                     <div></div>
                     <div class="btns flex">
                         <div class="search" style="margin-bottom: -1rem!important;">
-                            <?= $form->field($model, 'q')->label(false) ?>
-                            <!--                            <span class="fa fa-search"></span>-->
-                            <!--                            <input type="search">-->
-                            <!--                            <button class="btn"></button>-->
-
+                            <?= $form->field($model, 'q', [
+                                'template' => '<div class="input-group">{input}<span class="btn btn-primary fa fa-search margi"></span></div>'
+                            ])->textInput()->label(false) ?>
                         </div>
 
                         <div class="export">

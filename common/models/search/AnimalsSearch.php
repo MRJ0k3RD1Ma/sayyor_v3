@@ -71,6 +71,7 @@ class AnimalsSearch extends Animals
 //        VarDumper::dump($this->q);exit();
         $query->orFilterWhere(['like', 'name', $this->q])
             ->orFilterWhere(['like', 'inn', $this->q])
+            ->orFilterWhere(['like', 'birthday', $this->q])
             ->orFilterWhere(['like', 'pnfl', $this->q])
             ->orFilterWhere(['like', 'adress', $this->q])
             ->orFilterWhere(['like', 'bsual_tag', $this->q]);

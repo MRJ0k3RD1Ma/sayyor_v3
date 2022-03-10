@@ -35,11 +35,13 @@ class DiseaseGroupsController extends Controller
      * Lists all DiseaseGroups models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(int $export=null)
     {
         $searchModel = new DiseaseGroupsSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        if ($export !== null) {
+            $searchModel->exportToExcel($dataProvider->query);
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

@@ -35,11 +35,14 @@ class SampleTypesController extends Controller
      * Lists all SampleTypes models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(int $export=null)
     {
         $searchModel = new SampleTypesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        if ($export !== null) {
+            $searchModel->exportToExcel($dataProvider->query);
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

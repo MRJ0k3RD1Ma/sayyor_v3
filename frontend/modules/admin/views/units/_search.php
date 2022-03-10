@@ -25,12 +25,15 @@ use yii\widgets\ActiveForm;
 
             </div>
             <div class="export">
-
-                <button class="btn btn-primary"> <span class="fa fa-cloud-download-alt"></span> <?= Yii::t('cp','Export')?></button>
+                <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
+                </button>
                 <div class="export-btn">
-                    <button value="excel" class="export"><span class="fa fa-file-excel"></span>  <?= Yii::t('cp','Excel')?></button>
-                    <button value="excel" class="export"><span class="fa fa-file-pdf"></span>  <?= Yii::t('cp','Pdf')?></button>
+                    <button>
+                        <?= Html::a(' Excel ', ['index', 'export' => 1, 'id' => $model->id], ['data-pjax' => 0, 'class' => 'fa fa-file-excel']) ?>
+                    </button>
+                    <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
                 </div>
+
             </div>
             <?= Html::a(Yii::t('cp.units', 'Birlik qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
         </div>

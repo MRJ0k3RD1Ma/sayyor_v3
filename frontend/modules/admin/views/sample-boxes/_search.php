@@ -25,9 +25,12 @@ use yii\widgets\ActiveForm;
                 ])->textInput()->label(false) ?>
             </div>
             <div class="export">
-                <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export</button>
+                <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
+                </button>
                 <div class="export-btn">
-                    <button class=""><span class="fa fa-file-excel"></span> Excel</button>
+                    <button>
+                        <?= Html::a(' Excel ', ['index', 'export' => 1, 'id' => $model->id], ['data-pjax' => 0, 'class' => 'fa fa-file-excel']) ?>
+                    </button>
                     <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
                 </div>
 

@@ -2,9 +2,15 @@
 
 namespace common\models\search;
 
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\LaboratoryTestType;
+use yii\db\QueryInterface;
+use yii\helpers\FileHelper;
 
 /**
  * LaboratoryTestTypeSearch represents the model behind the search form of `app\models\LaboratoryTestType`.
@@ -68,5 +74,41 @@ class LaboratoryTestTypeSearch extends LaboratoryTestType
             ->orFilterWhere(['like', 'name_ru', $this->q]);
 
         return $dataProvider;
+    }
+    public function exportToExcel(?QueryInterface $query)
+    {
+        $speadsheet = new Spreadsheet();
+        $sheet = $speadsheet->getActiveSheet();
+        $title = "Sheet1";
+        $sheet->setTitle(substr($title, 0, 31));
+        $row = 1;
+        $col = 1;
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "#", DataType::TYPE_STRING);
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Nomi(O'zbek)", DataType::TYPE_STRING);
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Nomi(Rus)", DataType::TYPE_STRING);
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Code", DataType::TYPE_STRING);
+        $key = 0;
+        $models = $query->all();
+        foreach ($models as $item) {
+            /**
+             * @var UnitsSearch $item
+             */
+            $row++;
+            $col = 1;
+            $key++;
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_NUMERIC);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->name_uz, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->name_ru, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->code, DataType::TYPE_STRING);
+        }
+        $name = 'ExcelReport.xlsx';
+        $writer = new Xlsx($speadsheet);
+        $dir = Yii::getAlias('@tmp/excel');
+        if (!is_dir($dir)) {
+            FileHelper::createDirectory($dir, 0777);
+        }
+        $fileName = $dir . DIRECTORY_SEPARATOR . $name;
+        $writer->save($fileName);
+        return Yii::$app->response->sendFile($fileName);
     }
 }

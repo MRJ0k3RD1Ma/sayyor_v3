@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
                     <div class="btns flex">
                         <div class="search" style="margin-bottom: -1rem!important;">
                             <?= $form->field($model, 'q', [
-                                'template' => '<div class="input-group">{input}<span class="btn btn-primary fa fa-search margi"></span></div>'
+                                'template' => '<div class="input-group">{input}<span class="btn btn-primary fa fa-search"></span></div>'
                             ])->textInput()->label(false) ?>
                         </div>
 
@@ -33,7 +33,9 @@ use yii\widgets\ActiveForm;
                             <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
                             </button>
                             <div class="export-btn">
-                                <button class=""><span class="fa fa-file-excel"></span> Excel</button>
+                                <button>
+                                    <?= Html::a(' Excel ', ['index', 'export' => 1, 'id' => $model->id], ['data-pjax' => 0, 'class' => 'fa fa-file-excel']) ?>
+                                </button>
                                 <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
                             </div>
 

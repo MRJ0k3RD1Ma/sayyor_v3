@@ -24,7 +24,7 @@ class AnimalsController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -37,11 +37,13 @@ class AnimalsController extends Controller
      * Lists all Animals models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(int $export=null)
     {
         $searchModel = new AnimalsSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        if ($export !== null) {
+            $searchModel->exportToExcel($dataProvider->query, $export);
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

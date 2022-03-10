@@ -89,8 +89,8 @@ class AnimalsSearch extends Animals
 
     /**
      * @throws \yii\base\Exception
-     * @throws InvalidConfigException
      * @throws Exception
+     * @throws InvalidConfigException
      */
     public function exportToExcel(?QueryInterface $query)
     {

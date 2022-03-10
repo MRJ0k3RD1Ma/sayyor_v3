@@ -42,7 +42,7 @@ class AnimalsController extends Controller
         $searchModel = new AnimalsSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         if ($export !== null) {
-            $searchModel->exportToExcel($dataProvider->query, $export);
+            $searchModel->exportToExcel($dataProvider->query);
         }
         return $this->render('index', [
             'searchModel' => $searchModel,

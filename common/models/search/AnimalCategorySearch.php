@@ -111,7 +111,7 @@ class AnimalCategorySearch extends AnimalCategory
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->name_uz, DataType::TYPE_STRING);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->name_ru, DataType::TYPE_STRING);
         }
-        $name = 'ExcelReport-' . Yii::$app->formatter->asDatetime(time(), 'php:d_m_Y_h_i_s') . '.xlsx';
+        $name = 'ExcelReport.xlsx';
         $writer = new Xlsx($speadsheet);
         $dir = Yii::getAlias('@tmp/excel');
         if (!is_dir($dir)) {

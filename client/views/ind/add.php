@@ -87,7 +87,7 @@ $this->registerJs("
                     $('#animals-gender').val(data.data.sex);
                     $('#animals-adress').val(data.data.address);
                     $('#animals-name').val(data.data.owner);
-                    $('#animals-inn').val(data.data.tin);
+                    $('#animals-inn').val(data.data.inn);
                 }
             })
         }

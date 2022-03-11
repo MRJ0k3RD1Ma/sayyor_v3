@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\search\AnimalsSearch */
+/* @var $model common\models\search\AnimalsSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -24,18 +24,18 @@ use yii\widgets\ActiveForm;
                     <div></div>
                     <div class="btns flex">
                         <div class="search" style="margin-bottom: -1rem!important;">
-                            <?= $form->field($model, 'q')->label(false) ?>
-                            <!--                            <span class="fa fa-search"></span>-->
-                            <!--                            <input type="search">-->
-                            <!--                            <button class="btn"></button>-->
-
+                            <?= $form->field($model, 'q', [
+                                'template' => '<div class="input-group">{input}<span class="btn btn-primary fa fa-search"></span></div>'
+                            ])->textInput()->label(false) ?>
                         </div>
 
                         <div class="export">
                             <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
                             </button>
                             <div class="export-btn">
-                                <button class=""><span class="fa fa-file-excel"></span> Excel</button>
+                                <button>
+                                    <?= Html::a(' Excel ', ['index', 'export' => 1, 'id' => $model->id], ['data-pjax' => 0, 'class' => 'fa fa-file-excel']) ?>
+                                </button>
                                 <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
                             </div>
 

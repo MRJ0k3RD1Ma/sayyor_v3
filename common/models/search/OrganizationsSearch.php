@@ -2,15 +2,26 @@
 
 namespace common\models\search;
 
+use common\models\VetSites;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Yii;
+use yii\base\Exception;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Organizations;
+use yii\db\QueryInterface;
+use yii\helpers\FileHelper;
 
 /**
  * OrganizationsSearch represents the model behind the search form of `app\models\Organizations`.
+ * @var $q
  */
 class OrganizationsSearch extends Organizations
 {
+    public $q;
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +29,7 @@ class OrganizationsSearch extends Organizations
     {
         return [
             [['id', 'id_from_api', 'TIN', 'NA1_CODE', 'NS10_CODE', 'NS11_CODE', 'TELEFON', 'GD_TIN', 'GD_TEL_WORK', 'OKED', 'OKPO', 'OKONX', 'soato'], 'integer'],
-            [['NAME_FULL', 'ADDRESS', 'REG_DATE', 'DATE_TIN', 'REG_NUM', 'NS13_CODE', 'TELEX', 'FAX', 'GD_FULL_NAME', 'GD_EMAIL', 'GB_FULL_NAME', 'GB_TIN', 'GB_TEL_WORK', 'GB_TEL_HOME', 'EMAIL', 'DATE_END', 'CREATED', 'CHANGED', 'GD_MOBILE'], 'safe'],
+            [['q', 'NAME_FULL', 'ADDRESS', 'REG_DATE', 'DATE_TIN', 'REG_NUM', 'NS13_CODE', 'TELEX', 'FAX', 'GD_FULL_NAME', 'GD_EMAIL', 'GB_FULL_NAME', 'GB_TIN', 'GB_TEL_WORK', 'GB_TEL_HOME', 'EMAIL', 'DATE_END', 'CREATED', 'CHANGED', 'GD_MOBILE'], 'safe'],
             [['GD_TEL_HOME', 'BUDJET'], 'boolean'],
         ];
     }
@@ -81,6 +92,8 @@ class OrganizationsSearch extends Organizations
             'BUDJET' => $this->BUDJET,
         ]);
 
+        $query->orFilterWhere(['like', 'NAME_FULL', $this->q]);
+
         $query->andFilterWhere(['like', 'NAME_FULL', $this->NAME_FULL])
             ->andFilterWhere(['like', 'ADDRESS', $this->ADDRESS])
             ->andFilterWhere(['like', 'REG_NUM', $this->REG_NUM])
@@ -97,5 +110,51 @@ class OrganizationsSearch extends Organizations
             ->andFilterWhere(['like', 'GD_MOBILE', $this->GD_MOBILE]);
 
         return $dataProvider;
+    }
+
+    /**
+     * @throws Exception
+     * @throws Exception
+     * @throws InvalidConfigException
+     */
+    public function exportToExcel(?QueryInterface $query)
+    {
+        $speadsheet = new Spreadsheet();
+        $sheet = $speadsheet->getActiveSheet();
+        $title = "Sheet1";
+        $sheet->setTitle(substr($title, 0, 31));
+        $row = 1;
+        $col = 1;
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "#", DataType::TYPE_STRING);
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "ID", DataType::TYPE_STRING);
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "STIR(INN)", DataType::TYPE_STRING);
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Tashkilot nomi", DataType::TYPE_STRING);
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Manzil", DataType::TYPE_STRING);
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Telefon", DataType::TYPE_STRING);
+        $key = 0;
+        $models = $query->all();
+        foreach ($models as $item) {
+            /**
+             * @var Organizations $item
+             */
+            $row++;
+            $col = 1;
+            $key++;
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_NUMERIC);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->id, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->TIN, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->NAME_FULL, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->ADDRESS, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->FAX, DataType::TYPE_STRING);
+        }
+        $name = 'ExcelReport.xlsx';
+        $writer = new Xlsx($speadsheet);
+        $dir = Yii::getAlias('@tmp/excel');
+        if (!is_dir($dir)) {
+            FileHelper::createDirectory($dir, 0777);
+        }
+        $fileName = $dir . DIRECTORY_SEPARATOR . $name;
+        $writer->save($fileName);
+        return Yii::$app->response->sendFile($fileName);
     }
 }

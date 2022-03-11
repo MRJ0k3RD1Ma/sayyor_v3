@@ -14,7 +14,7 @@ use Yii;
  */
 class OrganizationsController extends Controller
 {
-    /**
+    /**-
      * @inheritDoc
      */
     public function behaviors()
@@ -36,11 +36,13 @@ class OrganizationsController extends Controller
      * Lists all Organizations models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(int $export = null)
     {
         $searchModel = new OrganizationsSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        if ($export !== null) {
+            $searchModel->exportToExcel($dataProvider->query);
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -132,11 +134,12 @@ class OrganizationsController extends Controller
         throw new NotFoundHttpException(Yii::t('cp', 'The requested page does not exist.'));
     }
 
-    public function actionGetyur($inn){
-        if($model = Organizations::findOne(['TIN'=>$inn])){
-            return $this->redirect(['update'=>$model->id]);
-        }else{
-            return get_web_page(Yii::$app->params['hamsa']['url']['getjurinfo'].'?inn='.$inn,'hamsa');
+    public function actionGetyur($inn)
+    {
+        if ($model = Organizations::findOne(['TIN' => $inn])) {
+            return $this->redirect(['update' => $model->id]);
+        } else {
+            return get_web_page(Yii::$app->params['hamsa']['url']['getjurinfo'] . '?inn=' . $inn, 'hamsa');
         }
     }
 }

@@ -40,29 +40,32 @@ class EmployeesController extends Controller
      * Lists all Employees models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(int $export = null)
     {
         $searchModel = new EmployeesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        if ($export !== null) {
+            $searchModel->exportToExcel($dataProvider->query);
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
-    public function actionAdd($id){
+    public function actionAdd($id)
+    {
         $model = new EmpPosts();
         $model->emp_id = $id;
-        if($m = EmpPosts::findOne($model->emp_id)){
+        if ($m = EmpPosts::findOne($model->emp_id)) {
             $model->org_id = $m->org_id;
         }
-        if($model->load(Yii::$app->request->post()) and $model->save()){
-            return $this->redirect(['view','id'=>$id]);
+        if ($model->load(Yii::$app->request->post()) and $model->save()) {
+            return $this->redirect(['view', 'id' => $id]);
         }
 
-        return $this->render('add',[
-            'model'=>$model
+        return $this->render('add', [
+            'model' => $model
         ]);
     }
 
@@ -93,11 +96,11 @@ class EmployeesController extends Controller
                 $model->password = "{$model->password}";
                 $model->encrypt();
 
-                if($model->save()){
+                if ($model->save()) {
 
 
                     return $this->redirect(['view', 'id' => $model->id]);
-                }else{
+                } else {
                     return $this->render('create', [
                         'model' => $model,
                     ]);
@@ -125,15 +128,15 @@ class EmployeesController extends Controller
         $pas = $model->password;
         $model->password = "";
         if ($this->request->isPost && $model->load($this->request->post())) {
-            if($model->password){
+            if ($model->password) {
                 $model->password = "{$model->password}";
                 $model->encrypt();
-            }else{
+            } else {
                 $model->password = $pas;
             }
-            if($model->save()){
+            if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
-            }else{
+            } else {
                 return $this->render('update', [
                     'model' => $model,
                 ]);
@@ -175,11 +178,12 @@ class EmployeesController extends Controller
         throw new NotFoundHttpException(Yii::t('cp', 'The requested page does not exist.'));
     }
 
-    public function actionDel($id){
+    public function actionDel($id)
+    {
         $model = EmpPosts::findOne($id);
         $i = $model->emp_id;
-        if($model->delete());
-        return $this->redirect(['view','id'=>$i]);
+        if ($model->delete()) ;
+        return $this->redirect(['view', 'id' => $i]);
     }
 
 }

@@ -2,20 +2,20 @@
 
 return [
     'components' => [
-        'db' => [
+        /*'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=89.236.217.116;dbname=admin_sayyor',
             'username' => 'admin_sayyor',
             'password' => 'MZUCKTeGSn',
             'charset' => 'utf8',
-        ],
-        /*'db' => [
+        ],*/
+        'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=sayyor',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',
-        ],*/
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',

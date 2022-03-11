@@ -38,11 +38,13 @@ class VetSitesController extends Controller
      * Lists all VetSites models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(int $export = null)
     {
         $searchModel = new VetSitesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        if ($export !== null) {
+            $searchModel->exportToExcel($dataProvider->query);
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -134,17 +136,18 @@ class VetSitesController extends Controller
         throw new NotFoundHttpException(Yii::t('cp.vetsites', 'The requested page does not exist.'));
     }
 
-    public function actionGetDistrict($id){
-        $model = DistrictView::find()->where(['region_id'=>$id])->all();
-        $text = Yii::t('cp.vetsites','- Tumanni tanlang -');
+    public function actionGetDistrict($id)
+    {
+        $model = DistrictView::find()->where(['region_id' => $id])->all();
+        $text = Yii::t('cp.vetsites', '- Tumanni tanlang -');
         $res = "<option value=''>{$text}</option>";
         $lang = Yii::$app->language;
-        foreach ($model as $item){
-            if($lang == 'ru'){
+        foreach ($model as $item) {
+            if ($lang == 'ru') {
                 $name = $item->name_ru;
-            }elseif($lang == 'oz'){
+            } elseif ($lang == 'oz') {
                 $name = $item->name_cyr;
-            }else{
+            } else {
                 $name = $item->name_lot;
             }
             $res .= "<option value='{$item->district_id}'>{$name}</option>";
@@ -152,17 +155,19 @@ class VetSitesController extends Controller
         echo $res;
         exit;
     }
-    public function actionGetQfi($id,$regid){
-        $model = QfiView::find()->where(['district_id'=>$id,'region_id'=>$regid])->all();
-        $text = Yii::t('cp.vetsites','- QFYni tanlang -');
+
+    public function actionGetQfi($id, $regid)
+    {
+        $model = QfiView::find()->where(['district_id' => $id, 'region_id' => $regid])->all();
+        $text = Yii::t('cp.vetsites', '- QFYni tanlang -');
         $res = "<option value=''>{$text}</option>";
         $lang = Yii::$app->language;
-        foreach ($model as $item){
-            if($lang == 'ru'){
+        foreach ($model as $item) {
+            if ($lang == 'ru') {
                 $name = $item->name_ru;
-            }elseif($lang == 'oz'){
+            } elseif ($lang == 'oz') {
                 $name = $item->name_cyr;
-            }else{
+            } else {
                 $name = $item->name_lot;
             }
             $res .= "<option value='{$item->MHOBT_cod}'>{$name}</option>";
@@ -171,11 +176,12 @@ class VetSitesController extends Controller
         exit;
     }
 
-    public function actionGetVetsites($id){
-        $model = VetSites::find()->where(['soato'=>$id])->all();
-        $text = Yii::t('cp.vetsites','- Vet uchstkani tanlang -');
+    public function actionGetVetsites($id)
+    {
+        $model = VetSites::find()->where(['soato' => $id])->all();
+        $text = Yii::t('cp.vetsites', '- Vet uchstkani tanlang -');
         $res = "<option value=''>{$text}</option>";
-        foreach ($model as $item){
+        foreach ($model as $item) {
 
             $res .= "<option value='{$item->id}'>{$item->name}</option>";
         }

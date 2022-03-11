@@ -39,6 +39,7 @@ class EmployeesController extends Controller
     /**
      * Lists all Employees models.
      * @return mixed
+     * @throws \yii\base\Exception
      */
     public function actionIndex(int $export = null)
     {

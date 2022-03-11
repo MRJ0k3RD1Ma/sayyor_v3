@@ -73,9 +73,9 @@ class Employees extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterf
      ) OR (
      (`active_to` IS NULL and `active_each` IS NOT NULL) and (CURDATE()<=`active_each`)
      ) OR (`active_to` IS NULL and `active_each` IS NULL)
-     ';
-    return static::find()->where(['id'=>$id])->andWhere($sql)->andWhere(['status'=>1])->one();*/
-    return static::findOne($id);
+     ';*/
+    return static::find()->where(['id'=>$id])->one();
+//    return static::findOne($id);
 
 }
 

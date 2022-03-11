@@ -62,10 +62,9 @@ class EmployeesSearch extends Employees
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'password', $this->password]);
+        $query->orFilterWhere(['like', 'name', $this->q])
+            ->orFilterWhere(['like', 'email', $this->q])
+            ->orFilterWhere(['like', 'phone', $this->q]);
 
         return $dataProvider;
     }

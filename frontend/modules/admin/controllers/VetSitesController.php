@@ -6,6 +6,7 @@ use common\models\DistrictView;
 use common\models\QfiView;
 use common\models\VetSites;
 use common\models\search\VetSitesSearch;
+use yii\base\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -36,7 +37,8 @@ class VetSitesController extends Controller
 
     /**
      * Lists all VetSites models.
-     * @return mixed
+     * @return string
+     * @throws Exception
      */
     public function actionIndex(int $export = null)
     {

@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Soato;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -45,7 +46,20 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'id',
                             'code',
                             'name',
-                            'soato',
+                            [
+                                'attribute' => 'soato',
+                                'label' => 'Hudud nomi',
+                                'value' => static function ($model) {
+//                                    var_dump($model->soato0);exit();
+                                    $soato = $model->soato0;
+                                    return
+                                        @Soato::find()->where(['MHOBT_cod' => $soato->res_id])->one()->name_lot
+                                        . ' ' . @Soato::find()->where(['MHOBT_cod' => $soato->res_id . $soato->region_id])->one()->name_lot
+                                        . ' ' . @Soato::find()->where(['MHOBT_cod' => $soato->res_id . $soato->region_id . $soato->district_id])->one()->name_lot
+                                        . ' ' . @$soato->name_lot;
+
+                                }
+                            ],
                             ['class' => 'yii\grid\ActionColumn'],
                         ],
                     ]); ?>

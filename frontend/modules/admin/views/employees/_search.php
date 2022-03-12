@@ -13,23 +13,35 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'id' => 'employees-grid-filters',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="card-header flex">
+        <div></div>
+        <div class="btns flex">
+            <div class="search" style="margin-bottom: -1rem!important;">
+                <?= $form->field($model, 'q', [
+                    'template' => '<div class="input-group">{input}<span class="btn btn-primary fa fa-search margi"></span></div>'
+                ])->textInput()->label(false) ?>
+            </div>
+            <div class="export">
+                <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
+                </button>
+                <div class="export-btn">
+                    <button>
+                        <?= Html::a(' Excel ', ['index', 'export' => 1, 'id' => $model->id], ['data-pjax' => 0, 'class' => 'fa fa-file-excel']) ?>
+                    </button>
+                    <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
+                </div>
 
-    <?= $form->field($model, 'name') ?>
+            </div>
+            <?= Html::a(Yii::t('cp.employees', 'Yangi foydalanuvchi qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
 
-    <?= $form->field($model, 'email') ?>
+        </div>
 
-    <?= $form->field($model, 'phone') ?>
-
-    <?= $form->field($model, 'password') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('cp', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('cp', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
+    </div><!-- end card header -->
 
     <?php ActiveForm::end(); ?>
+
 
 </div>

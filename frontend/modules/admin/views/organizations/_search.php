@@ -13,81 +13,31 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'id' => 'organizations-grid-filters',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="card-header flex">
+        <div></div>
+        <div class="btns flex">
+            <div class="search" style="margin-bottom: -1rem!important;">
+                <?= $form->field($model, 'q', [
+                    'template' => '<div class="input-group">{input}<span class="btn btn-primary fa fa-search margi"></span></div>'
+                ])->textInput()->label(false) ?>
+            </div>
+            <div class="export">
+                <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
+                </button>
+                <div class="export-btn">
+                    <button>
+                        <?= Html::a(' Excel ', ['index', 'export' => 1, 'id' => $model->id], ['data-pjax' => 0, 'class' => 'fa fa-file-excel']) ?>
+                    </button>
+                    <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
+                </div>
 
-    <?= $form->field($model, 'id_from_api') ?>
-
-    <?= $form->field($model, 'TIN') ?>
-
-    <?= $form->field($model, 'NA1_CODE') ?>
-
-    <?= $form->field($model, 'NS10_CODE') ?>
-
-    <?php // echo $form->field($model, 'NS11_CODE') ?>
-
-    <?php // echo $form->field($model, 'NAME_FULL') ?>
-
-    <?php // echo $form->field($model, 'ADDRESS') ?>
-
-    <?php // echo $form->field($model, 'REG_DATE') ?>
-
-    <?php // echo $form->field($model, 'DATE_TIN') ?>
-
-    <?php // echo $form->field($model, 'REG_NUM') ?>
-
-    <?php // echo $form->field($model, 'NS13_CODE') ?>
-
-    <?php // echo $form->field($model, 'TELEFON') ?>
-
-    <?php // echo $form->field($model, 'TELEX') ?>
-
-    <?php // echo $form->field($model, 'FAX') ?>
-
-    <?php // echo $form->field($model, 'GD_FULL_NAME') ?>
-
-    <?php // echo $form->field($model, 'GD_TIN') ?>
-
-    <?php // echo $form->field($model, 'GD_TEL_WORK') ?>
-
-    <?php // echo $form->field($model, 'GD_TEL_HOME')->checkbox() ?>
-
-    <?php // echo $form->field($model, 'GD_EMAIL') ?>
-
-    <?php // echo $form->field($model, 'GB_FULL_NAME') ?>
-
-    <?php // echo $form->field($model, 'GB_TIN') ?>
-
-    <?php // echo $form->field($model, 'GB_TEL_WORK') ?>
-
-    <?php // echo $form->field($model, 'GB_TEL_HOME') ?>
-
-    <?php // echo $form->field($model, 'OKED') ?>
-
-    <?php // echo $form->field($model, 'OKPO') ?>
-
-    <?php // echo $form->field($model, 'OKONX') ?>
-
-    <?php // echo $form->field($model, 'soato') ?>
-
-    <?php // echo $form->field($model, 'EMAIL') ?>
-
-    <?php // echo $form->field($model, 'DATE_END') ?>
-
-    <?php // echo $form->field($model, 'CREATED') ?>
-
-    <?php // echo $form->field($model, 'CHANGED') ?>
-
-    <?php // echo $form->field($model, 'GD_MOBILE') ?>
-
-    <?php // echo $form->field($model, 'BUDJET')->checkbox() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('cp', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('cp', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+            </div>
+            <?= Html::a(Yii::t('cp', 'Tashkilot qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
+        </div>
     </div>
-
     <?php ActiveForm::end(); ?>
 
 </div>

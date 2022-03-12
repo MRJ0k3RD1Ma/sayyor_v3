@@ -15,15 +15,18 @@ use yii\widgets\ActiveForm;
     $lang = Yii::$app->language;
     if($lang == 'ru'){
         $ads = 'ru';
+        $lg = 'ru';
     }elseif($lang=='oz'){
         $ads = 'cyr';
+        $lg = 'uz';
     }else{
+        $lg = 'uz';
         $ads = 'lot';
     }
     ?>
     <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'sert_id')->textInput(['maxlength' => true,'disabled'=>true]) ?>
+    <?= $form->field($model, 'sert_full')->textInput(['maxlength' => true,'disabled'=>true]) ?>
 
     <?= $form->field($model, 'sert_num')->textInput(['maxlength' => true]) ?>
 
@@ -32,7 +35,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'ownertype')->radioList([1=>Yii::t('reg','Jismoniy shaxs'),2=>Yii::t('reg','Yuridik shaxs')]) ?>
 
-    <div class="indiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0;">
+    <div id="indiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0;">
+        <?= $form->field($ind, 'passport')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($ind, 'pnfl')->textInput(['maxlength' => 14,'oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');",'required'=>true]) ?>
 
@@ -59,13 +63,33 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($ind, 'adress')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($ind, 'passport')->textInput(['maxlength' => true]) ?>
 
     </div>
 
-    <div class="legdiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0; display: block;">
+    <div id="legdiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0; display: none;">
         <?= $form->field($legal,'inn')->textInput(['maxlength' => 9,'oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');",'required'=>false])?>
+        <?= $form->field($legal,'name')->textInput()?>
+        <?= $form->field($legal,'tshx_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Tshx::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('test','Tashkiliy huquqiy shakli')])?>
+        <?php if($legal->soato_id){
+            $legal->region  = $legal->soato->region_id;
+            $legal->district = $legal->soato->district_id;
+            ?>
+            <?= $form->field($legal, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Viloyatni tanlang')]) ?>
+
+            <?= $form->field($legal, 'district')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$legal->soato->region_id])->all(),'district_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Tumanni tanlang')]) ?>
+
+            <?= $form->field($legal, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\QfiView::find()->where(['district_id'=>$legal->soato->district_id])->all(),'MHOBT_cod','name_'.$ads),['prompt'=>Yii::t('cp.individuals','QFYni tanlang')]) ?>
+        <?php }else{ ?>
+            <?= $form->field($legal, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Viloyatni tanlang')]) ?>
+
+            <?= $form->field($legal, 'district')->dropDownList([],['prompt'=>Yii::t('cp.individuals','Tumanni tanlang')]) ?>
+            <?= $form->field($legal, 'soato_id')->dropDownList([],['prompt'=>Yii::t('cp.individuals','QFYni tanlang')]) ?>
+        <?php }?>
+
+        <?= $form->field($legal, 'soogu')->textInput(['maxlength' => true]) ?>
     </div>
+
+
     <?= $form->field($model, 'owner_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'vet_site_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\VetSites::find()->all(),'id','name')) ?>
@@ -84,6 +108,7 @@ use yii\widgets\ActiveForm;
 $url_district = Yii::$app->urlManager->createUrl(['/register/get-district']);
 $url_qfi = Yii::$app->urlManager->createUrl(['/register/get-qfi']);
 $url_pnfl = Yii::$app->urlManager->createUrl(['/register/get-ind']);
+$url_inn = Yii::$app->urlManager->createUrl(['/register/getinn']);
 $this->registerJs("
         $('#individuals-region').change(function(){
             $.get('{$url_district}?id='+$('#individuals-region').val()).done(function(data){
@@ -98,46 +123,116 @@ $this->registerJs("
             })        
         })
         
-        $('#sertificates-ownertype').change(function(){
-            if($('#sertificates-ownertype').val()==1){
+       $('#legalentities-region').change(function(){
+            $.get('{$url_district}?id='+$('#legalentities-region').val()).done(function(data){
+                $('#legalentities-district').empty();
+                $('#legalentities-district').append(data);
+            })        
+        })
+        $('#legalentities-district').change(function(){
+            $.get('{$url_qfi}?id='+$('#legalentities-district').val()+'&regid='+$('#legalentities-region').val()).done(function(data){
+                $('#legalentities-soato_id').empty();
+                $('#legalentities-soato_id').append(data);
+            })        
+        })
+        
+        $('#sertificates-ownertype input[type=radio]').change(function(){
+            
+            if(this.value==1){
                    $('#individuals-pnfl').prop('required',true);
                    $('#legalentities-inn').prop('required',false);
-                   $('#legdiv').hide();
-                   $('#indiv').show();
+                   $('#legdiv').css('display','none');
+                   $('#indiv').css('display','block');
             }else{
                    $('#individuals-pnfl').prop('required',false);
                    $('#legalentities-inn').prop('required',true);
-                   $('#indiv').hide();
-                   $('#legdiv').show();
+                   $('#indiv').css('display','none');
+                   $('#legdiv').css('display','block');
             }
         })
         
         
         $('#individuals-pnfl').keyup(function(){
-            if($('#individuals-pnfl').val().length == 14){
-                $.get('{$url_pnfl}?pnfl='+$('#individuals-pnfl').val()).done(function(data){
+            if($('#individuals-pnfl').val().length == 14 && $('#individuals-passport').val().length==9){
+                $.get('{$url_pnfl}?pnfl='+$('#individuals-pnfl').val()+'&doc='+$('#individuals-passport').val()).done(function(data){
                     data = JSON.parse(data);
                     $('#individuals-name').val(data.value.name);
                     $('#individuals-surname').val(data.value.surname);
                     $('#individuals-middlename').val(data.value.middlename);
                     $('#individuals-passport').val(data.value.passport);
                     $('#individuals-adress').val(data.value.adress);
-                    
-                    $('#individuals-region').val(data.value.region_id).trigger('change');
-                    setInterval(function () {
-                       if($('#individuals-district').val()){clearInterval();}
-                       else{
-                        $('#individuals-district').val(data.value.district_id).trigger('change');
-                       }
-                    }, 500);
-                    setInterval(function () {
-                       if($('#individuals-soato_id').val()){clearInterval();}
-                       else{
-                        $('#individuals-soato_id').val(data.value.soato_id);
-                       }
-                    }, 500);
-                    
+                    if(data.soato_id!=-1){
+                        $('#individuals-region').val(data.value.region_id).trigger('change');
+                        setInterval(function () {
+                           if($('#individuals-district').val()){clearInterval();}
+                           else{
+                            $('#individuals-district').val(data.value.district_id).trigger('change');
+                           }
+                        }, 500);
+                        setInterval(function () {
+                           if($('#individuals-soato_id').val()){clearInterval();}
+                           else{
+                            $('#individuals-soato_id').val(data.value.soato_id);
+                           }
+                        }, 500);
+                    }
                    
+                })
+            }
+        })
+        
+        $('#individuals-passport').keyup(function(){
+            if($('#individuals-pnfl').val().length == 14 && $('#individuals-passport').val().length==9){
+                $.get('{$url_pnfl}?pnfl='+$('#individuals-pnfl').val()+'&doc='+$('#individuals-passport').val()).done(function(data){
+                    data = JSON.parse(data);
+                    $('#individuals-name').val(data.value.name);
+                    $('#individuals-surname').val(data.value.surname);
+                    $('#individuals-middlename').val(data.value.middlename);
+                    $('#individuals-passport').val(data.value.passport);
+                    $('#individuals-adress').val(data.value.adress);
+                    if(data.soato_id!=-1){
+                        $('#individuals-region').val(data.value.region_id).trigger('change');
+                        setInterval(function () {
+                           if($('#individuals-district').val()){clearInterval();}
+                           else{
+                            $('#individuals-district').val(data.value.district_id).trigger('change');
+                           }
+                        }, 500);
+                        setInterval(function () {
+                           if($('#individuals-soato_id').val()){clearInterval();}
+                           else{
+                            $('#individuals-soato_id').val(data.value.soato_id);
+                           }
+                        }, 500);
+                    }
+                   
+                })
+            }
+        })
+        
+        
+        $('#legalentities-inn').keyup(function(){
+            if($('#legalentities-inn').val().length==9){
+                $.get('$url_inn?inn='+$('#legalentities-inn').val()).done(function(data){
+                    if(data != -1){
+                        data = JSON.parse(data);
+                        $('#legalentities-name').val(data.value.name);
+                        $('#legalentities-soogu').val(data.value.soogu);
+                        $('#legalentities-tshx_id').val(data.value.tshx_id);
+                        $('#legalentities-region').val(data.value.region).trigger('change');
+                        setInterval(function () {
+                           if($('#legalentities-district').val().length > 0){clearInterval();}
+                           else{
+                            $('#legalentities-district').val(data.value.district).trigger('change');
+                           }
+                        }, 500);
+                        setInterval(function () {
+                           if($('#legalentities-soato_id').val().length>0){clearInterval();}
+                           else{
+                            $('#legalentities-soato_id').val(data.value.soato_id);
+                           }
+                        }, 500);
+                    }
                 })
             }
         })

@@ -52,7 +52,7 @@ class LegalEntities extends \yii\db\ActiveRecord
             'inn' => Yii::t('model.legal_entities', 'STIR(INN)'),
             'name' => Yii::t('model.legal_entities', 'Nomi'),
             'tshx_id' => Yii::t('model.legal_entities', 'TSHX'),
-            'soogu' => Yii::t('model.legal_entities', 'Soogu'),
+            'soogu' => Yii::t('model.legal_entities', 'Manzil'),
             'soato_id' => Yii::t('model.legal_entities', 'Soato'),
             'region' => Yii::t('model.legal_entities', 'Viloyat'),
             'district' => Yii::t('model.legal_entities', 'Tuman'),

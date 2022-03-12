@@ -48,12 +48,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //                            'sert_id',
                             [
-                                'attribute'=>'sert_id',
+                                'attribute'=>'sert_full',
                                 'format'=>'raw',
                                 'value'=>function($d){
                                     $url = Yii::$app->urlManager->createUrl(['/register/viewtest','id'=>$d->id]);
-                                    $code = substr(date('Y',strtotime($d->sert_date)),2,2).'-1-'.get3num($d->organization_id).'-'.$d->sert_id;
-                                    return "<a href='{$url}'>{$code}</a>";
+                                    return "<a href='{$url}'>{$d->sert_full}</a>";
                                 },
                             ],
                             'sert_num',

@@ -1,4 +1,4 @@
-/vendor
+vendor
 composer.json
-/.idea
-/frontend/
+.idea
+frontend

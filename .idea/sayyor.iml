@@ -109,6 +109,21 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/kartik-v/yii2-mpdf" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/setasign/fpdi" />
+      <excludeFolder url="file://$MODULE_DIR$/client/web/tmp/excel" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/runtime/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/runtime/debug" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/runtime/HTML" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/runtime/logs" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/runtime/mpdf" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/runtime/URI" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/web/assets/5d5ab7ec" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/web/assets/8cccd1d4" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/web/assets/150f532f" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/web/assets/c03d119e" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/web/assets/ffccd88" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/kartik-v" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mpdf" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/setasign" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

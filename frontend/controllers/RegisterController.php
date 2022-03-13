@@ -12,11 +12,12 @@ use common\models\LegalEntities;
 use common\models\QfiView;
 use common\models\SampleRegistration;
 use common\models\Samples;
-use common\models\search\FoodSamplingCertificateSearch;
+use frontend\models\search\lab\FoodSamplingCertificateSearch;
 use common\models\Sertificates;
 use common\models\Vaccination;
 use common\models\VetSites;
-use frontend\models\search\SertificatesSearch;
+use frontend\models\search\lab\SertificatesRegSearch;
+use frontend\models\search\lab\SertificatesSearch;
 use yii\base\BaseObject;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -84,12 +85,8 @@ class RegisterController extends Controller
         $org = $user->empPosts->org_id;
         $user_id = Yii::$app->user->getId();
         $code = substr(date('Y'),2,2).'-1-'.get3num($org).'-';
-        $num = Sertificates::find()->where(['organization_id'=>$org])->max('sert_num');
-        if($num==0){
-            $num = 1;
-        }else{
-            $num++;
-        }
+        $num = Sertificates::find()->where(['organization_id'=>$org])->andFilterWhere(['like','created',date('Y')])->max('sert_num');
+        $num++;
         $code .= $num;
         $model = new Sertificates();
         $model->sert_id = $num;
@@ -377,8 +374,10 @@ class RegisterController extends Controller
         $org = $user->empPosts->org_id;
         $user_id = Yii::$app->user->getId();
         $code = substr(date('Y'),2,2).'-2-'.get3num($org).'-';
-        $num = FoodSamplingCertificate::find()->where(['organization_id'=>$org])->andFilterWhere(['created'=>date('Y')])->max('food_id');
+        $num = FoodSamplingCertificate::find()->where(['organization_id'=>$org])->andFilterWhere(['like','created',date('Y')])->max('food_id');
+
         $num ++;
+
         $code .= $num;
         $model->kod = $code;
         $model->food_id = $num;
@@ -444,5 +443,16 @@ class RegisterController extends Controller
             'dataProvider' => $dataProvider,
         ]);
 
+    }
+
+
+    public function actionRegtest(){
+        $searchModel = new SertificatesRegSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('regtest', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

@@ -1,4 +1,4 @@
-vendor
-frontend/modules/admin/views
+/vendor
 composer.json
-.idea
+/.idea
+/frontend/

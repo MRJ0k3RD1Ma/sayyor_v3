@@ -81,6 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>
                     <tr>
                         <td rowspan="<?= $cnt + 1?>"><?= $n?></td>
+                        <td rowspan="<?= $cnt + 1?>"><a href="<?= Yii::$app->urlManager->createUrl(['/register/testsend','id'=>$item->id])?>"><?= Yii::t('test','Yuborish')?></a></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>

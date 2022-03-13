@@ -14,12 +14,14 @@ use Yii;
  * @property int|null $state_id Ходимнинг холати. Актив, ноактив
  * @property int|null $status_id Лавозим статуси :  асосий лавозим, вақтинчалик вазифасини бажарувчи, ва ҳ.к.
  * @property int|null $org_id Ташкилот (Бўлим)
+ * @property int|null $gov_id Ташкилот (Бўлим)
  *
  * @property Employees $emp
  * @property Organizations $org
  * @property PostList $post
  * @property StateList $state
  * @property StatusList $status
+ * @property Goverments $gov
  */
 class EmpPosts extends \yii\db\ActiveRecord
 {
@@ -84,6 +86,9 @@ class EmpPosts extends \yii\db\ActiveRecord
         return $this->hasOne(Organizations::className(), ['id' => 'org_id']);
     }
 
+    public function getGov(){
+        return $this->hasOne(Goverments::className(),['id'=>'gov_id']);
+    }
     /**
      * Gets query for [[Post]].
      *

@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use app\models\RouteSert;
 use common\models\Animals;
 use common\models\CompositeSamples;
 use common\models\DistrictView;
@@ -454,5 +455,10 @@ class RegisterController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionTestsend($id){
+        $model = new RouteSert();
+
     }
 }

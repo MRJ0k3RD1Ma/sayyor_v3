@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\SertificatesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('cp.sertificates', 'Dalolatnomalar');
+$this->title = Yii::t('client', 'Hayvon kasalliklari tashhilari ro\'yhati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sertificates-index">
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         </div>
 
-                        <?= Html::a(Yii::t('cp.sertificates', 'Dalolatnoma qo\'shish'), ['createtest'], ['class' => 'btn btn-success']) ?>
+                        <?= Html::a(Yii::t('client', 'Ariza berish'), ['create'], ['class' => 'btn btn-success']) ?>
 
 
                     </div>
@@ -51,16 +51,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute'=>'sert_full',
                                 'format'=>'raw',
                                 'value'=>function($d){
-                                    $url = Yii::$app->urlManager->createUrl(['/register/viewtest','id'=>$d->id]);
+                                    $url = Yii::$app->urlManager->createUrl(['/legal/view','id'=>$d->id]);
                                     return "<a href='{$url}'>{$d->sert_full}</a>";
                                 },
                             ],
                             'sert_num',
                             'sert_date',
-//                            'organization_id',
-                            'pnfl',
+                            [
+                                'attribute'=>'organization_id',
+                                'value'=>function($d){
+                                    return $d->organization->NAME_FULL;
+                                }
+                            ],
                             'owner_name',
-//                            'vet_site_id',
                             [
                                 'attribute'=>'vet_site_id',
                                 'value'=>function($d){
@@ -68,13 +71,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
                             ],
                             //'operator',
-
                             [
-                                'class' => 'yii\grid\ActionColumn',
-                                'urlCreator' => function ($action, $model, $key, $index) {
-                                    return \yii\helpers\Url::to(['/register/'.$action.'test', 'id' => $model->id]);
+                                'attribute'=>'status_id',
+                                'value'=>function($d){
+                                    if(Yii::$app->language == 'ru'){
+                                        return $d->status->name_ru;
+                                    }
+                                    return $d->status->name_uz;
                                 }
                             ],
+                           /* [
+                                'class' => 'yii\grid\ActionColumn',
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    return \yii\helpers\Url::to([$action, 'id' => $model->id]);
+                                }
+                            ],*/
                         ],
                     ]); ?>
                 </div>

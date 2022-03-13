@@ -5,13 +5,6 @@ use kartik\mpdf\Pdf;
 return [
     'timeZone' => 'Asia/Tashkent',
     'components' => [
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=sayyor',
-            'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8',
-        ],
         /*'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=sayyor',
@@ -19,6 +12,13 @@ return [
             'password' => '',
             'charset' => 'utf8',
         ],*/
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=sayyor',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',

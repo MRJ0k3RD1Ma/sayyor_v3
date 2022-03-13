@@ -5,11 +5,17 @@ namespace app\modules\admin\controllers;
 use common\models\Employees;
 use common\models\EmpPosts;
 use common\models\search\EmployeesSearch;
-use yii\filters\AccessControl;
+use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use yii\web\Response;
 
 /**
  * EmployeesController implements the CRUD actions for Employees model.
@@ -26,7 +32,7 @@ class EmployeesController extends Controller
             [
 
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                         'del' => ['POST'],
@@ -45,8 +51,30 @@ class EmployeesController extends Controller
     {
         $searchModel = new EmployeesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        if ($export !== null) {
+        if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdf', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
         }
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -73,10 +101,10 @@ class EmployeesController extends Controller
     /**
      * Displays a single Employees model.
      * @param int $id ID
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(int $id): string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -86,7 +114,7 @@ class EmployeesController extends Controller
     /**
      * Creates a new Employees model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return Response|string
      */
     public function actionCreate()
     {

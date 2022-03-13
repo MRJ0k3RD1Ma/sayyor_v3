@@ -6,11 +6,18 @@ use common\models\DistrictView;
 use common\models\QfiView;
 use common\models\VetSites;
 use common\models\search\VetSitesSearch;
+use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use yii\web\Response;
 
 /**
  * VetSitesController implements the CRUD actions for VetSites model.
@@ -44,8 +51,30 @@ class VetSitesController extends Controller
     {
         $searchModel = new VetSitesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        if ($export !== null) {
+        if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdf', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
         }
         return $this->render('index', [
             'searchModel' => $searchModel,

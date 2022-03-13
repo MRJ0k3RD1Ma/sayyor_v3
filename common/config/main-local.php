@@ -1,6 +1,9 @@
 <?php
 
+use kartik\mpdf\Pdf;
+
 return [
+    'timeZone' => 'Asia/Tashkent',
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
@@ -24,5 +27,25 @@ return [
             // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
+        'pdf' => [
+            'class' => Pdf::class,
+            'format' => Pdf::FORMAT_A4,
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            'destination' => Pdf::DEST_BROWSER,
+            // refer settings section for all configuration options
+        ],
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+//                    'basePath' => '@messages',
+                    //'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                    ],
+                ],
+            ],
+        ],
+
     ],
 ];

@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'b0679b266839603f6a656e7c9ea75010dcb414a0',
+        'reference' => '769ccb02106ab344647a1451d5a28aeb6159d4e7',
         'name' => 'yiisoft/yii2-app-advanced',
         'dev' => true,
     ),
@@ -235,6 +235,17 @@
             'reference' => '089edd38f5b8abba6cb01567c2a8aaa47cec4c72',
             'dev_requirement' => true,
         ),
+        'kartik-v/yii2-mpdf' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'yii2-extension',
+            'install_path' => __DIR__ . '/../kartik-v/yii2-mpdf',
+            'aliases' => array(
+                0 => '1.0.x-dev',
+            ),
+            'reference' => '2679af91552c1919e10ac13fbb1f3b3eea02bbb5',
+            'dev_requirement' => true,
+        ),
         'maennchen/zipstream-php' => array(
             'pretty_version' => '2.1.0',
             'version' => '2.1.0.0',
@@ -260,6 +271,15 @@
             'install_path' => __DIR__ . '/../markbaker/matrix',
             'aliases' => array(),
             'reference' => 'c66aefcafb4f6c269510e9ac46b82619a904c576',
+            'dev_requirement' => true,
+        ),
+        'mpdf/mpdf' => array(
+            'pretty_version' => 'v8.0.17',
+            'version' => '8.0.17.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mpdf/mpdf',
+            'aliases' => array(),
+            'reference' => '5f64118317c8145c0abc606b310aa0a66808398a',
             'dev_requirement' => true,
         ),
         'myclabs/deep-copy' => array(
@@ -496,6 +516,15 @@
                 0 => '1.0',
             ),
         ),
+        'psr/log' => array(
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/log',
+            'aliases' => array(),
+            'reference' => 'ef29f6d262798707a9edd554e2b82517ef3a9376',
+            'dev_requirement' => true,
+        ),
         'psr/log-implementation' => array(
             'dev_requirement' => true,
             'provided' => array(
@@ -626,6 +655,15 @@
             'install_path' => __DIR__ . '/../sebastian/version',
             'aliases' => array(),
             'reference' => '99732be0ddb3361e16ad77b68ba41efc8e979019',
+            'dev_requirement' => true,
+        ),
+        'setasign/fpdi' => array(
+            'pretty_version' => 'v2.3.6',
+            'version' => '2.3.6.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../setasign/fpdi',
+            'aliases' => array(),
+            'reference' => '6231e315f73e4f62d72b73f3d6d78ff0eed93c31',
             'dev_requirement' => true,
         ),
         'swiftmailer/swiftmailer' => array(
@@ -865,7 +903,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'b0679b266839603f6a656e7c9ea75010dcb414a0',
+            'reference' => '769ccb02106ab344647a1451d5a28aeb6159d4e7',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(

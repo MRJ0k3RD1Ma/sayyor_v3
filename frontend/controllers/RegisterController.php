@@ -6,13 +6,16 @@ use common\models\Animals;
 use common\models\CompositeSamples;
 use common\models\DistrictView;
 use common\models\Emlash;
+use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\QfiView;
 use common\models\SampleRegistration;
 use common\models\Samples;
+use common\models\search\FoodSamplingCertificateSearch;
 use common\models\Sertificates;
 use common\models\Vaccination;
+use common\models\VetSites;
 use frontend\models\search\SertificatesSearch;
 use yii\base\BaseObject;
 use yii\web\Controller;
@@ -349,5 +352,97 @@ class RegisterController extends Controller
         }else{
             return -1;
         }
+    }
+
+    public function actionGetvetsites($id){
+        $model = VetSites::find()->where(['soato' => $id])->all();
+        $text = Yii::t('cp.vetsites', '- Vet uchstkani tanlang -');
+        $res = "<option value=''>{$text}</option>";
+        foreach ($model as $item) {
+
+            $res .= "<option value='{$item->id}'>{$item->name}</option>";
+        }
+        echo $res;
+        exit;
+    }
+
+
+    public function actionCreateproduct(){
+        $model = new FoodSamplingCertificate();
+        $ind = new Individuals();
+        $legal = new LegalEntities();
+        $model->ownertype = 1;
+
+        $user = Yii::$app->user->identity;
+        $org = $user->empPosts->org_id;
+        $user_id = Yii::$app->user->getId();
+        $code = substr(date('Y'),2,2).'-2-'.get3num($org).'-';
+        $num = FoodSamplingCertificate::find()->where(['organization_id'=>$org])->andFilterWhere(['created'=>date('Y')])->max('food_id');
+        $num ++;
+        $code .= $num;
+        $model->kod = $code;
+        $model->food_id = $num;
+        $model->organization_id = $org;
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                if($model->ownertype == 1){
+                    if($ind->load(Yii::$app->request->post())){
+                        if($in = Individuals::findOne(['pnfl'=>$ind->pnfl])){
+                            $ind = $in;
+                        }else{
+                            $ind->save();
+                        }
+                        $model->pnfl = $ind->pnfl;
+                    }else{
+                        Yii::$app->session->setFlash('error',Yii::t('test','Ma\'lumotlarni to\'ldirishda xatolik'));
+                    }
+                }else{
+                    if($legal->load(Yii::$app->request->post())){
+                        if($l = LegalEntities::findOne(['inn'=>$legal->inn])){
+                            $legal = $l;
+                        }else{
+                            $legal->save();
+                        }
+                        $model->inn = $legal->inn;
+                    }else{
+                        Yii::$app->session->setFlash('error',Yii::t('test','Ma\'lumotlarni to\'ldirishda xatolik'));
+                    }
+                }
+
+                if($model->save()){
+                    return $this->redirect(['viewproduct', 'id' => $model->id]);
+                }else{
+                    Yii::$app->session->setFlash('error',Yii::t('test','Ma\'lumotlarni to\'ldirishda xatolik'));
+                }
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('createproduct', [
+            'model' => $model,
+            'ind'=>$ind,
+            'legal'=>$legal
+        ]);
+    }
+
+    public function actionViewproduct($id){
+        $model = FoodSamplingCertificate::findOne($id);
+
+        return $this->render('viewproduct',[
+            'model'=>$model
+        ]);
+    }
+
+    public function actionIndexproduct(){
+
+        $searchModel = new FoodSamplingCertificateSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('indexproduct', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
     }
 }

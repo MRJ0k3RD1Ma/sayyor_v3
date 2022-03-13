@@ -112,3 +112,9 @@ function get3num($num){
     }
     return $num;
 }
+
+function errdeb($model){
+    echo "<pre>";
+    var_dump($model);
+    exit;
+}

@@ -15,6 +15,7 @@ use Yii;
  * @property string|null $sert_full
  * @property string $pnfl
  * @property string|null $owner_name
+ * @property string|null $created
  * @property int|null $vet_site_id
  * @property int|null $operator
  * @property int $ownertype
@@ -43,7 +44,7 @@ class Sertificates extends \yii\db\ActiveRecord
     {
         return [
 //            [['sert_id'], 'required'],
-            [['sert_date'], 'safe'],
+            [['sert_date','created'], 'safe'],
             [['sert_id','organization_id','ownertype', 'vet_site_id', 'operator','district','region','qfi','status_id'], 'integer'],
             [[ 'sert_num'], 'string', 'max' => 100],
             [['pnfl', 'owner_name','inn','sert_full'], 'string', 'max' => 255],

@@ -59,7 +59,7 @@ class AnimalsController extends Controller
                 'options' => [
                 ],
                 'methods' => [
-                    'SetTitle' => Yii::t('app','animals'),
+                    'SetTitle' => $searchModel::tableName(),
                     'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
                     'SetFooter' => ['| {PAGENO} |'],
                     'SetAuthor' => '@QalandarDev',

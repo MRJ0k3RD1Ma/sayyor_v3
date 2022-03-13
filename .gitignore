@@ -1,4 +1,4 @@
 vendor
-frontend
+frontend/modules/admin/views
 composer.json
 .idea

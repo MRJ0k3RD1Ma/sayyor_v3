@@ -58,6 +58,7 @@ class OrganizationsController extends Controller
                 'content' => $this->renderPartial('_pdf', ['dataProvider' => $dataProvider]),
                 'options' => [
                 ],
+
                 'methods' => [
                     'SetTitle' => $searchModel::tableName(),
                     'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],

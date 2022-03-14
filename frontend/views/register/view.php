@@ -6,14 +6,13 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Sertificates */
 
-$this->title = $model->sert_id;
+$this->title = $model->sert_full;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Dalolatnomalar'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="sertificates-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a(Yii::t('cp.sertificates', 'O\'zgartirish'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -29,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'sert_id',
+            'sert_full',
             'sert_num',
             'sert_date',
             'organization_id',
@@ -82,6 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>
                     <tr>
                         <td rowspan="<?= $cnt + 1?>"><?= $n?></td>
+                        <td rowspan="<?= $cnt + 1?>"><a href="<?= Yii::$app->urlManager->createUrl(['/register/testsend','id'=>$item->id])?>"><?= Yii::t('test','Yuborish')?></a></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>

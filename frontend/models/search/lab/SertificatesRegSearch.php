@@ -5,11 +5,12 @@ namespace frontend\models\search\lab;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Sertificates;
+use yii\db\Exception;
 
 /**
  * SertificatesSearch represents the model behind the search form of `app\models\Sertificates`.
  */
-class SertificatesSearch extends Sertificates
+class SertificatesRegSearch extends Sertificates
 {
     /**
      * {@inheritdoc}
@@ -40,7 +41,7 @@ class SertificatesSearch extends Sertificates
      */
     public function search($params)
     {
-        $query = Sertificates::find()->where(['organization_id'=>\Yii::$app->user->identity->empPosts->org_id])->andWhere(['is not','operator',NULL])->orderBy(['created'=>SORT_DESC]);
+        $query = Sertificates::find()->where(['organization_id'=>\Yii::$app->user->identity->empPosts->org_id])->andWhere(['is','operator',NULL])->orderBy(['created'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

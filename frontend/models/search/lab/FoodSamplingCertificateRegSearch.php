@@ -9,7 +9,7 @@ use common\models\FoodSamplingCertificate;
 /**
  * FoodSamplingCertificateSearch represents the model behind the search form of `app\models\FoodSamplingCertificate`.
  */
-class FoodSamplingCertificateSearch extends FoodSamplingCertificate
+class FoodSamplingCertificateRegSearch extends FoodSamplingCertificate
 {
     /**
      * {@inheritdoc}

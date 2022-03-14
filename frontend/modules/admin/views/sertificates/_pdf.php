@@ -16,14 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                <?php echo $this->render('_search', [
-                    'model' => $searchModel,
-                ]); ?>
-
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'id' => 'sertificates-grid',
+                    'summary' => '',
 //                        'filterModel' => $searchModel,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
@@ -45,10 +41,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         //'vet_site_id',
                         //'operator',
 
-                        ['class' => 'yii\grid\ActionColumn'],
                     ],
                 ]); ?>
-                <?php Pjax::end(); ?>
             </div>
         </div>
     </div>

@@ -35,7 +35,9 @@ use yii\widgets\ActiveForm;
                                 <button>
                                     <?= Html::a(' Excel ', ['index', 'export' => 1, 'id' => $model->id], ['data-pjax' => 0, 'class' => 'fa fa-file-excel']) ?>
                                 </button>
-                                <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
+                                <button>
+                                    <?= Html::a(' PDF ', ['index', 'export' => 2, 'id' => $model->id], ['data-pjax' => 0, 'class' => 'fa fa-file-pdf']) ?>
+                                </button>
                             </div>
 
                         </div>

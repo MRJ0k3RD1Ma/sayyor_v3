@@ -4,10 +4,18 @@ namespace app\modules\admin\controllers;
 
 use common\models\Diseases;
 use common\models\search\DiseasesSearch;
+use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
+use PhpOffice\PhpSpreadsheet\Writer\Exception;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+
 /**
  * DiseasesController implements the CRUD actions for Diseases model.
  */
@@ -35,12 +43,38 @@ class DiseasesController extends Controller
      * Lists all Diseases models.
      * @return mixed
      */
-    public function actionIndex(int $export=null)
+    public function actionIndex(int $export = null)
     {
         $searchModel = new DiseasesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        if ($export !== null) {
-            $searchModel->exportToExcel($dataProvider->query);
+        if ($export == 1) {
+            try {
+                $searchModel->exportToExcel($dataProvider->query);
+            } catch (Exception|\yii\base\Exception $e) {
+                return $e->getMessage();
+            }
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+            $dataProvider->pagination->pageSize = -1;
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdf', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e->getMessage();
+            }
         }
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -54,7 +88,8 @@ class DiseasesController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public
+    function actionView($id)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -66,7 +101,8 @@ class DiseasesController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public
+    function actionCreate()
     {
         $model = new Diseases();
 
@@ -90,7 +126,8 @@ class DiseasesController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public
+    function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
@@ -110,7 +147,8 @@ class DiseasesController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public
+    function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
@@ -124,7 +162,8 @@ class DiseasesController extends Controller
      * @return Diseases the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected
+    function findModel($id)
     {
         if (($model = Diseases::findOne($id)) !== null) {
             return $model;

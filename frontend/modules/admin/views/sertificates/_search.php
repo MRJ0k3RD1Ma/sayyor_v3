@@ -13,29 +13,32 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'id' => 'sertificates-grid-filters',
     ]); ?>
 
-    <?= $form->field($model, 'sert_id') ?>
+    <div class="card-header flex">
+        <div></div>
+        <div class="btns flex">
+            <div class="search" style="margin-bottom: -1rem!important;">
+                <?= $form->field($model, 'q', [
+                    'template' => '<div class="input-group">{input}<span class="btn btn-primary fa fa-search margi"></span></div>'
+                ])->textInput()->label(false) ?>
+            </div>
+            <div class="export">
+                <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
+                </button>
+                <div class="export-btn">
+                    <button>
+                        <?= Html::a(' Excel ', ['index', 'export' => 1, 'id' => $model->sert_id], ['data-pjax' => 0, 'class' => 'fa fa-file-excel']) ?>
+                    </button>
+                    <button>
+                        <?= Html::a(' PDF ', ['index', 'export' => 2, 'id' => $model->sert_id], ['data-pjax' => 0, 'class' => 'fa fa-file-pdf']) ?>
+                    </button>
+                </div>
 
-    <?= $form->field($model, 'sert_num') ?>
-
-    <?= $form->field($model, 'sert_date') ?>
-
-    <?= $form->field($model, 'organization_id') ?>
-
-    <?= $form->field($model, 'pnfl') ?>
-
-    <?php // echo $form->field($model, 'owner_name') ?>
-
-    <?php // echo $form->field($model, 'vet_site_id') ?>
-
-    <?php // echo $form->field($model, 'operator') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('cp.sertificates', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('cp.sertificates', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+            </div>
+            <?= Html::a(Yii::t('cp.sertificates', 'Dalolatnoma qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
+        </div>
     </div>
-
     <?php ActiveForm::end(); ?>
-
 </div>

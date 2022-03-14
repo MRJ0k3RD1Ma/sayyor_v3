@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Soato;
+use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
@@ -16,14 +17,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                <?php echo $this->render('_search', [
-                    'model' => $searchModel,
-                ]); ?>
-
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'id' => 'vet-sites-grid',
+                    'summary' => '',
 //                        'filterModel' => $searchModel,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
@@ -35,6 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'soato',
                             'label' => 'Hudud nomi',
                             'value' => static function ($model) {
+//                                    var_dump($model->soato0);exit();
                                 $soato = $model->soato0;
                                 return
                                     @Soato::find()->where(['MHOBT_cod' => $soato->res_id])->one()->name_lot
@@ -44,11 +42,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             }
                         ],
-                        ['class' => 'yii\grid\ActionColumn'],
                     ],
                 ]) ?>
-                <?php Pjax::end(); ?>
             </div>
         </div>
     </div>
 </div>
+
+
+

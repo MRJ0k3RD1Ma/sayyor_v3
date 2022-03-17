@@ -11,6 +11,7 @@ use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
 use setasign\Fpdi\PdfParser\PdfParserException;
 use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use yii\base\InvalidConfigException;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

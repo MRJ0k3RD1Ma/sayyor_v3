@@ -29,10 +29,10 @@ use yii\widgets\ActiveForm;
                 </button>
                 <div class="export-btn">
                     <button>
-                        <?= Html::a(' Excel ', ['index', 'export' => 1, 'id' => $model->sert_id], ['data-pjax' => 0, 'class' => 'fa fa-file-excel']) ?>
+                        <?= Html::a(' Excel ', Yii::$app->request->url."&export=1", ['data-pjax' => 0, 'class' => 'fa fa-file-excel']) ?>
                     </button>
                     <button>
-                        <?= Html::a(' PDF ', ['index', 'export' => 2, 'id' => $model->sert_id], ['data-pjax' => 0, 'class' => 'fa fa-file-pdf']) ?>
+                        <?= Html::a(' PDF ', Yii::$app->request->url."&export=2", ['data-pjax' => 0, 'class' => 'fa fa-file-pdf']) ?>
                     </button>
                 </div>
 

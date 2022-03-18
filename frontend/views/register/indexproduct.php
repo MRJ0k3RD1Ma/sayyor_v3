@@ -1,7 +1,7 @@
 <?php
 
-use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\FoodSamplingCertificateSearch */
@@ -71,7 +71,46 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'message_number',
                             //'laboratory_test_type_id',
 
-                            ['class' => 'yii\grid\ActionColumn'],
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+                                'header' => 'Buyruqlar',
+                                'headerOptions' => ['style' => 'color:#337ab7'],
+                                'template' => '{view}  {update}  {delete}',
+                                'buttons' => [
+                                    'view' => function ($url, $model) {
+                                        return Html::a('<span class="fa fa-eye"></span>', $url, [
+                                            'title' => Yii::t('app', 'Batafsil'),
+                                        ]);
+                                    },
+
+                                    'update' => function ($url, $model) {
+                                        return Html::a('<span class="fa fa-pen"></span>', $url, [
+                                            'title' => Yii::t('app', 'Yangilash'),
+                                        ]);
+                                    },
+                                    'delete' => function ($url, $model) {
+                                        return Html::a('<span class="fa fa-trash"></span>', $url, [
+                                            'title' => Yii::t('app', 'O\'chirish'),
+                                        ]);
+                                    }
+
+                                ],
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    if ($action === 'view') {
+                                        $url = 'viewproduct?id=' . $model->id;
+                                        return $url;
+                                    }
+
+                                    if ($action === 'update') {
+                                        $url = 'updateproduct?id='  . $model->id;
+                                        return $url;
+                                    }
+                                    if ($action === 'delete') {
+                                        $url = '&id=' . $model->id;
+                                        return $url;
+                                    }
+                                }
+                            ],
                         ],
                     ]); ?>
                 </div>

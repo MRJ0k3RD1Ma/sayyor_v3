@@ -97,7 +97,6 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model,'sampler_name')->textInput()?>
         <?= $form->field($model,'sampler_position')->textInput()?>
 
-        <?= $form->field($model,'nd_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SertNormatives::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Normativni tanlang')])?>
         <div class="form-group">
             <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>
         </div>

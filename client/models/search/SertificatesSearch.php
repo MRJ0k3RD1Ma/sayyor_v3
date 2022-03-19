@@ -18,7 +18,7 @@ class SertificatesSearch extends Sertificates
     {
         return [
             [['sert_id', 'sert_num', 'sert_date', 'pnfl', 'owner_name','status_id'], 'safe'],
-            [[ 'vet_site_id', 'operator'], 'integer'],
+            [[ 'vet_site_id', ], 'integer'],
         ];
     }
 
@@ -65,7 +65,6 @@ class SertificatesSearch extends Sertificates
         $query->andFilterWhere([
             'sert_date' => $this->sert_date,
             'vet_site_id' => $this->vet_site_id,
-            'operator' => $this->operator,
             'status_id' => $this->status_id,
         ]);
 

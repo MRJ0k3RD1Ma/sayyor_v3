@@ -17,7 +17,6 @@ use Yii;
  * @property string|null $sampler_name
  * @property string|null $sampler_position
  * @property int|null $vet_site_id
- * @property int|null $operator
  * @property int $ownertype
  * @property int $status_id
  * @property int $nd_id
@@ -46,7 +45,7 @@ class Sertificates extends \yii\db\ActiveRecord
         return [
 //            [['sert_id'], 'required'],
             [['sert_date','created'], 'safe'],
-            [['sert_id','ownertype', 'vet_site_id', 'operator','district','region','qfi','status_id','nd_id'], 'integer'],
+            [['sert_id','ownertype', 'vet_site_id', 'district','region','qfi','status_id'], 'integer'],
             [[ 'sert_num'], 'string', 'max' => 100],
             [['pnfl', 'inn','sert_full','sampler_name','sampler_position'], 'string', 'max' => 255],
             ['status_id','default','value'=>1],
@@ -76,7 +75,6 @@ class Sertificates extends \yii\db\ActiveRecord
             'ownertype' => Yii::t('model.sertificates', 'Hayvon egasi'),
             'sampler_position' => Yii::t('model.sertificates', 'Lavozim'),
             'sampler_name' => Yii::t('model.sertificates', 'Namuna olgan shaxs'),
-            'nd_id' => Yii::t('model.sertificates', 'Namuna olish bo\'yicha NH'),
         ];
     }
 
@@ -94,9 +92,6 @@ class Sertificates extends \yii\db\ActiveRecord
         return $this->hasOne(SertStatus::className(),['id'=>'status_id']);
     }
 
-    public function getNd(){
-        return $this->hasOne(SertNormatives::className(),['id'=>'nd_id']);
-    }
 
     /**
      * Gets query for [[Pnfl0]].

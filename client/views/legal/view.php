@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('cp.sertificates', 'O\'zgartirish'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php if($model->status_id == 1){?>
+        <?php if($model->status_id == 0){?>
             <?= Html::a(Yii::t('cp.sertificates', 'Arizani yuborish'), ['send', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?php }?>
     </p>
@@ -70,12 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $d->status->name_uz;
                 }
             ],
-            [
-                'attribute'=>'nd_id',
-                'value'=>function($d){
-                    return $d->nd->name_uz;
-                },
-            ],
+
             [
                 'label'=>Yii::t('client','Arizani kuzatish'),
                 'value'=>function($d){
@@ -143,7 +138,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 ?>
                     <tr>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->kod?></td>
+                        <td rowspan="<?= $cnt + 1?>"><span class="<?= $item->status->icon?>"></span> <?= $item->kod?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>

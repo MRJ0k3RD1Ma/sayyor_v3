@@ -25,11 +25,8 @@ use Yii;
  * @property int|null $reg_id
  * @property int|null $code_id
  * @property int|null $composite
- * @property int|null $disease_id
- * @property int|null $composite_sample_id
  * @property int|null $reg_id
  *
- * @property CompositeSamples $compositeSample
  * @property Organizations $organization
  * @property ResearchCategory $researchCategory
  */
@@ -50,11 +47,10 @@ class SampleRegistration extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['is_research','reg_id','code_id', 'research_category_id', 'results_conformity_id', 'organization_id', 'emp_id', 'disease_id',], 'integer'],
+            [['is_research','reg_id','code_id', 'research_category_id', 'results_conformity_id', 'organization_id', 'emp_id', ], 'integer'],
             [['reg_date','created','updated'], 'safe'],
             ['composite','each','rule'=>['integer']],
             [['pnfl', 'inn', 'code','sender_name','sender_phone'], 'string', 'max' => 255],
-            [['composite_sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => CompositeSamples::className(), 'targetAttribute' => ['composite_sample_id' => 'id']],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['organization_id' => 'id']],
             [['research_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => ResearchCategory::className(), 'targetAttribute' => ['research_category_id' => 'id']],
         ];
@@ -80,6 +76,7 @@ class SampleRegistration extends \yii\db\ActiveRecord
             'composite' => Yii::t('model', 'Namunalar'),
             'sender_name' => Yii::t('model', 'Ariza yuboruvchi FIO'),
             'sender_phone' => Yii::t('model', 'Ariza yuboruvchi telefoni'),
+            'reg_id' => Yii::t('model', 'Namuna qabul qiluvchi'),
         ];
     }
 
@@ -94,6 +91,9 @@ class SampleRegistration extends \yii\db\ActiveRecord
         return $this->hasOne(Organizations::className(), ['id' => 'organization_id']);
     }
 
+    public function getReg(){
+        return $this->hasOne(Employees::className(),['id'=>'reg_id']);
+    }
     /**
      * Gets query for [[ResearchCategory]].
      *

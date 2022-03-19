@@ -21,6 +21,7 @@ use common\models\Vaccination;
 use common\models\VetSites;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
+use PhpOffice\PhpSpreadsheet\Helper\Sample;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
@@ -140,6 +141,7 @@ class LegalController extends Controller
         $model->ownertype = 1;
         $owner_leg = new LegalEntities();
         $owner_ind = new Individuals();
+        $model->status_id = 0;
         if($model->load(Yii::$app->request->post())){
 
             $num = Sertificates::find()->filterWhere(['like','sert_date',date('Y')])->max('sert_id');
@@ -224,6 +226,29 @@ class LegalController extends Controller
             $code .= $num;
             $reg->code = $code;
             $reg->code_id = $num;
+
+            if(is_array($reg->composite) and count($reg->composite)>0){
+                if($reg->save()){
+                    foreach ($reg->composite as $item){
+                        $com = new CompositeSamples();
+                        $com->status_id = 1;
+                        $com->sample_id  = $item;
+                        $com->registration_id  = $reg->id;
+                        $com->save();
+                        $sam = Samples::findOne($com->sample_id);
+                        $sam->status_id = 1;
+                        $sam->save();
+                        $sam = null;
+                        $com = null;
+
+                    }
+                }
+                $model->status_id = 1;
+                $model->save();
+                return $this->redirect(['view','id'=>$model->id]);
+            }else{
+                Yii::$app->session->setFlash('error',Yii::t('client','Namuna tanlanmagan'));
+            }
 
         }
         return $this->render('send',[

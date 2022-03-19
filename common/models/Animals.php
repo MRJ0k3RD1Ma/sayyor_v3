@@ -18,6 +18,8 @@ use Yii;
  * @property int|null $vet_site_id
  * @property string|null $bsual_tag
  * @property int|null $type_id
+ * @property int|null $region
+ * @property int|null $district
  *
  * @property AnimalCategory $cat
  * @property Animaltype $type
@@ -26,6 +28,7 @@ use Yii;
  */
 class Animals extends \yii\db\ActiveRecord
 {
+    public $region,$district;
     /**
      * {@inheritdoc}
      */
@@ -58,7 +61,7 @@ class Animals extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('model.animals', 'ID'),
-            'name' => Yii::t('model.animals', 'Nomi'),
+            'name' => Yii::t('model.animals', 'Egasi'),
             'cat_id' => Yii::t('model.animals', 'Hayvon toifasi'),
             'gender' => Yii::t('model.animals', 'Jinsi'),
             'birthday' => Yii::t('model.animals', 'Tug\'ilgan kuni'),
@@ -68,6 +71,8 @@ class Animals extends \yii\db\ActiveRecord
             'vet_site_id' => Yii::t('model.animals', 'Vet uchastka'),
             'bsual_tag' => Yii::t('model.animals', 'Visual birka'),
             'type_id' => Yii::t('model.animals', 'Hayvon turi'),
+            'region' => Yii::t('model.animals', 'Viloyat'),
+            'district' => Yii::t('model.animals', 'Tuman'),
         ];
     }
 

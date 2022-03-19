@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string|null $kod
  * @property string|null $label
+ * @property string|null $repeat_code
  * @property int|null $sample_type_is
  * @property int|null $sample_box_id
  * @property int|null $animal_id
@@ -17,6 +18,7 @@ use Yii;
  * @property int|null $suspected_disease_id
  * @property int|null $test_mehod_id
  * @property int|null $samp_id
+ * @property int|null $emp_id
  *
  * @property Animals $animal
  * @property SampleBoxes $sampleBox
@@ -27,6 +29,7 @@ use Yii;
  */
 class Samples extends \yii\db\ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -41,8 +44,8 @@ class Samples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sample_type_is', 'sample_box_id', 'animal_id', 'sert_id','samp_id', 'suspected_disease_id', 'test_mehod_id'], 'integer'],
-            [['kod', 'label'], 'string', 'max' => 255],
+            [['sample_type_is', 'sample_box_id', 'emp_id','animal_id', 'sert_id','samp_id', 'suspected_disease_id', 'test_mehod_id'], 'integer'],
+            [['kod', 'label','repeat_code'], 'string', 'max' => 255],
             [['animal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animals::className(), 'targetAttribute' => ['animal_id' => 'id']],
             [['sample_box_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleBoxes::className(), 'targetAttribute' => ['sample_box_id' => 'id']],
             [['sample_type_is'], 'exist', 'skipOnError' => true, 'targetClass' => SampleTypes::className(), 'targetAttribute' => ['sample_type_is' => 'id']],
@@ -67,6 +70,9 @@ class Samples extends \yii\db\ActiveRecord
             'sert_id' => Yii::t('model.samples', 'Dalolatnoma raqami'),
             'suspected_disease_id' => Yii::t('model.samples', 'Gumonlangan kasallik'),
             'test_mehod_id' => Yii::t('model.samples', 'Tahlil usuli'),
+            'emp_id' => Yii::t('model.samples', 'Mas\'ul shaxs'),
+            'repeat_code' => Yii::t('model.samples', 'Takroriy tahlil'),
+
         ];
     }
 
@@ -128,5 +134,8 @@ class Samples extends \yii\db\ActiveRecord
     public function getTestMehod()
     {
         return $this->hasOne(TestMethod::className(), ['id' => 'test_mehod_id']);
+    }
+    public function getEmp(){
+        return $this->hasOne(Employees::className(),['id'=>'emp_id']);
     }
 }

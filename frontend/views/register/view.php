@@ -14,17 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="sertificates-view">
 
 
-    <p>
-        <?= Html::a(Yii::t('cp.sertificates', 'O\'zgartirish'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('cp.sertificates', 'O\'chirish'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('cp.sertificates', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -42,10 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 
-<div class="row">
-    <div class="col-md-12 table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead>
+    <div class="row">
+        <div class="col-md-12 table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
                 <tr>
                     <th rowspan="2">№</th>
                     <th rowspan="2">Namuna belgisi</th>
@@ -57,6 +46,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th rowspan="2">Qaysi kasallikga gumon</th>
                     <th rowspan="2">Tahlil usuli</th>
                     <th rowspan="2">Takroriy tahlil raqami</th>
+                    <th rowspan="2">Yuborish</th>
+
                 </tr>
                 <tr>
                     <th>Identifikatsiya raqami</th>
@@ -68,20 +59,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th>Antibiotik turi</th>
                     <th>Sanasi</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <?php $n=0; foreach (\common\models\Samples::find()->where(['sert_id'=>$model->id])->all() as $item): $n++;
-                $cnt_vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->count('*');
-                $cnt_eml = \common\models\Emlash::find()->where(['animal_id'=>$item->animal_id])->count('*');
-                if($cnt_vac > $cnt_eml){
-                    $cnt = $cnt_vac;
-                }else{
-                    $cnt = $cnt_eml;
-                }
-                ?>
+                    $cnt_vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->count('*');
+                    $cnt_eml = \common\models\Emlash::find()->where(['animal_id'=>$item->animal_id])->count('*');
+                    if($cnt_vac > $cnt_eml){
+                        $cnt = $cnt_vac;
+                    }else{
+                        $cnt = $cnt_eml;
+                    }
+                    ?>
                     <tr>
                         <td rowspan="<?= $cnt + 1?>"><?= $n?></td>
-                        <td rowspan="<?= $cnt + 1?>"><a href="<?= Yii::$app->urlManager->createUrl(['/register/testsend','id'=>$item->id])?>"><?= Yii::t('test','Yuborish')?></a></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>
@@ -94,6 +84,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td rowspan="<?= $cnt + 1?>"><?= $item->suspectedDisease->name_uz?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->testMehod->name_uz?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->kod?></td>
+                        <td rowspan="<?= $cnt+1?>"><button class="btn btn-primary send" value="<?= Yii::$app->urlManager->createUrl(['/register/send','id'=>$item->id])?>">Yuborish</button></td>
+
                     </tr>
                     <?php
                     $vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->orderBy(['disease_date'=>SORT_DESC])->all();
@@ -105,12 +97,44 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
                         <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
                     </tr>
+                        <tr>
+                            <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>
+                            <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' '?></td>
+                            <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
+                            <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
+                        </tr>
                     <?php endfor; ?>
                 <?php endforeach;?>
                 <tr>
                     <td colspan="15"><a href="<?= Yii::$app->urlManager->createUrl(['/register/add','id'=>$model->id])?>" class="btn btn-primary">Yana qo'shish</a></td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+
+
+    <div class="modal fade bs-example-modal-lg" id="sendmodal" tabindex="-1"  style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Large modal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="sendmodalbody">
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+
+<?php
+$this->registerJs("
+        $('.send').click(function(){
+            var url = this.value;
+            $('#sendmodalbody').load(url);
+            $('#sendmodal').modal('show');
+        })
+    ");
+?>

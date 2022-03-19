@@ -156,6 +156,14 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function actionIncometest($id){
+        $model = $this->findModel($id);
+        $model->operator = Yii::$app->user->id;
+        $model->status_id = 2;
+        $model->save();
+        return $this->redirect(['viewtest','id'=>$model->id]);
+    }
+
     public function actionAdd($id){
         $model = $this->findModel($id);
 
@@ -459,6 +467,23 @@ class RegisterController extends Controller
 
     public function actionTestsend($id){
         $model = new RouteSert();
+    }
 
+    public function actionSend($id){
+        $model = Samples::findOne($id);
+        return $this->renderAjax('send',[
+            'model'=>$model
+        ]);
+    }
+
+
+    public function actionViewtestreg($id){
+        $model = Sertificates::findOne($id);
+
+
+
+        return $this->render('viewtestreg',[
+            'model'=>$model
+        ]);
     }
 }

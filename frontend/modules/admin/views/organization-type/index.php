@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
 
+
         </div><!-- end card header -->
 
         <div class="card-body">
@@ -41,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                              'format'=>'raw',
                          ],*/
 
-                        ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}'],
+//                        ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}'],
                     ],
                 ]); ?>
             </div>

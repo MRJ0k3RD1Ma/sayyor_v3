@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\SertificatesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('client', 'Hayvon kasalliklari tashhilari ro\'yhati');
+$this->title = Yii::t('client', 'Hayvon kasalliklari tashhisi bo\'yicha namuna olish dalolatnomalari');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sertificates-index">
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         </div>
 
-                        <?= Html::a(Yii::t('client', 'Ariza berish'), ['create'], ['class' => 'btn btn-success']) ?>
+                        <?= Html::a(Yii::t('client', 'Dalolatnoma qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
 
 
                     </div>
@@ -57,13 +57,20 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                             'sert_num',
                             'sert_date',
+
                             [
-                                'attribute'=>'organization_id',
+                                'label'=>'Hayvon egasi',
                                 'value'=>function($d){
-                                    return $d->organization->NAME_FULL;
-                                }
+                                    if($d->owner_pnfl){
+                                        return $d->owner_pnfl.'<br>'.$d->ownerPnfl->name.' '.$d->ownerPnfl->surname.' '.$d->ownerPnfl->middlename;
+                                    }elseif($d->owner_inn){
+                                        return $d->owner_inn.'<br>'.$d->ownerInn->name;
+                                    }else{
+                                        return "Hayvon egasi haqida ma'lumot kiritilmagan";
+                                    }
+                                },
+                                'format'=>'raw'
                             ],
-                            'owner_name',
                             [
                                 'attribute'=>'vet_site_id',
                                 'value'=>function($d){

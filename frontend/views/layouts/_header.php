@@ -6,19 +6,19 @@
             <div class="navbar-brand-box">
                 <a href="<?= Yii::$app->urlManager->createUrl(['/'])?>" class="logo logo-dark">
                                 <span class="logo-sm">
-                                    <img src="/design/assets/images/logo-sm.svg" alt="" height="24">
+                                    <img src="/design/assets/images/vet.png" alt="" height="24">
                                 </span>
                     <span class="logo-lg">
-                                    <img src="/design/assets/images/logo-sm.svg" alt="" height="24"> <span class="logo-txt">Sayyor</span>
+                                    <img src="/design/assets/images/vet.png" alt="" height="24"> <span class="logo-txt">VIS-Sayyor</span>
                                 </span>
                 </a>
 
                 <a href="<?= Yii::$app->urlManager->createUrl(['/'])?>" class="logo logo-light">
                                 <span class="logo-sm">
-                                    <img src="/design/assets/images/logo-sm.svg" alt="" height="24">
+                                    <img src="/design/assets/images/vet.png" alt="" height="24">
                                 </span>
                     <span class="logo-lg">
-                                    <img src="/design/assets/images/logo-sm.svg" alt="" height="24"> <span class="logo-txt">Sayyor</span>
+                                    <img src="/design/assets/images/vet.png" alt="" height="24"> <span class="logo-txt">VIS-Sayyor</span>
                                 </span>
                 </a>
             </div>
@@ -27,18 +27,12 @@
                 <i class="fa fa-fw fa-bars"></i>
             </button>
 
-            <!-- App Search-->
-            <form class="app-search d-none d-lg-block">
-                <div class="position-relative">
-                    <input type="text" class="form-control" placeholder="Search...">
-                    <button class="btn btn-primary" type="button"><i class="bx bx-search-alt align-middle"></i></button>
-                </div>
-            </form>
+
         </div>
 
         <div class="d-flex">
 
-            <div class="dropdown d-inline-block">
+           <!-- <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item noti-icon position-relative" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell icon-lg"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                     <span class="badge bg-danger rounded-pill">5</span>
@@ -103,7 +97,7 @@
                     </div>
                 </div>
             </div>
-
+-->
             <div class="dropdown d-none d-sm-inline-block">
                 <button type="button" class="btn header-item"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

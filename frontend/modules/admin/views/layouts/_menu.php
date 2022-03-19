@@ -34,13 +34,13 @@ if($u){
 
                     </a>
                 </li>
-                <li>
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/application/'])?>">
+            <!--    <li>
+                    <a href="<?php /*= Yii::$app->urlManager->createUrl(['/cp/default/application/'])*/?>">
                         <i data-feather="sliders"></i>
-                        <span data-key="t-table"><?= Yii::t('cp.menu','Arizalar')?></span>
+                        <span data-key="t-table"><?php /*= Yii::t('cp.menu','Arizalar')*/?></span>
 
                     </a>
-                </li>
+                </li>-->
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="users"></i>

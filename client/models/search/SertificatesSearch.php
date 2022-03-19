@@ -18,7 +18,7 @@ class SertificatesSearch extends Sertificates
     {
         return [
             [['sert_id', 'sert_num', 'sert_date', 'pnfl', 'owner_name','status_id'], 'safe'],
-            [['organization_id', 'vet_site_id', 'operator'], 'integer'],
+            [[ 'vet_site_id', 'operator'], 'integer'],
         ];
     }
 
@@ -41,9 +41,9 @@ class SertificatesSearch extends Sertificates
     public function search($params)
     {
         if(Yii::$app->session->get('doc_type') == 'inn'){
-            $query = Sertificates::find()->where(['inn'=>Yii::$app->session->get('doc_inn')])->orderBy(['id'=>SORT_DESC]);
+            $query = Sertificates::find()->where(['inn'=>Yii::$app->session->get('doc_inn')])->orWhere(['owner_inn'=>Yii::$app->session->get('doc_inn')])->orderBy(['id'=>SORT_DESC]);
         }else{
-            $query = Sertificates::find()->where(['inn'=>Yii::$app->session->get('doc_pnfl')])->orderBy(['id'=>SORT_DESC]);
+            $query = Sertificates::find()->where(['inn'=>Yii::$app->session->get('doc_pnfl')])->orWhere(['owner_pnfl'=>Yii::$app->session->get('doc_pnfl')])->orderBy(['id'=>SORT_DESC]);
         }
 
 
@@ -64,7 +64,6 @@ class SertificatesSearch extends Sertificates
         // grid filtering conditions
         $query->andFilterWhere([
             'sert_date' => $this->sert_date,
-            'organization_id' => $this->organization_id,
             'vet_site_id' => $this->vet_site_id,
             'operator' => $this->operator,
             'status_id' => $this->status_id,
@@ -72,8 +71,7 @@ class SertificatesSearch extends Sertificates
 
         $query->andFilterWhere(['like', 'sert_id', $this->sert_id])
             ->andFilterWhere(['like', 'sert_num', $this->sert_num])
-            ->andFilterWhere(['like', 'pnfl', $this->pnfl])
-            ->andFilterWhere(['like', 'owner_name', $this->owner_name]);
+            ->andFilterWhere(['like', 'pnfl', $this->pnfl]);
 
         return $dataProvider;
     }

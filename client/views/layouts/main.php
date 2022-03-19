@@ -122,6 +122,14 @@ if(Yii::$app->session->hasFlash('success')){
 }
 ?>
 
+<?php
+$this->registerJs("
+    $(document).ready(function(){
+        $('.select2list').select2();
+    })
+")
+?>
+
 
 <?php $this->endBody() ?>
 </body>

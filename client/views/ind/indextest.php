@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         </div>
 
+                        <?= Html::a(Yii::t('client', 'Dalolatnoma qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
                         <?= Html::a(Yii::t('client', 'Ariza berish'), ['create'], ['class' => 'btn btn-success']) ?>
 
 
@@ -51,19 +52,26 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute'=>'sert_full',
                                 'format'=>'raw',
                                 'value'=>function($d){
-                                    $url = Yii::$app->urlManager->createUrl(['/legal/view','id'=>$d->id]);
+                                    $url = Yii::$app->urlManager->createUrl(['/ind/view','id'=>$d->id]);
                                     return "<a href='{$url}'>{$d->sert_full}</a>";
                                 },
                             ],
                             'sert_num',
                             'sert_date',
+
                             [
-                                'attribute'=>'organization_id',
+                                'label'=>'Hayvon egasi',
                                 'value'=>function($d){
-                                    return $d->organization->NAME_FULL;
-                                }
+                                    if($d->owner_pnfl){
+                                        return $d->owner_pnfl.'<br>'.$d->ownerPnfl->name.' '.$d->ownerPnfl->surname.' '.$d->ownerPnfl->middlename;
+                                    }elseif($d->owner_inn){
+                                        return $d->owner_inn.'<br>'.$d->ownerInn->name;
+                                    }else{
+                                        return "Hayvon egasi haqida ma'lumot kiritilmagan";
+                                    }
+                                },
+                                'format'=>'raw'
                             ],
-                            'owner_name',
                             [
                                 'attribute'=>'vet_site_id',
                                 'value'=>function($d){
@@ -80,12 +88,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return $d->status->name_uz;
                                 }
                             ],
-                           /* [
-                                'class' => 'yii\grid\ActionColumn',
-                                'urlCreator' => function ($action, $model, $key, $index) {
-                                    return \yii\helpers\Url::to([$action, 'id' => $model->id]);
-                                }
-                            ],*/
+                            /* [
+                                 'class' => 'yii\grid\ActionColumn',
+                                 'urlCreator' => function ($action, $model, $key, $index) {
+                                     return \yii\helpers\Url::to([$action, 'id' => $model->id]);
+                                 }
+                             ],*/
                         ],
                     ]); ?>
                 </div>

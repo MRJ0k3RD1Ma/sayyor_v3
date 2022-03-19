@@ -3,6 +3,7 @@
 namespace client\controllers;
 
 use client\models\InnForm;
+use common\models\Animals;
 use common\models\DistrictView;
 use common\models\Individuals;
 use common\models\LegalEntities;
@@ -429,8 +430,8 @@ class SiteController extends Controller
         exit;
     }
 
-    public function actionGetVet($id){
-        $model = VetSites::find()->where(['soato'=>$id])->all();
+    public function actionGetVet($id,$regid){
+        $model = VetSites::find()->filterWhere(['like','soato','17'.$regid.$id])->all();
         $text = Yii::t('cp.vetsites','- Vet uchastkani tanlang -');
         $res = "<option value=''>{$text}</option>";
         $lang = Yii::$app->language;
@@ -439,5 +440,89 @@ class SiteController extends Controller
         }
         echo $res;
         exit;
+    }
+
+    public function actionGetbirka($id){
+        if($model = Animals::findOne(['bsual_tag'=>$id])){
+            return json_encode([
+                'code'=>['result'=>'2200'],
+                'data'=>[
+                    'id'=>$model->id,
+                    'birth'=>$model->birthday,
+                    'tin'=>$model->inn,
+                    'type'=>$model->type_id,
+                    'sex'=>$model->gender,
+                    'address'=>$model->adress,
+                    'owner'=>$model->name,
+                ]
+            ]);
+        }else{
+            return get_web_page(Yii::$app->params['hamsa']['url']['getanimalinfo'].'?birka='.$id,'hamsa');
+        }
+    }
+
+    public function actionGetInd($pnfl,$doc){
+        if($model = Individuals::find()->where(['pnfl'=>$pnfl])->andWhere(['passport'=>$doc])->one()){
+            $res = "{
+                \"code\":200,
+                \"value\":{\"pnfl\":\"{$pnfl}\",
+                    \"name\":\"{$model->name}\",
+                    \"surname\":\"{$model->surname}\",
+                    \"middlename\":\"{$model->middlename}\",
+                    \"region_id\":\"{$model->soato->region_id}\",
+                    \"district_id\":\"{$model->soato->district_id}\",
+                    \"soato_id\":\"{$model->soato_id}\",
+                    \"passport\":\"{$model->passport}\",
+                    \"adress\":\"{$model->adress}\"
+                }
+            }";
+        }else{
+            $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'].'?pinfl='.$pnfl.'&document='.$doc,'hamsa');
+            $model = new Individuals();
+            $res = json_decode($res,true);
+            if($res['code']['result']!=2200 or (isset($res['data']['result']) and $res['data']['result']==0)){
+                return -1;
+            }
+
+            $model->passport = $res['data']['inf']['document'];
+            $model->surname = $res['data']['inf']['surname_latin'];
+            $model->name = $res['data']['inf']['name_latin'];
+            $model->middlename = $res['data']['inf']['patronym_latin'];
+            $model->pnfl = $pnfl;
+            $res = "{
+                \"code\":200,
+                \"value\":{\"pnfl\":\"{$pnfl}\",
+                    \"name\":\"{$model->name}\",
+                    \"surname\":\"{$model->surname}\",
+                    \"middlename\":\"{$model->middlename}\",
+                    \"region_id\":\"-1\",
+                    \"district_id\":\"-1\",
+                    \"soato_id\":\"-1\",
+                    \"passport\":\"{$model->passport}\",
+                    \"adress\":\"{$model->adress}\"
+                }
+            }";
+        }
+        echo $res;
+        exit;
+    }
+
+    public function actionGetInn($inn){
+        if($model = LegalEntities::findOne(['inn'=>$inn])){
+            $res = "{
+                \"code\":200,
+                \"value\":{\"inn\":\"{$inn}\",
+                    \"name\":\"{$model->name}\",
+                    \"region\":\"{$model->soato->region_id}\",
+                    \"district\":\"{$model->soato->district_id}\",
+                    \"soato_id\":\"{$model->soato_id}\",
+                    \"tshx_id\":\"{$model->tshx_id}\",
+                    \"soogu\":\"{$model->soogu}\"
+                }
+            }";
+            return $res;
+        }else{
+            return -1;
+        }
     }
 }

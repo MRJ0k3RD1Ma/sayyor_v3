@@ -18,6 +18,7 @@ use common\models\Samples;
 use common\models\search\FoodSamplingCertificateSearch;
 use common\models\Sertificates;
 use common\models\Vaccination;
+use common\models\VetSites;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -136,13 +137,14 @@ class LegalController extends Controller
         $model = new Sertificates();
         $legal = LegalEntities::findOne(['inn'=>Yii::$app->session->get('doc_inn')]);
         $model->sert_date = date('Y-m-d');
+        $model->ownertype = 1;
+        $owner_leg = new LegalEntities();
+        $owner_ind = new Individuals();
         if($model->load(Yii::$app->request->post())){
 
-            $org = $model->organization_id;
-
-            $num = Sertificates::find()->where(['organization_id'=>$org])->andFilterWhere(['like','sert_date',date('Y')])->max('sert_id');
-
-            $code = substr(date('Y'),2,2).'-1-'.get3num($org).'-';
+            $num = Sertificates::find()->filterWhere(['like','sert_date',date('Y')])->max('sert_id');
+            $vet = VetSites::findOne($model->vet_site_id);
+            $code = $vet->soato0->region_id.$vet->soato0->district_id.'-'.   substr(date('Y'),2,2).'-';
 
             $num = $num+1;
             $code .= $num;
@@ -150,6 +152,39 @@ class LegalController extends Controller
             $model->inn = $legal->inn;
             $model->sert_full = $code;
             $model->sert_num = "{$model->sert_num}";
+
+            if($model->ownertype == 1){
+                if($owner_ind->load(Yii::$app->request->post())){
+                    if($own = Individuals::findOne(['pnfl'=>$owner_ind->pnfl])){
+                        $owner_ind = $own;
+                    }else{
+                        $owner_ind->save();
+                    }
+                    $model->owner_pnfl = $owner_ind->pnfl;
+                }else{
+                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                }
+            }elseif($model->ownertype == 2){
+                if($owner_leg->load(Yii::$app->request->post())){
+                    if($own = LegalEntities::findOne(['inn'=>$owner_leg->inn])){
+                        $owner_leg = $own;
+                    }else{
+                        $owner_leg->save();
+                    }
+                    $model->owner_inn = $owner_leg->inn;
+                }else{
+                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                }
+            }else{
+                Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                return $this->render('animal',[
+                    'model'=>$model,
+                    'legal'=>$owner_leg,
+                    'ind'=>$owner_ind
+                ]);
+            }
+
+
             if($model->save()){
                 Yii::$app->session->setFlash('success','Proba tekshiruvchi tashkilotga muvoffaqtiyatli yuborildi');
                 return $this->redirect(['view','id'=>$model->id]);
@@ -160,6 +195,8 @@ class LegalController extends Controller
 
         return $this->render('animal',[
             'model'=>$model,
+            'legal'=>$owner_leg,
+            'ind'=>$owner_ind
         ]);
     }
 
@@ -170,74 +207,65 @@ class LegalController extends Controller
         ]);
     }
 
-    public function actionGetbirka($id){
-        if($model = Animals::findOne(['bsual_tag'=>$id])){
-            return json_encode([
-                'code'=>['result'=>'2200'],
-                'data'=>[
-                    'id'=>$model->id,
-                    'birth'=>$model->birthday,
-                    'tin'=>$model->inn,
-                    'type'=>$model->type_id,
-                    'sex'=>$model->gender,
-                    'address'=>$model->adress,
-                    'owner'=>$model->name,
-                ]
-            ]);
-        }else{
-            return get_web_page(Yii::$app->params['hamsa']['url']['getanimalinfo'].'?birka='.$id,'hamsa');
-        }
-    }
+
 
     public function actionSend($id){
-        $model = $this->findModel($id);
-        if($model->status_id == 1){
-            $model->status_id = 2;
-            $model->save();
-        }
+        $model = Sertificates::findOne($id);
+        $sample = Samples::find()->where(['samples.sert_id'=>$id])->andWhere(['not in','samples.id','select cs.sample_id from composite_samples cs where samples.id=cs.sample_id'])->all();
+        $reg = new SampleRegistration();
+        $reg->inn = Yii::$app->session->get('doc_inn');
+        if($reg->load(Yii::$app->request->post())){
 
-        return $this->redirect(['view','id'=>$id]);
+            $num = SampleRegistration::find()->filterWhere(['like','reg_date',date('Y')])->max('code_id');
+
+            $code = substr(date('Y'),2,2).'-1-'.get3num($reg->organization_id).'-';
+
+            $num = $num+1;
+            $code .= $num;
+            $reg->code = $code;
+            $reg->code_id = $num;
+
+        }
+        return $this->render('send',[
+            'sample'=>$sample,
+            'model'=>$model,
+            'reg'=>$reg
+        ]);
     }
 
     public function actionAdd($id){
+
         $model = $this->findModel($id);
 
         $animal = new Animals();
-        $reg = new SampleRegistration();
         $sample = new Samples();
 
         $animal->inn = Yii::$app->session->get('doc_inn');
         $sample->animal_id = -1;
+
         $sample->sert_id = intval($id);
 
-        $reg->inn = $animal->inn;
-        $org = $model->organization_id;
-        $reg->organization_id = $model->organization_id;
-        $num = SampleRegistration::find()->where(['organization_id'=>$org])->andFilterWhere(['like','reg_date',date('Y')])->max('reg_id');
-
-        $code = substr(date('Y'),2,2).'-1-'.get3num($org).'-';
-
-        $num = $num+1;
-        $code .= $num;
-        $reg->reg_id = $num;
-        $reg->code = $code;
         if(Yii::$app->request->isPost){
 
-            if($animal->load(Yii::$app->request->post()) and $reg->load(Yii::$app->request->post())){
+            if($animal->load(Yii::$app->request->post())){
+                $num = Samples::find()->filterWhere(['like','kod',$model->sert_full])->max('samp_id');
+
+                $code = $model->sert_full;
+
+                $num = $num+1;
+                $code .= $num;
+                $sample->kod = $code.'/'.$num;
+                $sample->samp_id = $num;
                 $animal->inn = "{$animal->inn}";
-                $sample->kod = $reg->code;
+
                 if($animal->save() and $sample->load(Yii::$app->request->post())){
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if($sample->save(false)){
-                        $com = new CompositeSamples();
-                        $com->sample_id = $sample->id;
-                        $com->status_id = 1;
-                        $com->save();
-                        $reg->composite_sample_id = $com->id;
-                        $reg->save();
                         Yii::$app->session->setFlash('success',Yii::t('client','Namuna muvoffaqiyatli saqlandi'));
                         return $this->redirect(['view','id'=>$id]);
+                    }else{
+                        Yii::$app->session->setFlash('error','Maydonlar to\'ldirimlagan');
                     }
                 }
             }
@@ -248,7 +276,6 @@ class LegalController extends Controller
             'model'=>$model,
             'animal'=>$animal,
             'sample'=>$sample,
-            'reg'=>$reg
         ]);
     }
     protected function findModel($id)
@@ -282,43 +309,6 @@ class LegalController extends Controller
 
     }
 
-
-    public function actionGetDistrict($id){
-        $model = DistrictView::find()->where(['region_id'=>$id])->all();
-        $text = Yii::t('cp.vetsites','- Tumanni tanlang -');
-        $res = "<option value=''>{$text}</option>";
-        $lang = Yii::$app->language;
-        foreach ($model as $item){
-            if($lang == 'ru'){
-                $name = $item->name_ru;
-            }elseif($lang == 'oz'){
-                $name = $item->name_cyr;
-            }else{
-                $name = $item->name_lot;
-            }
-            $res .= "<option value='{$item->district_id}'>{$name}</option>";
-        }
-        echo $res;
-        exit;
-    }
-    public function actionGetQfi($id,$regid){
-        $model = QfiView::find()->where(['district_id'=>$id])->andWhere(['region_id'=>$regid])->all();
-        $text = Yii::t('cp.vetsites','- QFYni tanlang -');
-        $res = "<option value=''>{$text}</option>";
-        $lang = Yii::$app->language;
-        foreach ($model as $item){
-            if($lang == 'ru'){
-                $name = $item->name_ru;
-            }elseif($lang == 'oz'){
-                $name = $item->name_cyr;
-            }else{
-                $name = $item->name_lot;
-            }
-            $res .= "<option value='{$item->MHOBT_cod}'>{$name}</option>";
-        }
-        echo $res;
-        exit;
-    }
 
     public function actionProduct(){
         $model = new FoodSamplingCertificate();

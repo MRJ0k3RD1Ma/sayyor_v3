@@ -36,15 +36,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'sert_num',
             'sert_date',
 //            'organization_id',
-            [
-                'attribute'=>'organization_id',
-                'value'=>function($d){
-                    return $d->organization->NAME_FULL;
-                }
-            ],
+
 //            'pnfl',
-            'owner_name',
+            'sampler_name',
+            'sampler_position',
+
 //            'vet_site_id',
+            [
+                'label'=>'Hayvon egasi',
+                'value'=>function($d){
+                    if($d->owner_pnfl){
+                        return $d->owner_pnfl.'<br>'.$d->ownerPnfl->name.' '.$d->ownerPnfl->surname.' '.$d->ownerPnfl->middlename;
+                    }elseif($d->owner_inn){
+                        return $d->owner_inn.'<br>'.$d->ownerInn->name;
+                    }else{
+                        return "Hayvon egasi haqida ma'lumot kiritilmagan";
+                    }
+                },
+                'format'=>'raw'
+            ],
             [
                 'attribute'=>'vet_site_id',
                 'value'=>function($d){
@@ -59,6 +69,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     return $d->status->name_uz;
                 }
+            ],
+            [
+                'attribute'=>'nd_id',
+                'value'=>function($d){
+                    return $d->nd->name_uz;
+                },
             ],
             [
                 'label'=>Yii::t('client','Arizani kuzatish'),
@@ -127,7 +143,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 ?>
                     <tr>
-                        <td rowspan="<?= $cnt + 1?>"><?= $n?></td>
+                        <td rowspan="<?= $cnt + 1?>"><?= $item->kod?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>
@@ -139,7 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td colspan="2"><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/emlash','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Davolash</a></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->suspectedDisease->name_uz?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->testMehod->name_uz?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->kod?></td>
+                        <td rowspan="<?= $cnt + 1?>"><?= $item->repeat_code?></td>
                     </tr>
                     <?php
                     $vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->orderBy(['disease_date'=>SORT_DESC])->all();

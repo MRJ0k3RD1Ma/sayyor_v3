@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
 
     </div>
 <?php
-$url = Yii::$app->urlManager->createUrl(['/legal/getbirka']);
+$url = Yii::$app->urlManager->createUrl(['/register/getbirka']);
 $this->registerJs("
     $('#animals-bsual_tag').keyup(function(){
         if($('#animals-bsual_tag').val().length == 12){

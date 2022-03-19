@@ -30,6 +30,7 @@ class AppAsset extends AssetBundle
         'design/assets/plugins/datatables-buttons/css/buttons.dataTables.min.css',
         'design/assets/css/custom.css',
         'design/assets/plugins/sweetalert2/sweetalert2.min.css',
+//        'design/multiselect/css/multi-select.css',
         'eimzo/services/css.css',
     ];
     public $js = [
@@ -47,6 +48,7 @@ class AppAsset extends AssetBundle
         'design/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js',
         'design/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js',
         'design/assets/plugins/sweetalert2/sweetalert2.min.js',
+//        'design/multiselect/js/jquery.multi-select.js',
         'design/assets/js/app.js',
         'eimzo/services/jquery.reject.js',
         'eimzo/services/micro-ajax.js',

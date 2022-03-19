@@ -120,14 +120,19 @@ class EmployeesController extends Controller
     {
         $model = new Employees();
         $model->scenario = 'insert';
+        $org = new EmpPosts();
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
                 $model->password = "{$model->password}";
                 $model->encrypt();
 
                 if ($model->save()) {
-
-
+                    if($org->load(Yii::$app->request->post())){
+                        $org->emp_id = $model->id;
+                        $org->state_id = 1;
+                        $org->status_id = 1;
+                        $org->save();
+                    }
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
                     return $this->render('create', [
@@ -141,6 +146,7 @@ class EmployeesController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'org'=>$org
         ]);
     }
 

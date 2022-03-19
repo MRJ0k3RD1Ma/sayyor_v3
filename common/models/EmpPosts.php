@@ -15,6 +15,7 @@ use Yii;
  * @property int|null $status_id Лавозим статуси :  асосий лавозим, вақтинчалик вазифасини бажарувчи, ва ҳ.к.
  * @property int|null $org_id Ташкилот (Бўлим)
  * @property int|null $gov_id Ташкилот (Бўлим)
+ * @property int|null $orgtype
  *
  * @property Employees $emp
  * @property Organizations $org
@@ -25,6 +26,7 @@ use Yii;
  */
 class EmpPosts extends \yii\db\ActiveRecord
 {
+    public $orgtype;
     /**
      * {@inheritdoc}
      */
@@ -39,7 +41,7 @@ class EmpPosts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['emp_id', 'post_id', 'state_id', 'status_id', 'org_id'], 'integer'],
+            [['emp_id','orgtype', 'post_id', 'state_id', 'status_id', 'org_id'], 'integer'],
             [['date'], 'safe'],
             [['emp_id'], 'unique'],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => StatusList::className(), 'targetAttribute' => ['status_id' => 'id']],
@@ -63,6 +65,8 @@ class EmpPosts extends \yii\db\ActiveRecord
             'state_id' => Yii::t('app', 'Holati'),
             'status_id' => Yii::t('app', 'Status'),
             'org_id' => Yii::t('app', 'Tashkilot'),
+            'gov_id' => Yii::t('app', 'Bo\'lim'),
+            'orgtype' => Yii::t('app', 'Tashkilot turi'),
         ];
     }
 

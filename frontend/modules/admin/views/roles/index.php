@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
+
                 <div class="card-header flex">
                     <div class="btns flex">
                         <?= Html::a(Yii::t('cp.roles', 'Foydalanuvchi huquqi qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
@@ -24,14 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
-                        'filterModel' => $searchModel,
+//                        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
                             'name',
 
-                            ['class' => 'yii\grid\ActionColumn'],
+//                            ['class' => 'yii\grid\ActionColumn'],
                         ],
                     ]); ?>
                 </div>

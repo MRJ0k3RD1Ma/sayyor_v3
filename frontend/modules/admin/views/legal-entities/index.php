@@ -46,9 +46,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             'inn',
                             'name',
-                            'tshx',
+                            'tshx_id',
                             'soogu',
-                            'soato',
+                            'soato_id',
                             //'status_id',
 
                             ['class' => 'yii\grid\ActionColumn'],

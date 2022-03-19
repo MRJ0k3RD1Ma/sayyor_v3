@@ -25,6 +25,9 @@ use Yii;
  * @property int|null $reg_id
  * @property int|null $code_id
  * @property int|null $composite
+ * @property int|null $disease_id
+ * @property int|null $composite_sample_id
+ * @property int|null $reg_id
  *
  * @property CompositeSamples $compositeSample
  * @property Organizations $organization

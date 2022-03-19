@@ -113,6 +113,7 @@ class Sertificates extends \yii\db\ActiveRecord
     public function getOwnerInn(){
         return $this->hasOne(LegalEntities::className(),['inn'=>'owner_inn']);
     }
+
     /**
      * Gets query for [[VetSite]].
      *

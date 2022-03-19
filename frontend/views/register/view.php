@@ -91,6 +91,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     $vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->orderBy(['disease_date'=>SORT_DESC])->all();
                     $eml = \common\models\Emlash::find()->where(['animal_id'=>$item->animal_id])->orderBy(['emlash_date'=>SORT_DESC])->all();
                     for ($i=0;$i<$cnt; $i++):?>
+                    <tr>
+                        <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>
+                        <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' '?></td>
+                        <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
+                        <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
+                    </tr>
                         <tr>
                             <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>
                             <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' '?></td>

@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
 
                         <?= Html::a(Yii::t('client', 'Dalolatnoma qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
+                        <?= Html::a(Yii::t('client', 'Ariza berish'), ['create'], ['class' => 'btn btn-success']) ?>
 
 
                     </div>

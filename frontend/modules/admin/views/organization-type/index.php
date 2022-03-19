@@ -13,6 +13,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="card">
         <div class="card-header flex">
+            <div class="btns flex">
+                <?= Html::a(Yii::t('cp', 'Tashkilot turi qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
+
+            </div>
 
 
 

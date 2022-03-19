@@ -454,6 +454,7 @@ class RegisterController extends Controller
 
     }
 
+
     public function actionRegtest(){
         $searchModel = new SertificatesRegSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);

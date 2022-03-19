@@ -16,6 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card">
 
+                <div class="card-header flex">
+                    <div class="btns flex">
+                        <?= Html::a(Yii::t('cp.roles', 'Foydalanuvchi huquqi qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
+                    </div>
+                </div>
                 <div class="card-body">
 
                     <?= GridView::widget([

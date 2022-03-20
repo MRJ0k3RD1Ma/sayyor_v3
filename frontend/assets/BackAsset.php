@@ -30,6 +30,7 @@ class BackAsset extends AssetBundle
         'design/assets/plugins/datatables-buttons/css/buttons.dataTables.min.css',
         'design/assets/css/custom.css',
         'design/assets/plugins/sweetalert2/sweetalert2.min.css',
+        'design/assets/font/css/all.min.css',
 
     ];
     public $js = [

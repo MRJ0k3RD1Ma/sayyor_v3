@@ -19,6 +19,8 @@ use common\models\Vaccination;
 use common\models\VetSites;
 use frontend\models\search\lab\SertificatesRegSearch;
 use frontend\models\search\lab\SertificatesSearch;
+use frontend\models\search\SampleRegistrationSearch;
+use PhpOffice\PhpSpreadsheet\Helper\Sample;
 use yii\base\BaseObject;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -456,12 +458,51 @@ class RegisterController extends Controller
 
 
     public function actionRegtest(){
-        $searchModel = new SertificatesRegSearch();
+        $searchModel = new SampleRegistrationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
         return $this->render('regtest', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionIncome($id){
+        $model = SampleRegistration::findOne($id);
+        $model->emp_id = Yii::$app->user->id;
+        $cs = CompositeSamples::find()->where(['registration_id'=>$id])->all();
+        foreach ($cs as $item){
+            $samp = Samples::findOne($item->sample_id);
+            $samp->status_id = 2;
+            $samp->save();
+            $samp = null;
+        }
+        $samp = Samples::findOne($cs[0]->sample_id);
+        $sert = Sertificates::findOne($samp->sert_id);
+        $sert->status_id = 2;
+        $model->status_id = 2;
+        $sert->save();
+        $model->save();
+        return $this->redirect(['regview','id'=>$id]);
+    }
+
+    public function actionIncomesamples($id){
+        $model = SampleRegistration::findOne($id);
+        $model->emp_id = Yii::$app->user->id;
+
+        $cs = CompositeSamples::find()->where(['registration_id'=>$id])->all();
+
+        return $this->render('incomesamples',['model'=>$model,'cs'=>$cs]);
+    }
+
+    public function actionRegview($id){
+        $model = SampleRegistration::findOne($id);
+        $samples = Samples::find()->select(['samples.*'])
+            ->innerJoin('composite_samples','composite_samples.sample_id = samples.id')
+            ->where(['composite_samples.registration_id'=>$id])->all();
+
+        return $this->render('regview',[
+            'model'=>$model,
+            'samples'=>$samples
         ]);
     }
 

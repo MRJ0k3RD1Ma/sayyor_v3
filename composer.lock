@@ -4,7 +4,6 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
     "content-hash": "123d7407ae522e09ab44ac38bf5ee6bb",
     "packages": [
         {
@@ -19,22 +18,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/Bacon/BaconQrCode/zipball/d70c840f68657ce49094b8d91f9ee0cc07fbf66c",
                 "reference": "d70c840f68657ce49094b8d91f9ee0cc07fbf66c",
-=======
-    "content-hash": "b8c90bee8cb07afb6371bea65a5edcb1",
-    "packages": [
-        {
-            "name": "bacon/bacon-qr-code",
-            "version": "2.0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Bacon/BaconQrCode.git",
-                "reference": "0069435e2a01a57193b25790f105a5d3168653c1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Bacon/BaconQrCode/zipball/0069435e2a01a57193b25790f105a5d3168653c1",
-                "reference": "0069435e2a01a57193b25790f105a5d3168653c1",
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
                 "shasum": ""
             },
             "require": {
@@ -73,15 +56,9 @@
             "homepage": "https://github.com/Bacon/BaconQrCode",
             "support": {
                 "issues": "https://github.com/Bacon/BaconQrCode/issues",
-<<<<<<< HEAD
                 "source": "https://github.com/Bacon/BaconQrCode/tree/2.0.7"
             },
             "time": "2022-03-14T02:02:36+00:00"
-=======
-                "source": "https://github.com/Bacon/BaconQrCode/tree/2.0.6"
-            },
-            "time": "2022-02-04T20:16:05+00:00"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
         },
         {
             "name": "bower-asset/inputmask",
@@ -1622,7 +1599,6 @@
         },
         {
             "name": "codeception/codeception",
-<<<<<<< HEAD
             "version": "4.1.31",
             "source": {
                 "type": "git",
@@ -1633,18 +1609,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/Codeception/Codeception/zipball/15524571ae0686a7facc2eb1f40f600e5bbce9e5",
                 "reference": "15524571ae0686a7facc2eb1f40f600e5bbce9e5",
-=======
-            "version": "4.1.30",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "a035d77d070fa57fad438e07a65447aeca248c45"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/a035d77d070fa57fad438e07a65447aeca248c45",
-                "reference": "a035d77d070fa57fad438e07a65447aeca248c45",
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
                 "shasum": ""
             },
             "require": {
@@ -1721,11 +1685,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/Codeception/issues",
-<<<<<<< HEAD
                 "source": "https://github.com/Codeception/Codeception/tree/4.1.31"
-=======
-                "source": "https://github.com/Codeception/Codeception/tree/4.1.30"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
             },
             "funding": [
                 {
@@ -1733,11 +1693,7 @@
                     "type": "open_collective"
                 }
             ],
-<<<<<<< HEAD
             "time": "2022-03-13T17:07:08+00:00"
-=======
-            "time": "2022-03-05T18:12:30+00:00"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
         },
         {
             "name": "codeception/lib-asserts",
@@ -2406,72 +2362,6 @@
             "time": "2021-10-06T17:43:30+00:00"
         },
         {
-<<<<<<< HEAD
-=======
-            "name": "kartik-v/yii2-mpdf",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kartik-v/yii2-mpdf.git",
-                "reference": "2679af91552c1919e10ac13fbb1f3b3eea02bbb5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-mpdf/zipball/2679af91552c1919e10ac13fbb1f3b3eea02bbb5",
-                "reference": "2679af91552c1919e10ac13fbb1f3b3eea02bbb5",
-                "shasum": ""
-            },
-            "require": {
-                "mpdf/mpdf": "~8.0"
-            },
-            "default-branch": true,
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "kartik\\mpdf\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Kartik Visweswaran",
-                    "email": "kartikv2@gmail.com",
-                    "homepage": "http://www.krajee.com/"
-                }
-            ],
-            "description": "A Yii2 wrapper component for the mPDF library which generates PDF files from UTF-8 encoded HTML.",
-            "homepage": "https://github.com/kartik-v/yii2-mpdf",
-            "keywords": [
-                "component",
-                "extension",
-                "html",
-                "mpdf",
-                "pdf",
-                "utf8",
-                "yii2"
-            ],
-            "support": {
-                "issues": "https://github.com/kartik-v/yii2-mpdf/issues",
-                "source": "https://github.com/kartik-v/yii2-mpdf/tree/master"
-            },
-            "funding": [
-                {
-                    "url": "https://opencollective.com/yii2-mpdf",
-                    "type": "open_collective"
-                }
-            ],
-            "time": "2021-08-17T06:17:50+00:00"
-        },
-        {
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
             "name": "maennchen/zipstream-php",
             "version": "2.1.0",
             "source": {
@@ -3696,11 +3586,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-<<<<<<< HEAD
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/8.5.25"
-=======
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/8.5.24"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
             },
             "funding": [
                 {
@@ -3712,11 +3598,7 @@
                     "type": "github"
                 }
             ],
-<<<<<<< HEAD
             "time": "2022-03-16T16:24:13+00:00"
-=======
-            "time": "2022-03-05T16:52:36+00:00"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
         },
         {
             "name": "psr/container",
@@ -3982,59 +3864,6 @@
             "time": "2016-08-06T14:39:51+00:00"
         },
         {
-<<<<<<< HEAD
-=======
-            "name": "psr/log",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/log.git",
-                "reference": "ef29f6d262798707a9edd554e2b82517ef3a9376"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/ef29f6d262798707a9edd554e2b82517ef3a9376",
-                "reference": "ef29f6d262798707a9edd554e2b82517ef3a9376",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Log\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "https://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interface for logging libraries",
-            "homepage": "https://github.com/php-fig/log",
-            "keywords": [
-                "log",
-                "psr",
-                "psr-3"
-            ],
-            "support": {
-                "source": "https://github.com/php-fig/log/tree/2.0.0"
-            },
-            "time": "2021-07-14T16:41:46+00:00"
-        },
-        {
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
             "name": "psr/simple-cache",
             "version": "1.0.1",
             "source": {
@@ -4859,7 +4688,6 @@
             "time": "2016-10-03T07:35:21+00:00"
         },
         {
-<<<<<<< HEAD
             "name": "symfony/browser-kit",
             "version": "v4.2.4",
             "source": {
@@ -4880,113 +4708,16 @@
             "require-dev": {
                 "symfony/css-selector": "~3.4|~4.0",
                 "symfony/process": "~3.4|~4.0"
-=======
-            "name": "setasign/fpdi",
-            "version": "v2.3.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Setasign/FPDI.git",
-                "reference": "6231e315f73e4f62d72b73f3d6d78ff0eed93c31"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Setasign/FPDI/zipball/6231e315f73e4f62d72b73f3d6d78ff0eed93c31",
-                "reference": "6231e315f73e4f62d72b73f3d6d78ff0eed93c31",
-                "shasum": ""
-            },
-            "require": {
-                "ext-zlib": "*",
-                "php": "^5.6 || ^7.0 || ^8.0"
-            },
-            "conflict": {
-                "setasign/tfpdf": "<1.31"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~5.7",
-                "setasign/fpdf": "~1.8",
-                "setasign/tfpdf": "1.31",
-                "squizlabs/php_codesniffer": "^3.5",
-                "tecnickcom/tcpdf": "~6.2"
-            },
-            "suggest": {
-                "setasign/fpdf": "FPDI will extend this class but as it is also possible to use TCPDF or tFPDF as an alternative. There's no fixed dependency configured."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "setasign\\Fpdi\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jan Slabon",
-                    "email": "jan.slabon@setasign.com",
-                    "homepage": "https://www.setasign.com"
-                },
-                {
-                    "name": "Maximilian Kresse",
-                    "email": "maximilian.kresse@setasign.com",
-                    "homepage": "https://www.setasign.com"
-                }
-            ],
-            "description": "FPDI is a collection of PHP classes facilitating developers to read pages from existing PDF documents and use them as templates in FPDF. Because it is also possible to use FPDI with TCPDF, there are no fixed dependencies defined. Please see suggestions for packages which evaluates the dependencies automatically.",
-            "homepage": "https://www.setasign.com/fpdi",
-            "keywords": [
-                "fpdf",
-                "fpdi",
-                "pdf"
-            ],
-            "support": {
-                "issues": "https://github.com/Setasign/FPDI/issues",
-                "source": "https://github.com/Setasign/FPDI/tree/v2.3.6"
-            },
-            "funding": [
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/setasign/fpdi",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-02-11T11:37:01+00:00"
-        },
-        {
-            "name": "symfony/browser-kit",
-            "version": "v3.4.47",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/browser-kit.git",
-                "reference": "9590bd3d3f9fa2f28d34b713ed4765a8cc8ad15c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/9590bd3d3f9fa2f28d34b713ed4765a8cc8ad15c",
-                "reference": "9590bd3d3f9fa2f28d34b713ed4765a8cc8ad15c",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.5.9|>=7.0.8",
-                "symfony/dom-crawler": "~2.8|~3.0|~4.0"
-            },
-            "require-dev": {
-                "symfony/css-selector": "~2.8|~3.0|~4.0",
-                "symfony/process": "~2.8|~3.0|~4.0"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
             },
             "suggest": {
                 "symfony/process": ""
             },
             "type": "library",
-<<<<<<< HEAD
             "extra": {
                 "branch-alias": {
                     "dev-master": "4.2-dev"
                 }
             },
-=======
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\BrowserKit\\": ""
@@ -5012,29 +4743,9 @@
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
             "support": {
-<<<<<<< HEAD
                 "source": "https://github.com/symfony/browser-kit/tree/4.2"
             },
             "time": "2019-02-23T15:17:42+00:00"
-=======
-                "source": "https://github.com/symfony/browser-kit/tree/v3.4.47"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-10-24T10:57:07+00:00"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
         },
         {
             "name": "symfony/console",
@@ -5203,7 +4914,6 @@
         },
         {
             "name": "symfony/deprecation-contracts",
-<<<<<<< HEAD
             "version": "v2.5.0",
             "source": {
                 "type": "git",
@@ -5218,31 +4928,11 @@
             },
             "require": {
                 "php": ">=7.1"
-=======
-            "version": "v3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "c726b64c1ccfe2896cb7df2e1331c357ad1c8ced"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/c726b64c1ccfe2896cb7df2e1331c357ad1c8ced",
-                "reference": "c726b64c1ccfe2896cb7df2e1331c357ad1c8ced",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0.2"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-<<<<<<< HEAD
                     "dev-main": "2.5-dev"
-=======
-                    "dev-main": "3.0-dev"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -5271,11 +4961,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-<<<<<<< HEAD
                 "source": "https://github.com/symfony/deprecation-contracts/tree/v2.5.0"
-=======
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.0.0"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
             },
             "funding": [
                 {
@@ -5291,11 +4977,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
             "time": "2021-07-12T14:48:14+00:00"
-=======
-            "time": "2021-11-01T23:48:49+00:00"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
         },
         {
             "name": "symfony/dom-crawler",
@@ -5458,7 +5140,6 @@
         },
         {
             "name": "symfony/event-dispatcher-contracts",
-<<<<<<< HEAD
             "version": "v2.5.0",
             "source": {
                 "type": "git",
@@ -5473,22 +5154,6 @@
             },
             "require": {
                 "php": ">=7.2.5",
-=======
-            "version": "v3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/event-dispatcher-contracts.git",
-                "reference": "aa5422287b75594b90ee9cd807caf8f0df491385"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/aa5422287b75594b90ee9cd807caf8f0df491385",
-                "reference": "aa5422287b75594b90ee9cd807caf8f0df491385",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0.2",
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
                 "psr/event-dispatcher": "^1"
             },
             "suggest": {
@@ -5497,11 +5162,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-<<<<<<< HEAD
                     "dev-main": "2.5-dev"
-=======
-                    "dev-main": "3.0-dev"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -5538,11 +5199,7 @@
                 "standards"
             ],
             "support": {
-<<<<<<< HEAD
                 "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v2.5.0"
-=======
-                "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.0.0"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
             },
             "funding": [
                 {
@@ -5558,11 +5215,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
             "time": "2021-07-12T14:48:14+00:00"
-=======
-            "time": "2021-07-15T12:33:35+00:00"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
         },
         {
             "name": "symfony/finder",
@@ -5954,7 +5607,6 @@
         },
         {
             "name": "symfony/service-contracts",
-<<<<<<< HEAD
             "version": "v1.1.2",
             "source": {
                 "type": "git",
@@ -5972,42 +5624,12 @@
             },
             "suggest": {
                 "psr/container": "",
-=======
-            "version": "v3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "36715ebf9fb9db73db0cb24263c79077c6fe8603"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/36715ebf9fb9db73db0cb24263c79077c6fe8603",
-                "reference": "36715ebf9fb9db73db0cb24263c79077c6fe8603",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0.2",
-                "psr/container": "^2.0"
-            },
-            "conflict": {
-                "ext-psr": "<1.1|>=2"
-            },
-            "suggest": {
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
                 "symfony/service-implementation": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-<<<<<<< HEAD
                     "dev-master": "1.1-dev"
-=======
-                    "dev-main": "3.0-dev"
-                },
-                "thanks": {
-                    "name": "symfony/contracts",
-                    "url": "https://github.com/symfony/contracts"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
                 }
             },
             "autoload": {
@@ -6040,7 +5662,6 @@
                 "standards"
             ],
             "support": {
-<<<<<<< HEAD
                 "source": "https://github.com/symfony/service-contracts/tree/v1.1.2"
             },
             "time": "2019-05-28T07:50:59+00:00"
@@ -6075,55 +5696,6 @@
                 "symfony/http-client": "^4.4|^5.0|^6.0",
                 "symfony/translation-contracts": "^1.1|^2",
                 "symfony/var-exporter": "^4.4|^5.0|^6.0"
-=======
-                "source": "https://github.com/symfony/service-contracts/tree/v3.0.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-11-04T17:53:12+00:00"
-        },
-        {
-            "name": "symfony/string",
-            "version": "v6.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/string.git",
-                "reference": "522144f0c4c004c80d56fa47e40e17028e2eefc2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/522144f0c4c004c80d56fa47e40e17028e2eefc2",
-                "reference": "522144f0c4c004c80d56fa47e40e17028e2eefc2",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0.2",
-                "symfony/polyfill-ctype": "~1.8",
-                "symfony/polyfill-intl-grapheme": "~1.0",
-                "symfony/polyfill-intl-normalizer": "~1.0",
-                "symfony/polyfill-mbstring": "~1.0"
-            },
-            "conflict": {
-                "symfony/translation-contracts": "<2.0"
-            },
-            "require-dev": {
-                "symfony/error-handler": "^5.4|^6.0",
-                "symfony/http-client": "^5.4|^6.0",
-                "symfony/translation-contracts": "^2.0|^3.0",
-                "symfony/var-exporter": "^5.4|^6.0"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
             },
             "type": "library",
             "autoload": {
@@ -6162,11 +5734,7 @@
                 "utf8"
             ],
             "support": {
-<<<<<<< HEAD
                 "source": "https://github.com/symfony/string/tree/v5.4.3"
-=======
-                "source": "https://github.com/symfony/string/tree/v6.0.3"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
             },
             "funding": [
                 {
@@ -6182,11 +5750,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
             "time": "2022-01-02T09:53:40+00:00"
-=======
-            "time": "2022-01-02T09:55:41+00:00"
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
         },
         {
             "name": "symfony/yaml",
@@ -6629,13 +6193,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-<<<<<<< HEAD
     "stability-flags": [],
-=======
-    "stability-flags": {
-        "kartik-v/yii2-mpdf": 20
-    },
->>>>>>> 8a0b54387e4e805b2c903b679e12578b2bf116ef
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

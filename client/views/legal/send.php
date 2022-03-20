@@ -41,6 +41,7 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($reg,'composite')->dropDownList($res,['multiple'=>'multiple','class'=>'form-control select2list']) ?>
 
                 <?= $form->field($reg,'sender_name')?>
+
                 <?= $form->field($reg,'sender_phone')?>
 
                 <button type="submit" class="btn btn-success">Arizani jo'natish</button>

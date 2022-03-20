@@ -105,10 +105,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/markbaker/matrix" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/markbaker/complex" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/maennchen/zipstream-php" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/mpdf/mpdf" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/kartik-v/yii2-mpdf" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/setasign/fpdi" />
       <excludeFolder url="file://$MODULE_DIR$/client/web/tmp/excel" />
       <excludeFolder url="file://$MODULE_DIR$/frontend/runtime/cache" />
       <excludeFolder url="file://$MODULE_DIR$/frontend/runtime/debug" />
@@ -121,9 +117,6 @@
       <excludeFolder url="file://$MODULE_DIR$/frontend/web/assets/150f532f" />
       <excludeFolder url="file://$MODULE_DIR$/frontend/web/assets/c03d119e" />
       <excludeFolder url="file://$MODULE_DIR$/frontend/web/assets/ffccd88" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/kartik-v" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/mpdf" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/setasign" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

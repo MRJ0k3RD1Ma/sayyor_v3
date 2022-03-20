@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\SertificatesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('client', 'Hayvon kasalliklari tashhilari ro\'yhati');
+$this->title = Yii::t('client', 'Hayvon kasalliklari tashhisi bo\'yicha namuna olish dalolatnomalari');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sertificates-index">
@@ -35,7 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
 
                         <?= Html::a(Yii::t('client', 'Dalolatnoma qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
-                        <?= Html::a(Yii::t('client', 'Ariza berish'), ['create'], ['class' => 'btn btn-success']) ?>
 
 
                     </div>
@@ -88,12 +87,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return $d->status->name_uz;
                                 }
                             ],
-                            /* [
-                                 'class' => 'yii\grid\ActionColumn',
-                                 'urlCreator' => function ($action, $model, $key, $index) {
-                                     return \yii\helpers\Url::to([$action, 'id' => $model->id]);
-                                 }
-                             ],*/
+                           /* [
+                                'class' => 'yii\grid\ActionColumn',
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    return \yii\helpers\Url::to([$action, 'id' => $model->id]);
+                                }
+                            ],*/
                         ],
                     ]); ?>
                 </div>

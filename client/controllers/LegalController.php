@@ -3,6 +3,7 @@
 namespace client\controllers;
 
 use client\models\InnForm;
+use client\models\search\SampleRegistrationSearch;
 use client\models\search\SertificatesSearch;
 use common\models\Animals;
 use common\models\CompositeSamples;
@@ -221,7 +222,7 @@ class LegalController extends Controller
             $num = SampleRegistration::find()->filterWhere(['like','reg_date',date('Y')])->max('code_id');
 
             $code = substr(date('Y'),2,2).'-1-'.get3num($reg->organization_id).'-';
-
+            $reg->status_id = 1;
             $num = $num+1;
             $code .= $num;
             $reg->code = $code;
@@ -379,5 +380,23 @@ class LegalController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    public function actionSertapp(){
+        $searchModel = new SampleRegistrationSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        return $this->render('regtest', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    public function actionSertappview($id){
+        $model = SampleRegistration::findOne($id);
+        $samples = Samples::find()->select(['samples.*'])
+            ->innerJoin('composite_samples','composite_samples.sample_id = samples.id')
+            ->where(['composite_samples.registration_id'=>$id])->all();
 
+        return $this->render('sertappview',[
+            'model'=>$model,
+            'samples'=>$samples
+        ]);
+    }
 }

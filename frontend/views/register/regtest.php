@@ -4,6 +4,8 @@ use common\models\Sertificates;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+use yii\helpers\Url;
+use yii\grid\ActionColumn;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\SertificatesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -43,29 +45,56 @@ $this->params['breadcrumbs'][] = $this->title;
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
-//                            'sert_id',
+//                            'id',
+//                            'code',
                             [
-                                'attribute'=>'sert_full',
-                                'format'=>'raw',
+                                'attribute'=>'code',
                                 'value'=>function($d){
-                                    $url = Yii::$app->urlManager->createUrl(['/register/viewtestreg','id'=>$d->id]);
-                                    return "<a href='{$url}'>{$d->sert_full}</a>";
+                                    $url = Yii::$app->urlManager->createUrl(['/register/regview','id'=>$d->id]);
+                                    return "<a href='{$url}'>{$d->code}</a>";
                                 },
+                                'filter'=>false,
+                                'format'=>'raw'
                             ],
-                            'sert_num',
-                            'sert_date',
-//                            'organization_id',
-                            'pnfl',
-                            'owner_name',
-//                            'vet_site_id',
                             [
-                                'attribute'=>'vet_site_id',
+                                'label'=>Yii::t('register','Yuboruvchi'),
                                 'value'=>function($d){
-                                    return $d->vetSite->name;
+                                    if($d->inn){
+                                        return $d->inn.'<br>'.$d->inn0->name;
+                                    }elseif($d->pnfl){
+                                        return $d->pnfl.'<br>'.$d->pnfl0->name.' '.$d->pnfl0->surname.' '.$d->pnfl0->middlename;
+                                    }else{
+                                        return null;
+                                    }
+                                },
+                                'format'=>'raw'
+                            ],
+//                            'is_research',
+                            [
+                                'attribute'=>'is_research',
+                                'value'=>function($d){
+                                    $s = [0=>'Shoshilinch emas',1=>'Shohilinch'];
+                                    return $s[$d->is_research];
                                 }
                             ],
-                            //'operator',
-
+//                            'code_id',
+                            //'code',
+                            //'research_category_id',
+                            [
+                                'attribute'=>'research_category_id',
+                                'value'=>function($d){
+                                    return $d->researchCategory->name_uz;
+                                }
+                            ],
+                            //'results_conformity_id',
+                            //'organization_id',
+                            //'emp_id',
+//                            'reg_date',
+                            //'reg_id',
+                            'sender_name',
+                            'sender_phone',
+                            'created',
+                            //'updated',
                         ],
                     ]); ?>
                 </div>

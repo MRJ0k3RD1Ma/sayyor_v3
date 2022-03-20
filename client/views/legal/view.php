@@ -23,11 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <p>
-        <?= Html::a(Yii::t('cp.sertificates', 'O\'zgartirish'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php if($model->status_id == 0){?>
+            <?= Html::a(Yii::t('cp.sertificates', 'O\'zgartirish'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php }?>
+        <?php if($model->status_id == 0 or \common\models\Samples::find()->where(['sert_id'=>$model->id])->andWhere(['status_id'=>0])->count('id') > 0){?>
             <?= Html::a(Yii::t('cp.sertificates', 'Arizani yuborish'), ['send', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?php }?>
+        <a href="#" class="btn btn-primary">Arizani PDF ko'rinishda yuklab olish</a>
     </p>
+    <p><?= Yii::t('client','Umumiy {n} ta namuna. Shundan {m} tasiga ariza berilmagan',['n'=>count($model->samples),'m'=>\common\models\Samples::find()->where(['sert_id'=>$model->id])->andWhere(['status_id'=>0])->count('id')])?></p>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -138,7 +142,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 ?>
                     <tr>
-                        <td rowspan="<?= $cnt + 1?>"><span class="<?= $item->status->icon?>"></span> <?= $item->kod?></td>
+                        <td rowspan="<?= $cnt + 1?>"><?= $item->status->icon?> <?= $item->kod?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>
@@ -146,8 +150,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td rowspan="<?= $cnt + 1?>"><?= $item->animal->type->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= Yii::$app->params['gender'][$item->animal->gender] ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->animal->birthday ?></td>
-                        <td colspan="2"><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/vaccination','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Emlash</a></td>
-                        <td colspan="2"><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/emlash','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Davolash</a></td>
+                        <td colspan="2"><?php if($model->status_id == 0){?><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/vaccination','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Emlash</a><?php }?></td>
+                        <td colspan="2"><?php if($model->status_id == 0){?><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/emlash','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Davolash</a><?php }?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->suspectedDisease->name_uz?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->testMehod->name_uz?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->repeat_code?></td>
@@ -164,9 +168,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     </tr>
                     <?php endfor; ?>
                 <?php endforeach;?>
-                <tr>
-                    <td colspan="15"><a href="<?= Yii::$app->urlManager->createUrl(['/legal/add','id'=>$model->id])?>" class="btn btn-primary">Yana qo'shish</a></td>
-                </tr>
+                <?php if($model->status_id == 0){?>
+                    <tr>
+                        <td colspan="15"><a href="<?= Yii::$app->urlManager->createUrl(['/legal/add','id'=>$model->id])?>" class="btn btn-primary">Yana qo'shish</a></td>
+                    </tr>
+                <?php }?>
             </tbody>
         </table>
     </div>

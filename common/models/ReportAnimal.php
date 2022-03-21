@@ -8,14 +8,11 @@ use Yii;
  * This is the model class for table "report_animal".
  *
  * @property int $id
- * @property string $sender_name
  * @property int|null $type_id
  * @property int|null $cat_id Kirik olik
  * @property int|null $soato_id
- * @property string|null $location
  * @property string|null $lat
  * @property string|null $long
- * @property string|null $image
  * @property string|null $detail
  * @property int|null $operator_id
  * @property int|null $is_true
@@ -23,14 +20,20 @@ use Yii;
  * @property string|null $phone
  * @property string|null $created
  * @property string|null $updated
+ * @property string|null $code
+ * @property string|null $lang
+ * @property string|null $image
+ * @property int|null $rep_id
  *
  * @property AnimalCategory $cat
+ * @property AnimalCategory $cat0
  * @property ReportStatus $reportStatus
  * @property Soato $soato
  * @property Animaltype $type
  */
 class ReportAnimal extends \yii\db\ActiveRecord
 {
+    public $image;
     /**
      * {@inheritdoc}
      */
@@ -45,11 +48,12 @@ class ReportAnimal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type_id', 'cat_id', 'soato_id', 'operator_id', 'is_true', 'report_status_id'], 'integer'],
+            [['type_id', 'cat_id', 'soato_id', 'operator_id', 'is_true', 'report_status_id', 'rep_id'], 'integer'],
             [['detail'], 'string'],
+            [['image'],'each','rule'=>['string']],
             [['created', 'updated'], 'safe'],
-            [['sender_name', 'lat', 'long', 'image', 'phone'], 'string', 'max' => 255],
-            [['location'], 'string', 'max' => 500],
+            [['lat', 'long', 'phone', 'code','lang'], 'string', 'max' => 255],
+            [['cat_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalCategory::className(), 'targetAttribute' => ['cat_id' => 'id']],
             [['report_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportStatus::className(), 'targetAttribute' => ['report_status_id' => 'id']],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::className(), 'targetAttribute' => ['soato_id' => 'MHOBT_cod']],
             [['cat_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalCategory::className(), 'targetAttribute' => ['cat_id' => 'id']],
@@ -64,21 +68,25 @@ class ReportAnimal extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('report', 'ID'),
-            'sender_name' => Yii::t('report', 'Sender Name'),
-            'type_id' => Yii::t('report', 'Type ID'),
-            'cat_id' => Yii::t('report', 'Cat ID'),
-            'soato_id' => Yii::t('report', 'Soato ID'),
-            'location' => Yii::t('report', 'Location'),
+
+
+            'type_id' => Yii::t('report', 'Hayvon turi'),
+            'cat_id' => Yii::t('report', 'Hayvon holat'),
+            'soato_id' => Yii::t('report', 'Manzil'),
             'lat' => Yii::t('report', 'Lat'),
             'long' => Yii::t('report', 'Long'),
-            'image' => Yii::t('report', 'Image'),
-            'detail' => Yii::t('report', 'Detail'),
-            'operator_id' => Yii::t('report', 'Operator ID'),
-            'is_true' => Yii::t('report', 'Is True'),
-            'report_status_id' => Yii::t('report', 'Report Status ID'),
-            'phone' => Yii::t('report', 'Phone'),
+            'detail' => Yii::t('report', 'Batafsil'),
+            'phone' => Yii::t('report', 'Telefon raqami'),
+
+
+            'operator_id' => Yii::t('report', 'Operator'),
+            'is_true' => Yii::t('report', 'Tasdiqdan o\'tgan'),
+            'report_status_id' => Yii::t('report', 'Status'),
             'created' => Yii::t('report', 'Created'),
             'updated' => Yii::t('report', 'Updated'),
+            'code' => Yii::t('report', 'Code'),
+            'rep_id' => Yii::t('report', 'Rep ID'),
+            'lang' => Yii::t('report', 'Til'),
         ];
     }
 
@@ -88,6 +96,16 @@ class ReportAnimal extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getCat()
+    {
+        return $this->hasOne(AnimalCategory::className(), ['id' => 'cat_id']);
+    }
+
+    /**
+     * Gets query for [[Cat0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCat0()
     {
         return $this->hasOne(AnimalCategory::className(), ['id' => 'cat_id']);
     }

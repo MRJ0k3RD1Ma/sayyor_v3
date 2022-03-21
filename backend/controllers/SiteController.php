@@ -2,10 +2,14 @@
 
 namespace backend\controllers;
 
-use common\models\RegionsView;
+use backend\models\LoginForm;
+use common\models\Users;
 use Yii;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 use yii\rest\Controller;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -13,9 +17,24 @@ use yii\rest\Controller;
 class SiteController extends Controller
 {
 
-   public function actionGetregion(){
-       $model = RegionsView::find()->select(['region_id','name_lot','name_ru','name_cyr'])->all();
+    public function actionLogin(){
+        $model = new LoginForm();
+        if($model->load(Yii::$app->request->post(),'') and ($u = $model->login())){
+            $user = Users::findOne($u);
+            return [
+                'status'=>200,
+                'message'=>'Muvaffaqiyatli kirildi',
+                'user_id'=>$user->id,
+                'name'=>$user->name,
+                'username'=>$user->username,
+                'token'=>$user->token,
+                'email'=>$user->email,
+                'village_id'=>$user->post->village_id,
+                'village_name'=>$user->post->village->name,
+            ] ;
+        }else{
+            return $model;
+        }
+    }
 
-       return $model;
-   }
 }

@@ -25,12 +25,13 @@ use Yii;
  * @property string|null $updated
  *
  * @property AnimalCategory $cat
- * @property ReportStatus $reportStatus
+
  * @property Soato $soato
  * @property Animaltype $type
  */
 class ReportAnimal extends \yii\db\ActiveRecord
 {
+    public $images;
     /**
      * {@inheritdoc}
      */
@@ -47,10 +48,11 @@ class ReportAnimal extends \yii\db\ActiveRecord
         return [
             [['type_id', 'cat_id', 'soato_id', 'operator_id', 'is_true', 'report_status_id'], 'integer'],
             [['detail'], 'string'],
+            ['images','each','rules'=>['string']],
             [['created', 'updated'], 'safe'],
             [['sender_name', 'lat', 'long', 'image', 'phone'], 'string', 'max' => 255],
             [['location'], 'string', 'max' => 500],
-            [['report_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportStatus::className(), 'targetAttribute' => ['report_status_id' => 'id']],
+//            [['report_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportStatus::className(), 'targetAttribute' => ['report_status_id' => 'id']],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::className(), 'targetAttribute' => ['soato_id' => 'MHOBT_cod']],
             [['cat_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalCategory::className(), 'targetAttribute' => ['cat_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animaltype::className(), 'targetAttribute' => ['type_id' => 'id']],
@@ -97,10 +99,10 @@ class ReportAnimal extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getReportStatus()
+    /*public function getReportStatus()
     {
         return $this->hasOne(ReportStatus::className(), ['id' => 'report_status_id']);
-    }
+    }*/
 
     /**
      * Gets query for [[Soato]].

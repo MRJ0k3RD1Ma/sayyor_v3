@@ -109,6 +109,7 @@ class IndController extends Controller
 
         $searchModel = new SertificatesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+//        var_dump(Yii::$app->session->get('doc_pnfl')) or die();
 
         return $this->render('indextest', [
             'searchModel' => $searchModel,
@@ -130,7 +131,7 @@ class IndController extends Controller
 
     public function actionCreate($type = null){
         if($type){
-            return $this->redirect(['/legal/'.$type]);
+            return $this->redirect(['/ind/'.$type]);
         }
         return $this->render('create');
     }

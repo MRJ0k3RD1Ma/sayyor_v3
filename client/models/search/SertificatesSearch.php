@@ -2,10 +2,11 @@
 
 namespace client\models\search;
 
-use yii\base\Model;
-use yii\data\ActiveDataProvider;
 use common\models\Sertificates;
 use Yii;
+use yii\base\Model;
+use yii\data\ActiveDataProvider;
+
 /**
  * SertificatesSearch represents the model behind the search form of `app\models\Sertificates`.
  */
@@ -42,8 +43,8 @@ class SertificatesSearch extends Sertificates
     {
         if(Yii::$app->session->get('doc_type') == 'inn'){
             $query = Sertificates::find()->where(['inn'=>Yii::$app->session->get('doc_inn')])->orWhere(['owner_inn'=>Yii::$app->session->get('doc_inn')])->orderBy(['id'=>SORT_DESC]);
-        }else{
-            $query = Sertificates::find()->where(['inn'=>Yii::$app->session->get('doc_pnfl')])->orWhere(['owner_pnfl'=>Yii::$app->session->get('doc_pnfl')])->orderBy(['id'=>SORT_DESC]);
+        }else {
+            $query = Sertificates::find()->where(['pnfl' => Yii::$app->session->get('doc_pnfl')])->orWhere(['owner_pnfl' => Yii::$app->session->get('doc_pnfl')])->orderBy(['id' => SORT_DESC]);
         }
 
 

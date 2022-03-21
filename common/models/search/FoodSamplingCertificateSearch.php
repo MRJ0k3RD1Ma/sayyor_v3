@@ -7,7 +7,7 @@ use yii\data\ActiveDataProvider;
 use common\models\FoodSamplingCertificate;
 
 /**
- * FoodSamplingCertificateSearch represents the model behind the search form of `app\models\FoodSamplingCertificate`.
+ * FoodSamplingCertificateSearch represents the model behind the search form of `common\models\FoodSamplingCertificate`.
  */
 class FoodSamplingCertificateSearch extends FoodSamplingCertificate
 {
@@ -17,9 +17,8 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
     public function rules()
     {
         return [
-            [['id', 'organization_id', 'sampling_site', 'sampler_organization_code', 'sampler_person_pnfl', 'unit_id', 'verification_sample', 'verification_pupose_id', 'sample_box_id', 'sample_condition_id', 'based_public_information', 'message_number', 'laboratory_test_type_id'], 'integer'],
-            [['kod', 'pnfl', 'sampling_adress', 'producer', 'serial_num', 'manufacture_date', 'sell_by', 'coments', 'sampling_date', 'send_sample_date', 'explanations'], 'safe'],
-            [['count'], 'number'],
+            [['id', 'food_id', 'sampling_site', 'verification_pupose_id', 'based_public_information', 'message_number'], 'integer'],
+            [['code', 'inn', 'pnfl', 'sampling_adress', 'sampler_person_pnfl', 'sampler_person_inn', 'sampling_date', 'send_sample_date', 'created', 'updated'], 'safe'],
         ];
     }
 
@@ -60,32 +59,23 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'organization_id' => $this->organization_id,
+            'food_id' => $this->food_id,
             'sampling_site' => $this->sampling_site,
-            'sampler_organization_code' => $this->sampler_organization_code,
-            'sampler_person_pnfl' => $this->sampler_person_pnfl,
-            'unit_id' => $this->unit_id,
-            'count' => $this->count,
-            'verification_sample' => $this->verification_sample,
-            'manufacture_date' => $this->manufacture_date,
-            'sell_by' => $this->sell_by,
             'verification_pupose_id' => $this->verification_pupose_id,
-            'sample_box_id' => $this->sample_box_id,
-            'sample_condition_id' => $this->sample_condition_id,
             'sampling_date' => $this->sampling_date,
             'send_sample_date' => $this->send_sample_date,
             'based_public_information' => $this->based_public_information,
             'message_number' => $this->message_number,
-            'laboratory_test_type_id' => $this->laboratory_test_type_id,
+            'created' => $this->created,
+            'updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'kod', $this->kod])
+        $query->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'inn', $this->inn])
             ->andFilterWhere(['like', 'pnfl', $this->pnfl])
             ->andFilterWhere(['like', 'sampling_adress', $this->sampling_adress])
-            ->andFilterWhere(['like', 'producer', $this->producer])
-            ->andFilterWhere(['like', 'serial_num', $this->serial_num])
-            ->andFilterWhere(['like', 'coments', $this->coments])
-            ->andFilterWhere(['like', 'explanations', $this->explanations]);
+            ->andFilterWhere(['like', 'sampler_person_pnfl', $this->sampler_person_pnfl])
+            ->andFilterWhere(['like', 'sampler_person_inn', $this->sampler_person_inn]);
 
         return $dataProvider;
     }

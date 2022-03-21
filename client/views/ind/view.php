@@ -152,8 +152,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td rowspan="<?= $cnt + 1?>"><?= $item->animal->birthday ?></td>
                         <td colspan="2"><?php if($model->status_id == 0){?><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/ind/vaccination','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Emlash</a><?php }?></td>
                         <td colspan="2"><?php if($model->status_id == 0){?><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/ind/emlash','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Davolash</a><?php }?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->suspectedDisease->name_uz?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->testMehod->name_uz?></td>
+                        <td rowspan="<?= $cnt + 1?>"><?= @$item->suspectedDisease->name_uz?></td>
+                        <td rowspan="<?= $cnt + 1?>"><?= @$item->testMehod->name_uz?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->repeat_code?></td>
                     </tr>
                     <?php

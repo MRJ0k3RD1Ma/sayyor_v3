@@ -46,32 +46,61 @@ $this->params['breadcrumbs'][] = $this->title;
                             ['class' => 'yii\grid\SerialColumn'],
 
 //                            'id',
-                            'kod',
-//                            'pnfl',
-//                            'organization_id',
-//                            'sampling_site',
-                            'sampling_adress',
-                            //'sampler_organization_code',
+                            'code',
+                            'food_id',
+                            'inn',
+                            'pnfl',
+                            //'sampling_site',
+                            //'sampling_adress',
                             //'sampler_person_pnfl',
-                            //'unit_id',
-                            'count',
-                            //'verification_sample',
-                            'producer',
-                            //'serial_num',
-                            //'manufacture_date',
-                            //'sell_by',
-                            //'coments',
+                            //'sampler_person_inn',
                             //'verification_pupose_id',
-                            //'sample_box_id',
-                            //'sample_condition_id',
                             //'sampling_date',
                             //'send_sample_date',
-                            'explanations',
                             //'based_public_information',
                             //'message_number',
-                            //'laboratory_test_type_id',
+                            //'created',
+                            //'updated',
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+                                'header' => 'Buyruqlar',
+                                'headerOptions' => ['style' => 'color:#337ab7'],
+                                'template' => '{view}  {update}  {delete}',
+                                'buttons' => [
+                                    'view' => function ($url, $model) {
+                                        return Html::a('<span class="fa fa-eye"></span>', $url, [
+                                            'title' => Yii::t('app', 'Batafsil'),
+                                        ]);
+                                    },
 
-                            ['class' => 'yii\grid\ActionColumn'],
+                                    'update' => function ($url, $model) {
+                                        return Html::a('<span class="fa fa-pen"></span>', $url, [
+                                            'title' => Yii::t('app', 'Yangilash'),
+                                        ]);
+                                    },
+                                    'delete' => function ($url, $model) {
+                                        return Html::a('<span class="fa fa-trash"></span>', $url, [
+                                            'title' => Yii::t('app', 'O\'chirish'),
+                                        ]);
+                                    }
+
+                                ],
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    if ($action === 'view') {
+                                        $url = 'viewfood?id=' . $model->id;
+                                        return $url;
+                                    }
+
+                                    if ($action === 'update') {
+                                        $url = 'updatefood?id='  . $model->id;
+                                        return $url;
+                                    }
+                                    if ($action === 'delete') {
+                                        $url = '&id=' . $model->id;
+                                        return $url;
+                                    }
+                                }
+                            ],
                         ],
                     ]); ?>
                 </div>

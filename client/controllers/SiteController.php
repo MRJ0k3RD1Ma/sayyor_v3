@@ -430,8 +430,9 @@ class SiteController extends Controller
         exit;
     }
 
-    public function actionGetVet($id,$regid){
-        $model = VetSites::find()->filterWhere(['like','soato','17'.$regid.$id])->all();
+    public function actionGetVet($id,$regid=null){
+//        $model = VetSites::find()->filterWhere(['like','soato','17'.$regid.$id])->all();
+        $model = VetSites::find()->filterWhere(['like','soato',$id])->all();
         $text = Yii::t('cp.vetsites','- Vet uchastkani tanlang -');
         $res = "<option value=''>{$text}</option>";
         $lang = Yii::$app->language;

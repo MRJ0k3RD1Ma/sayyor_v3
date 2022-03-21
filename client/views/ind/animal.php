@@ -14,103 +14,135 @@ use yii\widgets\ActiveForm;
     <div class="sertificates-form">
         <?php
         $lang = Yii::$app->language;
-        if($lang == 'ru'){
+        if ($lang == 'ru') {
             $ads = 'ru';
             $lg = 'ru';
-        }elseif($lang=='oz'){
+        } elseif ($lang == 'oz') {
             $ads = 'cyr';
             $lg = 'uz';
-        }else{
+        } else {
             $lg = 'uz';
             $ads = 'lot';
         }
         ?>
-        <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
+        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-        <?= $form->field($model, 'sert_num')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'sert_date')->textInput(['type'=>'date']) ?>
-
-        <?= $form->field($model, 'ownertype')->radioList([1=>Yii::t('reg','Jismoniy shaxs'),2=>Yii::t('reg','Yuridik shaxs')]) ?>
-
+        <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'sert_num')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-6">
+                <?= $form->field($model, 'sert_date')->textInput(['type' => 'date']) ?>
+            </div>
+            <?= $form->field($model, 'ownertype')->radioList([1 => Yii::t('reg', 'Jismoniy shaxs'), 2 => Yii::t('reg', 'Yuridik shaxs')]) ?>
+        </div>
         <div id="indiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0;">
-            <?= $form->field($ind, 'passport')->textInput(['maxlength' => true]) ?>
+            <div class="row">
+                <div class="col-md-2">
+                    <?= $form->field($ind, 'passport')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="col-md-2">
+                    <?= $form->field($ind, 'pnfl')->textInput(['maxlength' => 14, 'oninput' => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');", 'required' => true]) ?>
+                </div>
+                <div class="col-md-2">
+                    <?= $form->field($ind, 'name')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="col-md-3">
+                    <?= $form->field($ind, 'surname')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="col-md-3">
+                    <?= $form->field($ind, 'middlename')->textInput(['maxlength' => true]) ?>
+                </div>
+                <?php if ($ind->soato_id) {
+                    $ind->region = $ind->soato->region_id;
+                    $ind->district = $ind->soato->district_id;
+                    ?>
+                    <div class="col-md-3">
+                        <?= $form->field($ind, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(), 'region_id', 'name_' . $ads), ['prompt' => Yii::t('cp.individuals', 'Viloyatni tanlang')]) ?>
+                    </div>
+                    <div class="col-md-3">
+                        <?= $form->field($ind, 'district')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id' => $ind->soato->region_id])->all(), 'district_id', 'name_' . $ads), ['prompt' => Yii::t('cp.individuals', 'Tumanni tanlang')]) ?>
+                    </div>
+                    <div class="col-md-3">
+                        <?= $form->field($ind, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\QfiView::find()->where(['district_id' => $ind->soato->district_id])->all(), 'MHOBT_cod', 'name_' . $ads), ['prompt' => Yii::t('cp.individuals', 'QFYni tanlang')]) ?>
+                    </div>
+                <?php } else { ?>
+                    <div class="col-md-3">
+                        <?= $form->field($ind, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(), 'region_id', 'name_' . $ads), ['prompt' => Yii::t('cp.individuals', 'Viloyatni tanlang')]) ?>
+                    </div>
+                    <div class="col-md-3">
+                        <?= $form->field($ind, 'district')->dropDownList([], ['prompt' => Yii::t('cp.individuals', 'Tumanni tanlang')]) ?>
+                    </div>
+                    <div class="col-md-3">
+                        <?= $form->field($ind, 'soato_id')->dropDownList([], ['prompt' => Yii::t('cp.individuals', 'QFYni tanlang')]) ?>
+                    </div>
+                <?php } ?>
+                <div class="col-md-3">
+                    <?= $form->field($ind, 'adress')->textInput(['maxlength' => true]) ?>
+                </div>
 
-            <?= $form->field($ind, 'pnfl')->textInput(['maxlength' => 14,'oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');",'required'=>true]) ?>
 
-            <?= $form->field($ind, 'name')->textInput(['maxlength' => true]) ?>
+            </div>
 
-            <?= $form->field($ind, 'surname')->textInput(['maxlength' => true]) ?>
+            <div id="legdiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0; display: none;">
+                <?= $form->field($legal, 'inn')->textInput(['maxlength' => 9, 'oninput' => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');", 'required' => false]) ?>
+                <?= $form->field($legal, 'name')->textInput() ?>
+                <?= $form->field($legal, 'tshx_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Tshx::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('test', 'Tashkiliy huquqiy shakli')]) ?>
+                <?php if ($legal->soato_id) {
+                    $legal->region = $legal->soato->region_id;
+                    $legal->district = $legal->soato->district_id;
+                    ?>
+                    <?= $form->field($legal, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(), 'region_id', 'name_' . $ads), ['prompt' => Yii::t('cp.individuals', 'Viloyatni tanlang')]) ?>
 
-            <?= $form->field($ind, 'middlename')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($legal, 'district')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id' => $legal->soato->region_id])->all(), 'district_id', 'name_' . $ads), ['prompt' => Yii::t('cp.individuals', 'Tumanni tanlang')]) ?>
 
-            <?php if($ind->soato_id){
-                $ind->region  = $ind->soato->region_id;
-                $ind->district = $ind->soato->district_id;
-                ?>
-                <?= $form->field($ind, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Viloyatni tanlang')]) ?>
+                    <?= $form->field($legal, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\QfiView::find()->where(['district_id' => $legal->soato->district_id])->all(), 'MHOBT_cod', 'name_' . $ads), ['prompt' => Yii::t('cp.individuals', 'QFYni tanlang')]) ?>
+                <?php } else { ?>
+                    <?= $form->field($legal, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(), 'region_id', 'name_' . $ads), ['prompt' => Yii::t('cp.individuals', 'Viloyatni tanlang')]) ?>
 
-                <?= $form->field($ind, 'district')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$ind->soato->region_id])->all(),'district_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Tumanni tanlang')]) ?>
-                <?= $form->field($ind, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\QfiView::find()->where(['district_id'=>$ind->soato->district_id])->all(),'MHOBT_cod','name_'.$ads),['prompt'=>Yii::t('cp.individuals','QFYni tanlang')]) ?>
-            <?php }else{ ?>
-                <?= $form->field($ind, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Viloyatni tanlang')]) ?>
+                    <?= $form->field($legal, 'district')->dropDownList([], ['prompt' => Yii::t('cp.individuals', 'Tumanni tanlang')]) ?>
+                    <?= $form->field($legal, 'soato_id')->dropDownList([], ['prompt' => Yii::t('cp.individuals', 'QFYni tanlang')]) ?>
+                <?php } ?>
 
-                <?= $form->field($ind, 'district')->dropDownList([],['prompt'=>Yii::t('cp.individuals','Tumanni tanlang')]) ?>
-                <?= $form->field($ind, 'soato_id')->dropDownList([],['prompt'=>Yii::t('cp.individuals','QFYni tanlang')]) ?>
-            <?php }?>
+                <?= $form->field($legal, 'soogu')->textInput(['maxlength' => true]) ?>
+            </div>
 
-            <?= $form->field($ind, 'adress')->textInput(['maxlength' => true]) ?>
 
+            <h4>Namuna olinayotgan joy</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <?= $form->field($model, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(), 'region_id', 'name_' . $ads), ['prompt' => Yii::t('client', 'Viloyatni tanlang')]) ?>
+                </div>
+                <div class="col-md-4">
+                    <?= $form->field($model, 'district')->dropDownList([]) ?>
+                </div>
+                <div class="col-md-4">
+                    <?= $form->field($model, 'vet_site_id')->dropDownList([]) ?>
+                </div>
+            </div>
+            <h4>Namuna oluvchi: <?= Yii::$app->session->get('doc_name') ?></h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <?= $form->field($model, 'sampler_name')->textInput() ?>
+                </div>
+                <div class="col-md-6">
+                    <?= $form->field($model, 'sampler_position')->textInput() ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>
+            </div>
+
+            <?php ActiveForm::end(); ?>
 
         </div>
 
-        <div id="legdiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0; display: none;">
-            <?= $form->field($legal,'inn')->textInput(['maxlength' => 9,'oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');",'required'=>false])?>
-            <?= $form->field($legal,'name')->textInput()?>
-            <?= $form->field($legal,'tshx_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Tshx::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('test','Tashkiliy huquqiy shakli')])?>
-            <?php if($legal->soato_id){
-                $legal->region  = $legal->soato->region_id;
-                $legal->district = $legal->soato->district_id;
-                ?>
-                <?= $form->field($legal, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Viloyatni tanlang')]) ?>
 
-                <?= $form->field($legal, 'district')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$legal->soato->region_id])->all(),'district_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Tumanni tanlang')]) ?>
-
-                <?= $form->field($legal, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\QfiView::find()->where(['district_id'=>$legal->soato->district_id])->all(),'MHOBT_cod','name_'.$ads),['prompt'=>Yii::t('cp.individuals','QFYni tanlang')]) ?>
-            <?php }else{ ?>
-                <?= $form->field($legal, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Viloyatni tanlang')]) ?>
-
-                <?= $form->field($legal, 'district')->dropDownList([],['prompt'=>Yii::t('cp.individuals','Tumanni tanlang')]) ?>
-                <?= $form->field($legal, 'soato_id')->dropDownList([],['prompt'=>Yii::t('cp.individuals','QFYni tanlang')]) ?>
-            <?php }?>
-
-            <?= $form->field($legal, 'soogu')->textInput(['maxlength' => true]) ?>
-        </div>
-
-
-        <h4>Namuna olinayotgan joy</h4>
-        <?= $form->field($model, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('client','Viloyatni tanlang')]) ?>
-        <?= $form->field($model, 'district')->dropDownList([]) ?>
-        <?= $form->field($model, 'vet_site_id')->dropDownList([]) ?>
-
-        <h4>Namuna oluvchi: <?= Yii::$app->session->get('doc_name')?></h4>
-        <?= $form->field($model,'sampler_name')->textInput()?>
-        <?= $form->field($model,'sampler_position')->textInput()?>
-
-        <div class="form-group">
-            <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>
-        </div>
-
-        <?php ActiveForm::end(); ?>
-
-    </div>
-
-
-
-<?php
-$url_district = Yii::$app->urlManager->createUrl(['/site/get-district']);
-$url_vet = Yii::$app->urlManager->createUrl(['/site/get-vet']);
-$this->registerJs("
+        <?php
+        $url_district = Yii::$app->urlManager->createUrl(['/site/get-district']);
+        $url_vet = Yii::$app->urlManager->createUrl(['/site/get-vet']);
+        $this->registerJs("
         $('#sertificates-region').change(function(){
             $.get('{$url_district}?id='+$('#sertificates-region').val()).done(function(data){
                 $('#sertificates-district').empty();

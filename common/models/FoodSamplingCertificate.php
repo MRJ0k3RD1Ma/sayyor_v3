@@ -30,6 +30,7 @@ use Yii;
  */
 class FoodSamplingCertificate extends \yii\db\ActiveRecord
 {
+    public $district,$region,$soato;
     /**
      * {@inheritdoc}
      */

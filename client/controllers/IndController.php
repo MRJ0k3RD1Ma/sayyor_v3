@@ -347,17 +347,25 @@ class IndController extends Controller
         $model->pnfl = Yii::$app->session->get('doc_pnfl');
         if($model->load(Yii::$app->request->post())){
 
-            $org = $model->organization_id;
+//            $org = $model->organization_id;
+//
+//            $num = FoodSamplingCertificate::find()->where(['organization_id'=>$org])->andFilterWhere(['like','food_id',date('Y')])->max('food_id');
 
-            $num = FoodSamplingCertificate::find()->where(['organization_id'=>$org])->andFilterWhere(['like','food_id',date('Y')])->max('food_id');
+//            $code = substr(date('Y'),2,2).'-2-'.get3num($org).'-';
 
-            $code = substr(date('Y'),2,2).'-2-'.get3num($org).'-';
+//            $num = $num+1;
+//            $code .= $num;
+//            $model->kod = $code;
+//            $model->food_id = $num;
+//            $pro->orgaization_id = $model->organization_id;
+            $num = FoodSamplingCertificate::find()->filterWhere(['like','sampling_date',date('Y')])->max('id');
+            $vet = VetSites::findOne($model->sampling_site);
+            $code = $vet->soato0->region_id.$vet->soato0->district_id.'-'.   substr(date('Y'),2,2).'-';
 
             $num = $num+1;
             $code .= $num;
-            $model->kod = $code;
-            $model->food_id = $num;
-            $pro->orgaization_id = $model->organization_id;
+            $model->code = "$num";
+//            var_dump($model->code) or die();
             $pro->pnfl = $model->pnfl;
             $pro->vet_site_id = $model->sampling_site;
             if($model->save() and $pro->load(Yii::$app->request->post())){

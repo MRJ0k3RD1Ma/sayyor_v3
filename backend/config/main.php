@@ -72,7 +72,15 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'report',
-                    'extraPatterns' => [ 'GET getregion' => 'getregion','GET getdistrict'=>'getdistrict','GET get-vet'=>'get-vet','POST create'=>'create'],
+                    'extraPatterns' => [
+                        'GET getregion' => 'getregion',
+                        'GET getdistrict'=>'getdistrict',
+                        'GET get-vet'=>'get-vet',
+                        'GET getcategory'=>'getcategory',
+                        'GET gettype'=>'gettype',
+                        'POST create'=>'create',
+                        'POST setimage'=>'setimage',
+                    ],
                 ],
             ],
         ]

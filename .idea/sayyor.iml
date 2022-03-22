@@ -117,6 +117,10 @@
       <excludeFolder url="file://$MODULE_DIR$/frontend/web/assets/150f532f" />
       <excludeFolder url="file://$MODULE_DIR$/frontend/web/assets/c03d119e" />
       <excludeFolder url="file://$MODULE_DIR$/frontend/web/assets/ffccd88" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mpdf/mpdf" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/kartik-v/yii2-mpdf" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/setasign/fpdi" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

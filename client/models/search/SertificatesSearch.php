@@ -2,8 +2,9 @@
 
 namespace client\models\search;
 
-use common\models\Animals;
+use common\models\Samples;
 use common\models\Sertificates;
+use common\models\VetSites;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
@@ -20,14 +21,15 @@ use yii\helpers\FileHelper;
  */
 class SertificatesSearch extends Sertificates
 {
+    public $q;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['sert_id', 'sert_num', 'sert_date', 'pnfl', 'owner_name','status_id'], 'safe'],
-            [[ 'vet_site_id', ], 'integer'],
+            [['sert_id', 'q', 'sert_num', 'sert_date', 'pnfl', 'owner_name', 'status_id'], 'safe'],
+            [['vet_site_id',], 'integer'],
         ];
     }
 
@@ -115,9 +117,9 @@ class SertificatesSearch extends Sertificates
             'status_id' => $this->status_id,
         ]);
 
-        $query->andFilterWhere(['like', 'sert_id', $this->sert_id])
-            ->andFilterWhere(['like', 'sert_num', $this->sert_num])
-            ->andFilterWhere(['like', 'pnfl', $this->pnfl]);
+        $query->orFilterWhere(['like', 'sert_id', $this->q])
+            ->orFilterWhere(['like', 'sert_num', $this->q])
+            ->orFilterWhere(['like', 'pnfl', $this->q]);
 
         return $dataProvider;
     }
@@ -150,25 +152,35 @@ class SertificatesSearch extends Sertificates
             $row++;
             $col = 1;
             $key++;
-            $sampleout='';
-            foreach (Samples::find()->where(['sert_id' => $item->id])->all() as $sample) {
-                $sampleout.=$sample->status->icon." ".$sample->kod."<br>";
-            }
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_NUMERIC);
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->sert_full, DataType::TYPE_STRING);
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $sampleout, DataType::TYPE_STRING);
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->sert_date, DataType::TYPE_STRING);
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, function($d){
+            $namuna = static function ($d) {
+                $out = '';
+                foreach (Samples::find()->where(['sert_id' => $d->id])->all() as $sample) {
+                    $out .= $sample->kod . "\n";
+                }
+                return $out;
+            };
+            $owner = static function ($d) {
                 if ($d->owner_pnfl) {
-                    return $d->owner_pnfl . '<br>' . $d->ownerPnfl->name . ' ' . $d->ownerPnfl->surname . ' ' . $d->ownerPnfl->middlename;
+                    return $d->owner_pnfl . "\n" . $d->ownerPnfl->name . ' ' . $d->ownerPnfl->surname . ' ' . $d->ownerPnfl->middlename;
                 } elseif ($d->owner_inn) {
-                    return $d->owner_inn . '<br>' . $d->ownerInn->name;
-                }else{
+                    return $d->owner_inn . "\n" . $d->ownerInn->name;
+                } else {
                     return "Hayvon egasi haqida ma'lumot kiritilmagan";
                 }
-            }, DataType::TYPE_STRING);
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->vet_site_id, DataType::TYPE_STRING);
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->status_id, DataType::TYPE_STRING);
+            };
+            $status = function ($d) {
+                if (Yii::$app->language == 'ru') {
+                    return $d->status->name_ru;
+                }
+                return $d->status->name_uz;
+            };
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_NUMERIC);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->sert_full, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $namuna($item), DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->sert_date, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $owner($item), DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, VetSites::find()->where(['id' => $item->vet_site_id])->one()->name, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $status($item), DataType::TYPE_STRING);
         }
         $name = 'ExcelReport-' . Yii::$app->formatter->asDatetime(time(), 'php:d_m_Y_h_i_s') . '.xlsx';
         $writer = new Xlsx($speadsheet);

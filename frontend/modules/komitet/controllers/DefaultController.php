@@ -101,9 +101,9 @@ class DefaultController extends Controller
             Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
 
             $pdf = new Pdf([
-                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('_pdf', ['dataProvider' => $dataProvider]),
+                'content' => $this->renderPartial('_pdfanimal', ['dataProvider' => $dataProvider]),
                 'options' => [
                 ],
                 'methods' => [

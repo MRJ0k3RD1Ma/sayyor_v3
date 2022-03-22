@@ -48,7 +48,7 @@ class ReportAnimal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type_id', 'cat_id', 'soato_id', 'operator_id', 'is_true', 'report_status_id', 'rep_id'], 'integer'],
+            [['type_id', 'cat_id', 'soato_id', 'operator_id', 'is_true', 'report_status_id', 'rep_id','organization_id'], 'integer'],
             [['detail'], 'string'],
             [['image'],'each','rule'=>['string']],
             [['created', 'updated'], 'safe'],
@@ -87,6 +87,7 @@ class ReportAnimal extends \yii\db\ActiveRecord
             'code' => Yii::t('report', 'Code'),
             'rep_id' => Yii::t('report', 'Rep ID'),
             'lang' => Yii::t('report', 'Til'),
+            'organization_id' => Yii::t('report', 'Bajaruvchi Labaratoriya'),
         ];
     }
 

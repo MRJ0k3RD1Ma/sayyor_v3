@@ -9,6 +9,8 @@ use common\models\Animaltype;
 use common\models\FoodType;
 use common\models\ReportAnimal;
 use common\models\ReportAnimalImages;
+use common\models\ReportDrugs;
+use common\models\ReportDrugType;
 use common\models\ReportFood;
 use common\models\ReportFoodCategory;
 use common\models\ReportFoodImages;
@@ -88,6 +90,43 @@ class ReportController extends ActiveController
     public function actionGetfoodcategory(){
         return ReportFoodCategory::find()->all();
     }
+
+    public function actionGetdrugtype(){
+        return ReportDrugType::find()->all();
+    }
+
+    public function actionCreatedrug(){
+        $model = new ReportDrugs();
+        if($model->load(Yii::$app->request->post(),'')){
+            $model->status_id = 1;
+            $soato = Soato::findOne($model->soato_id);
+            $num = ReportAnimal::find()->filterWhere(['like','created',date('Y')])->andFilterWhere(['like','soato_id',$soato->region_id.$soato->district_id])->max('rep_id');
+            $num++;
+            $code = substr(date('Y'),2,2).'-'.$soato->region_id.$soato->district_id.'-'.$num;
+            $model->rep_id = $num;
+            $model->code = $code;
+            $model->is_true = -1;
+            $model->phone = "{$model->phone}";
+            $model->lat = "{$model->lat}";
+            $model->long = "{$model->long}";
+
+            if($model->save()){
+                if($model->image and is_array($model->image)){
+                    foreach ($model->image as $item){
+                        $im = new ReportFoodImages();
+                        $im->report_id = $model->id;
+                        $im->image = $item;
+                        $im->save();
+                        $im = null;
+                    }
+                }
+
+                return 1;
+            }
+        }
+        return -1;
+    }
+
     public function actionCreatefood(){
         $model = new ReportFood();
         if($model->load(Yii::$app->request->post(),'')){
@@ -117,8 +156,10 @@ class ReportController extends ActiveController
                 return 1;
             }
         }
-        return $model;
+        return -1;
     }
+
+
     public function actionCreate(){
         $model = new ReportAnimal();
         if($model->load(Yii::$app->request->post(),'')){
@@ -135,13 +176,15 @@ class ReportController extends ActiveController
             $model->long = "{$model->long}";
 
             if($model->save()){
+                if($model->image and is_array($model->image)){
                     foreach ($model->image as $item){
-                        $im = new ReportAnimalImages();
+                        $im = new ReportFoodImages();
                         $im->report_id = $model->id;
                         $im->image = $item;
                         $im->save();
                         $im = null;
                     }
+                }
                 return 1;
             }
         }

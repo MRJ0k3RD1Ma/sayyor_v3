@@ -5,29 +5,30 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "report_food".
+ * This is the model class for table "report_drugs".
  *
  * @property int $id
- * @property string|null $code
  * @property int|null $rep_id
- * @property int|null $type_id
+ * @property string|null $code
  * @property int|null $cat_id
+ * @property int|null $type_id
+ * @property int|null $soato_id
  * @property string|null $lat
  * @property string|null $long
- * @property int|null $soato_id
- * @property string|null $phone
  * @property string|null $detail
+ * @property string|null $phone
  * @property string|null $created
  * @property string|null $updated
+ * @property int|null $operator_id
  * @property int|null $is_true
  * @property int|null $status_id
  *
  * @property ReportFoodCategory $cat
  * @property Soato $soato
  * @property ReportStatus $status
- * @property FoodType $type
+ * @property ReportDrugType $type
  */
-class ReportFood extends \yii\db\ActiveRecord
+class ReportDrugs extends \yii\db\ActiveRecord
 {
     public $image;
     /**
@@ -35,7 +36,7 @@ class ReportFood extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'report_food';
+        return 'report_drugs';
     }
 
     /**
@@ -44,7 +45,7 @@ class ReportFood extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rep_id', 'type_id', 'cat_id','operator_id', 'soato_id', 'is_true', 'status_id'], 'integer'],
+            [['rep_id', 'cat_id', 'type_id', 'soato_id', 'operator_id', 'is_true', 'status_id'], 'integer'],
             [['detail'], 'string'],
             ['image','each','rule'=>['string']],
             [['created', 'updated'], 'safe'],
@@ -52,7 +53,7 @@ class ReportFood extends \yii\db\ActiveRecord
             [['cat_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportFoodCategory::className(), 'targetAttribute' => ['cat_id' => 'id']],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::className(), 'targetAttribute' => ['soato_id' => 'MHOBT_cod']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
-            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => FoodType::className(), 'targetAttribute' => ['type_id' => 'id']],
+            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportDrugType::className(), 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
 
@@ -63,20 +64,23 @@ class ReportFood extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('food', 'ID'),
-            'code' => Yii::t('food', 'Code'),
             'rep_id' => Yii::t('food', 'Rep ID'),
-            'type_id' => Yii::t('food', 'Type ID'),
+            'code' => Yii::t('food', 'Code'),
+
             'cat_id' => Yii::t('food', 'Cat ID'),
+            'type_id' => Yii::t('food', 'Type ID'),
+            'soato_id' => Yii::t('food', 'Soato ID'),
             'lat' => Yii::t('food', 'Lat'),
             'long' => Yii::t('food', 'Long'),
-            'soato_id' => Yii::t('food', 'Soato ID'),
-            'phone' => Yii::t('food', 'Phone'),
             'detail' => Yii::t('food', 'Detail'),
+            'phone' => Yii::t('food', 'Phone'),
+
+
             'created' => Yii::t('food', 'Created'),
             'updated' => Yii::t('food', 'Updated'),
+            'operator_id' => Yii::t('food', 'Operator ID'),
             'is_true' => Yii::t('food', 'Is True'),
             'status_id' => Yii::t('food', 'Status ID'),
-            'operator_id' => Yii::t('food', 'Operator'),
         ];
     }
 
@@ -117,6 +121,6 @@ class ReportFood extends \yii\db\ActiveRecord
      */
     public function getType()
     {
-        return $this->hasOne(FoodType::className(), ['id' => 'type_id']);
+        return $this->hasOne(ReportDrugType::className(), ['id' => 'type_id']);
     }
 }

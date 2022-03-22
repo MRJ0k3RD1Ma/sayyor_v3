@@ -84,6 +84,8 @@ return [
                         'GET getqfi'=>'getqfi',
                         'GET getfoodtype'=>'getfoodtype',
                         'GET getfoodcategory'=>'getfoodcategory',
+                        'GET getdrugtype'=>'getdrugtype',
+                        'POST createdrug'=>'createdrug',
                     ],
                 ],
             ],

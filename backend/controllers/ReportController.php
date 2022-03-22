@@ -9,6 +9,7 @@ use common\models\Animaltype;
 use common\models\FoodType;
 use common\models\ReportAnimal;
 use common\models\ReportAnimalImages;
+use common\models\ReportDrugImages;
 use common\models\ReportDrugs;
 use common\models\ReportDrugType;
 use common\models\ReportFood;
@@ -113,7 +114,7 @@ class ReportController extends ActiveController
             if($model->save()){
                 if($model->image and is_array($model->image)){
                     foreach ($model->image as $item){
-                        $im = new ReportFoodImages();
+                        $im = new ReportDrugImages();
                         $im->report_id = $model->id;
                         $im->image = $item;
                         $im->save();

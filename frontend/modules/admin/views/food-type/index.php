@@ -24,16 +24,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+//            'id',
             'name',
-            'parent_id',
+//            'parent_id',
+            [
+                'attribute'=>'parent_id',
+                'value'=>function($d){
+                    if($d->parent_id){
+                        return $d->parent->name;
+                    }else{
+                        return null;
+                    }
+                }
+            ],
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, FoodType $model, $key, $index, $column) {
+                'urlCreator' => function ($action, $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],

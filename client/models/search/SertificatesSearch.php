@@ -75,4 +75,42 @@ class SertificatesSearch extends Sertificates
 
         return $dataProvider;
     }
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function searchKomitet($params)
+    {
+        $query=Sertificates::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'sert_date' => $this->sert_date,
+            'vet_site_id' => $this->vet_site_id,
+            'status_id' => $this->status_id,
+        ]);
+
+        $query->andFilterWhere(['like', 'sert_id', $this->sert_id])
+            ->andFilterWhere(['like', 'sert_num', $this->sert_num])
+            ->andFilterWhere(['like', 'pnfl', $this->pnfl]);
+
+        return $dataProvider;
+    }
 }

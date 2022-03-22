@@ -15,6 +15,9 @@ return [
         'cp' => [
             'class' => 'app\modules\admin\Module',
         ],
+        'komitet'=>[
+            'class' => 'app\modules\komitet\Module',
+        ]
     ],
     'components' => [
         'request' => [
@@ -65,6 +68,7 @@ return [
             'enableDefaultLanguageUrlCode' => true,
             'enableLanguagePersistence' => false,
             'rules' => [
+                'komitet/<action>' => 'komitet/default/<action>',
             ],
         ],
 

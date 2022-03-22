@@ -83,4 +83,52 @@ class SampleRegistrationSearch extends SampleRegistration
 
         return $dataProvider;
     }
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function searchKomitet($params)
+    {
+        $query=SampleRegistration::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'is_research' => $this->is_research,
+            'code_id' => $this->code_id,
+            'research_category_id' => $this->research_category_id,
+            'results_conformity_id' => $this->results_conformity_id,
+            'organization_id' => $this->organization_id,
+            'emp_id' => $this->emp_id,
+            'reg_date' => $this->reg_date,
+            'reg_id' => $this->reg_id,
+            'created' => $this->created,
+            'updated' => $this->updated,
+        ]);
+
+        $query->andFilterWhere(['like', 'pnfl', $this->pnfl])
+            ->andFilterWhere(['like', 'inn', $this->inn])
+            ->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'sender_name', $this->sender_name])
+            ->andFilterWhere(['like', 'sender_phone', $this->sender_phone]);
+
+        return $dataProvider;
+    }
 }

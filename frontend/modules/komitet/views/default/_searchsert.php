@@ -4,16 +4,16 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\search\AnimalsSearch */
+/* @var $model \client\models\search\SampleRegistrationSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="animals-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'action' => ['sertapp'],
         'method' => 'get',
-        'id' => 'animals-grid-filters',
+        'id' => 'listsert-grid-filters',
         'fieldConfig' => [
         ],
     ]); ?>
@@ -30,19 +30,24 @@ use yii\widgets\ActiveForm;
                         </div>
 
                         <div class="export">
+                            <?php
+                            $char=(count(Yii::$app->request->queryParams)>0)?"&":"?";
+                            ?>
                             <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
                             </button>
                             <div class="export-btn">
                                 <button>
-                                    <?= Html::a('<span class="fa fa-file-excel"></span> Excel ', Yii::$app->request->url."&export=1", ['data-pjax' => 0 ]) ?>
+                                    <?= Html::a('<span class="fa fa-file-excel"></span> Excel ',Yii::$app->request->url.$char.'export=1', ['data-pjax' => 0,'export'=>1 ]) ?>
                                 </button>
                                 <button>
-                                    <?= Html::a('<span class="fa fa-file-pdf"></span> PDF ', Yii::$app->request->url."&export=2", ['data-pjax' => 0]) ?>
+
+                                    <?=
+
+                                    Html::a('<span class="fa fa-file-pdf"></span> PDF ', Yii::$app->request->url.$char.'export=2', ['data-pjax' => 0]) ?>
                                 </button>
                             </div>
 
                         </div>
-                        <?= Html::a(Yii::t('cp.animals', 'Hayvon qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
                     </div>
                 </div>
                 <div class="card-body">

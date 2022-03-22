@@ -94,17 +94,9 @@
 
                 </div>
             </div>
-
-          <!--  <div class="dropdown d-none d-sm-inline-block">
-                <button type="button" class="btn header-item" id="mode-setting-btn">
-                    <i data-feather="moon" class="icon-lg layout-mode-dark"></i>
-                    <i data-feather="sun" class="icon-lg layout-mode-light"></i>
-                </button>
-            </div>
-
-            -->
             <div class="dropdown d-inline-block">
-                <button type="button" class="btn header-item bg-soft-light border-start border-end" id="page-header-user-dropdown"
+                <button type="button" class="btn header-item bg-soft-light border-start border-end"
+                        id="page-header-user-dropdown"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="rounded-circle header-profile-user" src="/design/assets/images/avatar-1.jpg"
                          alt="Header Avatar">
@@ -113,6 +105,9 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
 
+                    <a class="dropdown-item" data-method="post"
+                       href="<?= Yii::$app->urlManager->createUrl(['/site/logout']) ?>"><i
+                                class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a>
                     <a class="dropdown-item" data-method="post" href="<?= Yii::$app->urlManager->createUrl(['/site/logout'])?>"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a>
                 </div>
             </div>

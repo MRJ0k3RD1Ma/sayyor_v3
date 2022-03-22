@@ -6,6 +6,7 @@ namespace backend\controllers;
 use backend\models\Image;
 use common\models\AnimalCategory;
 use common\models\Animaltype;
+use common\models\FoodType;
 use common\models\ReportAnimal;
 use common\models\ReportAnimalImages;
 use common\models\Soato;
@@ -68,6 +69,16 @@ class ReportController extends ActiveController
     public function actionGetVet($id,$regid){
         $model = VetSites::find()->filterWhere(['like','soato','17'.$regid.$id])->all();
         return $model;
+    }
+
+    public function actionGetfoodtype($id = -1){
+        if($id == -1){
+            return FoodType::find()->where(['is', 'parent_id', new \yii\db\Expression('null')])->all();
+        }elseif($model = FoodType::find()->where(['parent_id'=>$id])->all()){
+            return $model;
+        }else{
+            return $id;
+        }
     }
 
     public function actionCreate(){

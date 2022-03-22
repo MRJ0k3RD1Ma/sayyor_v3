@@ -81,6 +81,7 @@ return [
                         'POST create'=>'create',
                         'POST setimage'=>'setimage',
                         'GET getqfi'=>'getqfi',
+                        'GET getfoodtype'=>'getfoodtype',
                     ],
                 ],
             ],

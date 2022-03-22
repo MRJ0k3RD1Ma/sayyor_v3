@@ -1,7 +1,6 @@
 <?php
 
-use common\models\Sertificates;
-use yii\helpers\Html;
+use common\models\Samples;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -46,23 +45,34 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //                            'sert_id',
                             [
-                                'attribute'=>'sert_full',
-                                'format'=>'raw',
-                                'value'=>function($d){
-                                    $url = Yii::$app->urlManager->createUrl(['/komitet/viewanimal','id'=>$d->id]);
+                                'attribute' => 'sert_full',
+                                'format' => 'raw',
+                                'value' => function ($d) {
+                                    $url = Yii::$app->urlManager->createUrl(['/komitet/viewanimal', 'id' => $d->id]);
                                     return "<a href='{$url}'>{$d->sert_full}</a>";
                                 },
                             ],
-                            'sert_num',
+                            [
+                                'label' => "Namuna kodlari",
+                                'format' => 'html',
+                                'value' => function ($model) {
+                                    $out = '';
+                                    foreach (Samples::find()->where(['sert_id' => $model->id])->all() as $item) {
+                                        $out.=$item->status->icon." ".$item->kod."<br>";
+                                    }
+                                    return $out;
+                                }
+                            ],
+//                            'sert_num',
                             'sert_date',
 
                             [
-                                'label'=>'Hayvon egasi',
-                                'value'=>function($d){
-                                    if($d->owner_pnfl){
-                                        return $d->owner_pnfl.'<br>'.$d->ownerPnfl->name.' '.$d->ownerPnfl->surname.' '.$d->ownerPnfl->middlename;
-                                    }elseif($d->owner_inn){
-                                        return $d->owner_inn.'<br>'.$d->ownerInn->name;
+                                'label' => 'Hayvon egasi',
+                                'value' => function ($d) {
+                                    if ($d->owner_pnfl) {
+                                        return $d->owner_pnfl . '<br>' . $d->ownerPnfl->name . ' ' . $d->ownerPnfl->surname . ' ' . $d->ownerPnfl->middlename;
+                                    } elseif ($d->owner_inn) {
+                                        return $d->owner_inn . '<br>' . $d->ownerInn->name;
                                     }else{
                                         return "Hayvon egasi haqida ma'lumot kiritilmagan";
                                     }
@@ -85,12 +95,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return $d->status->name_uz;
                                 }
                             ],
-                           /* [
-                                'class' => 'yii\grid\ActionColumn',
-                                'urlCreator' => function ($action, $model, $key, $index) {
-                                    return \yii\helpers\Url::to([$action, 'id' => $model->id]);
-                                }
-                            ],*/
                         ],
                     ]); ?>
                 </div>

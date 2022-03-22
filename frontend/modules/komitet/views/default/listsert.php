@@ -1,11 +1,7 @@
 <?php
 
-use common\models\Sertificates;
-use yii\helpers\Html;
 use yii\grid\GridView;
 
-use yii\helpers\Url;
-use yii\grid\ActionColumn;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\SertificatesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -18,29 +14,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header flex">
-                    <div></div>
-                    <div class="btns flex">
-                        <div class="search">
-
-                            <input type="search">
-                            <button class="btn"><span class="fa fa-search"></span></button>
-
-                        </div>
-                        <div class="export">
-                            <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export</button>
-                            <div class="export-btn">
-                                <button class=""><span class="fa fa-file-excel"></span> Excel</button>
-                                <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
                 <div class="card-body">
+                    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+                    <?php echo $this->render('_searchsert', [
+                        'model' => $searchModel,
+                    ]);
+                    ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
+                        'id' => 'listsert-grid',
 //                        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
@@ -57,28 +39,40 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'format'=>'raw'
                             ],
                             [
-                                'label'=>Yii::t('client','Namuna raqamlari'),
-                                'value'=>function($d){
+                                'label' => Yii::t('client', 'Namuna raqamlari'),
+                                'value' => function ($d) {
                                     $res = "";
-                                    foreach ($d->comp as $item){
-                                         $res .= $d->status->icon.$item->sample->kod.'<br>';
-                                     }
+                                    foreach ($d->comp as $item) {
+                                        $res .= $d->status->icon . $item->sample->kod . '<br>';
+                                    }
                                     return $res;
                                 },
-                                'format'=>'raw',
+                                'format' => 'raw',
                             ],
                             [
-                                'label'=>Yii::t('register','Labaratoriya'),
-                                'value'=>function($d){
+                                'label' => Yii::t('register', 'Labaratoriya'),
+                                'value' => function ($d) {
                                     return $d->organization->NAME_FULL;
                                 },
-                                'format'=>'raw'
+                                'format' => 'raw'
                             ],
+//                            [
+//                                'attribute' => 'vet_site_id',
+//                                'value' => function ($d) {
+////                                    $out = '';
+////                                    foreach ($d->comp as $item) {
+////                                        $out .= $item->sample->vet_site_id . "<br>";
+////                                    }
+////                                    return $out;
+////                                    return $d->vet_site_id;
+//                                    return 1;
+//                                }
+//                            ],
 //                            'is_research',
                             [
-                                'attribute'=>'is_research',
-                                'value'=>function($d){
-                                    $s = [0=>'Shoshilinch emas',1=>'Shohilinch'];
+                                'attribute' => 'is_research',
+                                'value' => function ($d) {
+                                    $s = [0 => 'Shoshilinch emas', 1 => 'Shohilinch'];
                                     return $s[$d->is_research];
                                 }
                             ],
@@ -102,6 +96,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'updated',
                         ],
                     ]); ?>
+                    <?php
+                        \yii\widgets\Pjax::end();
+                    ?>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ use Yii;
  */
 class SampleRegistrationSearch extends SampleRegistration
 {
+    public $q;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class SampleRegistrationSearch extends SampleRegistration
     {
         return [
             [['id', 'is_research', 'code_id', 'research_category_id', 'results_conformity_id', 'organization_id', 'emp_id', 'reg_id'], 'integer'],
-            [['pnfl', 'inn', 'code', 'reg_date', 'sender_name', 'sender_phone', 'created', 'updated'], 'safe'],
+            [['pnfl','q','inn', 'code', 'reg_date', 'sender_name', 'sender_phone', 'created', 'updated'], 'safe'],
         ];
     }
 
@@ -123,11 +124,11 @@ class SampleRegistrationSearch extends SampleRegistration
             'updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'pnfl', $this->pnfl])
-            ->andFilterWhere(['like', 'inn', $this->inn])
-            ->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'sender_name', $this->sender_name])
-            ->andFilterWhere(['like', 'sender_phone', $this->sender_phone]);
+        $query->orFilterWhere(['like', 'pnfl', $this->q])
+            ->orFilterWhere(['like', 'inn', $this->q])
+            ->orFilterWhere(['like', 'code', $this->q])
+            ->orFilterWhere(['like', 'sender_name', $this->q])
+            ->orFilterWhere(['like', 'sender_phone', $this->q]);
 
         return $dataProvider;
     }

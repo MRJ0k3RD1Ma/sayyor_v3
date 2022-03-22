@@ -40,15 +40,17 @@
                 </li>
 
                 <li>
-<!--                    <a href="--><?//= Yii::$app->urlManager->createUrl(['/ind/create'])?><!--">-->
-<!--                        <i data-feather="mail"></i>-->
-<!--                        <span data-key="t-dashboard">--><?//= Yii::t('client','Dalolatnoma qo\'shish')?><!--</span>-->
-<!--                    </a>-->
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="bar-chart-2"></i>
+                        <span data-key="t-tables"><?= Yii::t('cp.menu','Xabarlar')?></span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/reportanimal'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Hayvon kasalliklari')?></a></li>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/reportfood'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Oziq-ovqat ekspertizalari')?></a></li>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/reportdrugs'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Dori darmonlar')?></a></li>
+                    </ul>
                 </li>
-
-
             </ul>
-
         </div>
         <!-- Sidebar -->
     </div>

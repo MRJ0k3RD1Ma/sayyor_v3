@@ -62,4 +62,10 @@ class Soato extends \yii\db\ActiveRecord
             'center_ru' => Yii::t('app', 'Markazi(Rus)'),
         ];
     }
+    public static function Full($code,$lang='lot'){
+        $soato=self::find()->where(['MHOBT_cod'=>$code])->one();
+        $region = \common\models\Soato::find()->where(['MHOBT_cod' => $soato->res_id . $soato->region_id])->one();
+        $district = \common\models\Soato::find()->where(['MHOBT_cod' => $region->MHOBT_cod . $soato->district_id])->one();
+        return $region->{'name_'.$lang}."<br>".$district->{'name_'.$lang};
+    }
 }

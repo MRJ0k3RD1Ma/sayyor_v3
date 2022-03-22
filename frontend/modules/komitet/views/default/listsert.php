@@ -20,6 +20,26 @@ $this->params['breadcrumbs'][] = $this->title;
                         'model' => $searchModel,
                     ]);
                     ?>
+                    <div class="submit_vote">
+                    <?php
+                    \yii\bootstrap4\Modal::begin([
+                        'size' => 'modal-lg',
+                        'options' => [
+                            'id' => 'submit_vote',
+                        ],
+                        'footer' => 'Footer'
+                    ]);
+
+
+//                    echo Html::submitButton(
+//                        '<span class="glyphicon glyphicon-search"></span>',
+//                        [
+//                            'class' => 'btn btn-success',
+//                        ]
+//                    );
+                    \yii\bootstrap4\Modal::end();
+                    ?>
+                    </div>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'id' => 'listsert-grid',
@@ -41,11 +61,22 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'label' => Yii::t('client', 'Namuna raqamlari'),
                                 'value' => function ($d) {
-                                    $res = "";
+
+                                    $res = $out="";
                                     foreach ($d->comp as $item) {
-                                        $res .= $d->status->icon . $item->sample->kod . '<br>';
+                                        $res = $d->status->icon . $item->sample->kod ;
+                                        $out.=\yii\helpers\Html::button(
+                                            $res,
+                                            ['value' => \yii\helpers\Url::to(['viewnamuna','id'=>$item->sample->id]),
+
+                                                'class' => 'btn btn-info showModalButton',
+                                                'data-toggle'=>'modal',
+                                                'data-target'=>'#submit-vote',
+                                                'title' => 'Tal*aba kurslari',
+                                                'data-pjax' => 0
+                                            ]);
+                                        return $out;
                                     }
-                                    return $res;
                                 },
                                 'format' => 'raw',
                             ],
@@ -56,18 +87,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 },
                                 'format' => 'raw'
                             ],
-//                            [
-//                                'attribute' => 'vet_site_id',
-//                                'value' => function ($d) {
-////                                    $out = '';
-////                                    foreach ($d->comp as $item) {
-////                                        $out .= $item->sample->vet_site_id . "<br>";
-////                                    }
-////                                    return $out;
-////                                    return $d->vet_site_id;
-//                                    return 1;
-//                                }
-//                            ],
+                            [
+                                'label' => 'Manzil',
+                                'format'=>'html',
+                                'value' => function ($d) {
+                                    foreach ($d->comp as $item) {
+                                        $vet = $item->sample->sert->vetSite;
+                                        return \common\models\Soato::Full($vet->soato);
+                                    }
+                                }
+                            ],
 //                            'is_research',
                             [
                                 'attribute' => 'is_research',

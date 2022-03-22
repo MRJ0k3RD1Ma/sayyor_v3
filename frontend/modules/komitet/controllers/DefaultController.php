@@ -12,9 +12,13 @@ use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\LoginForm;
 use common\models\ProductExpertise;
+use common\models\ReportAnimal;
 use common\models\SampleRegistration;
 use common\models\Samples;
 use common\models\search\FoodSamplingCertificateSearch;
+use common\models\search\ReportAnimalSearch;
+use common\models\search\ReportDrugsSearch;
+use common\models\search\ReportFoodSearch;
 use common\models\Sertificates;
 use common\models\Vaccination;
 use common\models\VetSites;
@@ -506,4 +510,60 @@ class DefaultController extends Controller
         exit;
     }
 
+    public function actionViewnamuna($id)
+    {
+        if ($this->request->isAjax) {
+            return $this->renderAjax('viewnamuna', [
+
+                'model' => $model,
+                'modelCourse' => $modelCourse
+            ]);
+        }else{
+            return "ll";
+        }
+    }
+    public function actionReportanimal(){
+        $searchModel=new ReportAnimalSearch();
+        $dataProvider=$searchModel->search($this->request->queryParams);
+        return $this->render('reportanimal',[
+            'model'=>$searchModel,
+            'dataProvider'=>$dataProvider
+        ]);
+    }
+    /**
+     * Lists all ReportFood models.
+     *
+     * @return string
+     */
+    public function actionReportfood()
+    {
+        $searchModel = new ReportFoodSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('reportfood', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    /**
+     * Lists all ReportDrugs models.
+     *
+     * @return string
+     */
+    public function actionReportdrugs()
+    {
+        $searchModel = new ReportDrugsSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('reportdrugs', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    public function actionReportanimalview($id)
+    {
+        return $this->render('reportanimalview', [
+            'model' => ReportAnimal::findOne(['id'=>$id]),
+        ]);
+    }
 }

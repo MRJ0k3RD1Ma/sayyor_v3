@@ -259,4 +259,57 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+
+    // send funksiya
+
+    public function actionSend($phone,$text){
+        if($phone[0]=='+'){
+            $phone = substr($phone,1,strlen($phone)-1);
+        }
+        $token = json_decode($this->getToken(),true);
+        $token = $token['data']['token'];
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'notify.eskiz.uz/api/message/sms/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('mobile_phone' => $phone,'message' => $text,'from' => '4546','callback_url' => Yii::$app->urlManager->createAbsoluteUrl(['/site/message'])),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer '.$token
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response;
+        exit;
+    }
+
+    public function getToken(){
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'notify.eskiz.uz/api/auth/login',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('email' => Yii::$app->params['eskiz']['email'],'password' => Yii::$app->params['eskiz']['password']),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+    }
 }

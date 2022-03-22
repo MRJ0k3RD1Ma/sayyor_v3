@@ -16,11 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                    <?php echo $this->render('_searchanimal', [
-                        'model' => $searchModel,
-                    ]);
-                    ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'id' => 'listanimal-grid',
@@ -43,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'value' => function ($model) {
                                     $out = '';
                                     foreach (Samples::find()->where(['sert_id' => $model->id])->all() as $item) {
-                                        $out.=$item->status->icon." ".$item->kod."<br>";
+                                        $out .= $item->status->icon . " " . $item->kod . "<br>";
                                     }
                                     return $out;
                                 }
@@ -58,23 +53,23 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return $d->owner_pnfl . '<br>' . $d->ownerPnfl->name . ' ' . $d->ownerPnfl->surname . ' ' . $d->ownerPnfl->middlename;
                                     } elseif ($d->owner_inn) {
                                         return $d->owner_inn . '<br>' . $d->ownerInn->name;
-                                    }else{
+                                    } else {
                                         return "Hayvon egasi haqida ma'lumot kiritilmagan";
                                     }
                                 },
-                                'format'=>'raw'
+                                'format' => 'raw'
                             ],
                             [
-                                'attribute'=>'vet_site_id',
-                                'value'=>function($d){
+                                'attribute' => 'vet_site_id',
+                                'value' => function ($d) {
                                     return $d->vetSite->name;
                                 }
                             ],
                             //'operator',
                             [
-                                'attribute'=>'status_id',
-                                'value'=>function($d){
-                                    if(Yii::$app->language == 'ru'){
+                                'attribute' => 'status_id',
+                                'value' => function ($d) {
+                                    if (Yii::$app->language == 'ru') {
                                         return $d->status->name_ru;
                                     }
                                     return $d->status->name_uz;
@@ -82,14 +77,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                         ],
                     ]); ?>
-                    <?php
-                    \yii\widgets\Pjax::end();
-                    ?>
                 </div>
             </div>
         </div>
     </div>
-
 
 
 </div>

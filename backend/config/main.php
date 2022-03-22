@@ -80,6 +80,7 @@ return [
                         'GET gettype'=>'gettype',
                         'POST create'=>'create',
                         'POST setimage'=>'setimage',
+                        'GET getqfi'=>'getqfi',
                     ],
                 ],
             ],

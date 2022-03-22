@@ -62,6 +62,7 @@ class ReportController extends ActiveController
     }
     public function actionGetqfi($id,$regid){
         $model = QfiView::find()->where(['district_id'=>$id])->andWhere(['region_id'=>$regid])->select(['MHOBT_cod','name_lot','name_cyr','name_ru'])->all();
+        return $model;
     }
 
     public function actionGetVet($id,$regid){

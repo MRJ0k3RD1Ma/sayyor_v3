@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
 //            'id',
 //            'type_id',
+            'code',
             [
                 'attribute'=>'type_id',
                 'value'=>function($d){
@@ -146,5 +147,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAKc6n_ShV0w0BIcrtYymLAwK4UB1g0g4&callback=initMap">
     </script>
+
+
 
 </div>

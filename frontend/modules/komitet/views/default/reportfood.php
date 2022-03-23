@@ -26,7 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
-                            'code',
+                            [
+                                'attribute' => 'code',
+                                'format' => 'raw',
+                                'value' => function ($model) {
+                                    return \yii\bootstrap4\Html::a($model->code, '/komitet/reportfoodview?id=' . $model->id);
+                                }
+                            ],
 //            'rep_id',
                             [
                                 'attribute' => 'type_id',

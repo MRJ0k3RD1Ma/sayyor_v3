@@ -177,7 +177,7 @@ class ReportController extends ActiveController
             if($model->save()){
                 if($model->image and is_array($model->image)){
                     foreach ($model->image as $item){
-                        $im = new ReportFoodImages();
+                        $im = new ReportAnimalImages();
                         $im->report_id = $model->id;
                         $im->image = $item;
                         $im->save();

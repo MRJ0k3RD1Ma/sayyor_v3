@@ -66,7 +66,6 @@ class ReportDrugs extends \yii\db\ActiveRecord
             'id' => Yii::t('food', 'ID'),
             'rep_id' => Yii::t('food', 'Rep ID'),
             'code' => Yii::t('food', 'Code'),
-
             'cat_id' => Yii::t('food', 'Cat ID'),
             'type_id' => Yii::t('food', 'Type ID'),
             'soato_id' => Yii::t('food', 'Soato ID'),
@@ -74,8 +73,6 @@ class ReportDrugs extends \yii\db\ActiveRecord
             'long' => Yii::t('food', 'Long'),
             'detail' => Yii::t('food', 'Detail'),
             'phone' => Yii::t('food', 'Phone'),
-
-
             'created' => Yii::t('food', 'Created'),
             'updated' => Yii::t('food', 'Updated'),
             'operator_id' => Yii::t('food', 'Operator ID'),

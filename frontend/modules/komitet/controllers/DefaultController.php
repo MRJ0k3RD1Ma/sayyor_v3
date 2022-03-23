@@ -13,6 +13,8 @@ use common\models\LegalEntities;
 use common\models\LoginForm;
 use common\models\ProductExpertise;
 use common\models\ReportAnimal;
+use common\models\ReportDrugs;
+use common\models\ReportFood;
 use common\models\SampleRegistration;
 use common\models\Samples;
 use common\models\search\FoodSamplingCertificateSearch;
@@ -661,6 +663,18 @@ class DefaultController extends Controller
     {
         return $this->render('reportanimalview', [
             'model' => ReportAnimal::findOne(['id'=>$id]),
+        ]);
+    }
+    public function actionReportfoodview($id  )
+    {
+        return $this->render('reportfoodview', [
+            'model' => ReportFood::findOne(['id'=>$id]),
+        ]);
+    }
+    public function actionReportdrugsview($id  )
+    {
+        return $this->render('reportdrugsview', [
+            'model' => ReportDrugs::findOne(['id'=>$id]),
         ]);
     }
 }

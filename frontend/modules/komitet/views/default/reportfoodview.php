@@ -1,32 +1,24 @@
 <?php
 
-use common\models\ReportAnimalImages;
+use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ReportAnimal */
+/* @var $model common\models\ReportFood */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Hayvon kasalliklari', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Report Foods', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="report-animal-view">
-
-    <?php
-        $lang = Yii::$app->language;
-        $lg = 'uz';
-        if($lang == 'ru'){
-            $lg = 'ru';
-        }
-    ?>
+<div class="report-food-view">
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-//            'id',
-//            'type_id',
+            'id',
             'code',
+            'rep_id',
             [
                 'attribute'=>'type_id',
                 'value'=>function($d){
@@ -35,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if($lang == 'ru'){
                         $lg = 'ru';
                     }
-                    return $d->type->{'name_'.$lg};
+                    return $d->type->{'name'};
                 }
             ],
             [
@@ -49,7 +41,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $d->cat->{'name_'.$lg};
                 }
             ],
-//            'cat_id',
+
+//            'lat',
+//            'long',
             [
                 'attribute'=>'soato_id',
                 'value'=>function($d){
@@ -61,10 +55,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \common\models\Soato::Full($d->soato_id);
                 }
             ],
-//            'lat',
-//            'long',
+            'phone',
             'detail:ntext',
-//            'operator_id',
+            'created',
+            'updated',
+            [
+                'attribute'=>'is_true',
+                'value'=>function($d){
+                    $s = [0=>Yii::t('komitet','Yo\'q'),1=>Yii::t('komitet','Ha'),-1=>Yii::t('komitet','Tekshirilmagan')];
+                    return $s[$d->is_true];
+                }
+            ],
+            'status_id',
             [
                 'attribute'=>'operator_id',
                 'value'=>function($d){
@@ -75,26 +77,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 }
             ],
-//            'is_true',
-            [
-                'attribute'=>'is_true',
-                'value'=>function($d){
-                    $s = [0=>Yii::t('komitet','Yo\'q'),1=>Yii::t('komitet','Ha'),-1=>Yii::t('komitet','Tekshirilmagan')];
-                    return $s[$d->is_true];
-                }
-            ],
-            'report_status_id',
-            'phone',
-            'created',
-            'updated',
-            'code',
-            'rep_id',
-            'lang',
             [
                 'label' => 'image',
                 'format' => 'html',
                 'value' => function ($model) {
-                    $img = 'http://' . Yii::$app->request->serverName . '/uploads/' . ReportAnimalImages::find()->where(['report_id' => $model->id])->one()->image;
+                    $img = 'http://' . Yii::$app->request->serverName . '/uploads/' . \common\models\ReportFoodImages::find()->where(['report_id' => $model->id])->one()->image;
                     echo \lo\widgets\magnific\MagnificPopup::widget(
                         [
                             'target' => '#test',
@@ -109,9 +96,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         . '</a>';
                 }
             ],
-            'organization_id',
         ],
     ]) ?>
+
     <div id="map"></div>
 
     <style>
@@ -147,7 +134,5 @@ $this->params['breadcrumbs'][] = $this->title;
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAKc6n_ShV0w0BIcrtYymLAwK4UB1g0g4&callback=initMap">
     </script>
-
-
 
 </div>

@@ -66,4 +66,13 @@ return array (
       '@kartik/mpdf' => $vendorDir . '/kartik-v/yii2-mpdf/src',
     ),
   ),
+  'loveorigami/yii2-magnific-popup' => 
+  array (
+    'name' => 'loveorigami/yii2-magnific-popup',
+    'version' => 'dev-master',
+    'alias' => 
+    array (
+      '@lo/widgets/magnific' => '/src',
+    ),
+  ),
 );

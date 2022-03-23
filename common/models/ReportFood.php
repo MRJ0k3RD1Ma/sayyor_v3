@@ -62,21 +62,21 @@ class ReportFood extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('food', 'ID'),
+            'id' => Yii::t('report', 'ID'),
+            'type_id' => Yii::t('report', 'Turi'),
+            'cat_id' => Yii::t('report', 'Holat'),
+            'soato_id' => Yii::t('report', 'Manzil'),
+            'lat' => Yii::t('report', 'Lat'),
+            'long' => Yii::t('report', 'Long'),
+            'detail' => Yii::t('report', 'Batafsil'),
+            'phone' => Yii::t('report', 'Telefon raqami'),
             'code' => Yii::t('food', 'Code'),
             'rep_id' => Yii::t('food', 'Rep ID'),
-            'type_id' => Yii::t('food', 'Type ID'),
-            'cat_id' => Yii::t('food', 'Cat ID'),
-            'lat' => Yii::t('food', 'Lat'),
-            'long' => Yii::t('food', 'Long'),
-            'soato_id' => Yii::t('food', 'Soato ID'),
-            'phone' => Yii::t('food', 'Phone'),
-            'detail' => Yii::t('food', 'Detail'),
             'created' => Yii::t('food', 'Created'),
             'updated' => Yii::t('food', 'Updated'),
-            'is_true' => Yii::t('food', 'Is True'),
-            'status_id' => Yii::t('food', 'Status ID'),
-            'operator_id' => Yii::t('food', 'Operator'),
+            'operator_id' => Yii::t('report', 'Operator'),
+            'is_true' => Yii::t('report', 'Tasdiqdan o\'tgan'),
+            'status_id' => Yii::t('report', 'Status'),
         ];
     }
 

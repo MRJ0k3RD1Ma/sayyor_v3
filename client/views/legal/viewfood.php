@@ -34,27 +34,72 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format'=>'raw'
             ],
-            'sampling_site',
-            'sampling_adress',
-//            'sampler_organization_code',
-            'sampler_person_pnfl',
-//            'unit_id',
-//            'count',
-            'verification_sample',
-//            'producer',
-//            'serial_num',
-//            'manufacture_date',
-//            'sell_by',
-//            'coments',
-            'verification_pupose_id',
-//            'sample_box_id',
-//            'sample_condition_id',
+//            'sampling_site',
+            [
+                'attribute'=>'sampling_site',
+                'value'=>function($d){
+                    return $d->samplingSite->name;
+                }
+            ],
+            [
+                'attribute'=>'sampling_adress',
+                'value'=>function($d){
+                    $lang = Yii::$app->language;
+                    $ads = 'lot';
+                    if($lang == 'ru'){
+                        $ads = 'ru';
+                    }elseif($lang=='uz'){
+                        $ads = 'lot';
+                    }else{
+                        $ads = 'cyr';
+                    }
+                    return \common\models\Soato::Full($d->samplingSite->soato) .' '. $d->sampling_adress;
+                },
+                'format'=>'raw'
+            ],
+            [
+                'label'=>Yii::t('client','Namuna oluvchi'),
+                'value'=>function($d){
+                    if($d->sampler_person_pnfl){
+                        return $d->sampler_person_pnfl.'<br>'.$d->personPnfl->name.' '.$d->personPnfl->surname.' '.$d->personPnfl->middlename;
+                    }elseif($d->sampler_person_inn){
+                        return $d->sampler_person_inn.'<br>'.$d->personInn->name;
+                    }else return null;
+                },
+                'format'=>'raw'
+            ],
+
+            [
+                'attribute'=>'verification_pupose_id',
+                'value'=>function($d){
+                    $lang = Yii::$app->language;
+                    $lg = 'uz';
+                    if($lang == 'ru'){
+                        $lg = 'ru';
+                    }
+                    if($d->verification_pupose_id){
+                        return $d->verificationPupose->{'name_'.$lg};
+                    }else{
+                        return null;
+                    }
+                }
+            ],
             'sampling_date',
             'send_sample_date',
-//            'explanations',
-            'based_public_information',
-            'message_number',
-//            'laboratory_test_type_id',
+
+            [
+                'attribute'=>'based_public_information',
+                'value'=>function($d){
+                    if($d->based_public_information == 0){
+                        return Yii::t('client','Yo\'q');
+                    }else{
+                        return Yii::t('client','Ha').'<br>'.'<b>№'.$d->message_number.'</b>';
+                    }
+
+                },
+                'format'=>'raw'
+            ],
+
         ],
     ]) ?>
 

@@ -47,7 +47,7 @@ class ReportDrugsSearch extends ReportDrugs
      */
     public function search($params)
     {
-        $query = ReportDrugs::find();
+        $query = ReportDrugs::find()->orderBy(['created'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

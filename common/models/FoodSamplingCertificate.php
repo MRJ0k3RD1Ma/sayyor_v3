@@ -81,6 +81,9 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getSamplingSite(){
+        return $this->hasOne(VetSites::className(),['id'=>'sampling_site']);
+    }
     /**
      * Gets query for [[FoodSamples]].
      *
@@ -110,11 +113,20 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     {
         return $this->hasOne(VerificationPurposes::className(), ['id' => 'verification_pupose_id']);
     }
-
+    public function getSoato0(){
+        return $this->hasOne(Soato::className(),['MHOBT_cod'=>'sampling_soato']);
+    }
     public function getInn0(){
         return $this->hasOne(LegalEntities::className(),['inn'=>'inn']);
     }
     public function getPnfl0(){
         return $this->hasOne(Individuals::className(),['pnfl'=>'pnfl']);
+    }
+
+    public function getPersonInn(){
+        return $this->hasOne(LegalEntities::className(),['inn'=>'sampler_person_inn']);
+    }
+    public function getPersonPnfl(){
+        return $this->hasOne(Individuals::className(),['pnfl'=>'sampler_person_pnfl']);
     }
 }

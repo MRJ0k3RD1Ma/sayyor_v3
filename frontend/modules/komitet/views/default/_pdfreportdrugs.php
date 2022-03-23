@@ -16,11 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                    <?php echo $this->render('_searchreportdrugs', [
-                        'model' => $searchModel,
-                    ]);
-                    ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'id' => 'reportdrugs-grid',
@@ -64,9 +59,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         ],
                     ]); ?>
-                    <?php
-                    \yii\widgets\Pjax::end();
-                    ?>
                 </div>
             </div>
         </div>

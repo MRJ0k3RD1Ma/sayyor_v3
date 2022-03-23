@@ -25,6 +25,7 @@ use common\models\Sertificates;
 use common\models\Vaccination;
 use common\models\VetSites;
 use kartik\mpdf\Pdf;
+use PhpOffice\PhpSpreadsheet\Helper\Sample;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\filters\AccessControl;
@@ -540,12 +541,12 @@ class DefaultController extends Controller
     {
         if ($this->request->isAjax) {
             return $this->renderAjax('viewnamuna', [
-
-                'model' => $model,
-                'modelCourse' => $modelCourse
+                'model' => Samples::find()->where(['id'=>$id])->one(),
             ]);
         }else{
-            return "ll";
+            return $this->render('viewnamuna',[
+                'model'=>Samples::find()->where(['id'=>$id])->one()
+            ]);
         }
     }
     public function actionReportanimal(int $export=null){

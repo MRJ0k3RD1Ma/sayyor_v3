@@ -131,8 +131,8 @@ class ReportController extends ActiveController
         if($model->load(Yii::$app->request->post(),'')){
             $model->status_id = 1;
             $soato = Soato::findOne($model->soato_id);
-            $num = ReportAnimal::find()->filterWhere(['like','created',date('Y')])->andFilterWhere(['like','soato_id',$soato->region_id.$soato->district_id])->max('rep_id');
-            $num++;
+            $num = ReportFood::find()->filterWhere(['like','created',date('Y')])->andFilterWhere(['like','soato_id',$soato->region_id.$soato->district_id])->max('rep_id');
+            $num = intval($num)+1;
             $code = substr(date('Y'),2,2).'-'.$soato->region_id.$soato->district_id.'-'.$num;
             $model->rep_id = $num;
             $model->code = $code;

@@ -22,6 +22,7 @@ use Yii;
  * @property int|null $based_public_information
  * @property int|null $message_number
  * @property int|null $sampling_soato
+ * @property int|null $status_id
  * @property string|null $created
  * @property string|null $updated
  * @property string|null $explanations
@@ -47,7 +48,7 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['food_id','ownertype', 'sampling_site','sampling_soato', 'verification_pupose_id', 'based_public_information', 'message_number'], 'integer'],
+            [['food_id','ownertype', 'sampling_site','sampling_soato', 'verification_pupose_id','status_id','state_id', 'based_public_information', 'message_number'], 'integer'],
             [['sampling_date', 'send_sample_date', 'created', 'updated'], 'safe'],
             [['code', 'inn', 'pnfl', 'sampling_adress', 'sampler_person_pnfl', 'sampler_person_inn','explanations'], 'string', 'max' => 255],
             [['verification_pupose_id'], 'exist', 'skipOnError' => true, 'targetClass' => VerificationPurposes::className(), 'targetAttribute' => ['verification_pupose_id' => 'id']],
@@ -78,6 +79,7 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
             'message_number' => Yii::t('model.food_sampling_certificate', 'Xabar raqami'),
             'created' => Yii::t('model.food_sampling_certificate', 'Yaratildi'),
             'updated' => Yii::t('model.food_sampling_certificate', 'O\'zgartirildi'),
+            'status_id' => Yii::t('model.food_sampling_certificate', 'Status'),
         ];
     }
 
@@ -94,6 +96,9 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
         return $this->hasMany(FoodSamples::className(), ['sert_id' => 'id']);
     }
 
+    public function getStatus(){
+        return $this->hasOne(SertStatus::className(),['id'=>'status_id']);
+    }
     /**
      * Gets query for [[ProductExpertises]].
      *

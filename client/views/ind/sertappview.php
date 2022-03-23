@@ -116,9 +116,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td rowspan="<?= $cnt + 1?>"><?= $item->animal->birthday ?></td>
                         <td colspan="2"></td>
                         <td colspan="2"></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= @$item->suspectedDisease->name_uz?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= @$item->testMehod->name_uz?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= @$item->repeat_code?></td>
+                        <td rowspan="<?= $cnt + 1?>"><?= $item->suspectedDisease->name_uz?></td>
+                        <td rowspan="<?= $cnt + 1?>"><?= $item->testMehod->name_uz?></td>
+                        <td rowspan="<?= $cnt + 1?>"><?= $item->repeat_code?></td>
 
                     </tr>
                     <?php

@@ -13,8 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="food-sampling-certificate-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
+    <p>
+        <a class="btn btn-success" href="<?= Yii::$app->urlManager->createUrl(['/legal/sendfood','id'=>$model->id])?>">Ariza yuborish</a>
+    </p>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -99,20 +100,68 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format'=>'raw'
             ],
+            [
+                'attribute'=>'status_id',
+                'value'=>function($d){
+                    $lg = 'uz';
+                    if(Yii::$app->language == 'ru'){
+                        $lg = 'ru';
+                    }
+                    return $d->status->{'name_'.$lg};
+                }
+            ],
 
         ],
     ]) ?>
 
 
-    <h4>Namunalar ro'yhati</h4>
-    <table class="table table-bordered table-responsive table-hover">
-        <thead>
+    <div>
+        <h4 style="float: left">Namunalar ro'yhati</h4>
+        <span style="float: right"><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/addfood','id'=>$model->id])?>">
+                    <span class="fa fa-plus"></span> Namuna qo'shish
+                </a>
+            </span>
+    </div>
 
+    <div class="table-responsive">
+    <table class="table table-bordered  table-hover mt-3">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Nomi</th>
+                <th>Soni</th>
+                <th>O'rami</th>
+                <th>Holati</th>
+                <th>To'plam</th>
+                <th>Ishlab chiqaruvchi</th>
+                <th>Serya raqami</th>
+                <th>Yaroqlilik muddati</th>
+                <th>Test turi</th>
+            </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><a href="<?= Yii::$app->urlManager->createUrl(['/legal/addfood','id'=>$model->id])?>">Namuna qo'shish</a></td>
-            </tr>
+            <?php
+                $lang = Yii::$app->language;
+                $lg = 'uz';
+                if($lang == 'ru'){
+                    $lg = 'ru';
+                }
+            ?>
+            <?php foreach ($samp as $item):?>
+                <tr>
+                    <td><?= $item->status->icon.' '.$item->samp_code ?></td>
+                    <td><?= $item->tasnif->name?></td>
+                    <td><?= $item->count.' '.$item->unit->{'name_'.$lg}?></td>
+                    <td><?= $item->sampleBox->{'name_'.$lg}?></td>
+                    <td><?= $item->sampleCondition->{'name_'.$lg}?></td>
+                    <td><?= $item->total_amount?></td>
+                    <td><?= $item->producer?></td>
+                    <td><?= $item->serial_num?></td>
+                    <td><?= $item->sell_by ?></td>
+                    <td><?= $item->laboratoryTestType->{'name_'.$lg} ?></td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 </div>

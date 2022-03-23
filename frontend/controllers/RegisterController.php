@@ -7,12 +7,15 @@ use common\models\Animals;
 use common\models\CompositeSamples;
 use common\models\DistrictView;
 use common\models\Emlash;
+use common\models\FoodRegistration;
+use common\models\FoodSamples;
 use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\QfiView;
 use common\models\SampleRegistration;
 use common\models\Samples;
+use frontend\models\search\registr\FoodRegistrationSearch;
 use frontend\models\search\lab\FoodSamplingCertificateSearch;
 use common\models\Sertificates;
 use common\models\Vaccination;
@@ -517,14 +520,33 @@ class RegisterController extends Controller
         ]);
     }
 
-
     public function actionViewtestreg($id){
         $model = Sertificates::findOne($id);
-
-
 
         return $this->render('viewtestreg',[
             'model'=>$model
         ]);
     }
+
+    public function actionRegproduct(){
+        $searchModel = new FoodRegistrationSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('regproduct', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionRegproductview($id){
+        $model = FoodRegistration::findOne($id);
+        $samples = FoodSamples::find()->select(['food_samples.*'])
+            ->innerJoin('food_compose','food_compose.sample_id = food_samples.id')
+            ->where(['food_compose.registration_id'=>$id])->all();
+        return $this->render('regproductview',[
+            'model'=>$model,
+            'samp'=>$samples
+        ]);
+    }
+
 }

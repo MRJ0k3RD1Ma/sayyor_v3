@@ -3,12 +3,16 @@
 namespace client\controllers;
 
 use client\models\InnForm;
+use client\models\search\FoodRegistrationSearch;
 use client\models\search\SampleRegistrationSearch;
 use client\models\search\SertificatesSearch;
 use common\models\Animals;
 use common\models\CompositeSamples;
 use common\models\DistrictView;
 use common\models\Emlash;
+use common\models\FoodCompose;
+use common\models\FoodRegistration;
+use common\models\FoodSamples;
 use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
 use common\models\LegalEntities;
@@ -109,7 +113,6 @@ class IndController extends Controller
 
         $searchModel = new SertificatesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-//        var_dump(Yii::$app->session->get('doc_pnfl')) or die();
 
         return $this->render('indextest', [
             'searchModel' => $searchModel,
@@ -215,17 +218,13 @@ class IndController extends Controller
 
     public function actionSend($id){
         $model = Sertificates::findOne($id);
-        $sample = Samples::find()->where(['samples.sert_id'=>$id])->andWhere(['not in','samples.id','select cs.sample_id from composite_samples cs where samples.id=cs.sample_id'])->all();
+        $sample = Samples::find()->where(['samples.sert_id'=>$id])->andWhere('samples.id not in (select cs.sample_id from composite_samples cs where samples.id=cs.sample_id)')->all();
         $reg = new SampleRegistration();
         $reg->pnfl = Yii::$app->session->get('doc_pnfl');
-        $reg->pnfl = "{$reg->pnfl}";
-        $reg->reg_date = date('Y-m-d');
-
         if($reg->load(Yii::$app->request->post())){
 
             $num = SampleRegistration::find()->filterWhere(['like','reg_date',date('Y')])->max('code_id');
-            $reg->pnfl = Yii::$app->session->get('doc_pnfl');
-            $reg->pnfl = "{$reg->pnfl}";
+
             $code = substr(date('Y'),2,2).'-1-'.get3num($reg->organization_id).'-';
             $reg->status_id = 1;
             $num = $num+1;
@@ -287,7 +286,7 @@ class IndController extends Controller
                 $code .= $num;
                 $sample->kod = $code.'/'.$num;
                 $sample->samp_id = $num;
-                $animal->inn = "{$animal->inn}";
+                $animal->pnfl = "{$animal->pnfl}";
 
                 if($animal->save() and $sample->load(Yii::$app->request->post())){
                     $sample->animal_id = $animal->id;
@@ -341,48 +340,6 @@ class IndController extends Controller
     }
 
 
-    public function actionProduct(){
-        $model = new FoodSamplingCertificate();
-        $pro = new ProductExpertise();
-        $model->pnfl = Yii::$app->session->get('doc_pnfl');
-        if($model->load(Yii::$app->request->post())){
-
-//            $org = $model->organization_id;
-//
-//            $num = FoodSamplingCertificate::find()->where(['organization_id'=>$org])->andFilterWhere(['like','food_id',date('Y')])->max('food_id');
-
-//            $code = substr(date('Y'),2,2).'-2-'.get3num($org).'-';
-
-//            $num = $num+1;
-//            $code .= $num;
-//            $model->kod = $code;
-//            $model->food_id = $num;
-//            $pro->orgaization_id = $model->organization_id;
-            $num = FoodSamplingCertificate::find()->filterWhere(['like','sampling_date',date('Y')])->max('id');
-            $vet = VetSites::findOne($model->sampling_site);
-            $code = $vet->soato0->region_id.$vet->soato0->district_id.'-'.   substr(date('Y'),2,2).'-';
-
-            $num = $num+1;
-            $code .= $num;
-            $model->code = "$num";
-//            var_dump($model->code) or die();
-            $pro->pnfl = $model->pnfl;
-            $pro->vet_site_id = $model->sampling_site;
-            if($model->save() and $pro->load(Yii::$app->request->post())){
-                $pro->food_sampling_certificate = $model->id;
-                $pro->save();
-                return $this->redirect(['viewfood','id'=>$model->id]);
-            }
-        }
-        return $this->render('product',['model'=>$model,'pro'=>$pro]);
-    }
-
-    public function actionViewfood($id){
-        $model = FoodSamplingCertificate::findOne($id);
-        return $this->render('viewfood',[
-            'model'=>$model
-        ]);
-    }
 
     public function actionListfood(){
         $searchModel = new FoodSamplingCertificateSearch();
@@ -413,4 +370,171 @@ class IndController extends Controller
         ]);
     }
 
+    public function actionProduct(){
+        $model = new FoodSamplingCertificate();
+        $model->pnfl = Yii::$app->session->get('doc_pnfl');
+        $ind = new Individuals();
+        $legal = new LegalEntities();
+        $model->ownertype = 1;
+        $model->status_id = 0;
+        $model->state_id = 1;
+        if($model->load(Yii::$app->request->post())){
+            $vet = VetSites::findOne($model->sampling_site);
+            $soato = $vet->soato0->region_id.$vet->soato0->district_id;
+            $soato_full = $vet->soato0->res_id.$soato;
+            $model->sampling_soato = $soato_full;
+            $num = FoodSamplingCertificate::find()->where(['sampling_soato'=>$model->sampling_soato])->andFilterWhere(['like','created',date('Y')])->max('food_id');
+            $code = $soato.'-'.substr(date('Y'),2,2).'-';
+
+            $num = $num+1;
+            $code .= $num;
+            $model->code = $code;
+            $model->food_id = $num;
+            if($model->ownertype == 1){
+                if($ind->load(Yii::$app->request->post())){
+                    if($own = Individuals::findOne(['pnfl'=>$ind->pnfl])){
+                        $ind = $own;
+                    }else{
+                        $ind->save();
+                    }
+                    $model->sampler_person_pnfl = $ind->pnfl;
+                }else{
+                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                }
+            }elseif($model->ownertype == 2){
+                if($legal->load(Yii::$app->request->post())){
+                    if($own = LegalEntities::findOne(['inn'=>$legal->inn])){
+                        $legal = $own;
+                    }else{
+                        $legal->save();
+                    }
+                    $model->sampler_person_inn = $legal->inn;
+                }else{
+                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                }
+            }else{
+                Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                return $this->render('product',[
+                    'model'=>$model,
+                    'legal'=>$legal,
+                    'ind'=>$ind
+                ]);
+            }
+
+            if($model->save()){
+                Yii::$app->session->setFlash('success','Dalolatnoma Muvoffaqiyatli yaratildi');
+                return $this->redirect(['viewfood','id'=>$model->id]);
+            }
+        }
+        return $this->render('product',[
+            'model'=>$model,
+            'legal'=>$legal,
+            'ind'=>$ind
+        ]);
+    }
+
+    public function actionViewfood($id){
+        $model = FoodSamplingCertificate::findOne($id);
+        $samp = $model->foodSamples;
+        return $this->render('viewfood',[
+            'model'=>$model,
+            'samp'=>$samp
+        ]);
+    }
+
+    public function actionAddfood($id){
+        $model = new FoodSamples();
+        $food = FoodSamplingCertificate::findOne($id);
+        $model->sert_id = $food->id;
+        if($model->load(Yii::$app->request->post())){
+            $num = FoodSamples::find()->where(['sert_id'=>$model->sert_id])->max('samp_id');
+            $num = intval($num) + 1;
+            $model->samp_code = $food->code.'/'.$num;
+            $model->samp_id = $num;
+            $model->status_id = 0;
+            if($model->save()){
+                Yii::$app->session->setFlash('success','Namuna ma\'lumotlari Muvoffaqiyatli saqlandi');
+                return $this->redirect(['viewfood','id'=>$id]);
+            }else{
+                Yii::$app->session->setFlash('error','Maydonlar to\'ldirilmagan');
+            }
+        }
+
+        return $this->render('addfood',[
+            'model'=>$model,
+            'food'=>$food
+        ]);
+    }
+
+
+
+
+    public function actionSendfood($id){
+        $model = FoodSamplingCertificate::findOne($id);
+        $sample = FoodSamples::find()->where(['food_samples.sert_id'=>$id])->andWhere('food_samples.id not in (select cs.sample_id from food_compose cs where food_samples.id=cs.sample_id)')->all();
+
+        $reg = new FoodRegistration();
+        $reg->pnfl = Yii::$app->session->get('doc_pnfl');
+        if($reg->load(Yii::$app->request->post())){
+
+            $num = FoodRegistration::find()->filterWhere(['like','reg_date',date('Y')])->max('code_id');
+
+            $code = substr(date('Y'),2,2).'-2-'.get3num($reg->organization_id).'-';
+            $reg->status_id = 1;
+            $num = $num+1;
+            $code .= $num;
+            $reg->code = $code;
+            $reg->code_id = $num;
+
+            if(is_array($reg->composite) and count($reg->composite)>0){
+                if($reg->save()){
+                    foreach ($reg->composite as $item){
+                        $com = new FoodCompose();
+                        $com->status_id = 1;
+                        $com->sample_id  = $item;
+                        $com->registration_id  = $reg->id;
+                        $com->save();
+                        $sam = FoodSamples::findOne($com->sample_id);
+                        $sam->status_id = 1;
+                        $sam->save();
+                        $sam = null;
+                        $com = null;
+
+                    }
+                }
+                $model->status_id = 1;
+                $model->save();
+                return $this->redirect(['viewfood','id'=>$model->id]);
+            }else{
+                Yii::$app->session->setFlash('error',Yii::t('client','Namuna tanlanmagan'));
+            }
+
+        }
+        return $this->render('sendfood',[
+            'sample'=>$sample,
+            'model'=>$model,
+            'reg'=>$reg
+        ]);
+    }
+
+    public function actionSertfood(){
+        $searchModel = new FoodRegistrationSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('sertfood', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionSertfoodview($id){
+        $model = FoodRegistration::findOne($id);
+        $samples = FoodSamples::find()->select(['food_samples.*'])
+            ->innerJoin('food_compose','food_compose.sample_id = food_samples.id')
+            ->where(['food_compose.registration_id'=>$id])->all();
+        return $this->render('sertfoodview',[
+            'model'=>$model,
+            'samp'=>$samples
+        ]);
+    }
 }

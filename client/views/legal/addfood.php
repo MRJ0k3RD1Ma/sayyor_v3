@@ -28,7 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
         }
     ?>
 
-    <?= $form->field($model, 'tasnif_code')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\FoodType::find()->all(),'id','name_'.$lg),['maxlength' => true]) ?>
+    <?= $form->field($model, 'tasnif_code')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\FoodType::find()->all(),'id','name'),['maxlength' => true,'class'=>'form-control select2list'
+    ,'prompt'=>Yii::t('client','Mahsulotni tanlang')]) ?>
 
     <?= $form->field($model, 'unit_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Units::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Mahsulot birligini tanlang')]) ?>
 
@@ -36,36 +37,32 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'sample_box_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SampleBoxes::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Namuna o\'ramini tanlang')]) ?>
 
-    <?= $form->field($model, 'sample_condition_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SampleConditions::find()->all(),'id','name_'.$lg)) ?>
+    <?= $form->field($model, 'sample_condition_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SampleConditions::find()->all(),'id','name_'.$lg),[
+            'prompt'=>Yii::t('client','Namuna holatini tanlang')
+    ]) ?>
 
     <?= $form->field($model, 'total_amount')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'verification_sample')->textInput() ?>
+    <?= $form->field($model, 'verification_sample')->radioList([
+            0=>Yii::t('client','Tanlanmagan'),
+            1=>Yii::t('client','Tanlangan'),
+    ]) ?>
 
     <?= $form->field($model, 'producer')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'serial_num')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'manufacture_date')->textInput() ?>
+    <?= $form->field($model, 'manufacture_date')->textInput(['type'=>'date']) ?>
 
-    <?= $form->field($model, 'sell_by')->textInput() ?>
+    <?= $form->field($model, 'sell_by')->textInput(['type'=>'date']) ?>
 
     <?= $form->field($model, 'coments')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'sampling_date')->textInput() ?>
+    <?= $form->field($model, 'laboratory_test_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\LaboratoryTestType::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Laboratoriya test turini tanlang')]) ?>
 
-    <?= $form->field($model, 'send_sample_date')->textInput() ?>
-
-    <?= $form->field($model, 'explanations')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'laboratory_test_type_id')->textInput() ?>
-
-    <?= $form->field($model, 'created')->textInput() ?>
-
-    <?= $form->field($model, 'updated')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('food', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('food', 'Saqlash'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

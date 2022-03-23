@@ -23,8 +23,8 @@ use Yii;
  * @property string|null $manufacture_date
  * @property string|null $sell_by yaroqlilik muddati
  * @property string|null $coments
- * @property string|null $explanations
  * @property int|null $laboratory_test_type_id
+ * @property int|null $status_id
  * @property string|null $created
  * @property string|null $updated
  *
@@ -50,9 +50,9 @@ class FoodSamples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['samp_id', 'sert_id', 'unit_id', 'count', 'sample_box_id', 'sample_condition_id', 'verification_sample', 'laboratory_test_type_id'], 'integer'],
+            [['samp_id', 'sert_id', 'unit_id', 'count', 'sample_box_id', 'sample_condition_id', 'verification_sample', 'laboratory_test_type_id','status_id'], 'integer'],
             [['manufacture_date', 'sell_by',  'created', 'updated'], 'safe'],
-            [['samp_code', 'tasnif_code', 'total_amount', 'producer', 'serial_num', 'coments', 'explanations'], 'string', 'max' => 255],
+            [['samp_code', 'tasnif_code', 'total_amount', 'producer', 'serial_num', 'coments', ], 'string', 'max' => 255],
             [['laboratory_test_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => LaboratoryTestType::className(), 'targetAttribute' => ['laboratory_test_type_id' => 'id']],
             [['sample_box_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleBoxes::className(), 'targetAttribute' => ['sample_box_id' => 'id']],
             [['sample_condition_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleConditions::className(), 'targetAttribute' => ['sample_condition_id' => 'id']],
@@ -83,13 +83,16 @@ class FoodSamples extends \yii\db\ActiveRecord
             'manufacture_date' => Yii::t('food', 'Ishlab chiqarilgan sana'),
             'sell_by' => Yii::t('food', 'Muddati'),
             'coments' => Yii::t('food', 'Qo\'shimcha ma\'lumot'),
-            'explanations' => Yii::t('food', 'Explanations'),
-            'laboratory_test_type_id' => Yii::t('food', 'Laboratory Test Type ID'),
-            'created' => Yii::t('food', 'Created'),
-            'updated' => Yii::t('food', 'Updated'),
+            'laboratory_test_type_id' => Yii::t('food', 'Laboratoriya test turi'),
+            'created' => Yii::t('food', 'Yaratildi'),
+            'updated' => Yii::t('food', 'O\'zgartirildi'),
+            'status_id' => Yii::t('food', 'Status'),
         ];
     }
 
+    public function getTasnif(){
+        return $this->hasOne(FoodType::className(),['id'=>'tasnif_code']);
+    }
     /**
      * Gets query for [[LaboratoryTestType]].
      *
@@ -138,5 +141,9 @@ class FoodSamples extends \yii\db\ActiveRecord
     public function getUnit()
     {
         return $this->hasOne(Units::className(), ['id' => 'unit_id']);
+    }
+
+    public function getStatus(){
+        return $this->hasOne(SertStatus::className(),['id'=>'status_id']);
     }
 }

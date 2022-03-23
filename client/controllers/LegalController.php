@@ -9,6 +9,8 @@ use common\models\Animals;
 use common\models\CompositeSamples;
 use common\models\DistrictView;
 use common\models\Emlash;
+use common\models\FoodCompose;
+use common\models\FoodRegistration;
 use common\models\FoodSamples;
 use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
@@ -216,7 +218,7 @@ class LegalController extends Controller
 
     public function actionSend($id){
         $model = Sertificates::findOne($id);
-        $sample = Samples::find()->where(['samples.sert_id'=>$id])->andWhere(['not in','samples.id','select cs.sample_id from composite_samples cs where samples.id=cs.sample_id'])->all();
+        $sample = Samples::find()->where(['samples.sert_id'=>$id])->andWhere('samples.id not in (select cs.sample_id from composite_samples cs where samples.id=cs.sample_id)')->all();
         $reg = new SampleRegistration();
         $reg->inn = Yii::$app->session->get('doc_inn');
         if($reg->load(Yii::$app->request->post())){
@@ -374,6 +376,8 @@ class LegalController extends Controller
         $ind = new Individuals();
         $legal = new LegalEntities();
         $model->ownertype = 1;
+        $model->status_id = 0;
+        $model->state_id = 1;
         if($model->load(Yii::$app->request->post())){
             $vet = VetSites::findOne($model->sampling_site);
             $soato = $vet->soato0->region_id.$vet->soato0->district_id;
@@ -431,16 +435,29 @@ class LegalController extends Controller
 
     public function actionViewfood($id){
         $model = FoodSamplingCertificate::findOne($id);
+        $samp = $model->foodSamples;
         return $this->render('viewfood',[
-            'model'=>$model
+            'model'=>$model,
+            'samp'=>$samp
         ]);
     }
 
     public function actionAddfood($id){
         $model = new FoodSamples();
         $food = FoodSamplingCertificate::findOne($id);
+        $model->sert_id = $food->id;
         if($model->load(Yii::$app->request->post())){
-
+            $num = FoodSamples::find()->where(['sert_id'=>$model->sert_id])->max('samp_id');
+            $num = intval($num) + 1;
+            $model->samp_code = $food->code.'/'.$num;
+            $model->samp_id = $num;
+            $model->status_id = 0;
+            if($model->save()){
+                Yii::$app->session->setFlash('success','Namuna ma\'lumotlari Muvoffaqiyatli saqlandi');
+                return $this->redirect(['viewfood','id'=>$id]);
+            }else{
+                Yii::$app->session->setFlash('error','Maydonlar to\'ldirilmagan');
+            }
         }
 
         return $this->render('addfood',[
@@ -449,4 +466,54 @@ class LegalController extends Controller
         ]);
     }
 
+
+
+
+    public function actionSendfood($id){
+        $model = FoodSamplingCertificate::findOne($id);
+        $sample = FoodSamples::find()->where(['food_samples.sert_id'=>$id])->andWhere('food_samples.id not in (select cs.sample_id from food_compose cs where food_samples.id=cs.sample_id)')->all();
+
+        $reg = new FoodRegistration();
+        $reg->inn = Yii::$app->session->get('doc_inn');
+        if($reg->load(Yii::$app->request->post())){
+
+            $num = FoodRegistration::find()->filterWhere(['like','reg_date',date('Y')])->max('code_id');
+
+            $code = substr(date('Y'),2,2).'-2-'.get3num($reg->organization_id).'-';
+            $reg->status_id = 1;
+            $num = $num+1;
+            $code .= $num;
+            $reg->code = $code;
+            $reg->code_id = $num;
+
+            if(is_array($reg->composite) and count($reg->composite)>0){
+                if($reg->save()){
+                    foreach ($reg->composite as $item){
+                        $com = new FoodCompose();
+                        $com->status_id = 1;
+                        $com->sample_id  = $item;
+                        $com->registration_id  = $reg->id;
+                        $com->save();
+                        $sam = FoodSamples::findOne($com->sample_id);
+                        $sam->status_id = 1;
+                        $sam->save();
+                        $sam = null;
+                        $com = null;
+
+                    }
+                }
+                $model->status_id = 1;
+                $model->save();
+                return $this->redirect(['viewfood','id'=>$model->id]);
+            }else{
+                Yii::$app->session->setFlash('error',Yii::t('client','Namuna tanlanmagan'));
+            }
+
+        }
+        return $this->render('sendfood',[
+            'sample'=>$sample,
+            'model'=>$model,
+            'reg'=>$reg
+        ]);
+    }
 }

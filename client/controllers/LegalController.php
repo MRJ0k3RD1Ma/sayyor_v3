@@ -3,6 +3,7 @@
 namespace client\controllers;
 
 use client\models\InnForm;
+use client\models\search\FoodRegistrationSearch;
 use client\models\search\SampleRegistrationSearch;
 use client\models\search\SertificatesSearch;
 use common\models\Animals;
@@ -96,7 +97,7 @@ class LegalController extends Controller
     {
 
         if(Yii::$app->session->has('doc_type')){
-            if(!Yii::$app->session->has('doc_'.Yii::$app->session->get('doc_type'))){
+            if(!Yii::$app->session->has('doc_inn')){
                 header('Location: /client/site/login');
                 exit;
             }
@@ -514,6 +515,27 @@ class LegalController extends Controller
             'sample'=>$sample,
             'model'=>$model,
             'reg'=>$reg
+        ]);
+    }
+
+    public function actionSertfood(){
+        $searchModel = new FoodRegistrationSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('sertfood', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionSertfoodview($id){
+        $model = FoodRegistration::findOne($id);
+        $samples = FoodSamples::find()->select(['food_samples.*'])
+            ->innerJoin('food_compose','food_compose.sample_id = food_samples.id')
+            ->where(['food_compose.registration_id'=>$id])->all();
+        return $this->render('sertfoodview',[
+            'model'=>$model,
+            'samp'=>$samples
         ]);
     }
 }

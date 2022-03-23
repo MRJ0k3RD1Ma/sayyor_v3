@@ -84,6 +84,9 @@ class FoodRegistration extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getComp(){
+        return $this->hasMany(FoodCompose::className(),['registration_id'=>'id']);
+    }
     /**
      * Gets query for [[FoodComposes]].
      *
@@ -122,5 +125,12 @@ class FoodRegistration extends \yii\db\ActiveRecord
     public function getStatus()
     {
         return $this->hasOne(SertStatus::className(), ['id' => 'status_id']);
+    }
+
+    public function getInn0(){
+        return $this->hasOne(LegalEntities::className(),['inn'=>'inn']);
+    }
+    public function getPnfl0(){
+        return $this->hasOne(Individuals::className(),['pnfl'=>'pnfl']);
     }
 }

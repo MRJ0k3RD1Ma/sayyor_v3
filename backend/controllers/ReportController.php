@@ -211,7 +211,7 @@ class ReportController extends ActiveController
                 $file->saveAs(Yii::$app->basePath.'/../frontend/web/uploads/'.$path);
             $savedfiles[$n] = $path;
         }
-        return $savedfiles;
+        return $path;
 
     }
 

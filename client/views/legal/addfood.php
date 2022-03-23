@@ -15,7 +15,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'tasnif_code',['options'=>['stype'=>'display:none']])->textInput(['maxlength' => true,'style'=>'display:none']) ?>
+    <?php
+        $lang = Yii::$app->language;
+    ?>
+
+    <?= $form->field($model, 'tasnif_code')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\FoodType::find()->all(),'id','name_'),['maxlength' => true]) ?>
+
+
+
 
     <?= $form->field($model, 'unit_id')->textInput() ?>
 

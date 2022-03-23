@@ -15,11 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                    <?php echo $this->render('_searchfood', [
-                        'model' => $searchModel,
-                    ]);
-                    ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'id' => 'listfood-grid',
@@ -31,8 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => 'code',
                                 'format' => 'html',
-                                'value'=>function ($model){
-                                    return Html::a($model->code,'viewfood?id='.$model->id);
+                                'value' => function ($model) {
+                                    return Html::a($model->code, 'viewfood?id=' . $model->id);
                                 }
                             ],
                             'food_id',
@@ -51,13 +46,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'updated',
                         ],
                     ]); ?>
-                    <?php
-                    \yii\widgets\Pjax::end();
-                    ?>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>

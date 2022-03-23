@@ -63,7 +63,7 @@ class Soato extends \yii\db\ActiveRecord
         ];
     }
     public static function Full($code,$lang='lot'){
-        $soato=self::findOne($code)->one();
+        $soato=self::findOne($code);
         $region = $soato->region_id;
         $district = $soato->district_id;
         return $region->{'name_'.$lang}."<br>".$district->{'name_'.$lang};

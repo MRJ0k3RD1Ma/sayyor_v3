@@ -392,7 +392,6 @@ class SiteController extends Controller
     }
 
 
-
     public function actionGetDistrict($id){
         $model = DistrictView::find()->where(['region_id'=>$id])->all();
         $text = Yii::t('cp.vetsites','- Tumanni tanlang -');

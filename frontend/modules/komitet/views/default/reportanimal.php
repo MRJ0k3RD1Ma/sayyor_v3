@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'created',
 //            'updated',
 //            'rep_id',
-                            'lang',
+//                            'lang',
 //            'organization_id',
                         ],
                     ]); ?>

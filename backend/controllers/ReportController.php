@@ -119,7 +119,6 @@ class ReportController extends ActiveController
                         $im = null;
                     }
                 }
-
                 return 1;
             }
         }

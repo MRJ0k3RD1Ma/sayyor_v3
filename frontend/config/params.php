@@ -15,4 +15,8 @@ return [
             'getanimalinfo'=>'http://hamsa.vetgov.uz/api/getanimalinfo',
         ],
     ],
+    'eskiz'=>[
+        'email'=>'info@vetgov.uz',
+        'password'=>'wu6Ifz4Y1ps7bMVgXTpxnZX0pvw8ZvV5Li7ILFa1'
+    ]
 ];

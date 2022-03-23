@@ -45,8 +45,6 @@ class ReportController extends ActiveController
                 'application/json'=>Response::FORMAT_JSON
             ]
         ];
-
-
         return $behaviors;
     }
     public function actions()
@@ -217,6 +215,31 @@ class ReportController extends ActiveController
 
     }
 
+
+    public function actionSendMessage($phone,$message){
+
+    }
+
+    public function actionGetToken(){
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'notify.eskiz.uz/api/auth/login',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('email' => 'test@eskiz.uz','password' => 'j6DWtQjjpLDNjWEk74Sx'),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response;
+    }
 
 
 }

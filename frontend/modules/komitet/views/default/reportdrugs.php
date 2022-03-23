@@ -27,7 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
-                            'code',
+                            [
+                                'attribute' => 'code',
+                                'format' => 'raw',
+                                'value' => function ($model) {
+                                    return \yii\bootstrap4\Html::a($model->code, '/komitet/reportdrugsview?id=' . $model->id);
+                                }
+                            ],
                             [
                                 'attribute' => 'type_id',
                                 'value' => function ($model) {

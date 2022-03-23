@@ -1,43 +1,24 @@
 <?php
 
-use common\models\ReportAnimalImages;
+use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ReportAnimal */
+/* @var $model common\models\ReportDrugs */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Hayvon kasalliklari', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Dori darmonlar', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="report-animal-view">
-
-    <?php
-        $lang = Yii::$app->language;
-        $lg = 'uz';
-        if($lang == 'ru'){
-            $lg = 'ru';
-        }
-    ?>
+<div class="report-drugs-view">
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-//            'id',
-//            'type_id',
+            'id',
+            'rep_id',
             'code',
-            [
-                'attribute'=>'type_id',
-                'value'=>function($d){
-                    $lang = Yii::$app->language;
-                    $lg = 'uz';
-                    if($lang == 'ru'){
-                        $lg = 'ru';
-                    }
-                    return $d->type->{'name_'.$lg};
-                }
-            ],
             [
                 'attribute'=>'cat_id',
                 'value'=>function($d){
@@ -49,7 +30,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $d->cat->{'name_'.$lg};
                 }
             ],
-//            'cat_id',
+            [
+                'attribute'=>'type_id',
+                'value'=>function($d){
+                    $lang = Yii::$app->language;
+                    $lg = 'uz';
+                    if($lang == 'ru'){
+                        $lg = 'ru';
+                    }
+                    return $d->type->{'name_'.$lg};
+                }
+            ],
             [
                 'attribute'=>'soato_id',
                 'value'=>function($d){
@@ -64,7 +55,9 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'lat',
 //            'long',
             'detail:ntext',
-//            'operator_id',
+            'phone',
+            'created',
+            'updated',
             [
                 'attribute'=>'operator_id',
                 'value'=>function($d){
@@ -83,18 +76,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $s[$d->is_true];
                 }
             ],
-            'report_status_id',
-            'phone',
-            'created',
-            'updated',
-            'code',
-            'rep_id',
-            'lang',
             [
                 'label' => 'image',
                 'format' => 'html',
                 'value' => function ($model) {
-                    $img = 'http://' . Yii::$app->request->serverName . '/uploads/' . ReportAnimalImages::find()->where(['report_id' => $model->id])->one()->image;
+                    $img = 'http://' . Yii::$app->request->serverName . '/uploads/' . \common\models\ReportDrugImages::find()->where(['report_id' => $model->id])->one()->image;
                     echo \lo\widgets\magnific\MagnificPopup::widget(
                         [
                             'target' => '#test',
@@ -109,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         . '</a>';
                 }
             ],
-            'organization_id',
+            'status_id',
         ],
     ]) ?>
     <div id="map"></div>
@@ -147,7 +133,5 @@ $this->params['breadcrumbs'][] = $this->title;
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAKc6n_ShV0w0BIcrtYymLAwK4UB1g0g4&callback=initMap">
     </script>
-
-
 
 </div>

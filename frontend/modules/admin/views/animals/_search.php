@@ -34,7 +34,7 @@ use yii\widgets\ActiveForm;
                             $char = (count(Yii::$app->request->queryParams) > 0) ? "&" : "?";
                             ?>
                             <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
-                            </button>
+                             </button>
                             <div class="export-btn">
                                 <button>
                                     <?= Html::a('<span class="fa fa-file-excel"></span> Excel ', Yii::$app->request->url . $char . 'export=1', ['data-pjax' => 0, 'export' => 1]) ?>

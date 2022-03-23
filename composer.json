@@ -21,7 +21,8 @@
         "codemix/yii2-localeurls": "^1.7",
         "xj/yii2-qrcode-widget": "^1.1",
         "endroid/qr-code": "^4.4",
-        "kartik-v/yii2-mpdf": "dev-master"
+        "kartik-v/yii2-mpdf": "dev-master",
+        "loveorigami/yii2-magnific-popup": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

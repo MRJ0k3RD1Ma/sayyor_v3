@@ -104,6 +104,8 @@
       <path value="$PROJECT_DIR$/vendor/kartik-v/yii2-mpdf" />
       <path value="$PROJECT_DIR$/vendor/psr/log" />
       <path value="$PROJECT_DIR$/vendor/setasign/fpdi" />
+      <path value="$PROJECT_DIR$/vendor/bower-asset/magnific-popup" />
+      <path value="$PROJECT_DIR$/vendor/loveorigami/yii2-magnific-popup" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration">

@@ -31,7 +31,7 @@ use Yii;
  */
 class FoodSamplingCertificate extends \yii\db\ActiveRecord
 {
-    public $region;
+    public $region,$ownertype;
     /**
      * {@inheritdoc}
      */
@@ -46,7 +46,7 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['food_id', 'sampling_site','sampling_soato', 'verification_pupose_id', 'based_public_information', 'message_number'], 'integer'],
+            [['food_id','ownertype', 'sampling_site','sampling_soato', 'verification_pupose_id', 'based_public_information', 'message_number'], 'integer'],
             [['sampling_date', 'send_sample_date', 'created', 'updated'], 'safe'],
             [['code', 'inn', 'pnfl', 'sampling_adress', 'sampler_person_pnfl', 'sampler_person_inn'], 'string', 'max' => 255],
             [['verification_pupose_id'], 'exist', 'skipOnError' => true, 'targetClass' => VerificationPurposes::className(), 'targetAttribute' => ['verification_pupose_id' => 'id']],
@@ -65,7 +65,7 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
             'inn' => Yii::t('model.food_sampling_certificate', 'STIR(INN)'),
             'pnfl' => Yii::t('model.food_sampling_certificate', 'JSHSHIR(PNFL)'),
             'sampling_site' => Yii::t('model.food_sampling_certificate', 'Namuna beruvchi vet uchaska'),
-            'sampling_soato' => Yii::t('model.food_sampling_certificate', 'QFI'),
+            'sampling_soato' => Yii::t('model.food_sampling_certificate', 'Tuman'),
             'sampling_adress' => Yii::t('model.food_sampling_certificate', 'Namuna olish manzil'),
             'sampler_person_pnfl' => Yii::t('model.food_sampling_certificate', 'JSHSHIR(PNFL)'),
             'sampler_person_inn' => Yii::t('model.food_sampling_certificate', 'STIR(PNFL)'),
@@ -107,5 +107,12 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     public function getVerificationPupose()
     {
         return $this->hasOne(VerificationPurposes::className(), ['id' => 'verification_pupose_id']);
+    }
+
+    public function getInn0(){
+        return $this->hasOne(LegalEntities::className(),['inn'=>'inn']);
+    }
+    public function getPnfl0(){
+        return $this->hasOne(Individuals::className(),['pnfl'=>'pnfl']);
     }
 }

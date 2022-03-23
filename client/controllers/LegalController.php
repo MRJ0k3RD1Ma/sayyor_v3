@@ -336,12 +336,7 @@ class LegalController extends Controller
 
     }
 
-    public function actionViewfood($id){
-        $model = FoodSamplingCertificate::findOne($id);
-        return $this->render('viewfood',[
-            'model'=>$model
-        ]);
-    }
+
 
     public function actionListfood(){
         $searchModel = new FoodSamplingCertificateSearch();
@@ -375,23 +370,69 @@ class LegalController extends Controller
     public function actionProduct(){
         $model = new FoodSamplingCertificate();
         $model->inn = Yii::$app->session->get('doc_inn');
+        $ind = new Individuals();
+        $legal = new LegalEntities();
+        $model->ownertype = 1;
         if($model->load(Yii::$app->request->post())){
-
+            $vet = VetSites::findOne($model->sampling_site);
+            $soato = $vet->soato0->region_id.$vet->soato0->district_id;
+            $soato_full = $vet->soato0->res_id.$soato;
+            $model->sampling_soato = $soato_full;
             $num = FoodSamplingCertificate::find()->where(['sampling_soato'=>$model->sampling_soato])->andFilterWhere(['like','created',date('Y')])->max('food_id');
-            $soato = Soato::findOne($model->sampling_soato);
-            $code = substr(date('Y'),2,2).'-'.$soato->region_id.$soato->district_id.'-';
+            $code = $soato.'-'.substr(date('Y'),2,2).'-';
 
             $num = $num+1;
             $code .= $num;
             $model->code = $code;
             $model->food_id = $num;
+            if($model->ownertype == 1){
+                if($ind->load(Yii::$app->request->post())){
+                    if($own = Individuals::findOne(['pnfl'=>$ind->pnfl])){
+                        $ind = $own;
+                    }else{
+                        $ind->save();
+                    }
+                    $model->sampler_person_pnfl = $ind->pnfl;
+                }else{
+                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                }
+            }elseif($model->ownertype == 2){
+                if($legal->load(Yii::$app->request->post())){
+                    if($own = LegalEntities::findOne(['inn'=>$legal->inn])){
+                        $legal = $own;
+                    }else{
+                        $legal->save();
+                    }
+                    $model->sampler_person_inn = $legal->inn;
+                }else{
+                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                }
+            }else{
+                Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                return $this->render('product',[
+                    'model'=>$model,
+                    'legal'=>$legal,
+                    'ind'=>$ind
+                ]);
+            }
 
             if($model->save()){
-
+                Yii::$app->session->setFlash('success','Dalolatnoma Muvoffaqiyatli yaratildi');
+                return $this->redirect(['viewfood','id'=>$model->id]);
             }
         }
-        return $this->render('product',['model'=>$model]);
+        return $this->render('product',[
+            'model'=>$model,
+            'legal'=>$legal,
+            'ind'=>$ind
+            ]);
     }
 
+    public function actionViewfood($id){
+        $model = FoodSamplingCertificate::findOne($id);
+        return $this->render('viewfood',[
+            'model'=>$model
+        ]);
+    }
 
 }

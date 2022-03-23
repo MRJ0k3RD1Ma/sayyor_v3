@@ -39,9 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <div id="map"></div>
-    <script async
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAKc6n_ShV0w0BIcrtYymLAwK4UB1g0g4&callback=initMap">
-    </script>
+
     <style>
         /* Set the size of the div element that contains the map */
         #map {
@@ -72,6 +70,8 @@ $this->params['breadcrumbs'][] = $this->title;
         }
 
     </script>
-
+    <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAKc6n_ShV0w0BIcrtYymLAwK4UB1g0g4&callback=initMap">
+    </script>
 
 </div>

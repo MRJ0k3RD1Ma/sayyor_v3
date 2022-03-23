@@ -21,6 +21,7 @@ use Yii;
  * @property string|null $send_sample_date
  * @property int|null $based_public_information
  * @property int|null $message_number
+ * @property int|null $sampling_soato
  * @property string|null $created
  * @property string|null $updated
  *
@@ -30,7 +31,7 @@ use Yii;
  */
 class FoodSamplingCertificate extends \yii\db\ActiveRecord
 {
-    public $district,$region,$soato;
+    public $region;
     /**
      * {@inheritdoc}
      */
@@ -45,7 +46,7 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['food_id', 'sampling_site', 'verification_pupose_id', 'based_public_information', 'message_number'], 'integer'],
+            [['food_id', 'sampling_site','sampling_soato', 'verification_pupose_id', 'based_public_information', 'message_number'], 'integer'],
             [['sampling_date', 'send_sample_date', 'created', 'updated'], 'safe'],
             [['code', 'inn', 'pnfl', 'sampling_adress', 'sampler_person_pnfl', 'sampler_person_inn'], 'string', 'max' => 255],
             [['verification_pupose_id'], 'exist', 'skipOnError' => true, 'targetClass' => VerificationPurposes::className(), 'targetAttribute' => ['verification_pupose_id' => 'id']],
@@ -59,21 +60,22 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('model.food_sampling_certificate', 'ID'),
-            'code' => Yii::t('model.food_sampling_certificate', 'Code'),
+            'code' => Yii::t('model.food_sampling_certificate', 'Raqami'),
             'food_id' => Yii::t('model.food_sampling_certificate', 'Food ID'),
-            'inn' => Yii::t('model.food_sampling_certificate', 'Inn'),
-            'pnfl' => Yii::t('model.food_sampling_certificate', 'Pnfl'),
-            'sampling_site' => Yii::t('model.food_sampling_certificate', 'Sampling Site'),
-            'sampling_adress' => Yii::t('model.food_sampling_certificate', 'Sampling Adress'),
-            'sampler_person_pnfl' => Yii::t('model.food_sampling_certificate', 'Sampler Person Pnfl'),
-            'sampler_person_inn' => Yii::t('model.food_sampling_certificate', 'Sampler Person Inn'),
-            'verification_pupose_id' => Yii::t('model.food_sampling_certificate', 'Verification Pupose ID'),
-            'sampling_date' => Yii::t('model.food_sampling_certificate', 'Sampling Date'),
-            'send_sample_date' => Yii::t('model.food_sampling_certificate', 'Send Sample Date'),
-            'based_public_information' => Yii::t('model.food_sampling_certificate', 'Based Public Information'),
-            'message_number' => Yii::t('model.food_sampling_certificate', 'Message Number'),
-            'created' => Yii::t('model.food_sampling_certificate', 'Created'),
-            'updated' => Yii::t('model.food_sampling_certificate', 'Updated'),
+            'inn' => Yii::t('model.food_sampling_certificate', 'STIR(INN)'),
+            'pnfl' => Yii::t('model.food_sampling_certificate', 'JSHSHIR(PNFL)'),
+            'sampling_site' => Yii::t('model.food_sampling_certificate', 'Namuna beruvchi vet uchaska'),
+            'sampling_soato' => Yii::t('model.food_sampling_certificate', 'QFI'),
+            'sampling_adress' => Yii::t('model.food_sampling_certificate', 'Namuna olish manzil'),
+            'sampler_person_pnfl' => Yii::t('model.food_sampling_certificate', 'JSHSHIR(PNFL)'),
+            'sampler_person_inn' => Yii::t('model.food_sampling_certificate', 'STIR(PNFL)'),
+            'verification_pupose_id' => Yii::t('model.food_sampling_certificate', 'Namuna holati'),
+            'sampling_date' => Yii::t('model.food_sampling_certificate', 'Namuna olish sanasi'),
+            'send_sample_date' => Yii::t('model.food_sampling_certificate', 'Namuna yuborilgan sana'),
+            'based_public_information' => Yii::t('model.food_sampling_certificate', 'Xabar asosida tuzilgan'),
+            'message_number' => Yii::t('model.food_sampling_certificate', 'Xabar raqami'),
+            'created' => Yii::t('model.food_sampling_certificate', 'Yaratildi'),
+            'updated' => Yii::t('model.food_sampling_certificate', 'O\'zgartirildi'),
         ];
     }
 

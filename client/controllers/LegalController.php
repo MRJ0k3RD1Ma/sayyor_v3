@@ -18,6 +18,7 @@ use common\models\SampleRegistration;
 use common\models\Samples;
 use common\models\search\FoodSamplingCertificateSearch;
 use common\models\Sertificates;
+use common\models\Soato;
 use common\models\Vaccination;
 use common\models\VetSites;
 use frontend\models\ResendVerificationEmailForm;
@@ -335,35 +336,6 @@ class LegalController extends Controller
 
     }
 
-
-    public function actionProduct(){
-        $model = new FoodSamplingCertificate();
-        $pro = new ProductExpertise();
-        $model->inn = Yii::$app->session->get('doc_inn');
-        if($model->load(Yii::$app->request->post())){
-
-            $org = $model->organization_id;
-
-            $num = FoodSamplingCertificate::find()->where(['organization_id'=>$org])->andFilterWhere(['like','food_id',date('Y')])->max('food_id');
-
-            $code = substr(date('Y'),2,2).'-2-'.get3num($org).'-';
-
-            $num = $num+1;
-            $code .= $num;
-            $model->kod = $code;
-            $model->food_id = $num;
-            $pro->orgaization_id = $model->organization_id;
-            $pro->inn = $model->inn;
-            $pro->vet_site_id = $model->sampling_site;
-            if($model->save() and $pro->load(Yii::$app->request->post())){
-                $pro->food_sampling_certificate = $model->id;
-                $pro->save();
-                return $this->redirect(['viewfood','id'=>$model->id]);
-            }
-        }
-        return $this->render('product',['model'=>$model,'pro'=>$pro]);
-    }
-
     public function actionViewfood($id){
         $model = FoodSamplingCertificate::findOne($id);
         return $this->render('viewfood',[
@@ -399,4 +371,27 @@ class LegalController extends Controller
             'samples'=>$samples
         ]);
     }
+
+    public function actionProduct(){
+        $model = new FoodSamplingCertificate();
+        $model->inn = Yii::$app->session->get('doc_inn');
+        if($model->load(Yii::$app->request->post())){
+
+            $num = FoodSamplingCertificate::find()->where(['sampling_soato'=>$model->sampling_soato])->andFilterWhere(['like','created',date('Y')])->max('food_id');
+            $soato = Soato::findOne($model->sampling_soato);
+            $code = substr(date('Y'),2,2).'-'.$soato->region_id.$soato->district_id.'-';
+
+            $num = $num+1;
+            $code .= $num;
+            $model->code = $code;
+            $model->food_id = $num;
+
+            if($model->save()){
+
+            }
+        }
+        return $this->render('product',['model'=>$model]);
+    }
+
+
 }

@@ -58,4 +58,16 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+
+    <h4>Namunalar ro'yhati</h4>
+    <table class="table table-bordered table-responsive table-hover">
+        <thead>
+
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="<?= Yii::$app->urlManager->createUrl(['/legal/addfood','id'=>$model->id])?>">Namuna qo'shish</a></td>
+            </tr>
+        </tbody>
+    </table>
 </div>

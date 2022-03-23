@@ -1,37 +1,32 @@
 <?php
 
+use common\models\ReportStatus;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\search\ReportFoodSearch */
+/* @var $searchModel common\models\search\ReportDrugsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Oziq-ovqat ekspertizalari';
+$this->title = 'Dori darmonlar';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="report-food-index">
+<div class="report-drugs-index">
+
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                    <?php echo $this->render('_searchreportfood', [
-                        'model' => $searchModel,
-                    ]);
-                    ?>
-
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
-                        'id' => 'reportfood-grid',
+                        'id' => 'reportdrugs-grid',
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
                             'code',
-//            'rep_id',
                             [
                                 'attribute' => 'type_id',
                                 'value' => function ($model) {
-                                    return \common\models\FoodType::find()->where(['id' => $model->type_id])->one()->name;
+                                    return \common\models\ReportDrugType::find()->where(['id' => $model->type_id])->one()->name_uz;
                                 }
                             ],
                             [
@@ -40,8 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return \common\models\ReportFoodCategory::find()->where(['id' => $model->cat_id])->one()->name_uz;
                                 }
                             ],
-//            'lat',
-//            'long',
                             [
                                 'attribute' => 'soato_id',
                                 'format' => 'html',
@@ -49,29 +42,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return \common\models\Soato::Full($model->soato_id);
                                 }
                             ],
+//                            'lat',
+//                            'long',
+//                            'detail:ntext',
                             'phone',
-//            'detail:ntext',
-//            'created',
-//            'updated',
-//            'is_true',
+//                            'created',
+//                            'updated',
+//                            'is_true',
                             [
                                 'attribute' => 'status_id',
                                 'value' => function ($model) {
-                                    return \common\models\ReportStatus::findOne(['id' => $model->status_id])->name_uz;
+                                    return ReportStatus::findOne(['id' => $model->status_id])->name_uz;
                                 }
                             ],
                             'operator_id',
+
                         ],
                     ]); ?>
-
-                    <?php
-                    \yii\widgets\Pjax::end();
-                    ?>
-
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>

@@ -29,14 +29,20 @@ use yii\widgets\ActiveForm;
 
 
                         <div class="export">
+                            <?php
+                            $char = (count(Yii::$app->request->queryParams) > 0) ? "&" : "?";
+                            ?>
                             <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
                             </button>
                             <div class="export-btn">
                                 <button>
-                                    <?= Html::a(' Excel ', Yii::$app->request->url."&export=1", ['data-pjax' => 0, 'class' => 'fa fa-file-excel']) ?>
+                                    <?= Html::a('<span class="fa fa-file-excel"></span> Excel ', Yii::$app->request->url . $char . 'export=1', ['data-pjax' => 0, 'export' => 1]) ?>
                                 </button>
                                 <button>
-                                    <?= Html::a(' PDF ', Yii::$app->request->url."&export=2", ['data-pjax' => 0, 'class' => 'fa fa-file-pdf']) ?>
+
+                                    <?=
+
+                                    Html::a('<span class="fa fa-file-pdf"></span> PDF ', Yii::$app->request->url . $char . 'export=2', ['data-pjax' => 0]) ?>
                                 </button>
                             </div>
 

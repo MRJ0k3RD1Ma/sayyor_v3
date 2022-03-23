@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
             const uluru = { lat: <?= $model->lat?>, lng: <?= $model->long?> };
             // The map, centered at Uluru
             const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 4,
+                zoom: 10,
                 center: uluru,
             });
             // The marker, positioned at Uluru
@@ -70,10 +70,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 map: map,
             });
         }
-
-
-        // Append the 'script' element to 'head'
-        document.head.appendChild(script);
 
     </script>
 

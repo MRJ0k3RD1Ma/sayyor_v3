@@ -209,7 +209,7 @@ class ReportController extends ActiveController
             $n++;
             $path = microtime(true).$file->name;
                 $file->saveAs(Yii::$app->basePath.'/../frontend/web/uploads/'.$path);
-            $savedfiles[$n] = $path;
+            $savedfiles[] = $path;
         }
         return $savedfiles;
 

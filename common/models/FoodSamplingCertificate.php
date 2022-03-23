@@ -24,6 +24,7 @@ use Yii;
  * @property int|null $sampling_soato
  * @property string|null $created
  * @property string|null $updated
+ * @property string|null $explanations
  *
  * @property FoodSamples[] $foodSamples
  * @property ProductExpertise[] $productExpertises
@@ -48,7 +49,7 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
         return [
             [['food_id','ownertype', 'sampling_site','sampling_soato', 'verification_pupose_id', 'based_public_information', 'message_number'], 'integer'],
             [['sampling_date', 'send_sample_date', 'created', 'updated'], 'safe'],
-            [['code', 'inn', 'pnfl', 'sampling_adress', 'sampler_person_pnfl', 'sampler_person_inn'], 'string', 'max' => 255],
+            [['code', 'inn', 'pnfl', 'sampling_adress', 'sampler_person_pnfl', 'sampler_person_inn','explanations'], 'string', 'max' => 255],
             [['verification_pupose_id'], 'exist', 'skipOnError' => true, 'targetClass' => VerificationPurposes::className(), 'targetAttribute' => ['verification_pupose_id' => 'id']],
         ];
     }
@@ -73,6 +74,7 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
             'sampling_date' => Yii::t('model.food_sampling_certificate', 'Namuna olish sanasi'),
             'send_sample_date' => Yii::t('model.food_sampling_certificate', 'Namuna yuborilgan sana'),
             'based_public_information' => Yii::t('model.food_sampling_certificate', 'Xabar asosida tuzilgan'),
+            'explanations' => Yii::t('model.food_sampling_certificate', 'Namunani yuborish sharoiti'),
             'message_number' => Yii::t('model.food_sampling_certificate', 'Xabar raqami'),
             'created' => Yii::t('model.food_sampling_certificate', 'Yaratildi'),
             'updated' => Yii::t('model.food_sampling_certificate', 'O\'zgartirildi'),

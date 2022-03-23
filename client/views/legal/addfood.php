@@ -17,20 +17,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
         $lang = Yii::$app->language;
+        $lg = 'uz';
+        if($lang=='ru'){
+            $ads = 'ru';
+            $lg = 'ru';
+        }elseif($lang == 'uz'){
+            $ads = 'lot';
+        }else{
+            $ads = 'cyr';
+        }
     ?>
 
-    <?= $form->field($model, 'tasnif_code')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\FoodType::find()->all(),'id','name_'),['maxlength' => true]) ?>
+    <?= $form->field($model, 'tasnif_code')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\FoodType::find()->all(),'id','name_'.$lg),['maxlength' => true]) ?>
 
-
-
-
-    <?= $form->field($model, 'unit_id')->textInput() ?>
+    <?= $form->field($model, 'unit_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Units::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Mahsulot birligini tanlang')]) ?>
 
     <?= $form->field($model, 'count')->textInput() ?>
 
-    <?= $form->field($model, 'sample_box_id')->textInput() ?>
+    <?= $form->field($model, 'sample_box_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SampleBoxes::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Namuna o\'ramini tanlang')]) ?>
 
-    <?= $form->field($model, 'sample_condition_id')->textInput() ?>
+    <?= $form->field($model, 'sample_condition_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SampleConditions::find()->all(),'id','name_'.$lg)) ?>
 
     <?= $form->field($model, 'total_amount')->textInput(['maxlength' => true]) ?>
 

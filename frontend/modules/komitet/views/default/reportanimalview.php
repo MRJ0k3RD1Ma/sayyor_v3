@@ -38,4 +38,44 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+    <div id="map"></div>
+    <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeP6BCtySElOLb7G3_Dc6ngi4mssnbSaU&callback=initMap">
+    </script>
+    <style>
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 400px;
+            /* The height is 400 pixels */
+            width: 100%;
+            /* The width is the width of the web page */
+        }
+    </style>
+    <div id="map"></div>
+    <script>
+
+        // Attach your callback function to the `window` object
+        // Initialize and add the map
+        function initMap() {
+            // The location of Uluru
+            const uluru = { lat: <?= $model->lat?>, lng: <?= $model->long?> };
+            // The map, centered at Uluru
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 4,
+                center: uluru,
+            });
+            // The marker, positioned at Uluru
+            const marker = new google.maps.Marker({
+                position: uluru,
+                map: map,
+            });
+        }
+
+
+        // Append the 'script' element to 'head'
+        document.head.appendChild(script);
+
+    </script>
+
+
 </div>

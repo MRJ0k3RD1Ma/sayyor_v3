@@ -23,8 +23,6 @@ use Yii;
  * @property string|null $manufacture_date
  * @property string|null $sell_by yaroqlilik muddati
  * @property string|null $coments
- * @property string|null $sampling_date
- * @property string|null $send_sample_date
  * @property string|null $explanations
  * @property int|null $laboratory_test_type_id
  * @property string|null $created
@@ -53,7 +51,7 @@ class FoodSamples extends \yii\db\ActiveRecord
     {
         return [
             [['samp_id', 'sert_id', 'unit_id', 'count', 'sample_box_id', 'sample_condition_id', 'verification_sample', 'laboratory_test_type_id'], 'integer'],
-            [['manufacture_date', 'sell_by', 'sampling_date', 'send_sample_date', 'created', 'updated'], 'safe'],
+            [['manufacture_date', 'sell_by',  'created', 'updated'], 'safe'],
             [['samp_code', 'tasnif_code', 'total_amount', 'producer', 'serial_num', 'coments', 'explanations'], 'string', 'max' => 255],
             [['laboratory_test_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => LaboratoryTestType::className(), 'targetAttribute' => ['laboratory_test_type_id' => 'id']],
             [['sample_box_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleBoxes::className(), 'targetAttribute' => ['sample_box_id' => 'id']],
@@ -70,23 +68,21 @@ class FoodSamples extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('food', 'ID'),
-            'samp_code' => Yii::t('food', 'Samp Code'),
-            'samp_id' => Yii::t('food', 'Samp ID'),
-            'sert_id' => Yii::t('food', 'Sert ID'),
-            'tasnif_code' => Yii::t('food', 'Tasnif Code'),
-            'unit_id' => Yii::t('food', 'Unit ID'),
-            'count' => Yii::t('food', 'Count'),
-            'sample_box_id' => Yii::t('food', 'Sample Box ID'),
-            'sample_condition_id' => Yii::t('food', 'Sample Condition ID'),
-            'total_amount' => Yii::t('food', 'Total Amount'),
-            'verification_sample' => Yii::t('food', 'Verification Sample'),
-            'producer' => Yii::t('food', 'Producer'),
-            'serial_num' => Yii::t('food', 'Serial Num'),
-            'manufacture_date' => Yii::t('food', 'Manufacture Date'),
-            'sell_by' => Yii::t('food', 'Sell By'),
-            'coments' => Yii::t('food', 'Coments'),
-            'sampling_date' => Yii::t('food', 'Sampling Date'),
-            'send_sample_date' => Yii::t('food', 'Send Sample Date'),
+            'samp_code' => Yii::t('food', 'Raqami'),
+            'samp_id' => Yii::t('food', 'raqami'),
+            'sert_id' => Yii::t('food', 'Dalolatnoma'),
+            'tasnif_code' => Yii::t('food', 'Namuna nomi'),
+            'unit_id' => Yii::t('food', 'Birlik'),
+            'count' => Yii::t('food', 'Soni'),
+            'sample_box_id' => Yii::t('food', 'Namuna o\'rami'),
+            'sample_condition_id' => Yii::t('food', 'Namuna holati'),
+            'total_amount' => Yii::t('food', 'Toplam(partiya) miqdori'),
+            'verification_sample' => Yii::t('food', 'Nazorat namunasi'),
+            'producer' => Yii::t('food', 'Ishlab chiqaruvchi'),
+            'serial_num' => Yii::t('food', 'Seriya raqami'),
+            'manufacture_date' => Yii::t('food', 'Ishlab chiqarilgan sana'),
+            'sell_by' => Yii::t('food', 'Muddati'),
+            'coments' => Yii::t('food', 'Qo\'shimcha ma\'lumot'),
             'explanations' => Yii::t('food', 'Explanations'),
             'laboratory_test_type_id' => Yii::t('food', 'Laboratory Test Type ID'),
             'created' => Yii::t('food', 'Created'),

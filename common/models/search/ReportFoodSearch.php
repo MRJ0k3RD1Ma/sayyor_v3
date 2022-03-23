@@ -47,7 +47,7 @@ class ReportFoodSearch extends ReportFood
      */
     public function search($params)
     {
-        $query = ReportFood::find();
+        $query = ReportFood::find()->orderBy(['created'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

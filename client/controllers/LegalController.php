@@ -9,6 +9,7 @@ use common\models\Animals;
 use common\models\CompositeSamples;
 use common\models\DistrictView;
 use common\models\Emlash;
+use common\models\FoodSamples;
 use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
 use common\models\LegalEntities;
@@ -432,6 +433,19 @@ class LegalController extends Controller
         $model = FoodSamplingCertificate::findOne($id);
         return $this->render('viewfood',[
             'model'=>$model
+        ]);
+    }
+
+    public function actionAddfood($id){
+        $model = new FoodSamples();
+        $food = FoodSamplingCertificate::findOne($id);
+        if($model->load(Yii::$app->request->post())){
+
+        }
+
+        return $this->render('addfood',[
+            'model'=>$model,
+            'food'=>$food
         ]);
     }
 

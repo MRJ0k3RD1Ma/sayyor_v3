@@ -48,7 +48,7 @@ class ReportAnimalSearch extends ReportAnimal
      */
     public function search($params)
     {
-        $query = ReportAnimal::find();
+        $query = ReportAnimal::find()->orderBy(['created'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

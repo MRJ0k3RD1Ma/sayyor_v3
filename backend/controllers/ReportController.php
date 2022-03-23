@@ -100,7 +100,7 @@ class ReportController extends ActiveController
             $model->status_id = 1;
             $soato = Soato::findOne($model->soato_id);
             $num = ReportAnimal::find()->filterWhere(['like','created',date('Y')])->andFilterWhere(['like','soato_id',$soato->region_id.$soato->district_id])->max('rep_id');
-            $num++;
+            $num = intval($num)+1;
             $code = substr(date('Y'),2,2).'-'.$soato->region_id.$soato->district_id.'-'.$num;
             $model->rep_id = $num;
             $model->code = $code;
@@ -131,8 +131,8 @@ class ReportController extends ActiveController
         if($model->load(Yii::$app->request->post(),'')){
             $model->status_id = 1;
             $soato = Soato::findOne($model->soato_id);
-            $num = ReportAnimal::find()->filterWhere(['like','created',date('Y')])->andFilterWhere(['like','soato_id',$soato->region_id.$soato->district_id])->max('rep_id');
-            $num++;
+            $num = ReportFood::find()->filterWhere(['like','created',date('Y')])->andFilterWhere(['like','soato_id',$soato->region_id.$soato->district_id])->max('rep_id');
+            $num = intval($num)+1;
             $code = substr(date('Y'),2,2).'-'.$soato->region_id.$soato->district_id.'-'.$num;
             $model->rep_id = $num;
             $model->code = $code;
@@ -165,7 +165,7 @@ class ReportController extends ActiveController
             $model->report_status_id = 1;
             $soato = Soato::findOne($model->soato_id);
             $num = ReportAnimal::find()->filterWhere(['like','created',date('Y')])->andFilterWhere(['like','soato_id',$soato->region_id.$soato->district_id])->max('rep_id');
-            $num++;
+            $num = intval($num)+1;
             $code = substr(date('Y'),2,2).'-'.$soato->region_id.$soato->district_id.'-'.$num;
             $model->rep_id = $num;
             $model->code = $code;
@@ -177,7 +177,7 @@ class ReportController extends ActiveController
             if($model->save()){
                 if($model->image and is_array($model->image)){
                     foreach ($model->image as $item){
-                        $im = new ReportFoodImages();
+                        $im = new ReportAnimalImages();
                         $im->report_id = $model->id;
                         $im->image = $item;
                         $im->save();
@@ -209,7 +209,7 @@ class ReportController extends ActiveController
             $n++;
             $path = microtime(true).$file->name;
                 $file->saveAs(Yii::$app->basePath.'/../frontend/web/uploads/'.$path);
-            $savedfiles[$n] = $path;
+            $savedfiles[] = $path;
         }
         return $savedfiles;
 

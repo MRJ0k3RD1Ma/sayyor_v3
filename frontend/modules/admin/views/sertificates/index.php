@@ -34,7 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         </div>
 
-                        <?= Html::a(Yii::t('client', 'Dalolatnoma qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
 
 
                     </div>
@@ -51,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute'=>'sert_full',
                                 'format'=>'raw',
                                 'value'=>function($d){
-                                    $url = Yii::$app->urlManager->createUrl(['/legal/view','id'=>$d->id]);
+                                    $url = Yii::$app->urlManager->createUrl(['/cp/sertificates/view','id'=>$d->id]);
                                     return "<a href='{$url}'>{$d->sert_full}</a>";
                                 },
                             ],

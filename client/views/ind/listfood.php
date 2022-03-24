@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\FoodSamplingCertificateSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('cp.food_sampling_certificate', 'Mahsulot ekspertizalari');
+$this->title = Yii::t('cp.food_sampling_certificate', 'Mahsulot ekspertizasi uchun namuma olish dalolatnomalari ');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="food-sampling-certificate-index">
@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <button value="excel" class="export"><span class="fa fa-file-pdf"></span>  <?= Yii::t('cp','Pdf')?></button>
                             </div>
                         </div>
-                        <?= Html::a(Yii::t('cp.food_sampling_certificate', 'Mahsulot ekspertizasi qo\'shish'), ['product'], ['class' => 'btn btn-success']) ?>
+                        <?= Html::a(Yii::t('cp.food_sampling_certificate', 'Dalolatnoma qo\'shish'), ['product'], ['class' => 'btn btn-success']) ?>
 
                     </div>
 

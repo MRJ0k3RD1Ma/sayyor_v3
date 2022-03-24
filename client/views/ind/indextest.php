@@ -83,8 +83,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'value'=>function($d){
                                     if(Yii::$app->language == 'ru'){
                                         return $d->status->name_ru;
+                                    }else{
+                                        return $d->status->name_uz;
                                     }
-                                    return $d->status->name_uz;
                                 }
                             ],
                            /* [

@@ -14,7 +14,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
-
+use Yii;
 /**
  * FoodSamplingCertificateController implements the CRUD actions for FoodSamplingCertificate model.
  */
@@ -53,7 +53,7 @@ class FoodSamplingCertificateController extends Controller
             Yii::$app->response->format = Response::FORMAT_RAW;
 
             $pdf = new Pdf([
-                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
                 'content' => $this->renderPartial('_pdf', ['dataProvider' => $dataProvider]),
                 'options' => [

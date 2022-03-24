@@ -154,7 +154,7 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
                 if($d->based_public_information == 0){
                     return Yii::t('client','Yo\'q');
                 }else{
-                    return Yii::t('client','Ha').'<br>'.'<b>№'.$d->message_number.'</b>';
+                    return Yii::t('client','Ha')."\n".'№'.$d->message_number;
                 }
             };
             $status=function($d){

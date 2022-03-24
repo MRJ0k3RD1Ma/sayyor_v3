@@ -36,7 +36,7 @@ class Employees extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterf
             ['password','required','on'=>'insert'],
             [['name', 'email'], 'string', 'max' => 100],
             [['phone'], 'string', 'max' => 20],
-            [['password'], 'string', 'max' => 500],
+            [['password'], 'string', 'min'=>8,'max' => 500],
         ];
     }
 

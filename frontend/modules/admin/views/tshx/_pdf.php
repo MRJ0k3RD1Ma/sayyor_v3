@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -16,14 +15,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                    <?php echo $this->render('_search', [
-                        'model' => $searchModel,
-                    ]);
-                    ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'id' => 'tshx-grid',
+                        'summary' => '',
 //                        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
@@ -33,15 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             'name_ru',
                             'code',
 
-                            ['class' => 'yii\grid\ActionColumn'],
                         ],
                     ]); ?>
-                    <?php \yii\widgets\Pjax::end();?>
                 </div>
             </div>
         </div>
     </div>
-
 
 
 </div>

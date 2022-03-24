@@ -42,6 +42,7 @@ use yii\widgets\ActiveForm;
                         Html::a('<span class="fa fa-file-pdf"></span> PDF ', Yii::$app->request->url . $char . 'export=2', ['data-pjax' => 0]) ?>
                     </button>
                 </div>
+
             </div>
 
 

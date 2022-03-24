@@ -123,4 +123,19 @@ $this->registerJs("
 <?php $this->endBody() ?>
 </body>
 </html>
-<?php $this->endPage() ?>
+<?php $this->endPage();
+if(Yii::$app->session->hasFlash('success')){
+    $txt = Yii::$app->session->getFlash('success');
+    $xato = Yii::t('reg','Muvvofaqiyatli');
+    $this->registerJs("
+        $(document).ready(function(){
+            Swal.fire({
+              icon: 'success',
+              title: \"{$xato}\",
+              text: \"{$txt}\"
+            })
+        })
+    ");
+
+}
+?>

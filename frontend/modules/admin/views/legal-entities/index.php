@@ -1,7 +1,7 @@
 <?php
 
-use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\LegalEntitiesSearch */
@@ -15,46 +15,46 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header flex">
-                    <div></div>
-                    <div class="btns flex">
-                        <div class="search">
 
-                            <input type="search">
-                            <button class="btn"><span class="fa fa-search"></span></button>
-
-                        </div>
-                        <div class="export">
-                            <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export</button>
-                            <div class="export-btn">
-                                <button class=""><span class="fa fa-file-excel"></span> Excel</button>
-                                <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
-                            </div>
-
-                        </div>
-
-                        <?= Html::a(Yii::t('cp.legal_entities', 'Yuridik shaxs qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
-
-                    </div>
-                </div>
                 <div class="card-body">
+                    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+                    <?php echo $this->render('_search', [
+                        'model' => $searchModel,
+                    ]);
+                    ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
 //                        'filterModel' => $searchModel,
+                        'id' => 'legal-grid',
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
                             'inn',
                             'name',
-                            'tshx_id',
+                            [
+                                'attribute' => 'tshx_id',
+                                'value' => function ($model) {
+                                    return $model->tshx->name_uz;
+                             }
+                            ],
                             'soogu',
-                            'soato_id',
+                            [
+                                'attribute' => 'soato_id',
+                                'label' => 'Hudud nomi',
+                                'value' => function ($model) {
+
+                                    return \common\models\Soato::Full($model->soato_id);
+
+                                }
+                            ],
                             //'status_id',
 
                             ['class' => 'yii\grid\ActionColumn'],
 
                         ],
                     ]); ?>
+                    <?php \yii\widgets\Pjax::end();?>
+
                 </div>
             </div>
         </div>

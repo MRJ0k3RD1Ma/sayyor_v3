@@ -8,66 +8,44 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="food-sampling-certificate-search">
+<div class="diseases-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'id'=>'food-sampling-certificate-grid-filters',
+
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="card-header flex">
+        <div></div>
+        <div class="btns flex">
+            <div class="search" style="margin-bottom: -1rem!important;">
+                <?= $form->field($model, 'q', [
+                    'template' => '<div class="input-group">{input}<span class="btn btn-primary fa fa-search margi"></span></div>'
+                ])->textInput()->label(false) ?>
+            </div>
+            <div class="export">
+                <?php
+                $char = (count(Yii::$app->request->queryParams) > 0) ? "&" : "?";
+                ?>
+                <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
+                </button>
+                <div class="export-btn">
+                    <button>
+                        <?= Html::a('<span class="fa fa-file-excel"></span> Excel ', Yii::$app->request->url . $char . 'export=1', ['data-pjax' => 0, 'export' => 1]) ?>
+                    </button>
+                    <button>
 
-    <?= $form->field($model, 'kod') ?>
+                        <?=
 
-    <?= $form->field($model, 'pnfl') ?>
+                        Html::a('<span class="fa fa-file-pdf"></span> PDF ', Yii::$app->request->url . $char . 'export=2', ['data-pjax' => 0]) ?>
+                    </button>
+                </div>
+            </div>
 
-    <?= $form->field($model, 'organization_id') ?>
 
-    <?= $form->field($model, 'sampling_site') ?>
-
-    <?php // echo $form->field($model, 'sampling_adress') ?>
-
-    <?php // echo $form->field($model, 'sampler_organization_code') ?>
-
-    <?php // echo $form->field($model, 'sampler_person_pnfl') ?>
-
-    <?php // echo $form->field($model, 'unit_id') ?>
-
-    <?php // echo $form->field($model, 'count') ?>
-
-    <?php // echo $form->field($model, 'verification_sample') ?>
-
-    <?php // echo $form->field($model, 'producer') ?>
-
-    <?php // echo $form->field($model, 'serial_num') ?>
-
-    <?php // echo $form->field($model, 'manufacture_date') ?>
-
-    <?php // echo $form->field($model, 'sell_by') ?>
-
-    <?php // echo $form->field($model, 'coments') ?>
-
-    <?php // echo $form->field($model, 'verification_pupose_id') ?>
-
-    <?php // echo $form->field($model, 'sample_box_id') ?>
-
-    <?php // echo $form->field($model, 'sample_condition_id') ?>
-
-    <?php // echo $form->field($model, 'sampling_date') ?>
-
-    <?php // echo $form->field($model, 'send_sample_date') ?>
-
-    <?php // echo $form->field($model, 'explanations') ?>
-
-    <?php // echo $form->field($model, 'based_public_information') ?>
-
-    <?php // echo $form->field($model, 'message_number') ?>
-
-    <?php // echo $form->field($model, 'laboratory_test_type_id') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('cp.food_sampling_certificate', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('cp.food_sampling_certificate', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

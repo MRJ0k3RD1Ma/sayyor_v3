@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <button value="excel" class="export"><span class="fa fa-file-pdf"></span>  <?= Yii::t('cp','Pdf')?></button>
                             </div>
                         </div>
-                        <?= Html::a(Yii::t('cp.food_sampling_certificate', 'Mahsulot ekspertizasi qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
+                        <?= Html::a(Yii::t('cp.food_sampling_certificate', 'Mahsulot ekspertizasi qo\'shish'), ['product'], ['class' => 'btn btn-success']) ?>
 
                     </div>
 

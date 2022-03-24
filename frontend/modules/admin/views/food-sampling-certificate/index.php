@@ -16,30 +16,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header flex">
-                    <div></div>
-                    <div class="btns flex">
-                        <div class="search">
 
-                            <input type="text">
-                            <button class="btn" type="submit"><span class="fa fa-search"></span></button>
-
-                        </div>
-                        <div class="export">
-
-                            <button class="btn btn-primary"> <span class="fa fa-cloud-download-alt"></span> <?= Yii::t('cp','Export')?></button>
-                            <div class="export-btn">
-                                <button value="excel" class="export"><span class="fa fa-file-excel"></span>  <?= Yii::t('cp','Excel')?></button>
-                                <button value="excel" class="export"><span class="fa fa-file-pdf"></span>  <?= Yii::t('cp','Pdf')?></button>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div><!-- end card header -->
                 <div class="card-body">
+                    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+                    <?php echo $this->render('_search', [
+                        'model' => $searchModel,
+                    ]);
+                    ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
+'id'=>'food-sampling-certificate-grid',
 //                        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
@@ -92,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'label'=>Yii::t('client','Namuna oluvchi'),
                                 'value'=>function($d){
                                     if($d->sampler_person_pnfl){
-                                        return $d->sampler_person_pnfl.'<br>'.$d->personPnfl->name.' '.$d->personPnfl->surname.' '.$d->personPnfl->middlename;
+                                        return $d->sampler_person_pnfl.'<br>'.@$d->personPnfl->name.' '.@$d->personPnfl->surname.' '.@$d->personPnfl->middlename;
                                     }elseif($d->sampler_person_inn){
                                         return $d->sampler_person_inn.'<br>'.$d->personInn->name;
                                     }else return null;
@@ -122,11 +108,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                     if(Yii::$app->language == 'ru'){
                                         $lg = 'ru';
                                     }
-                                    return $d->status->{'name_'.$lg};
+                                    return @$d->status->{'name_'.$lg};
                                 }
                             ],
                         ],
                     ]); ?>
+                    <?php
+                    \yii\widgets\Pjax::end();
+                    ?>
                 </div>
             </div>
         </div>

@@ -293,7 +293,7 @@ class LegalController extends Controller
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if($sample->save(false)){
-                        Yii::$app->session->setFlash('success',Yii::t('client','Namuna muvoffaqiyatli saqlandi'));
+                        Yii::$app->session->setFlash('success',Yii::t('client','Dalolatnoma muvoffaqiyatli saqlandi'));
                         return $this->redirect(['view','id'=>$id]);
                     }else{
                         Yii::$app->session->setFlash('error','Maydonlar to\'ldirimlagan');

@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 /* @var $sample common\models\Samples */
 /* @var $reg common\models\SampleRegistration */
 
-$this->title = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
+$this->title = Yii::t('cp.sertificates', 'Dalolatnoma qo\'shish');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Dalolatnomalar'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->sert_id, 'url' => ['view', 'sert_id' => $model->sert_id]];
 $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');

@@ -5,7 +5,8 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\SertificatesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
+$data=file_get_contents('js/main.js');
+$this->registerJs($data);
 $this->title = Yii::t('cp.sertificates', 'Dalolatnomalar');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -25,18 +26,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     \yii\bootstrap4\Modal::begin([
                         'size' => 'modal-lg',
                         'options' => [
-                            'id' => 'submit_vote',
+                            'id' => 'custModal',
                         ],
-                        'footer' => 'Footer'
+                        'footer' => '@QalandarDev'
                     ]);
 
 
-//                    echo Html::submitButton(
-//                        '<span class="glyphicon glyphicon-search"></span>',
-//                        [
-//                            'class' => 'btn btn-success',
-//                        ]
-//                    );
+                    echo \yii\helpers\Html::submitButton(
+                        '<span class="glyphicon glyphicon-search"></span>',
+                        [
+                            'class' => 'btn btn-success',
+                        ]
+                    );
                     \yii\bootstrap4\Modal::end();
                     ?>
                     </div>
@@ -68,15 +69,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         $out.=\yii\helpers\Html::button(
                                             $res,
                                             ['value' => \yii\helpers\Url::to(['viewnamuna','id'=>$item->sample->id]),
-
-                                                'class' => 'btn btn-info showModalButton',
-                                                'data-toggle'=>'modal',
-                                                'data-target'=>'#submit-vote',
-                                                'title' => 'Tal*aba kurslari',
+                                                'class' => 'btn showModalButton',
+                                                'data-id'=>$item->sample->id,
+                                                'title' => 'Batafsil',
                                                 'data-pjax' => 0
                                             ]);
-                                        return $out;
                                     }
+                                    return $out;
                                 },
                                 'format' => 'raw',
                             ],
@@ -134,5 +133,21 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 
+    <script type="text/javascript">
+        $(document).ready(function () {
 
+            $('.showModalButton').click(function () {
+                var id = $(this).data('id');
+                $.ajax({
+                    url: 'viewnamuna?id='+id,
+                    type: 'get',
+                    success: function (response) {
+                        $('.modal-body').html(response);
+                        $('#custModal').modal('show');
+                    }
+                });
+            });
+
+        });
+    </script>
 </div>

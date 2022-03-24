@@ -1,53 +1,86 @@
 <?php
-
-/* @var array $model */
-
-/* @var \app\models\forms\AddCourseForm $modelCourse */
-
-use yii\bootstrap4\ActiveForm;
-use yii\bootstrap4\Html;
-
+/*var  */
 ?>
-<table class="table-bordered table">
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Fan</th>
-        <th>Semestr</th>
-        <th title='Yakuniy bahosi'>Baho</th>
-        <th title='Maksimal baho'>Max</th>
-        <th title='Oxirgi bajargan amali vaqti'>Oxirgi vaqt</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($model as $key => $item): ?>
+<div class="samples-view">
+
+
+    <p style="font-weight: bold">
+        Namuna haqida to'liq ma'lumot
+    </p>
+
+    <table id="w0" class="table table-striped table-bordered detail-view">
+        <tbody>
         <tr>
-            <td><?= $key + 1 ?></td>
-            <td><?= $item['fullname'] ?></td>
-            <td><?= MdlCourseCategories::find()->select('name')->where(['id' => $item['category']])->one()->name ?></td>
-            <td><?= round($item['finalgrade'], 2) ?></td>
-            <td><?= round($item['maxgrade'], 2) ?></td>
-            <td><?= date('Y-m-d H:i:s', $item['timeaccess']) ?></td>
+            <th>Kod</th>
+            <td><?= $model->kod ?></td>
         </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
-<?php $form = ActiveForm::begin([
-//    'layout' => ActiveForm::LAYOUT_HORIZONTAL,
-]); ?>
-<!--<div class="row">-->
-<!--    <div class="col-md-8">-->
-<?= $form->field($modelCourse, 'course')->label('Kurs Id')?>
-<div class="form-group">
-    <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <tr>
+            <th>Namuna belgisi</th>
+            <td><?= $model->label ?></td>
+        </tr>
+        <tr>
+            <th>Namuna turi</th>
+            <td><?= $model->sampleTypeIs->name_uz ?></td>
+        </tr>
+        <tr>
+            <th>Namuna o'rami</th>
+            <td><?= $model->sampleBox->name_uz ?></td>
+        </tr>
+        <tr>
+            <th colspan="2" style="text-align: center">Namuna olingan hayvon haqida ma'lumot</th>
+        </tr>
+        <tr>
+            <th>Identifikatsiya raqami</th>
+            <td><?= $model->animal_id ?></td>
+        </tr>
+        <tr>
+            <th>Hayvon turi</th>
+            <td><?= $model->animal->type->name_uz ?></td>
+        </tr>
+        <tr>
+            <th>Hayvon jinsi</th>
+            <td><?= Yii::$app->params['gender'][$model->animal->gender] ?></td>
+        </tr>
+        <tr>
+            <th>Yoshi oy</th>
+            <td><?= $model->animal->birthday ?></td>
+        </tr>
+        <?php
+        $cnt_vac = \common\models\Vaccination::find()->where(['animal_id'=>$model->animal_id])->count('*');
+        $cnt_eml = \common\models\Emlash::find()->where(['animal_id'=>$model->animal_id])->count('*');
+        if($cnt_vac > $cnt_eml){
+            $cnt = $cnt_vac;
+        }else{
+            $cnt = $cnt_eml;
+        }
+        $vac = \common\models\Vaccination::find()->where(['animal_id'=>$model->animal_id])->orderBy(['disease_date'=>SORT_DESC])->all();
+        $eml = \common\models\Emlash::find()->where(['animal_id'=>$model->animal_id])->orderBy(['emlash_date'=>SORT_DESC])->all();
+        for ($i=0;$i<$cnt; $i++):?>
+            <tr>
+                <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>
+                <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' '?></td>
+                <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
+                <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
+            </tr>
+            <tr>
+                <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>
+                <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' '?></td>
+                <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
+                <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
+            </tr>
+        <?php endfor; ?>
+        <tr>
+            <th>Qaysi kasallikga gumon</th>
+            <td><?= @$model->suspectedDisease->name_uz?></td>
+        </tr>
+        <tr>
+            <th>Tahlil usuli</th>
+            <td><?= @$model->testMehod->name_uz?></td>
+        </tr>
+        <tr>
+            <th>Takroriy tahlil raqami</th>
+            <td><?= @$model->repeat_code?></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-<!--    </div>-->
-<!--    <div class="col-md-4">-->
-<!---->
-<!-- -->
-<!--    </div>-->
-
-
-
-<?php ActiveForm::end(); ?>
-

@@ -28,7 +28,7 @@ class SertificatesSearch extends Sertificates
     {
         return [
             [['sert_id','q', 'sert_num', 'sert_date', 'pnfl', 'owner_name'], 'safe'],
-            [['organization_id', 'vet_site_id', 'operator'], 'integer'],
+            [[ 'vet_site_id', ], 'integer'],
         ];
     }
 
@@ -69,9 +69,7 @@ class SertificatesSearch extends Sertificates
         // grid filtering conditions
         $query->andFilterWhere([
             'sert_date' => $this->sert_date,
-            'organization_id' => $this->organization_id,
             'vet_site_id' => $this->vet_site_id,
-            'operator' => $this->operator,
         ]);
 
         $query->orFilterWhere(['like', 'sert_id', $this->q])

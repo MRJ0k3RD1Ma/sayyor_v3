@@ -45,33 +45,87 @@ $this->params['breadcrumbs'][] = $this->title;
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
-//                            'id',
-                            'kod',
-                            'pnfl',
-//                            'organization_id',
-//                            'sampling_site',
-                            'sampling_adress',
-                            //'sampler_organization_code',
-                            //'sampler_person_pnfl',
-                            //'unit_id',
-                            'count',
-                            //'verification_sample',
-                            'producer',
-                            //'serial_num',
-                            //'manufacture_date',
-                            //'sell_by',
-                            //'coments',
-                            //'verification_pupose_id',
-                            //'sample_box_id',
-                            //'sample_condition_id',
-                            //'sampling_date',
-                            //'send_sample_date',
-                            'explanations',
-                            //'based_public_information',
-                            //'message_number',
-                            //'laboratory_test_type_id',
+                            [
+                                'attribute'=>'code',
+                                'value'=>function($d){
+                                    $url = Yii::$app->urlManager->createUrl(['/legal/viewfood','id'=>$d->id]);
+                                    return "<a href='{$url}'>{$d->code}</a>";
+                                },
+                                'format'=>'raw'
+                            ],
+//            'pnfl',
+//            'organization_id',
+                            [
+                                'label'=>Yii::t('client','Buyurtmachi'),
+                                'value'=>function($d){
+                                    if($d->pnfl){
+                                        return $d->pnfl.'<br>'.$d->pnfl0->name.' '.$d->pnfl0->surname.' '.$d->pnfl0->middlename;
+                                    }elseif($d->inn){
+                                        return $d->inn.'<br>'.$d->inn0->name;
+                                    }else return null;
+                                },
+                                'format'=>'raw'
+                            ],
+//            'sampling_site',
+                            [
+                                'attribute'=>'sampling_site',
+                                'value'=>function($d){
+                                    return $d->samplingSite->name;
+                                }
+                            ],
+                            [
+                                'attribute'=>'sampling_adress',
+                                'value'=>function($d){
+                                    $lang = Yii::$app->language;
+                                    $ads = 'lot';
+                                    if($lang == 'ru'){
+                                        $ads = 'ru';
+                                    }elseif($lang=='uz'){
+                                        $ads = 'lot';
+                                    }else{
+                                        $ads = 'cyr';
+                                    }
+                                    return \common\models\Soato::Full($d->samplingSite->soato) .' '. $d->sampling_adress;
+                                },
+                                'format'=>'raw'
+                            ],
+                            [
+                                'label'=>Yii::t('client','Namuna oluvchi'),
+                                'value'=>function($d){
+                                    if($d->sampler_person_pnfl){
+                                        return $d->sampler_person_pnfl.'<br>'.$d->personPnfl->name.' '.$d->personPnfl->surname.' '.$d->personPnfl->middlename;
+                                    }elseif($d->sampler_person_inn){
+                                        return $d->sampler_person_inn.'<br>'.$d->personInn->name;
+                                    }else return null;
+                                },
+                                'format'=>'raw'
+                            ],
 
-                            ['class' => 'yii\grid\ActionColumn'],
+                            'sampling_date',
+                            'send_sample_date',
+
+                            [
+                                'attribute'=>'based_public_information',
+                                'value'=>function($d){
+                                    if($d->based_public_information == 0){
+                                        return Yii::t('client','Yo\'q');
+                                    }else{
+                                        return Yii::t('client','Ha').'<br>'.'<b>№'.$d->message_number.'</b>';
+                                    }
+
+                                },
+                                'format'=>'raw'
+                            ],
+                            [
+                                'attribute'=>'status_id',
+                                'value'=>function($d){
+                                    $lg = 'uz';
+                                    if(Yii::$app->language == 'ru'){
+                                        $lg = 'ru';
+                                    }
+                                    return $d->status->{'name_'.$lg};
+                                }
+                            ],
                         ],
                     ]); ?>
                 </div>

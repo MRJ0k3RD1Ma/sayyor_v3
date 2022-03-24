@@ -35,7 +35,7 @@ class LegalEntities extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['inn','soato_id'], 'required'],
+//            [['inn','soato_id'], 'required'],
             [['soato_id', 'status_id','region','tshx_id','district'], 'integer'],
             [['inn', 'name', 'soogu'], 'string', 'max' => 255],
             [['inn'], 'unique'],

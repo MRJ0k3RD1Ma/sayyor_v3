@@ -41,8 +41,9 @@ class EmpPosts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['emp_id','orgtype', 'post_id', 'state_id', 'status_id', 'org_id'], 'integer'],
+            [['emp_id','orgtype', 'post_id','gov_id', 'state_id', 'status_id', 'org_id'], 'integer'],
             [['date'], 'safe'],
+            ['date','defalut','value'=>date('Y-m-d')],
             [['emp_id'], 'unique'],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => StatusList::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['org_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['org_id' => 'id']],

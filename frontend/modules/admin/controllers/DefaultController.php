@@ -73,6 +73,9 @@ class DefaultController extends Controller
     public function actionInside(){
         return $this->render('inside');
     }
+    public function actionTemplates(){
+        return $this->render('templates');
+    }
 
     public function actionOutside(){
         return $this->render('outside');

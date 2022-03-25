@@ -49,6 +49,7 @@ if($u){
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/inside'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Ichki')?></a></li>
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/outside'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Tashqi')?></a></li>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/templates'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Shablonlar')?></a></li>
                     </ul>
                 </li>
                 <li>

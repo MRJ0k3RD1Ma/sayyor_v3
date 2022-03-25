@@ -1,5 +1,6 @@
 <?php
 return [
+    'bsDependencyEnabled' => false,
     'adminEmail' => 'admin@example.com',
     'gender'=>[
         0=>'Urg\'ochi',

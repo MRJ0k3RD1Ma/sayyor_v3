@@ -36,7 +36,8 @@ BackAsset::register($this);
             align-items: center;
             flex-direction: column;
             font-family: "Montserrat", sans-serif;
-            height: 100%;
+            height: 100vh;
+            width: 100vw;
             background: url(/fon.jpg) !important;
             background-size: cover;
         }

@@ -329,7 +329,11 @@ class RegisterController extends Controller
         }
 
         if($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())){
+            $cs->status_id = 3;
+            $route->status_id = 1;
 
+            $cs->save();
+            $route->save();
         }
 
         $org_id = Yii::$app->user->identity->empPosts->org_id;

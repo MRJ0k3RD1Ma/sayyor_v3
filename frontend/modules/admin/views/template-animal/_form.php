@@ -9,18 +9,22 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="tamplate-animal-form">
-
+<div class="row">
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'type_id')->dropDownList(
         \yii\helpers\ArrayHelper::map(\common\models\Animaltype::find()->asArray()->all(), 'id', 'name_uz')
     ) ?>
-    <?= $form->field($model, 'regulations[]')->dropDownList(
-        \yii\helpers\ArrayHelper::map(\common\models\Regulations::find()->asArray()->all(), 'id', 'name_uz'),
+    <?= $form->field($model, 'regulations[]')->widget(\kartik\select2\Select2::class,
         [
-            'multiple' => 'multiple',
-        ]
-    )
+            'data' => \yii\helpers\ArrayHelper::map(\common\models\Regulations::find()->asArray()->all(), 'id', 'name_uz'),
+            'theme' => \kartik\select2\Select2::THEME_KRAJEE,
+            'size'=>\kartik\select2\Select2::SIZE_MEDIUM,
+            'options' => [
+                    'multiple'=>true
+            ]
+        ])
+
     ?>
     <?= $form->field($model, 'gender')->dropDownList([
         1 => 'Erkak',
@@ -64,7 +68,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'state_id')->dropDownList(
         \yii\helpers\ArrayHelper::map(\common\models\StateList::find()->asArray()->all(), 'id', 'name')
     ) ?>
-
+</div>
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>

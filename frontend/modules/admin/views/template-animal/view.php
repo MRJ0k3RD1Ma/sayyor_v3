@@ -34,6 +34,19 @@ $this->params['breadcrumbs'][] = $model->id;
                 }
             ],
             [
+                'label' => 'regulation',
+                'format' => 'html',
+                'value' => function (\common\models\TamplateAnimal $model) {
+                    $out = [];
+                    $rel = \common\models\TemplateAnimalRegulations::find()->where(['template_id' => $model->id])->asArray()->all();
+                    foreach (array_column($rel, 'regulation_id') as $reg) {
+                        $out[]=\common\models\Regulations::findOne(['id'=>$reg])->name_uz;
+                    }
+                    return implode(",", $out);
+
+                }
+            ],
+            [
                 'attribute' => 'gender',
                 'value' => function (\common\models\TamplateAnimal $model) {
                     $list = [1 => 'Erkak',

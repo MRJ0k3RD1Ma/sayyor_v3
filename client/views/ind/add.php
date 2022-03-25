@@ -31,14 +31,7 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
         <?= $form->field($animal, 'pnfl')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($animal, 'name')->textInput(['maxlength' => true]) ?>
-        <?php
-        $lang = Yii::$app->language;
-        if($lang == 'ru'){
-            $res  = "ru";
-        }else{
-            $res = 'uz';
-        }
-        ?>
+
 
         <?php
         $lang = Yii::$app->language;

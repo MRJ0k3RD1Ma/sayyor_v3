@@ -57,13 +57,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'max_1')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'is_vaccination')->textInput() ?>
+    <?= $form->field($model, 'is_vaccination')->dropDownList([0=>'Yo\'q',1=>'Ha',2=>'Baribir']) ?>
 
-    <?= $form->field($model, 'dead_days')->textInput() ?>
+    <?= $form->field($model, 'dead_days')->textInput(['type'=>'number']) ?>
 
     <?= $form->field($model, 'creator_id')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false) ?>
 
-    <?= $form->field($model, 'consent_id')->textInput() ?>
+    <?= $form->field($model, 'consent_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Employees::find()->all(),'id','name'),['prompt'=>'Tasdiqlovchi odamni tanlang']) ?>
 
     <?= $form->field($model, 'state_id')->dropDownList(
         \yii\helpers\ArrayHelper::map(\common\models\StateList::find()->asArray()->all(), 'id', 'name')

@@ -16,7 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php if($model->status_id > 1){?>
             <p style="font-weight: bold">
-                <a class="btn btn-success" href="<?= Yii::$app->urlManager->createUrl(['/register/incomesamples','id'=>$model->id])?>"><?= Yii::t('register','Namunalarni qabul qilish')?></a>
                 <a href="#" class="btn btn-primary"><?= $model->status->icon?> <?= $model->status->name_uz ?></a>
             </p>
 
@@ -121,7 +120,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     ?>
                     <tr>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->status->icon?> <?= $item->kod?></td>
+                        <td rowspan="<?= $cnt + 1?>"><a href="<?= Yii::$app->urlManager->createUrl(['/register/incomesamples','id'=>$item->id,'regid'=>$model->id])?>"><?= $item->status->icon?> <?= $item->kod?></a></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>

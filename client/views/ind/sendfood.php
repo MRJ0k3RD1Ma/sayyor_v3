@@ -32,13 +32,6 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($reg,'organization_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->where(['type_id'=>1])->all(),'id','NAME_FULL'),['prompt'=>Yii::t('client','Labaratoriyani tanlang'),'class'=>'form-control select2list']) ?>
 
-                <?php
-                $res = [];
-                foreach ($sample as $item):
-                    $res[$item->id] = $item->samp_code;
-                endforeach;
-                ?>
-                <?= $form->field($reg,'composite')->dropDownList($res,['multiple'=>'multiple','class'=>'form-control select2list']) ?>
 
                 <?= $form->field($reg,'sender_name')?>
 

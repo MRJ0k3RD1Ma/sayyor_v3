@@ -116,6 +116,8 @@ $this->title = Yii::t('client','Oziq-ovqat ekspertizasi uchun ariza');
 
         <?= $form->field($model, 'send_sample_date')->textInput(['type'=>'date']) ?>
 
+        <?= $form->field($model, 'verification_pupose_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\VerificationPurposes::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('cp.individuals','Tekshirishdan maqsadni tanlang')]) ?>
+
         <?= $form->field($model, 'based_public_information')->dropDownList([0=>'Yo\'q',1=>'Ha']) ?>
 
         <?= $form->field($model, 'message_number')->textInput() ?>

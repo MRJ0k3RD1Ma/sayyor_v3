@@ -193,7 +193,7 @@ class IndController extends Controller
 
 
             if($model->save()){
-                Yii::$app->session->setFlash('success','Proba tekshiruvchi tashkilotga muvoffaqtiyatli yuborildi');
+                Yii::$app->session->setFlash('success','Dalolatnoma muvoffaqtiyatli saqlandi');
                 return $this->redirect(['view','id'=>$model->id]);
             }else{
                 Yii::$app->session->setFlash('error','Ma\'lumotlarni to\'ldirishda xatolik yuzaga keldi');
@@ -218,42 +218,43 @@ class IndController extends Controller
 
     public function actionSend($id){
         $model = Sertificates::findOne($id);
-        $sample = Samples::find()->where(['samples.sert_id'=>$id])->andWhere('samples.id not in (select cs.sample_id from composite_samples cs where samples.id=cs.sample_id)')->all();
+        $sample = Samples::find()->where(['samples.sert_id'=>$id])->all();
+        if(count($sample) == 0){
+            Yii::$app->session->setFlash('error',Yii::t('client','Dalolatnomaga namuna biriktirilmagan'));
+            return $this->redirect(['viewfood','id'=>$id]);
+        }
         $reg = new SampleRegistration();
         $reg->pnfl = Yii::$app->session->get('doc_pnfl');
         if($reg->load(Yii::$app->request->post())){
 
-            $num = SampleRegistration::find()->filterWhere(['like','reg_date',date('Y')])->max('code_id');
+            $num = SampleRegistration::find()->filterWhere(['like','created',date('Y')])->max('code_id');
 
             $code = substr(date('Y'),2,2).'-1-'.get3num($reg->organization_id).'-';
             $reg->status_id = 1;
-            $num = $num+1;
+            $num = $num + 1;
             $code .= $num;
             $reg->code = $code;
             $reg->code_id = $num;
 
-            if(is_array($reg->composite) and count($reg->composite)>0){
-                if($reg->save()){
-                    foreach ($reg->composite as $item){
-                        $com = new CompositeSamples();
-                        $com->status_id = 1;
-                        $com->sample_id  = $item;
-                        $com->registration_id  = $reg->id;
-                        $com->save();
-                        $sam = Samples::findOne($com->sample_id);
-                        $sam->status_id = 1;
-                        $sam->save();
-                        $sam = null;
-                        $com = null;
 
-                    }
+            if($reg->save()){
+                foreach ($sample as $item){
+                    $com = new CompositeSamples();
+                    $com->status_id = 1;
+                    $com->sample_id  = $item->id;
+                    $com->registration_id  = $reg->id;
+                    $com->save();
+                    $sam = Samples::findOne($com->sample_id);
+                    $sam->status_id = 1;
+                    $sam->save();
+                    $sam = null;
+                    $com = null;
+
                 }
-                $model->status_id = 1;
-                $model->save();
-                return $this->redirect(['view','id'=>$model->id]);
-            }else{
-                Yii::$app->session->setFlash('error',Yii::t('client','Namuna tanlanmagan'));
             }
+            $model->status_id = 1;
+            $model->save();
+            return $this->redirect(['view','id'=>$model->id]);
 
         }
         return $this->render('send',[
@@ -292,7 +293,7 @@ class IndController extends Controller
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if($sample->save(false)){
-                        Yii::$app->session->setFlash('success',Yii::t('client','Dalolatnoma muvoffaqiyatli saqlandi'));
+                        Yii::$app->session->setFlash('success',Yii::t('client','Namuna muvoffaqiyatli saqlandi'));
                         return $this->redirect(['view','id'=>$id]);
                     }else{
                         Yii::$app->session->setFlash('error','Maydonlar to\'ldirimlagan');
@@ -422,7 +423,7 @@ class IndController extends Controller
             }
 
             if($model->save()){
-                Yii::$app->session->setFlash('success','Dalolatnoma Muvoffaqiyatli yaratildi');
+                Yii::$app->session->setFlash('success','Dalolatnoma muvoffaqiyatli yaratildi');
                 return $this->redirect(['viewfood','id'=>$model->id]);
             }
         }
@@ -453,7 +454,7 @@ class IndController extends Controller
             $model->samp_id = $num;
             $model->status_id = 0;
             if($model->save()){
-                Yii::$app->session->setFlash('success','Namuna ma\'lumotlari Muvoffaqiyatli saqlandi');
+                Yii::$app->session->setFlash('success','Namuna ma\'lumotlari muvoffaqiyatli saqlandi');
                 return $this->redirect(['viewfood','id'=>$id]);
             }else{
                 Yii::$app->session->setFlash('error','Maydonlar to\'ldirilmagan');
@@ -471,13 +472,16 @@ class IndController extends Controller
 
     public function actionSendfood($id){
         $model = FoodSamplingCertificate::findOne($id);
-        $sample = FoodSamples::find()->where(['food_samples.sert_id'=>$id])->andWhere('food_samples.id not in (select cs.sample_id from food_compose cs where food_samples.id=cs.sample_id)')->all();
-
+        $sample = FoodSamples::find()->where(['food_samples.sert_id'=>$id])->all();
+        if(count($sample) == 0){
+            Yii::$app->session->setFlash('error',Yii::t('client','Dalolatnomaga namuna biriktirilmagan'));
+            return $this->redirect(['viewfood','id'=>$id]);
+        }
         $reg = new FoodRegistration();
         $reg->pnfl = Yii::$app->session->get('doc_pnfl');
         if($reg->load(Yii::$app->request->post())){
 
-            $num = FoodRegistration::find()->filterWhere(['like','reg_date',date('Y')])->max('code_id');
+            $num = FoodRegistration::find()->filterWhere(['like','created',date('Y')])->max('code_id');
 
             $code = substr(date('Y'),2,2).'-2-'.get3num($reg->organization_id).'-';
             $reg->status_id = 1;
@@ -486,28 +490,27 @@ class IndController extends Controller
             $reg->code = $code;
             $reg->code_id = $num;
 
-            if(is_array($reg->composite) and count($reg->composite)>0){
-                if($reg->save()){
-                    foreach ($reg->composite as $item){
-                        $com = new FoodCompose();
-                        $com->status_id = 1;
-                        $com->sample_id  = $item;
-                        $com->registration_id  = $reg->id;
-                        $com->save();
-                        $sam = FoodSamples::findOne($com->sample_id);
-                        $sam->status_id = 1;
-                        $sam->save();
-                        $sam = null;
-                        $com = null;
 
-                    }
+            if($reg->save()){
+                foreach ($sample as $item){
+                    $com = new FoodCompose();
+                    $com->status_id = 1;
+                    $com->sample_id  = $item->id;
+                    $com->registration_id  = $reg->id;
+                    $com->save();
+                    $sam = FoodSamples::findOne($com->sample_id);
+                    $sam->status_id = 1;
+                    $sam->save();
+                    $sam = null;
+                    $com = null;
+
                 }
-                $model->status_id = 1;
-                $model->save();
-                return $this->redirect(['viewfood','id'=>$model->id]);
-            }else{
-                Yii::$app->session->setFlash('error',Yii::t('client','Namuna tanlanmagan'));
             }
+            $model->status_id = 1;
+            $model->save();
+            Yii::$app->session->setFlash('success',Yii::t('client','Ariza muvoffaqiyatli yuborildi'));
+            return $this->redirect(['viewfood','id'=>$model->id]);
+
 
         }
         return $this->render('sendfood',[

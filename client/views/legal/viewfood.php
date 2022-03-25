@@ -14,7 +14,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="food-sampling-certificate-view">
 
     <p>
-        <a class="btn btn-success" href="<?= Yii::$app->urlManager->createUrl(['/legal/sendfood','id'=>$model->id])?>">Ariza yuborish</a>
+        <?php if($model->status_id==0){?>
+            <a class="btn btn-success" href="<?= Yii::$app->urlManager->createUrl(['/legal/sendfood','id'=>$model->id])?>">Ariza yuborish</a>
+        <?php }?>
     </p>
 
     <?= DetailView::widget([
@@ -117,10 +119,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div>
         <h4 style="float: left">Namunalar ro'yhati</h4>
-        <span style="float: right"><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/addfood','id'=>$model->id])?>">
+        <?php if($model->status_id==0){ ?>
+            <span style="float: right"><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/addfood','id'=>$model->id])?>">
                     <span class="fa fa-plus"></span> Namuna qo'shish
                 </a>
             </span>
+        <?php } ?>
+
     </div>
 
     <div class="table-responsive">

@@ -8,18 +8,24 @@ use Yii;
  * This is the model class for table "route_sert".
  *
  * @property int $id
- * @property int|null $sender_id
- * @property int|null $reciever_id
- * @property int|null $sample_id
+ * @property int|null $director_id
+ * @property int|null $leader_id
+ * @property int|null $executor_id
  * @property string|null $deadline
  * @property string|null $ads
- * @property string|null $created
  * @property int|null $state_id
+ * @property string|null $created
+ * @property string|null $updated
+ * @property int|null $sample_id
+ * @property int|null $registration_id
+ * @property int|null $status_id
  *
- * @property Employees $reciever
+ * @property Employees $director
+ * @property Employees $leader
+ * @property SampleRegistration $registration
  * @property Samples $sample
- * @property Employees $sender
  * @property StateList $state
+ * @property RouteStatus $status
  */
 class RouteSert extends \yii\db\ActiveRecord
 {
@@ -37,13 +43,15 @@ class RouteSert extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sender_id', 'reciever_id', 'sample_id', 'state_id'], 'integer'],
-            [['deadline', 'created'], 'safe'],
+            [['director_id', 'leader_id', 'executor_id', 'state_id', 'sample_id', 'registration_id', 'status_id'], 'integer'],
+            [['deadline', 'created', 'updated'], 'safe'],
             [['ads'], 'string', 'max' => 500],
-            [['reciever_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['reciever_id' => 'id']],
+            [['leader_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['leader_id' => 'id']],
+            [['registration_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleRegistration::className(), 'targetAttribute' => ['registration_id' => 'id']],
             [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => Samples::className(), 'targetAttribute' => ['sample_id' => 'id']],
-            [['sender_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['sender_id' => 'id']],
+            [['director_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['director_id' => 'id']],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => StateList::className(), 'targetAttribute' => ['state_id' => 'id']],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => RouteStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
         ];
     }
 
@@ -53,25 +61,49 @@ class RouteSert extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('route', 'ID'),
-            'sender_id' => Yii::t('route', 'Yuboruvchi'),
-            'reciever_id' => Yii::t('route', 'Qabul qiluvchi'),
-            'sample_id' => Yii::t('route', 'Namuna'),
-            'deadline' => Yii::t('route', 'Muddat'),
-            'ads' => Yii::t('route', 'Izoh'),
-            'created' => Yii::t('route', 'Yuborilgan sana'),
-            'state_id' => Yii::t('route', 'Holati'),
+            'id' => Yii::t('food', 'ID'),
+            'director_id' => Yii::t('food', 'Director ID'),
+            'leader_id' => Yii::t('food', 'Leader ID'),
+            'executor_id' => Yii::t('food', 'Executor ID'),
+            'deadline' => Yii::t('food', 'Deadline'),
+            'ads' => Yii::t('food', 'Ads'),
+            'state_id' => Yii::t('food', 'State ID'),
+            'created' => Yii::t('food', 'Created'),
+            'updated' => Yii::t('food', 'Updated'),
+            'sample_id' => Yii::t('food', 'Sample ID'),
+            'registration_id' => Yii::t('food', 'Registration ID'),
+            'status_id' => Yii::t('food', 'Status ID'),
         ];
     }
 
     /**
-     * Gets query for [[Reciever]].
+     * Gets query for [[Director]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getReciever()
+    public function getDirector()
     {
-        return $this->hasOne(Employees::className(), ['id' => 'reciever_id']);
+        return $this->hasOne(Employees::className(), ['id' => 'director_id']);
+    }
+
+    /**
+     * Gets query for [[Leader]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLeader()
+    {
+        return $this->hasOne(Employees::className(), ['id' => 'leader_id']);
+    }
+
+    /**
+     * Gets query for [[Registration]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRegistration()
+    {
+        return $this->hasOne(SampleRegistration::className(), ['id' => 'registration_id']);
     }
 
     /**
@@ -85,16 +117,6 @@ class RouteSert extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Sender]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSender()
-    {
-        return $this->hasOne(Employees::className(), ['id' => 'sender_id']);
-    }
-
-    /**
      * Gets query for [[State]].
      *
      * @return \yii\db\ActiveQuery
@@ -102,5 +124,15 @@ class RouteSert extends \yii\db\ActiveRecord
     public function getState()
     {
         return $this->hasOne(StateList::className(), ['id' => 'state_id']);
+    }
+
+    /**
+     * Gets query for [[Status]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus()
+    {
+        return $this->hasOne(RouteStatus::className(), ['id' => 'status_id']);
     }
 }

@@ -39,13 +39,6 @@
                     </ul>
                 </li>
 
-                <li>
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/ind/create'])?>">
-                        <i data-feather="mail"></i>
-                        <span data-key="t-dashboard"><?= Yii::t('client','Dalolatnoma qo\'shish')?></span>
-                    </a>
-                </li>
-
 
             </ul>
 

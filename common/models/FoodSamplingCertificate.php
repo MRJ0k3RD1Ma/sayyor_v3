@@ -71,7 +71,7 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
             'sampling_adress' => Yii::t('model.food_sampling_certificate', 'Namuna olish manzil'),
             'sampler_person_pnfl' => Yii::t('model.food_sampling_certificate', 'JSHSHIR(PNFL)'),
             'sampler_person_inn' => Yii::t('model.food_sampling_certificate', 'STIR(PNFL)'),
-            'verification_pupose_id' => Yii::t('model.food_sampling_certificate', 'Namuna holati'),
+            'verification_pupose_id' => Yii::t('model.food_sampling_certificate', 'Namunani tekshirtirishdan maqsad'),
             'sampling_date' => Yii::t('model.food_sampling_certificate', 'Namuna olish sanasi'),
             'send_sample_date' => Yii::t('model.food_sampling_certificate', 'Namuna yuborilgan sana'),
             'based_public_information' => Yii::t('model.food_sampling_certificate', 'Xabar asosida tuzilgan'),

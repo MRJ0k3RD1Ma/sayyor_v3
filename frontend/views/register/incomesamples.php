@@ -19,8 +19,19 @@ $this->params['breadcrumbs'][] = $this->title
         <?php $form = ActiveForm::begin(); ?>
 
         <?= $model->kod?> <?= Yii::t('register','Raqamli namunani qabul qilish')?>
+        <?php
+            $lg = 'uz';
+            if(Yii::$app->language == 'ru'){
+                $lg = 'ru';
+            }
+        ?>
+        <?= $form->field($cs,'sample_status_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SampleStatus::find()->all(),'id','name_'.$lg))?>
 
+        <?= $form->field($cs,'ads')->textInput()?>
 
+        <?= $form->field($route,'director_id')->dropDownList(\yii\helpers\ArrayHelper::map($director,'id','name'),['prompt'=>Yii::t('test','Direktorni tanlang')])?>
+
+        <?= $form->field($route,'leader_id')->dropDownList(\yii\helpers\ArrayHelper::map($director,'id','name'),['prompt'=>Yii::t('test','Labaratoriya mudirini tanlang')])?>
 
         <div class="form-group">
             <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>

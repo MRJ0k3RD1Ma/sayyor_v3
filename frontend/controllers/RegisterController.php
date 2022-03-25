@@ -2,17 +2,18 @@
 
 namespace frontend\controllers;
 
-use app\models\RouteSert;
 use common\models\Animals;
 use common\models\CompositeSamples;
 use common\models\DistrictView;
 use common\models\Emlash;
+use common\models\Employees;
 use common\models\FoodRegistration;
 use common\models\FoodSamples;
 use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\QfiView;
+use common\models\RouteSert;
 use common\models\SampleRegistration;
 use common\models\Samples;
 use frontend\models\search\registr\FoodRegistrationSearch;
@@ -308,6 +309,8 @@ class RegisterController extends Controller
     public function actionIncomesamples($id,$regid){
         $reg = SampleRegistration::findOne($regid);
         $model = Samples::findOne($id);
+        $route = new RouteSert();
+        $cs = CompositeSamples::findOne(['registration_id'=>$regid,'sample_id'=>$id]);
         if($reg->status_id < 2){
             $reg->emp_id = Yii::$app->user->id;
             $cs = CompositeSamples::find()->where(['registration_id'=>$regid])->all();
@@ -325,10 +328,23 @@ class RegisterController extends Controller
             $reg->save();
         }
 
+        $org_id = Yii::$app->user->identity->empPosts->org_id;
+        /*
+         * SELECT employees.*
+    FROM employees INNER JOIN emp_posts
+    ON emp_posts.emp_id = employees.id
+    WHERE emp_posts.post_id=1 AND emp_posts.org_id=1
+         * */
+        $directos = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>4])->andWhere(['emp_posts.org_id'=>$org_id])->all();
+        $lider    = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>3])->andWhere(['emp_posts.org_id'=>$org_id])->all();
 
         return $this->render('incomesamples',[
             'model'=>$model,
             'reg'=>$reg,
+            'cs'=>$cs,
+            'route'=>$route,
+            'director'=>$directos,
+            'lider'=>$lider
         ]);
     }
 

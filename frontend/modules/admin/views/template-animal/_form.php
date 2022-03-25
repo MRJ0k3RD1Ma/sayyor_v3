@@ -15,6 +15,18 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'type_id')->dropDownList(
         \yii\helpers\ArrayHelper::map(\common\models\Animaltype::find()->asArray()->all(), 'id', 'name_uz')
     ) ?>
+    <?= $form->field($model, 'gender')->dropDownList([
+        1 => 'Erkak',
+        0 => 'Urg\'ochi'
+    ]) ?>
+    <?= $form->field($model, 'age')->textInput() ?>
+
+    <?= $form->field($model, 'diseases_id')->dropDownList(
+        \yii\helpers\ArrayHelper::map(\common\models\Diseases::find()->asArray()->all(), 'id', 'name_uz')
+    ) ?>
+
+
+
     <?= $form->field($model, 'regulations[]')->widget(\kartik\select2\Select2::class,
         [
             'data' => \yii\helpers\ArrayHelper::map(\common\models\Regulations::find()->asArray()->all(), 'id', 'name_uz'),
@@ -26,20 +38,13 @@ use yii\widgets\ActiveForm;
         ])
 
     ?>
-    <?= $form->field($model, 'gender')->dropDownList([
-        1 => 'Erkak',
-        0 => 'Urg\'ochi'
-    ]) ?>
-
-    <?= $form->field($model, 'age')->textInput() ?>
-
-    <?= $form->field($model, 'diseases_id')->dropDownList(
-        \yii\helpers\ArrayHelper::map(\common\models\Diseases::find()->asArray()->all(), 'id', 'name_uz')
-    ) ?>
 
     <?= $form->field($model, 'test_method_id')->dropDownList(
         \yii\helpers\ArrayHelper::map(\common\models\TestMethod::find()->asArray()->all(), 'id', 'name_uz')
     ) ?>
+
+
+
 
     <?= $form->field($model, 'name_uz')->textInput(['maxlength' => true]) ?>
 
@@ -63,7 +68,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'creator_id')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false) ?>
 
-    <?= $form->field($model, 'consent_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Employees::find()->all(),'id','name'),['prompt'=>'Tasdiqlovchi odamni tanlang']) ?>
+   <!--Tasdiqlovchi kiritish keyinroq Abduraxmon aytgan roldagi odamga beriladi-->
 
     <?= $form->field($model, 'state_id')->dropDownList(
         \yii\helpers\ArrayHelper::map(\common\models\StateList::find()->asArray()->all(), 'id', 'name')

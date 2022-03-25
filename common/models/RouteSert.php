@@ -62,17 +62,17 @@ class RouteSert extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('food', 'ID'),
-            'director_id' => Yii::t('food', 'Director ID'),
-            'leader_id' => Yii::t('food', 'Leader ID'),
-            'executor_id' => Yii::t('food', 'Executor ID'),
-            'deadline' => Yii::t('food', 'Deadline'),
-            'ads' => Yii::t('food', 'Ads'),
-            'state_id' => Yii::t('food', 'State ID'),
-            'created' => Yii::t('food', 'Created'),
-            'updated' => Yii::t('food', 'Updated'),
-            'sample_id' => Yii::t('food', 'Sample ID'),
-            'registration_id' => Yii::t('food', 'Registration ID'),
-            'status_id' => Yii::t('food', 'Status ID'),
+            'director_id' => Yii::t('food', 'Direktor'),
+            'leader_id' => Yii::t('food', 'Labaratoriya mudiri'),
+            'executor_id' => Yii::t('food', 'Bajaruvchi'),
+            'deadline' => Yii::t('food', 'Muddat'),
+            'ads' => Yii::t('food', 'Izoh'),
+            'state_id' => Yii::t('food', 'Holat'),
+            'created' => Yii::t('food', 'Yaratildi'),
+            'updated' => Yii::t('food', 'O\'zgartirildi'),
+            'sample_id' => Yii::t('food', 'Namuna'),
+            'registration_id' => Yii::t('food', 'Ariza'),
+            'status_id' => Yii::t('food', 'Status'),
         ];
     }
 

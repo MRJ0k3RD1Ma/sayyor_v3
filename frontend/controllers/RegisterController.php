@@ -328,13 +328,12 @@ class RegisterController extends Controller
             $reg->save();
         }
 
+        if($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())){
+
+        }
+
         $org_id = Yii::$app->user->identity->empPosts->org_id;
-        /*
-         * SELECT employees.*
-    FROM employees INNER JOIN emp_posts
-    ON emp_posts.emp_id = employees.id
-    WHERE emp_posts.post_id=1 AND emp_posts.org_id=1
-         * */
+
         $directos = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>4])->andWhere(['emp_posts.org_id'=>$org_id])->all();
         $lider    = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>3])->andWhere(['emp_posts.org_id'=>$org_id])->all();
 

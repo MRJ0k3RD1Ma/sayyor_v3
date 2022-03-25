@@ -151,7 +151,7 @@ class IndController extends Controller
 
             $num = Sertificates::find()->filterWhere(['like','sert_date',date('Y')])->max('sert_id');
             $vet = VetSites::findOne($model->vet_site_id);
-            $code = $vet->soato0->region_id.$vet->soato0->district_id.'-'.   substr(date('Y'),2,2).'-';
+            $code = $vet->soato0->region_id.$vet->soato0->district_id .'-'.   substr(date('Y'),2,2).'-';
 
             $num = $num+1;
             $code .= $num;
@@ -538,6 +538,91 @@ class IndController extends Controller
         return $this->render('sertfoodview',[
             'model'=>$model,
             'samp'=>$samples
+        ]);
+    }
+
+
+
+    // update
+    public function actionUpdateanimal($id){
+        $model = Sertificates::findOne($id);
+
+        $model->sert_date = date('Y-m-d');
+        $model->ownertype = 1;
+        $owner_leg = new LegalEntities();
+        $owner_ind = new Individuals();
+
+        if($model->owner_inn){
+            $model->ownertype = 2;
+            $owner_leg = LegalEntities::findOne(['inn'=>$model->owner_inn]);
+        }elseif($model->owner_pnfl){
+            $model->ownertype = 1;
+            $owner_ind = Individuals::findOne(['pnfl'=>$model->owner_pnfl]);
+        }
+
+        if($model->load(Yii::$app->request->post())){
+
+
+            $num = Sertificates::find()->filterWhere(['like','sert_date',date('Y')])->max('sert_id');
+            $vet = VetSites::findOne($model->vet_site_id);
+            $code = $vet->soato0->region_id.$vet->soato0->district_id .'-'.   substr(date('Y'),2,2).'-';
+
+            $num = $num+1;
+            $code .= $num;
+            $model->sert_id = "$num";
+
+            $model->sert_full = $code;
+            $model->sert_num = "{$model->sert_num}";
+
+            if($model->ownertype == 1){
+                if($owner_ind->load(Yii::$app->request->post())){
+                    if($own = Individuals::findOne(['pnfl'=>$owner_ind->pnfl])){
+                        $owner_ind = $own;
+                    }else{
+                        $owner_ind->save();
+                    }
+                    $model->owner_pnfl = $owner_ind->pnfl;
+                    $model->owner_inn = null;
+                }else{
+                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                }
+            }elseif($model->ownertype == 2){
+                if($owner_leg->load(Yii::$app->request->post())){
+                    if($own = LegalEntities::findOne(['inn'=>$owner_leg->inn])){
+                        $owner_leg = $own;
+                    }else{
+                        $owner_leg->save();
+                    }
+                    $model->owner_inn = $owner_leg->inn;
+                    $model->owner_pnfl = null;
+                }else{
+                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                }
+            }else{
+                Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                return $this->render('animal',[
+                    'model'=>$model,
+                    'legal'=>$owner_leg,
+                    'ind'=>$owner_ind
+                ]);
+            }
+
+
+            if($model->save()){
+                Yii::$app->session->setFlash('success','Dalolatnomadagi o\'zgarishlar muvoffaqtiyatli saqlandi');
+                return $this->redirect(['view','id'=>$model->id]);
+            }else{
+                Yii::$app->session->setFlash('error','Ma\'lumotlarni to\'ldirishda xatolik yuzaga keldi');
+            }
+
+
+
+        }
+
+        return $this->render('animal',[
+            'model'=>$model,
+            'legal'=>$owner_leg,
+            'ind'=>$owner_ind
         ]);
     }
 }

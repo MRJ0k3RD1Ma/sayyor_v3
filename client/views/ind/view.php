@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?php if($model->status_id == 0){?>
-            <?= Html::a(Yii::t('cp.sertificates', 'O\'zgartirish'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('cp.sertificates', 'O\'zgartirish'), ['updateanimal', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php }?>
         <?php if($model->status_id == 0 or \common\models\Samples::find()->where(['sert_id'=>$model->id])->andWhere(['status_id'=>0])->count('id') > 0){?>
             <?= Html::a(Yii::t('cp.sertificates', 'Arizani yuborish'), ['send', 'id' => $model->id], ['class' => 'btn btn-success']) ?>

@@ -33,7 +33,7 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'ownertype')->radioList([1=>Yii::t('reg','Jismoniy shaxs'),2=>Yii::t('reg','Yuridik shaxs')]) ?>
 
-        <div id="indiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0;">
+        <div id="indiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0; <?= $model->ownertype == 1 ? 'display:block' : 'display:none'?>">
             <?= $form->field($ind, 'passport')->textInput(['maxlength' => true]) ?>
 
             <?= $form->field($ind, 'pnfl')->textInput(['maxlength' => 14,'oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');",'required'=>true]) ?>
@@ -64,7 +64,7 @@ use yii\widgets\ActiveForm;
 
         </div>
 
-        <div id="legdiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0; display: none;">
+        <div id="legdiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0; <?= $model->ownertype == 2 ? 'display: block' : 'display: none'?>">
             <?= $form->field($legal,'inn')->textInput(['maxlength' => 9,'oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');",'required'=>false])?>
             <?= $form->field($legal,'name')->textInput()?>
             <?= $form->field($legal,'tshx_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Tshx::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('test','Tashkiliy huquqiy shakli')])?>
@@ -89,9 +89,23 @@ use yii\widgets\ActiveForm;
 
 
         <h4>Namuna olinayotgan joy</h4>
-        <?= $form->field($model, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('client','Viloyatni tanlang')]) ?>
-        <?= $form->field($model, 'district')->dropDownList([]) ?>
-        <?= $form->field($model, 'vet_site_id')->dropDownList([]) ?>
+        <?php if($model->vet_site_id){
+            $model->region  = $model->vetSite->soato0->region_id;
+            $model->district = $model->vetSite->soato0->district_id;
+
+            ?>
+            <?= $form->field($model, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Viloyatni tanlang')]) ?>
+
+            <?= $form->field($model, 'district')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$model->region])->all(),'district_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Tumanni tanlang')]) ?>
+
+            <?= $form->field($model, 'vet_site_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\VetSites::find()->filterWhere(['like','soato','17'.$model->region.$model->district])->all(),'id','name'),['prompt'=>Yii::t('client','Vet uchaskani tanlang')]) ?>
+
+        <?php }else{ ?>
+            <?= $form->field($model, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('client','Viloyatni tanlang')]) ?>
+            <?= $form->field($model, 'district')->dropDownList([]) ?>
+            <?= $form->field($model, 'vet_site_id')->dropDownList([]) ?>
+        <?php }?>
+
 
         <h4>Namuna oluvchi: <?= Yii::$app->session->get('doc_name')?></h4>
         <?= $form->field($model,'sampler_name')->textInput()?>

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title
 
         <?= $form->field($route,'director_id')->dropDownList(\yii\helpers\ArrayHelper::map($director,'id','name'),['prompt'=>Yii::t('test','Direktorni tanlang')])?>
 
-        <?= $form->field($route,'leader_id')->dropDownList(\yii\helpers\ArrayHelper::map($director,'id','name'),['prompt'=>Yii::t('test','Labaratoriya mudirini tanlang')])?>
+        <?= $form->field($route,'leader_id')->dropDownList(\yii\helpers\ArrayHelper::map($lider,'id','name'),['prompt'=>Yii::t('test','Labaratoriya mudirini tanlang')])?>
 
         <div class="form-group">
             <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>

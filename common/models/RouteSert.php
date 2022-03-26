@@ -46,6 +46,7 @@ class RouteSert extends \yii\db\ActiveRecord
             [['director_id', 'leader_id', 'executor_id', 'state_id', 'sample_id', 'registration_id', 'status_id'], 'integer'],
             [['deadline', 'created', 'updated'], 'safe'],
             [['ads'], 'string', 'max' => 500],
+            [['executor_id','deadline'],'required','on'=>'exec'],
             [['leader_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['leader_id' => 'id']],
             [['registration_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleRegistration::className(), 'targetAttribute' => ['registration_id' => 'id']],
             [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => Samples::className(), 'targetAttribute' => ['sample_id' => 'id']],
@@ -95,7 +96,10 @@ class RouteSert extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Employees::className(), ['id' => 'leader_id']);
     }
-
+    public function getExecutor()
+    {
+        return $this->hasOne(Employees::className(), ['id' => 'executor_id']);
+    }
     /**
      * Gets query for [[Registration]].
      *

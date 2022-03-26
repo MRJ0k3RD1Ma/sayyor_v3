@@ -328,13 +328,21 @@ class RegisterController extends Controller
             $reg->save();
         }
 
-        if($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())){
-            $cs->status_id = 3;
-            $route->status_id = 1;
-
-            $cs->save();
-            $route->save();
-        }
+       if(Yii::$app->request->isPost){
+           if($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())){
+               $cs->status_id = 3;
+               $route->status_id = 1;
+               $model->status_id = 3;
+               $route->sample_id = $id;
+               $model->emp_id = Yii::$app->user->id;
+               $route->registration_id = $regid;
+               $model->save();
+               $cs->save();
+               $route->save();
+               Yii::$app->session->setFlash('success',Yii::t('test','Namuna muvoffaqiyatli yuborildi'));
+               return $this->redirect(['/register/regview','id'=>$regid]);
+           }
+       }
 
         $org_id = Yii::$app->user->identity->empPosts->org_id;
 

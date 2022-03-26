@@ -2,10 +2,16 @@
 
 namespace frontend\controllers;
 
+use common\models\DistrictView;
 use common\models\EmpPosts;
+use common\models\Individuals;
+use common\models\LegalEntities;
+use common\models\QfiView;
+use common\models\VetSites;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
+use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -311,5 +317,122 @@ class SiteController extends Controller
 
         curl_close($curl);
         return $response;
+    }
+
+
+
+    public function actionGetInd($pnfl,$doc){
+        if($model = Individuals::find()->where(['pnfl'=>$pnfl])->andWhere(['passport'=>$doc])->one()){
+            $res = "{
+                \"code\":200,
+                \"value\":{\"pnfl\":\"{$pnfl}\",
+                    \"name\":\"{$model->name}\",
+                    \"surname\":\"{$model->surname}\",
+                    \"middlename\":\"{$model->middlename}\",
+                    \"region_id\":\"{$model->soato->region_id}\",
+                    \"district_id\":\"{$model->soato->district_id}\",
+                    \"soato_id\":\"{$model->soato_id}\",
+                    \"passport\":\"{$model->passport}\",
+                    \"adress\":\"{$model->adress}\"
+                }
+            }";
+        }else{
+            $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'].'?pinfl='.$pnfl.'&document='.$doc,'hamsa');
+            $model = new Individuals();
+            $res = json_decode($res,true);
+            if($res['code']['result']!=2200 or (isset($res['data']['result']) and $res['data']['result']==0)){
+                return -1;
+            }
+
+            $model->passport = $res['data']['inf']['document'];
+            $model->surname = $res['data']['inf']['surname_latin'];
+            $model->name = $res['data']['inf']['name_latin'];
+            $model->middlename = $res['data']['inf']['patronym_latin'];
+            $model->pnfl = $pnfl;
+            $res = "{
+                \"code\":200,
+                \"value\":{\"pnfl\":\"{$pnfl}\",
+                    \"name\":\"{$model->name}\",
+                    \"surname\":\"{$model->surname}\",
+                    \"middlename\":\"{$model->middlename}\",
+                    \"region_id\":\"-1\",
+                    \"district_id\":\"-1\",
+                    \"soato_id\":\"-1\",
+                    \"passport\":\"{$model->passport}\",
+                    \"adress\":\"{$model->adress}\"
+                }
+            }";
+        }
+        echo $res;
+        exit;
+    }
+
+
+    public function actionGetDistrict($id){
+        $model = DistrictView::find()->where(['region_id'=>$id])->all();
+        $text = Yii::t('cp.vetsites','- Tumanni tanlang -');
+        $res = "<option value=''>{$text}</option>";
+        $lang = Yii::$app->language;
+        foreach ($model as $item){
+            if($lang == 'ru'){
+                $name = $item->name_ru;
+            }elseif($lang == 'oz'){
+                $name = $item->name_cyr;
+            }else{
+                $name = $item->name_lot;
+            }
+            $res .= "<option value='{$item->district_id}'>{$name}</option>";
+        }
+        echo $res;
+        exit;
+    }
+    public function actionGetQfi($id,$regid){
+        $model = QfiView::find()->where(['district_id'=>$id])->andWhere(['region_id'=>$regid])->all();
+        $text = Yii::t('cp.vetsites','- QFYni tanlang -');
+        $res = "<option value=''>{$text}</option>";
+        $lang = Yii::$app->language;
+        foreach ($model as $item){
+            if($lang == 'ru'){
+                $name = $item->name_ru;
+            }elseif($lang == 'oz'){
+                $name = $item->name_cyr;
+            }else{
+                $name = $item->name_lot;
+            }
+            $res .= "<option value='{$item->MHOBT_cod}'>{$name}</option>";
+        }
+        echo $res;
+        exit;
+    }
+
+    public function actionGetinn($inn){
+        if($model = LegalEntities::findOne(['inn'=>$inn])){
+            $res = "{
+                \"code\":200,
+                \"value\":{\"inn\":\"{$inn}\",
+                    \"name\":\"{$model->name}\",
+                    \"region\":\"{$model->soato->region_id}\",
+                    \"district\":\"{$model->soato->district_id}\",
+                    \"soato_id\":\"{$model->soato_id}\",
+                    \"tshx_id\":\"{$model->tshx_id}\",
+                    \"soogu\":\"{$model->soogu}\"
+                }
+            }";
+            return $res;
+        }else{
+            return -1;
+        }
+    }
+
+    public function actionGetvetsites($id){
+        $model = VetSites::find()->where(['soato' => $id])->all();
+        $text = Yii::t('cp.vetsites', '- Vet uchstkani tanlang -');
+        $res = "<option value=''>{$text}</option>";
+        foreach ($model as $item) {
+
+            $res .= "<option value='{$item->id}'>{$item->name}</option>";
+        }
+        echo $res;
+        exit;
     }
 }

@@ -31,7 +31,15 @@ $this->params['breadcrumbs'][] = $model->id;
         'attributes' => [
             'name_uz',
             'name_ru',
-            'file',
+            [
+                'attribute' => 'file',
+                'format' => 'html',
+                'value' => function (\common\models\Regulations $model) {
+                    $url = \yii\helpers\Url::base().'/uploads/'.$model->file;
+
+                    return \yii\bootstrap4\Html::a($model->file,[$url]);
+                }
+            ],
             [
                 'attribute' => 'creator_id',
                 'value' => function (\common\models\Regulations $model) {

@@ -1,3 +1,10 @@
+<?php
+
+use common\models\EmpPosts;
+use common\models\RouteSert;
+use common\models\RouteStatus;
+
+?>
 
 <!-- ========== Left Sidebar Start ========== -->
 <div class="vertical-menu">
@@ -29,6 +36,8 @@
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/register/regproduct'])?>" data-key="t-data-tables"><?= Yii::t('menu','Oziq-ovqat havsizligi')?></a></li>
                     </ul>
                 </li>
+
+                <?php if(EmpPosts::findOne(['emp_id'=>Yii::$app->user->identity->id])->post_id==3):?>
                 <li class="menu-title" data-key="t-menu">Labaratoriya mudiri</li>
                 <?php
                     $lg = 'uz';
@@ -43,11 +52,11 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/leader/indexanimal'])?>" data-key="t-basic-tables">Barchasi
-                                <span class="badge badge-primary"><?= \common\models\RouteSert::find()->where(['leader_id'=>Yii::$app->user->id])->count('id')?></span>
+                                <span class="badge badge-primary"><?= RouteSert::find()->where(['leader_id'=>Yii::$app->user->id])->count('id')?></span>
                             </a></li>
-                        <?php foreach (\common\models\RouteStatus::find()->all() as $item):?>
+                        <?php foreach (RouteStatus::find()->all() as $item):?>
                             <li><a href="<?= Yii::$app->urlManager->createUrl(['/leader/indexanimal','status'=>$item->id])?>" data-key="t-basic-tables"><?= $item->{'name_'.$lg}?>
-                                    <span class="badge badge-primary"><?= \common\models\RouteSert::find()->where(['leader_id'=>Yii::$app->user->id])->andWhere(['status_id'=>$item->id])->count('id')?></span>
+                                    <span class="badge badge-primary"><?= RouteSert::find()->where(['leader_id'=>Yii::$app->user->id])->andWhere(['status_id'=>$item->id])->count('id')?></span>
                                 </a></li>
                         <?php endforeach;?>
                     </ul>
@@ -60,13 +69,13 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/leader/indexfood'])?>" data-key="t-basic-tables">Barchasi </a></li>
-                        <?php foreach (\common\models\RouteStatus::find()->all() as $item):?>
+                        <?php foreach (RouteStatus::find()->all() as $item):?>
                             <li><a href="<?= Yii::$app->urlManager->createUrl(['/leader/indexfood','status'=>$item->id])?>" data-key="t-basic-tables"><?= $item->{'name_'.$lg}?></a></li>
                         <?php endforeach;?>
                     </ul>
                 </li>
-
-
+                <?php endif;?>
+                <?php if(EmpPosts::findOne(['emp_id'=>Yii::$app->user->identity->id])->post_id==2):?>
                 <li class="menu-title" data-key="t-menu">Labaratoriya</li>
                 <?php
                 $lg = 'uz';
@@ -103,7 +112,7 @@
                         <?php endforeach;?>
                     </ul>
                 </li>
-
+                <?php endif;?>
             </ul>
 
         </div>

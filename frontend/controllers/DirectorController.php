@@ -17,7 +17,7 @@ use Yii;
 /**
  * Site controller
  */
-class LeaderController extends Controller
+class DirectorController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -111,23 +111,12 @@ class LeaderController extends Controller
         ]);
     }
 
-    public function actionDeclineanimal($id)
+    public function actionVerifyanimal($id)
     {
         $model = RouteSert::findOne(['id' => $id]);
-        $model->status_id = 6;
+        $model->status_id = 3;
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq rad etildi'));
-        }
-        return $this->redirect(['indexanimal']);
-
-    }
-
-    public function actionAcceptanimal($id)
-    {
-        $model = RouteSert::findOne(['id' => $id]);
-        $model->status_id = 5;
-        if ($model->save()) {
-            Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq tasdiqlandi'));
+            Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq imzolandi'));
         }
         return $this->redirect(['indexanimal']);
 

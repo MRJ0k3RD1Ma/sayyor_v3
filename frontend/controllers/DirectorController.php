@@ -89,17 +89,10 @@ class DirectorController extends Controller
         $sample = $model->sample;
         $emp = Employees::find()->select(['employees.*'])
             ->innerJoin('emp_posts', 'emp_posts.emp_id = employees.id')
-            ->where(['emp_posts.post_id' => 2])
+            ->where(['emp_posts.post_id' => 4])
             ->andWhere(['emp_posts.org_id' => Yii::$app->user->identity->empPosts->org_id])
             ->andWhere(['emp_posts.gov_id' => Yii::$app->user->identity->empPosts->gov_id])->all();
         $model->scenario = 'exec';
-        if ($model->load(Yii::$app->request->post())) {
-            $model->status_id = 2;
-            if ($model->save()) {
-                Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq muvoffaqiyatli yuborildi'));
-                return $this->redirect(['viewanimal', 'id' => $id]);
-            }
-        }
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
         return $this->render('viewanimal', [

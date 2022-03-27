@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'sample_id',
                 'value'=>function($d){
-                    $url = Yii::$app->urlManager->createUrl(['/leader/viewanimal','id'=>$d->id]);
+                    $url = Yii::$app->urlManager->createUrl(['/director/viewanimal','id'=>$d->id]);
                     return "<a href='{$url}'>{$d->sample->kod}</a>";
                 },
                 'format'=>'raw'

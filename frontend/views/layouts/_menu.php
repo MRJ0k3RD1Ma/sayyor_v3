@@ -36,7 +36,44 @@ use common\models\RouteStatus;
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/register/regproduct'])?>" data-key="t-data-tables"><?= Yii::t('menu','Oziq-ovqat havsizligi')?></a></li>
                     </ul>
                 </li>
+                <?php if(EmpPosts::findOne(['emp_id'=>Yii::$app->user->identity->id])->post_id==4):?>
+                    <li class="menu-title" data-key="t-menu">Rahbar</li>
+                    <?php
+                    $lg = 'uz';
+                    if(Yii::$app->language == 'ru'){
+                        $lg = 'ru';
+                    }
+                    ?>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="sliders"></i>
+                            <span data-key="t-tables"><?= Yii::t('app','Hayvon kasalliklari')?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/indexanimal'])?>" data-key="t-basic-tables">Barchasi
+                                    <span class="badge badge-primary"><?= RouteSert::find()->where(['director_id'=>Yii::$app->user->id])->count('id')?></span>
+                                </a></li>
+                            <?php foreach (RouteStatus::find()->all() as $item):?>
+                                <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/indexanimal','status'=>$item->id])?>" data-key="t-basic-tables"><?= $item->{'name_'.$lg}?>
+                                        <span class="badge badge-primary"><?= RouteSert::find()->where(['director_id'=>Yii::$app->user->id])->andWhere(['status_id'=>$item->id])->count('id')?></span>
+                                    </a></li>
+                            <?php endforeach;?>
+                        </ul>
+                    </li>
 
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="sliders"></i>
+                            <span data-key="t-tables"><?= Yii::t('app','Oziq-ovqat havsizligi')?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/indexfood'])?>" data-key="t-basic-tables">Barchasi </a></li>
+                            <?php foreach (RouteStatus::find()->all() as $item):?>
+                                <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/indexfood','status'=>$item->id])?>" data-key="t-basic-tables"><?= $item->{'name_'.$lg}?></a></li>
+                            <?php endforeach;?>
+                        </ul>
+                    </li>
+                <?php endif;?>
                 <?php if(EmpPosts::findOne(['emp_id'=>Yii::$app->user->identity->id])->post_id==3):?>
                 <li class="menu-title" data-key="t-menu">Labaratoriya mudiri</li>
                 <?php

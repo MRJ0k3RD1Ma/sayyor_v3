@@ -40,7 +40,7 @@ class RouteSertSearch extends RouteSert
      */
     public function search($params)
     {
-        $query = RouteSert::find()->where(['leader_id'=>Yii::$app->user->id])->orderBy(['created'=>SORT_DESC]);
+        $query = RouteSert::find()->where(['director_id'=>Yii::$app->user->id])->orderBy(['created'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

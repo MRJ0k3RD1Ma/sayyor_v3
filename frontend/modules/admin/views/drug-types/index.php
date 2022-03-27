@@ -9,16 +9,18 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\ReportDrugTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Report Drug Types');
+$this->title = Yii::t('app', 'Dori turlari haqida hisobot');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="report-drug-type-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="card-header flex">
+        <div></div>
+        <div class="btns flex">
+            <?= Html::a(Yii::t('app', 'Dori turlari haqida hisobot yaratish'), ['create'], ['class' => 'btn btn-success']) ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Report Drug Type'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+        </div>
+    </div>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

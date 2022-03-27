@@ -9,7 +9,7 @@ use yii\helpers\Url;
 /* @var $searchModel common\models\search\ReportFoodCategory */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Report Food Categories');
+$this->title = Yii::t('app', 'Oziq-ovqat toifalari haqida');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="report-food-category-index">

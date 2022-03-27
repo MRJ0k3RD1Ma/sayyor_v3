@@ -630,7 +630,7 @@ class IndController extends Controller
         $sample = Samples::findOne($id);
         $animal = Animals::findOne($sample->animal_id);
 
-        $sample->sert_id = intval($id);
+//        $sample->sert_id = intval($id);
 
         if(Yii::$app->request->isPost){
 

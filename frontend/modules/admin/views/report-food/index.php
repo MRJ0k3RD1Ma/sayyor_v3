@@ -14,13 +14,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="report-food-category-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="card-header flex">
+        <div></div>
+        <div class="btns flex">
+   <?= Html::a(Yii::t('app', 'Oziq ovqat xisoboti kategoriyasi yaratish'), ['create'], ['class' => 'btn btn-success']) ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Report Food Category'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+        </div>
+    </div>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // escho $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

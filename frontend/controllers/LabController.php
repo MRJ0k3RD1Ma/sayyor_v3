@@ -108,4 +108,13 @@ class LabController extends Controller
             'test'=>$test
         ]);
     }
+
+    public function actionSendanimal($id){
+        $model = RouteSert::findOne($id);
+        $model->status_id = 4;
+        $model->save();
+        Yii::$app->session->setFlash('success',Yii::t('lab','Natijalar muvoffaqiyatli yuborildi'));
+        return $this->redirect(['viewanimal','id'=>$id]);
+    }
+
 }

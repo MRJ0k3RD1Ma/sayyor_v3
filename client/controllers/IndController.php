@@ -309,6 +309,7 @@ class IndController extends Controller
             'sample'=>$sample,
         ]);
     }
+
     protected function findModel($id)
     {
         if (($model = Sertificates::findOne($id)) !== null) {
@@ -317,6 +318,7 @@ class IndController extends Controller
 
         throw new NotFoundHttpException(Yii::t('cp.sertificates', 'The requested page does not exist.'));
     }
+
     public function actionVaccination($id,$sert_id){
 
         $model = new Vaccination();
@@ -630,7 +632,7 @@ class IndController extends Controller
         $sample = Samples::findOne($id);
         $animal = Animals::findOne($sample->animal_id);
 
-        $sample->sert_id = intval($id);
+//        $sample->sert_id = intval($id);
 
         if(Yii::$app->request->isPost){
 
@@ -663,6 +665,21 @@ class IndController extends Controller
             'model'=>$model,
             'animal'=>$animal,
             'sample'=>$sample,
+        ]);
+    }
+    public function actionUpdateProduct($id){
+        $model = new FoodSamplingCertificate();
+        $model->pnfl = Yii::$app->session->get('doc_pnfl');
+        $ind = new Individuals();
+        $legal = new LegalEntities();
+        $model->ownertype = 1;
+        $model->status_id = 0;
+        $model->state_id = 1;
+
+        return $this->render('product',[
+            'model'=>$model,
+            'legal'=>$legal,
+            'ind'=>$ind
         ]);
     }
 }

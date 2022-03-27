@@ -148,4 +148,5 @@ class Employees extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterf
         $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
         return true;
     }
+
 }

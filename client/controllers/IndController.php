@@ -309,6 +309,7 @@ class IndController extends Controller
             'sample'=>$sample,
         ]);
     }
+
     protected function findModel($id)
     {
         if (($model = Sertificates::findOne($id)) !== null) {
@@ -317,6 +318,7 @@ class IndController extends Controller
 
         throw new NotFoundHttpException(Yii::t('cp.sertificates', 'The requested page does not exist.'));
     }
+
     public function actionVaccination($id,$sert_id){
 
         $model = new Vaccination();

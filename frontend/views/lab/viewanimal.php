@@ -200,7 +200,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $lg = 'uz'; if(Yii::$app->language == 'ru')$lg = 'ru';?>
             <?php $n=0; foreach ($test as $i=>$item): $n++;?>
                 <tr>
-                    <td><?= $form->field($item,'['.$i.']checked')->checkbox(['value'=>1],false)->label(false)?></td>
+                    <td><?= $form->field($item,'['.$item->id.']checked')->checkbox(['value'=>1],false)->label(false)?></td>
                     <td><?= $n?></td>
                     <td><?= $item->template->{'name_'.$lg}?></td>
                     <td><?= $item->template->unit->{'name_'.$lg}?></td>
@@ -215,14 +215,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php }?>
 
                     <?php if($item->type_id == 1){?>
-                        <td colspan="2"><?= $form->field($item,'['.$i.']result')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
+                        <td colspan="2"><?= $form->field($item,'['.$item->id.']result')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
                     <?php }elseif($item->type_id == 2){?>
-                        <td colspan="2"><?= $form->field($item,'['.$i.']result')->dropDownList([0=>Yii::$app->params['result'][0],1=>Yii::$app->params['result'][1]],['prompt'=>Yii::t('lab','Natijani tanlang')])->label(false)?></td>
+                        <td colspan="2"><?= $form->field($item,'['.$item->id.']result')->dropDownList([0=>Yii::$app->params['result'][0],1=>Yii::$app->params['result'][1]],['prompt'=>Yii::t('lab','Natijani tanlang')])->label(false)?></td>
                     <?php }elseif($item->type_id == 3){?>
-                        <td colspan="2"><?= $form->field($item,'['.$i.']result')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
+                        <td colspan="2"><?= $form->field($item,'['.$item->id.']result')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
                     <?php }elseif($item->type_id == 4){?>
-                        <td><?= $form->field($item,'['.$i.']result')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
-                        <td><?= $form->field($item,'['.$i.']result_2')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
+                        <td><?= $form->field($item,'['.$item->id.']result')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
+                        <td><?= $form->field($item,'['.$item->id.']result_2')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
                     <?php }?>
 
                     <td><?php

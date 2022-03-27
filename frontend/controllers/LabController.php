@@ -87,10 +87,18 @@ class LabController extends Controller
         $sample = $model->sample;
 
         $result = ResultAnimal::findOne(['sample_id'=>$sample->id]);
-        $test = ResultAnimalTests::find()->where(['result_id'=>$result->id])->all();
+
+        $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id'=>$result->id])->all();
 
         if(Model::loadMultiple($test,Yii::$app->request->post()) and $result->load(Yii::$app->request->post())){
-            errdeb($test);
+           $result->created = date('Y-m-d h:i:s');
+           $result->save();
+           foreach ($test as $item){
+               $item->save();
+           }
+           Yii::$app->session->setFlash('success',Yii::t('lab','Natijalar muvoffaqiyatli saqlandi'));
+
+           return $this->redirect(['viewanimal','id'=>$id]);
         }
 
         return $this->render('viewanimal',[

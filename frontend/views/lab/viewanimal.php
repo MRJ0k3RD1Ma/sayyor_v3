@@ -2,14 +2,18 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Samples */
+/* @var $result common\models\ResultAnimal */
+/* @var $test common\models\ResultAnimalTests */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunalar ro\'yhati'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+
 ?>
 <div class="samples-view">
 
@@ -157,8 +161,85 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <h3>Shablon ma'lumotlari</h3>
-        <pre>
-            <?php var_dump($template); ?>
-        </pre>
+        <?php $form = ActiveForm::begin()?>
+
+        <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($result,'temprature')->textInput(['type'=>'number'])?>
+
+                <?= $form->field($result,'humidity')->textInput(['type'=>'number'])?>
+
+                <?= $form->field($result,'reagent_series')->textInput()?>
+
+                <?= $form->field($result,'reagent_name')->textInput()?>
+
+            </div>
+            <div class="col-md-6">
+                <?= $form->field($result,'conditions')->textInput()?>
+
+                <?= $form->field($result,'end_date')->textInput(['type'=>'date'])?>
+
+                <?= $form->field($result,'ads')->textInput()?>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>№</th>
+                    <th><?= Yii::t('lab','Parametr nomi')?></th>
+                    <th><?= Yii::t('lab','Birliki')?></th>
+                    <th><?= Yii::t('lab','Maksimal-minimal oraliq')?></th>
+                    <th colspan="2"><?= Yii::t('lab','Qiymat')?></th>
+                    <th><?= Yii::t('lab','Emlashga aloqadorligi')?></th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php $lg = 'uz'; if(Yii::$app->language == 'ru')$lg = 'ru';?>
+            <?php $n=0; foreach ($test as $i=>$item): $n++;?>
+                <tr>
+                    <td><?= $form->field($item,'['.$i.']checked')->checkbox(['value'=>1],false)->label(false)?></td>
+                    <td><?= $n?></td>
+                    <td><?= $item->template->{'name_'.$lg}?></td>
+                    <td><?= $item->template->unit->{'name_'.$lg}?></td>
+                    <?php if($item->type_id == 1){?>
+                        <td><?= $item->template->min.'-'.$item->template->max ?></td>
+                    <?php }elseif($item->type_id == 2){?>
+                        <td><?= Yii::$app->params['result'][$item->template->min] ?></td>
+                    <?php }elseif($item->type_id == 3){?>
+                        <td><?= $item->template->min.'-'.$item->template->max.' %' ?></td>
+                    <?php }elseif($item->type_id == 4){?>
+                        <td><?= $item->template->min.'-'.$item->template->max ?> <br> <?= $item->template->min_1.'-'.$item->template->max_1 ?></td>
+                    <?php }?>
+
+                    <?php if($item->type_id == 1){?>
+                        <td colspan="2"><?= $form->field($item,'['.$i.']result')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
+                    <?php }elseif($item->type_id == 2){?>
+                        <td colspan="2"><?= $form->field($item,'['.$i.']result')->dropDownList([0=>Yii::$app->params['result'][0],1=>Yii::$app->params['result'][1]],['prompt'=>Yii::t('lab','Natijani tanlang')])->label(false)?></td>
+                    <?php }elseif($item->type_id == 3){?>
+                        <td colspan="2"><?= $form->field($item,'['.$i.']result')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
+                    <?php }elseif($item->type_id == 4){?>
+                        <td><?= $form->field($item,'['.$i.']result')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
+                        <td><?= $form->field($item,'['.$i.']result_2')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting')])->label(false)?></td>
+                    <?php }?>
+
+                    <td><?php
+                        echo Yii::$app->params['is_vaccination'][$item->template->is_vaccination] .'<br>';
+                        if($item->template->is_vaccination == 1){
+                            if($item->template->dead_days <= 0) {echo Yii::t('lab','Doimiy');}else{echo $item->template->dead_days.' '.Yii::t('lab','Kun');}
+                        }
+                    ?></td>
+
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+        </div>
+
+        <button type="submit" class="btn btn-success"><?= Yii::t('lab','Saqlash')?></button>
+
+        <?php ActiveForm::end()?>
     </div>
 </div>

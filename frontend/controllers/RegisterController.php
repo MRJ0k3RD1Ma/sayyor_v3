@@ -13,9 +13,12 @@ use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\QfiView;
+use common\models\ResultAnimal;
+use common\models\ResultAnimalTests;
 use common\models\RouteSert;
 use common\models\SampleRegistration;
 use common\models\Samples;
+use common\models\TamplateAnimal;
 use frontend\models\search\registr\FoodRegistrationSearch;
 use frontend\models\search\lab\FoodSamplingCertificateSearch;
 use common\models\Sertificates;
@@ -339,6 +342,30 @@ class RegisterController extends Controller
                $model->save();
                $cs->save();
                $route->save();
+
+               $d1 = new \DateTime($cs->sample->animal->birthday);
+               $d2 = new \DateTime(date('Y-m-d'));
+               $interval = $d1->diff($d2);
+               $diff = $interval->m+($interval->y*12);
+               $template = TamplateAnimal::find()
+                   ->where(['type_id'=>$cs->sample->animal->type_id])
+                   ->andWhere(['<=','age',$diff])
+                   ->andWhere(['diseases_id'=>$cs->sample->suspected_disease_id])
+                   ->andWhere(['test_method_id'=>$cs->sample->test_mehod_id])->all();
+               $result = new ResultAnimal();
+               $result->sample_id = $cs->sample_id;
+               $result->state_id = 1;
+               $result->creator_id = $route->executor_id;
+               $result->save();
+               foreach ($template as $item){
+                    $test = new ResultAnimalTests();
+                    $test->result_id = $result->id;
+                    $test->template_id = $item->id;
+                    $test->type_id = $item->type_id;
+                    $test->save();
+                    $test = null;
+               }
+
                Yii::$app->session->setFlash('success',Yii::t('test','Namuna muvoffaqiyatli yuborildi'));
                return $this->redirect(['/register/regview','id'=>$regid]);
            }

@@ -19,5 +19,14 @@ return [
     'eskiz'=>[
         'email'=>'info@vetgov.uz',
         'password'=>'wu6Ifz4Y1ps7bMVgXTpxnZX0pvw8ZvV5Li7ILFa1'
-    ]
+    ],
+    'is_vaccination'=>[
+        0=>Yii::t('lab','Yo\'q'),
+        1=>Yii::t('lab','Ha')
+    ],
+    'result'=>[
+        0=>Yii::t('lab','Yo\'q'),
+        1=>Yii::t('lab','Ha')
+    ],
+
 ];

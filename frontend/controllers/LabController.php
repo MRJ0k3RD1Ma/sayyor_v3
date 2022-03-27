@@ -4,9 +4,12 @@ namespace frontend\controllers;
 
 
 use common\models\Employees;
+use common\models\ResultAnimal;
+use common\models\ResultAnimalTests;
 use common\models\RouteSert;
 use common\models\TamplateAnimal;
 use frontend\models\search\laboratory\RouteSertSearch;
+use yii\base\Model;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -82,28 +85,19 @@ class LabController extends Controller
     public function actionViewanimal($id){
         $model = RouteSert::findOne($id);
         $sample = $model->sample;
-        $emp = Employees::find()->select(['employees.*'])
-            ->innerJoin('emp_posts','emp_posts.emp_id = employees.id')
-            ->where(['emp_posts.post_id'=>2])
-            ->andWhere(['emp_posts.org_id'=>Yii::$app->user->identity->empPosts->org_id])
-            ->andWhere(['emp_posts.gov_id'=>Yii::$app->user->identity->empPosts->gov_id])->all();
-        $d1 = new \DateTime($sample->animal->birthday);
-        $d2 = new \DateTime(date('Y-m-d'));
-        $interval = $d1->diff($d2);
-        $diff = $interval->m+($interval->y*12);
-        $template = TamplateAnimal::find()
-        ->where(['type_id'=>$sample->animal->type_id])
-        ->andWhere(['<=','age',$diff])
-        ->andWhere(['diseases_id'=>$sample->suspected_disease_id])
-        ->andWhere(['test_method_id'=>$sample->test_mehod_id])->all();
 
+        $result = ResultAnimal::findOne(['sample_id'=>$sample->id]);
+        $test = ResultAnimalTests::find()->where(['result_id'=>$result->id])->all();
 
+        if(Model::loadMultiple($test,Yii::$app->request->post()) and $result->load(Yii::$app->request->post())){
+            errdeb($test);
+        }
 
         return $this->render('viewanimal',[
             'model'=>$model,
             'sample'=>$sample,
-            'emp'=>$emp,
-            'template'=>$template
+            'result'=>$result,
+            'test'=>$test
         ]);
     }
 }

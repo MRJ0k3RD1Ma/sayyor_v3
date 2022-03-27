@@ -667,4 +667,19 @@ class IndController extends Controller
             'sample'=>$sample,
         ]);
     }
+    public function actionUpdateProduct($id){
+        $model = new FoodSamplingCertificate();
+        $model->pnfl = Yii::$app->session->get('doc_pnfl');
+        $ind = new Individuals();
+        $legal = new LegalEntities();
+        $model->ownertype = 1;
+        $model->status_id = 0;
+        $model->state_id = 1;
+
+        return $this->render('product',[
+            'model'=>$model,
+            'legal'=>$legal,
+            'ind'=>$ind
+        ]);
+    }
 }

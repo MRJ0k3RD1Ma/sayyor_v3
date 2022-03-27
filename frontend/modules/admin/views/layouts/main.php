@@ -23,6 +23,12 @@ BackAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
 
     <?php $this->head() ?>
+
+    <style>
+        .pagination li a{
+            padding:5px;
+        }
+    </style>
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>

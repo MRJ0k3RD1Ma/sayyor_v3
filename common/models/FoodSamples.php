@@ -15,7 +15,7 @@ use yii\db\ActiveQuery;
  * @property string|null $tasnif_code tasnif.soliq.uz dan olinadi
  * @property int|null $unit_id birligi
  * @property int|null $count soni
- * @property int $_country
+ * @property int $_country Davlat nomi
  * @property int|null $sample_box_id
  * @property int|null $sample_condition_id
  * @property string|null $total_amount

@@ -353,6 +353,9 @@ class RegisterController extends Controller
                    ->andWhere(['diseases_id'=>$cs->sample->suspected_disease_id])
                    ->andWhere(['test_method_id'=>$cs->sample->test_mehod_id])->all();
                $result = new ResultAnimal();
+
+
+
                $result->sample_id = $cs->sample_id;
                $result->state_id = 1;
                $result->creator_id = $route->executor_id;
@@ -385,5 +388,7 @@ class RegisterController extends Controller
             'lider'=>$lider
         ]);
     }
+
+
 
 }

@@ -351,7 +351,7 @@
 </div>
 
 <style>
-    i {
+    .page-content i {
         font-size: 35px;
     }
 </style>

@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
         }
         ?>
 
-        <?= $form->field($animal, 'type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Animaltype::find()->all(),'id','name_'),['prompt'=>Yii::t('cp.animals','Hayvon turini tanlang')]) ?>
+        <?= $form->field($animal, 'type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Animaltype::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('cp.animals','Hayvon turini tanlang')]) ?>
 
         <?= $form->field($animal, 'gender')->dropDownList([
             1=>Yii::t('cp.animals','Erkak'),

@@ -5,6 +5,8 @@ namespace frontend\controllers;
 
 use common\models\Employees;
 
+use common\models\ResultAnimal;
+use common\models\ResultAnimalTests;
 use common\models\RouteSert;
 use frontend\models\search\leader\RouteSertSearch;
 use yii\web\Controller;
@@ -95,10 +97,14 @@ class LeaderController extends Controller
                 return $this->redirect(['viewanimal','id'=>$id]);
             }
         }
+        $result = ResultAnimal::findOne(['sample_id'=>$sample->id]);
+        $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id'=>$result->id])->all();
         return $this->render('viewanimal',[
             'model'=>$model,
             'sample'=>$sample,
-            'emp'=>$emp
+            'result'=>$result,
+            'emp'=>$emp,
+            'test'=>$test
         ]);
     }
 }

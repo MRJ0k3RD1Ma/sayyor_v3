@@ -233,8 +233,11 @@ YiiAsset::register($this);
             </div>
         </div>
     </div>
-    <?= Html::a('Imzolash', ['director/verifyanimal', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
-    <?= Html::a('Rad etish', ['director/declineanimal', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
+    <?php if ($model->status_id == 5) {
+        echo Html::a('Imzolash', ['director/verifyanimal', 'id' => $model->id], ['class' => 'btn btn-success']);
+        echo Html::a('Rad etish', ['director/declineanimal', 'id' => $model->id], ['class' => 'btn btn-danger']);
+    }
+    ?>
 
 
 </div>

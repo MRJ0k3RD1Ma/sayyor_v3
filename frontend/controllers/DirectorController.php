@@ -114,4 +114,14 @@ class DirectorController extends Controller
         return $this->redirect(['indexanimal']);
 
     }
+    public function actionDeclineanimal($id)
+    {
+        $model = RouteSert::findOne(['id' => $id]);
+        $model->status_id = 6;
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq rad etildi'));
+        }
+        return $this->redirect(['indexanimal']);
+
+    }
 }

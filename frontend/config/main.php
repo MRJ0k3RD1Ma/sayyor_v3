@@ -19,6 +19,7 @@ return [
             'class' => 'app\modules\komitet\Module',
         ]
     ],
+    'language'=>'uz',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',

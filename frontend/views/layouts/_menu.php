@@ -23,7 +23,7 @@ use common\models\RouteStatus;
                         <span data-key="t-dashboard"><?= Yii::t('app','Bosh sahifa')?></span>
                     </a>
                 </li>
-
+                <?php if(EmpPosts::isRegister(Yii::$app->user->identity->getId())):?>
                 <li class="menu-title" data-key="t-menu">Registrator</li>
 
                 <li>
@@ -36,7 +36,8 @@ use common\models\RouteStatus;
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/register/regproduct'])?>" data-key="t-data-tables"><?= Yii::t('menu','Oziq-ovqat havsizligi')?></a></li>
                     </ul>
                 </li>
-                <?php if(EmpPosts::findOne(['emp_id'=>Yii::$app->user->identity->id])->post_id==4):?>
+                <?php endif;?>
+                <?php if(EmpPosts::isDirector(Yii::$app->user->identity->getId())):?>
                     <li class="menu-title" data-key="t-menu">Rahbar</li>
                     <?php
                     $lg = 'uz';
@@ -74,7 +75,7 @@ use common\models\RouteStatus;
                         </ul>
                     </li>
                 <?php endif;?>
-                <?php if(EmpPosts::findOne(['emp_id'=>Yii::$app->user->identity->id])->post_id==3):?>
+                <?php if(EmpPosts::isLeader(Yii::$app->user->identity->getId())):?>
                 <li class="menu-title" data-key="t-menu">Labaratoriya mudiri</li>
                 <?php
                     $lg = 'uz';
@@ -112,7 +113,7 @@ use common\models\RouteStatus;
                     </ul>
                 </li>
                 <?php endif;?>
-                <?php if(EmpPosts::findOne(['emp_id'=>Yii::$app->user->identity->id])->post_id==2):?>
+                <?php if(EmpPosts::isLabor(Yii::$app->user->identity->getId())):?>
                 <li class="menu-title" data-key="t-menu">Labaratoriya</li>
                 <?php
                 $lg = 'uz';

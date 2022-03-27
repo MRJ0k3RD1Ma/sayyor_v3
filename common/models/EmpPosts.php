@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property int|null $emp_id
  * @property int|null $post_id
- * @property string|null $date Лавозими ёки статуси ўзгарган вақти. 
+ * @property string|null $date Лавозими ёки статуси ўзгарган вақти.
  * @property int|null $state_id Ходимнинг холати. Актив, ноактив
  * @property int|null $status_id Лавозим статуси :  асосий лавозим, вақтинчалик вазифасини бажарувчи, ва ҳ.к.
  * @property int|null $org_id Ташкилот (Бўлим)
@@ -27,6 +27,7 @@ use Yii;
 class EmpPosts extends \yii\db\ActiveRecord
 {
     public $orgtype;
+
     /**
      * {@inheritdoc}
      */
@@ -41,9 +42,9 @@ class EmpPosts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['emp_id','orgtype', 'post_id','gov_id', 'state_id', 'status_id', 'org_id'], 'integer'],
+            [['emp_id', 'orgtype', 'post_id', 'gov_id', 'state_id', 'status_id', 'org_id'], 'integer'],
             [['date'], 'safe'],
-            ['date','default','value'=>date('Y-m-d')],
+            ['date', 'default', 'value' => date('Y-m-d')],
             [['emp_id'], 'unique'],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => StatusList::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['org_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['org_id' => 'id']],
@@ -91,9 +92,11 @@ class EmpPosts extends \yii\db\ActiveRecord
         return $this->hasOne(Organizations::className(), ['id' => 'org_id']);
     }
 
-    public function getGov(){
-        return $this->hasOne(Goverments::className(),['id'=>'gov_id']);
+    public function getGov()
+    {
+        return $this->hasOne(Goverments::className(), ['id' => 'gov_id']);
     }
+
     /**
      * Gets query for [[Post]].
      *
@@ -122,5 +125,24 @@ class EmpPosts extends \yii\db\ActiveRecord
     public function getStatus()
     {
         return $this->hasOne(StatusList::className(), ['id' => 'status_id']);
+    }
+
+    public static function isDirector($id)
+    {
+        return self::find()->where(['emp_id' => $id, 'post_id' => 4])->exists();
+    }
+
+    public static function isLeader($id)
+    {
+        return self::find()->where(['emp_id' => $id, 'post_id' => 3])->exists();
+    }
+
+    public static function isLabor($id)
+    {
+        return self::find()->where(['emp_id' => $id, 'post_id' => 2])->exists();
+    }
+    public static function isRegister($id)
+    {
+        return self::find()->where(['emp_id' => $id, 'post_id' => 1])->exists();
     }
 }

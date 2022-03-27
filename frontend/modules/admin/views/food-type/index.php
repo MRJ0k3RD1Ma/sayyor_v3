@@ -9,16 +9,20 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\FoodTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('food', 'Food Types');
+$this->title = Yii::t('food', 'Oziq-ovqat turlari');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="food-type-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a(Yii::t('food', 'Create Food Type'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+
+    <div class="card-header flex">
+        <div></div>
+        <div class="btns flex">
+            <?= Html::a(Yii::t('app', 'Oziq ovqat xisoboti kategoriyasi yaratish'), ['create'], ['class' => 'btn btn-success']) ?>
+
+        </div>
+    </div>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

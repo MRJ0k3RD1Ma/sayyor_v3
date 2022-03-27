@@ -52,7 +52,8 @@ class Regulations extends \yii\db\ActiveRecord
         return [
             [['creator_id', 'status'], 'integer'],
             [['created', 'updated'], 'safe'],
-            [['name_uz', 'name_ru', 'file'], 'string', 'max' => 255],
+            [['name_uz', 'name_ru','file'], 'string', 'max' => 255],
+            [['file'],'file'],
             [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['creator_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => StatusList::className(), 'targetAttribute' => ['status' => 'id']],
         ];

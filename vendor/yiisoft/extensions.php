@@ -87,10 +87,19 @@ return array (
   'kartik-v/yii2-widget-select2' => 
   array (
     'name' => 'kartik-v/yii2-widget-select2',
-    'version' => '2.2.2.0',
+    'version' => '2.2.3.0',
     'alias' => 
     array (
       '@kartik/select2' => $vendorDir . '/kartik-v/yii2-widget-select2/src',
+    ),
+  ),
+  'kartik-v/yii2-widget-fileinput' => 
+  array (
+    'name' => 'kartik-v/yii2-widget-fileinput',
+    'version' => 'dev-master',
+    'alias' => 
+    array (
+      '@kartik/file' => $vendorDir . '/kartik-v/yii2-widget-fileinput/src',
     ),
   ),
 );

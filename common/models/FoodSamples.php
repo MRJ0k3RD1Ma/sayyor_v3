@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "food_samples".
@@ -14,6 +15,7 @@ use Yii;
  * @property string|null $tasnif_code tasnif.soliq.uz dan olinadi
  * @property int|null $unit_id birligi
  * @property int|null $count soni
+ * @property int $_country
  * @property int|null $sample_box_id
  * @property int|null $sample_condition_id
  * @property string|null $total_amount
@@ -33,6 +35,7 @@ use Yii;
  * @property SampleConditions $sampleCondition
  * @property FoodSamplingCertificate $sert
  * @property Units $unit
+ * @property Countres $country
  */
 class FoodSamples extends \yii\db\ActiveRecord
 {
@@ -50,9 +53,10 @@ class FoodSamples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['samp_id', 'sert_id', 'unit_id', 'count', 'sample_box_id', 'sample_condition_id', 'verification_sample', 'laboratory_test_type_id','status_id'], 'integer'],
-            [['manufacture_date', 'sell_by',  'created', 'updated'], 'safe'],
-            [['samp_code', 'tasnif_code', 'total_amount', 'producer', 'serial_num', 'coments', ], 'string', 'max' => 255],
+            [['samp_id', 'sert_id', 'unit_id', 'count', '_country', 'sample_box_id', 'sample_condition_id', 'verification_sample', 'laboratory_test_type_id', 'status_id', 'state_id'], 'integer'],
+            [['_country'], 'required'],
+            [['manufacture_date', 'sell_by', 'created', 'updated'], 'safe'],
+            [['samp_code', 'tasnif_code', 'total_amount', 'producer', 'serial_num', 'coments'], 'string', 'max' => 255],
             [['laboratory_test_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => LaboratoryTestType::className(), 'targetAttribute' => ['laboratory_test_type_id' => 'id']],
             [['sample_box_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleBoxes::className(), 'targetAttribute' => ['sample_box_id' => 'id']],
             [['sample_condition_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleConditions::className(), 'targetAttribute' => ['sample_condition_id' => 'id']],
@@ -90,13 +94,15 @@ class FoodSamples extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getTasnif(){
-        return $this->hasOne(FoodType::className(),['id'=>'tasnif_code']);
+    public function getTasnif()
+    {
+        return $this->hasOne(FoodType::className(), ['id' => 'tasnif_code']);
     }
+
     /**
      * Gets query for [[LaboratoryTestType]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getLaboratoryTestType()
     {
@@ -106,7 +112,7 @@ class FoodSamples extends \yii\db\ActiveRecord
     /**
      * Gets query for [[SampleBox]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getSampleBox()
     {
@@ -116,7 +122,7 @@ class FoodSamples extends \yii\db\ActiveRecord
     /**
      * Gets query for [[SampleCondition]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getSampleCondition()
     {
@@ -126,7 +132,7 @@ class FoodSamples extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Sert]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getSert()
     {
@@ -136,14 +142,22 @@ class FoodSamples extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Unit]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUnit()
     {
         return $this->hasOne(Units::className(), ['id' => 'unit_id']);
     }
 
-    public function getStatus(){
-        return $this->hasOne(SertStatus::className(),['id'=>'status_id']);
+    public function getStatus()
+    {
+        return $this->hasOne(SertStatus::className(), ['id' => 'status_id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getCountry(){
+        return $this->hasOne(Countres::class,['id'=>'_country']);
     }
 }

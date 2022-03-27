@@ -4,9 +4,10 @@ namespace app\modules\admin\controllers;
 
 use common\models\Regulations;
 use common\models\search\RegulationsSearch;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * RegulationController implements the CRUD actions for Regulations model.
@@ -69,8 +70,14 @@ class RegulationController extends Controller
     {
         $model = new Regulations();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $file = UploadedFile::getInstance($model, 'file');
+            if ($file instanceof UploadedFile) {
+                $fileName = urlencode($file->baseName);
+                $file->saveAs('uploads/' . $fileName . '.' . $file->extension);
+                $model->file = $fileName . '.' . $file->extension;
+            }
+            if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -93,8 +100,20 @@ class RegulationController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $file = UploadedFile::getInstance($model, 'file');
+            $lastFile = Regulations::findOne(['id' => $model->id])->file;
+            if ($file instanceof UploadedFile) {
+                $fileName = urlencode($file->baseName);
+                $file->saveAs('uploads/' . $fileName . '.' . $file->extension);
+                $model->file = $fileName . '.' . $file->extension;
+            } elseif (file_exists('uploads/' . $lastFile)) {
+                unlink(\Yii::$app->basePath . '/web/uploads/' . $lastFile);
+            }
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+//            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -111,6 +130,10 @@ class RegulationController extends Controller
      */
     public function actionDelete($id)
     {
+        $lastFile = Regulations::findOne(['id' => $id])->file;
+        if (file_exists('uploads/' . $lastFile)) {
+            unlink(\Yii::$app->basePath . '/web/uploads/' . $lastFile);
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

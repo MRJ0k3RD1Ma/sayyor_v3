@@ -591,7 +591,7 @@ class IndController extends Controller
                     if($own = LegalEntities::findOne(['inn'=>$owner_leg->inn])){
                         $owner_leg = $own;
                     }else{
-                        $owner_leg->save();
+                        $owner_leg->update();
                     }
                     $model->owner_inn = $owner_leg->inn;
                     $model->owner_pnfl = null;
@@ -623,6 +623,46 @@ class IndController extends Controller
             'model'=>$model,
             'legal'=>$owner_leg,
             'ind'=>$owner_ind
+        ]);
+    }
+    public function actionUpdateSample($id){
+
+        $sample = Samples::findOne($id);
+        $animal = Animals::findOne($sample->animal_id);
+
+        $sample->sert_id = intval($id);
+
+        if(Yii::$app->request->isPost){
+
+            if($animal->load(Yii::$app->request->post())){
+                $num = Samples::find()->filterWhere(['like','kod',$model->sert_full])->max('samp_id');
+
+                $code = $model->sert_full;
+
+                $num = $num+1;
+                $code .= $num;
+                $sample->kod = $code.'/'.$num;
+                $sample->samp_id = $num;
+                $animal->pnfl = "{$animal->pnfl}";
+
+                if($animal->save() and $sample->load(Yii::$app->request->post())){
+                    $sample->animal_id = $animal->id;
+                    $sample->sert_id = intval($id);
+                    if($sample->save(false)){
+                        Yii::$app->session->setFlash('success',Yii::t('client','Namunadagi o\'zgarishlar muvoffaqiyatli saqlandi'));
+                        return $this->redirect(['view','id'=>$id]);
+                    }else{
+                        Yii::$app->session->setFlash('error','Maydonlar to\'ldirimlagan');
+                    }
+                }
+            }
+
+        }
+
+        return $this->render('add',[
+            'model'=>$model,
+            'animal'=>$animal,
+            'sample'=>$sample,
         ]);
     }
 }

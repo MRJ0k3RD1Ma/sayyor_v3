@@ -159,7 +159,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-    <?php if($model->status_id == 2){?>
+    <?php if($model->status_id == 2 or $model->status_id == 6){?>
         <div class="row">
             <div>
                 <h3 style="float: left">Shablon ma'lumotlari</h3>

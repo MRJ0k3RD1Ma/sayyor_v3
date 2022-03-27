@@ -8,7 +8,7 @@ use common\models\Employees;
 use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
 use common\models\RouteSert;
-use frontend\models\search\leader\RouteSertSearch;
+use frontend\models\search\director\RouteSertSearch;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;

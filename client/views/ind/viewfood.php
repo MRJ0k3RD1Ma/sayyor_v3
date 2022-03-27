@@ -1,7 +1,10 @@
 <?php
 
+use common\models\Soato;
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
+use const common\models\FoodSamples;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\FoodSamplingCertificate */
@@ -9,12 +12,13 @@ use yii\widgets\DetailView;
 $this->title = $model->code;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.food_sampling_certificate', 'Dalolatnomalar ro\'yhati'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <div class="food-sampling-certificate-view">
 
     <p>
-        <a class="btn btn-success" href="<?= Yii::$app->urlManager->createUrl(['/ind/sendfood','id'=>$model->id])?>">Ariza yuborish</a>
+        <a class="btn btn-success"
+           href="<?= Yii::$app->urlManager->createUrl(['/ind/sendfood', 'id' => $model->id]) ?>">Ariza yuborish</a>
     </p>
 
     <?= DetailView::widget([
@@ -25,62 +29,62 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'pnfl',
 //            'organization_id',
             [
-                'label'=>Yii::t('client','Buyurtmachi'),
-                'value'=>function($d){
-                    if($d->pnfl){
-                        return $d->pnfl.'<br>'.$d->pnfl0->name.' '.$d->pnfl0->surname.' '.$d->pnfl0->middlename;
-                    }elseif($d->inn){
-                        return $d->inn.'<br>'.$d->inn0->name;
-                    }else return null;
+                'label' => Yii::t('client', 'Buyurtmachi'),
+                'value' => function ($d) {
+                    if ($d->pnfl) {
+                        return $d->pnfl . '<br>' . $d->pnfl0->name . ' ' . $d->pnfl0->surname . ' ' . $d->pnfl0->middlename;
+                    } elseif ($d->inn) {
+                        return $d->inn . '<br>' . $d->inn0->name;
+                    } else return null;
                 },
-                'format'=>'raw'
+                'format' => 'raw'
             ],
 //            'sampling_site',
             [
-                'attribute'=>'sampling_site',
-                'value'=>function($d){
+                'attribute' => 'sampling_site',
+                'value' => function ($d) {
                     return $d->samplingSite->name;
                 }
             ],
             [
-                'attribute'=>'sampling_adress',
-                'value'=>function($d){
+                'attribute' => 'sampling_adress',
+                'value' => function ($d) {
                     $lang = Yii::$app->language;
                     $ads = 'lot';
-                    if($lang == 'ru'){
+                    if ($lang == 'ru') {
                         $ads = 'ru';
-                    }elseif($lang=='uz'){
+                    } elseif ($lang == 'uz') {
                         $ads = 'lot';
-                    }else{
+                    } else {
                         $ads = 'cyr';
                     }
-                    return \common\models\Soato::Full($d->samplingSite->soato) .' '. $d->sampling_adress;
+                    return Soato::Full($d->samplingSite->soato) . ' ' . $d->sampling_adress;
                 },
-                'format'=>'raw'
+                'format' => 'raw'
             ],
             [
-                'label'=>Yii::t('client','Namuna oluvchi'),
-                'value'=>function($d){
-                    if($d->sampler_person_pnfl){
-                        return $d->sampler_person_pnfl.'<br>'.$d->personPnfl->name.' '.$d->personPnfl->surname.' '.$d->personPnfl->middlename;
-                    }elseif($d->sampler_person_inn){
-                        return $d->sampler_person_inn.'<br>'.$d->personInn->name;
-                    }else return null;
+                'label' => Yii::t('client', 'Namuna oluvchi'),
+                'value' => function ($d) {
+                    if ($d->sampler_person_pnfl) {
+                        return $d->sampler_person_pnfl . '<br>' . $d->personPnfl->name . ' ' . $d->personPnfl->surname . ' ' . $d->personPnfl->middlename;
+                    } elseif ($d->sampler_person_inn) {
+                        return $d->sampler_person_inn . '<br>' . $d->personInn->name;
+                    } else return null;
                 },
-                'format'=>'raw'
+                'format' => 'raw'
             ],
 
             [
-                'attribute'=>'verification_pupose_id',
-                'value'=>function($d){
+                'attribute' => 'verification_pupose_id',
+                'value' => function ($d) {
                     $lang = Yii::$app->language;
                     $lg = 'uz';
-                    if($lang == 'ru'){
+                    if ($lang == 'ru') {
                         $lg = 'ru';
                     }
-                    if($d->verification_pupose_id){
-                        return $d->verificationPupose->{'name_'.$lg};
-                    }else{
+                    if ($d->verification_pupose_id) {
+                        return $d->verificationPupose->{'name_' . $lg};
+                    } else {
                         return null;
                     }
                 }
@@ -89,25 +93,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'send_sample_date',
 
             [
-                'attribute'=>'based_public_information',
-                'value'=>function($d){
-                    if($d->based_public_information == 0){
-                        return Yii::t('client','Yo\'q');
-                    }else{
-                        return Yii::t('client','Ha').'<br>'.'<b>№'.$d->message_number.'</b>';
+                'attribute' => 'based_public_information',
+                'value' => function ($d) {
+                    if ($d->based_public_information == 0) {
+                        return Yii::t('client', 'Yo\'q');
+                    } else {
+                        return Yii::t('client', 'Ha') . '<br>' . '<b>№' . $d->message_number . '</b>';
                     }
 
                 },
-                'format'=>'raw'
+                'format' => 'raw'
             ],
             [
-                'attribute'=>'status_id',
-                'value'=>function($d){
+                'attribute' => 'status_id',
+                'value' => function ($d) {
                     $lg = 'uz';
-                    if(Yii::$app->language == 'ru'){
+                    if (Yii::$app->language == 'ru') {
                         $lg = 'ru';
                     }
-                    return $d->status->{'name_'.$lg};
+                    return $d->status->{'name_' . $lg};
                 }
             ],
 
@@ -117,51 +121,57 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div>
         <h4 style="float: left">Namunalar ro'yhati</h4>
-        <span style="float: right"><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/ind/addfood','id'=>$model->id])?>">
+        <span style="float: right"><a class="btn btn-primary"
+                                      href="<?= Yii::$app->urlManager->createUrl(['/ind/addfood', 'id' => $model->id]) ?>">
                     <span class="fa fa-plus"></span> Namuna qo'shish
                 </a>
             </span>
     </div>
 
     <div class="table-responsive">
-    <table class="table table-bordered  table-hover mt-3">
-        <thead>
+        <table class="table table-bordered  table-hover mt-3">
+            <thead>
             <tr>
                 <th>№</th>
                 <th>Nomi</th>
                 <th>Soni</th>
                 <th>O'rami</th>
                 <th>Holati</th>
+                <th>Davlat</th>
                 <th>To'plam</th>
                 <th>Ishlab chiqaruvchi</th>
                 <th>Serya raqami</th>
                 <th>Yaroqlilik muddati</th>
                 <th>Test turi</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <?php
-                $lang = Yii::$app->language;
-                $lg = 'uz';
-                if($lang == 'ru'){
-                    $lg = 'ru';
-                }
+            $lang = Yii::$app->language;
+            $lg = 'uz';
+            if ($lang == 'ru') {
+                $lg = 'ru';
+            }
             ?>
-            <?php foreach ($samp as $item):?>
+
+            <?php
+            /*@var FoodSamples $item*/
+            foreach ($samp as  $item): ?>
                 <tr>
-                    <td><?= $item->status->icon.' '.$item->samp_code ?></td>
-                    <td><?= $item->tasnif->name?></td>
-                    <td><?= $item->count.' '.$item->unit->{'name_'.$lg}?></td>
-                    <td><?= $item->sampleBox->{'name_'.$lg}?></td>
-                    <td><?= $item->sampleCondition->{'name_'.$lg}?></td>
-                    <td><?= $item->total_amount?></td>
-                    <td><?= $item->producer?></td>
-                    <td><?= $item->serial_num?></td>
+                    <td><?= $item->status->icon . ' ' . $item->samp_code ?></td>
+                    <td><?= $item->tasnif->name ?></td>
+                    <td><?= $item->count . ' ' . $item->unit->{'name_' . $lg} ?></td>
+                    <td><?= $item->sampleBox->{'name_' . $lg} ?></td>
+                    <td><?= @$item->sampleCondition->{'name_' . $lg} ?></td>
+                    <td><?= $item->country->code ?></td>
+                    <td><?= $item->total_amount ?></td>
+                    <td><?= $item->producer ?></td>
+                    <td><?= $item->serial_num ?></td>
                     <td><?= $item->sell_by ?></td>
-                    <td><?= $item->laboratoryTestType->{'name_'.$lg} ?></td>
+                    <td><?= $item->laboratoryTestType->{'name_' . $lg} ?></td>
                 </tr>
             <?php endforeach; ?>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
     </div>
 </div>

@@ -61,7 +61,7 @@ class ResultAnimal extends \yii\db\ActiveRecord
             'humidity' => Yii::t('model', 'Xona namligi'),
             'reagent_name' => Yii::t('model', 'Reaktiv nomi'),
             'reagent_series' => Yii::t('model', 'Reaktiv seriyasi'),
-            'conditions' => Yii::t('model', 'Shartoit'),
+            'conditions' => Yii::t('model', 'Boshqa sharoitlar'),
             'end_date' => Yii::t('model', 'Test tugash vaqti'),
             'ads' => Yii::t('model', 'Izoh'),
             'creator_id' => Yii::t('model', 'Labarant'),

@@ -219,7 +219,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php }?>
 
                             <?php if($item->type_id == 1){?>
-                                <td colspan="2"><?= $form->field($item,'['.$item->id.']result')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting'),'disabled'=>$item->checked == 1? false : true])->label(false)?></td>
+                                    <td colspan="2"><?= $form->field($item,'['.$item->id.']result')->textInput(['placeholder'=>Yii::t('lab','Natijani kiriting'),'disabled'=>$item->checked == 1? false : true])->label(false)?></td>
                             <?php }elseif($item->type_id == 2){?>
                                 <td colspan="2"><?= $form->field($item,'['.$item->id.']result')->dropDownList([0=>Yii::$app->params['result'][0],1=>Yii::$app->params['result'][1]],['prompt'=>Yii::t('lab','Natijani tanlang'),'disabled'=>$item->checked == 1? false : true])->label(false)?></td>
                             <?php }elseif($item->type_id == 3){?>

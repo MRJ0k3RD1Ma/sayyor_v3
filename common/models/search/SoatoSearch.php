@@ -74,4 +74,20 @@ class SoatoSearch extends Soato
 
         return $dataProvider;
     }
+
+    public function ListRegions(array $queryParams)
+    {
+        $query = Soato::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($queryParams);
+        $query->andWhere(['is not', 'region_id', null])
+            ->andWhere(['is', 'district_id', null]);
+        return $dataProvider;
+    }
 }

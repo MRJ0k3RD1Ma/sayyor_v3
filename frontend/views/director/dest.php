@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'org_id',
 
                         ],
-                    ]); ?>
-<?php Pjax::end();?>
+                    ]) ?>
+                    <?php Pjax::end(); ?>
 
                 </div>

@@ -30,7 +30,6 @@ class Soato extends \yii\db\ActiveRecord
     }
 
 
-
     /**
      * {@inheritdoc}
      */
@@ -64,22 +63,29 @@ class Soato extends \yii\db\ActiveRecord
             'center_ru' => Yii::t('app', 'Markazi(Rus)'),
         ];
     }
-    public static function Full($code,$lang='lot'){
+
+    public static function Full($code, $lang = 'lot')
+    {
         $lg = Yii::$app->language;
-        if($lg == 'uz'){
+        if ($lg == 'uz') {
             $lang = 'lot';
-        }elseif($lg == 'ru'){
+        } elseif ($lg == 'ru') {
             $lang = 'ru';
-        }else{
+        } else {
             $lang = 'cyr';
         }
-        $soato=self::findOne($code);
-        $region = self::find()->where(['region_id'=>$soato->region_id])->one();
-        $district = self::find()->where(['region_id'=>$soato->region_id])->andWhere(['district_id'=>$soato->district_id])->one();
-        if($soato->qfi_id){
-            return "UZ ".$region->{'name_'.$lang}." ".$district->{'name_'.$lang}.' '.$soato->{'name_'.$lang};
+        $soato = self::findOne($code);
+        $region = self::find()->where(['region_id' => $soato->region_id])->one();
+        $district = self::find()->where(['region_id' => $soato->region_id])->andWhere(['district_id' => $soato->district_id])->one();
+        if ($soato->qfi_id) {
+            return "UZ " . $region->{'name_' . $lang} . " " . $district->{'name_' . $lang} . ' ' . $soato->{'name_' . $lang};
         }
-        return "UZ ".$region->{'name_'.$lang}." ".$district->{'name_'.$lang};
+        return "UZ " . $region->{'name_' . $lang} . " " . $district->{'name_' . $lang};
+    }
+
+    public static function getRegion(int $MHOBT_cod = null)
+    {
+        return ($MHOBT_cod) ? self::findOne(['MHOBT_cod' => $MHOBT_cod])->region_id : null;
     }
 
 }

@@ -125,6 +125,8 @@ class Sertificates extends \yii\db\ActiveRecord
     public function getSamples(){
         return $this->hasMany(Samples::className(),['sert_id'=>'id']);
     }
-
+    public  function getRegionsCount($region_id){
+        return $this->VetSites->soato0->region_id;
+    }
 
 }

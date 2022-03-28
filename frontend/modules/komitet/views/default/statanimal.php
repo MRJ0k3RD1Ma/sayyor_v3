@@ -8,6 +8,7 @@
 
 /* @var $searchModel \client\models\search\SertificatesSearch */
 
+use common\models\Sertificates;
 use common\models\Soato;
 use yii\grid\GridView;
 
@@ -29,12 +30,16 @@ use yii\grid\GridView;
             }
         ],
         [
-            'label' => 'Jami dalolatnomalar(shundan)',
+            'label' => 'Jami dalolatnomalar',
             'headerOptions' => [
                 'rowspan' => 2,
             ],
-            'value' => function ($model2) {
-                return '-';
+            'value' => function ($model2) use ($dataProvider) {
+                $count=0;
+                foreach($dataProvider->getModels() as $model){
+                    $count+=($model->vetSite->soato0->region_id==$model2->region_id);
+                }
+               return  $count;
             }
         ]
 

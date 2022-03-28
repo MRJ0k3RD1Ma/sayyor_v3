@@ -59,7 +59,9 @@ use common\models\RouteStatus;
                                         <span class="badge badge-primary"><?= RouteSert::find()->where(['director_id'=>Yii::$app->user->id])->andWhere(['status_id'=>$item->id])->count('id')?></span>
                                     </a></li>
                             <?php endforeach;?>
-
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/dest'])?>" data-key="t-basic-tables">Namunani yo'q qilish
+                                    <span class="badge badge-primary"><?= \common\models\DestructionSampleAnimal::find()->where(['consent_id'=>Yii::$app->user->id])->andWhere(['state_id'=>2])->count('id')?></span>
+                                </a></li>
                         </ul>
                     </li>
 
@@ -139,7 +141,7 @@ use common\models\RouteStatus;
                                 </a></li>
                         <?php endforeach;?>
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/lab/dest'])?>" data-key="t-basic-tables">Namunani yo'q qilish
-                                <span class="badge badge-primary"><?= \common\models\DestructionSampleAnimal::find()->where(['creator_id'=>Yii::$app->user->id])->andWhere(['state_id'=>2])->count('id')?></span>
+                                <span class="badge badge-primary"><?= \common\models\DestructionSampleAnimal::find()->where(['creator_id'=>Yii::$app->user->id])->andWhere(['state_id'=>3])->count('id')?></span>
                             </a></li>
                     </ul>
                 </li>

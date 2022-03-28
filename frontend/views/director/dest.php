@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'code',
                 'value'=>function($d){
-                    $url = Yii::$app->urlManager->createUrl(['/lab/destview','id'=>$d->id]);
+                    $url = Yii::$app->urlManager->createUrl(['/director/destview','id'=>$d->id]);
                     return "<a href='{$url}'>{$d->code}</a>";
                 },
                 'format'=>'raw'
@@ -49,9 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated',
 //            'consent_id',
             [
-                'attribute'=>'consent_id',
+                'attribute'=>'creator_id',
                 'value'=>function($d){
-                    return $d->consent->name;
+                    return $d->creator->name;
                 }
             ],
             'destruction_date',

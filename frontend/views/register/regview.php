@@ -120,7 +120,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     ?>
                     <tr>
-                        <td rowspan="<?= $cnt + 1?>"><a href="<?= Yii::$app->urlManager->createUrl(['/register/incomesamples','id'=>$item->id,'regid'=>$model->id])?>"><?= $item->status->icon?> <?= $item->kod?></a></td>
+                        <td rowspan="<?= $cnt + 1?>">
+                            <?php if($model->status_id < 2){?>
+                                <a href="<?= Yii::$app->urlManager->createUrl(['/register/incomesamples','id'=>$item->id,'regid'=>$model->id])?>"><?= $item->status->icon?> <?= $item->kod?></a>
+                            <?php }else{?>
+                                <?= $item->status->icon?> <?= $item->kod?>
+                            <?php }?>
+                        </td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>

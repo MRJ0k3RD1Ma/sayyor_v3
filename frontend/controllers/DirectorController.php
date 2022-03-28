@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 
+use app\models\search\director\DestructionSampleAnimalSearch;
 use common\models\DestructionSampleAnimal;
 use common\models\Employees;
 
@@ -112,7 +113,7 @@ class DirectorController extends Controller
         $model->status_id = 3;
         if ($model->save()) {
             $dest = new DestructionSampleAnimal();
-            $dest->state_id = 2;
+            $dest->state_id = 3;
             $dest->creator_id = $model->executor_id;
             $dest->consent_id = $model->director_id;
             $dest->sample_id = $model->sample_id;
@@ -120,6 +121,7 @@ class DirectorController extends Controller
             $num = intval($num)+1;
             $dest->code_id = $num;
             $dest->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
+            $dest->org_id = Yii::$app->user->identity->empPosts->org_id;
             $dest->save();
             Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq imzolandi'));
         }
@@ -135,5 +137,36 @@ class DirectorController extends Controller
         }
         return $this->redirect(['indexanimal']);
 
+    }
+
+
+    public function actionDest(){
+        $searchModel = new DestructionSampleAnimalSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('dest', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionDestview($id){
+        $model = DestructionSampleAnimal::findOne($id);
+
+        return $this->render('destview',[
+            'model'=>$model
+        ]);
+    }
+
+    public function actionDestok($id){
+        $model = DestructionSampleAnimal::findOne($id);
+        $model->state_id = 1;
+        $model->approved_date = date('Y-m-d h:i:s');
+        if($model->save()){
+            Yii::$app->session->setFlash('success','Namunani yo\'q qilish dalolatnomasi tasdiqlandi');
+        }else{
+            Yii::$app->session->setFlash('error','Tasdiqlashda xatolik');
+        }
+        return $this->redirect(['dest']);
     }
 }

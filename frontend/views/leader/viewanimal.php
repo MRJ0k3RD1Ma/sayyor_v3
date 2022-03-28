@@ -174,77 +174,81 @@ YiiAsset::register($this);
             ]) ?>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <h3>Shablon ma'lumotlari</h3>
-            <?= DetailView::widget([
-                'model' => $result,
-                'attributes' => [
-                    'temperature',
-                    'humidity',
-                    'reagent_series',
-                    'reagent_name',
-                    'conditions',
-                    'end_date',
-                    'ads',
-                ]
-            ])
-            ?>
-        </div>
-        <div class="col-md-6">
-            <h3>Natijalar</h3>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>№</th>
-                        <th><?= Yii::t('lab', 'Parametr nomi') ?></th>
-                        <th><?= Yii::t('lab', 'Birliki') ?></th>
-                        <th><?= Yii::t('lab', 'Maksimal-minimal oraliq') ?></th>
-                        <th><?= Yii::t('lab', 'Qiymat') ?></th>
-                        <th><?= Yii::t('lab', 'Emlashga aloqadorligi') ?></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php $lg = 'uz';
-                    if (Yii::$app->language == 'ru') $lg = 'ru'; ?>
-                    <?php $n = 0;
-                    foreach ($test as $i => $item): $n++; ?>
+    <?php if($model->status_id >= 2){?>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Shablon ma'lumotlari</h3>
+                <?= DetailView::widget([
+                    'model' => $result,
+                    'attributes' => [
+                        'temperature',
+                        'humidity',
+                        'reagent_series',
+                        'reagent_name',
+                        'conditions',
+                        'end_date',
+                        'ads',
+                    ]
+                ])
+                ?>
+            </div>
+            <div class="col-md-6">
+                <h3>Natijalar</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
                         <tr>
-                            <?php ?>
-                            <td><?= $n ?></td>
-                            <td><?= $item->template->{'name_' . $lg} ?></td>
-                            <td><?= $item->template->unit->{'name_' . $lg} ?></td>
-                            <?php if ($item->type_id == 1) { ?>
-                                <td><?= $item->template->min . '-' . $item->template->max ?></td>
-                            <?php } elseif ($item->type_id == 2) { ?>
-                                <td><?= Yii::$app->params['result'][$item->template->min] ?></td>
-                            <?php } elseif ($item->type_id == 3) { ?>
-                                <td><?= $item->template->min . '-' . $item->template->max . ' %' ?></td>
-                            <?php } elseif ($item->type_id == 4) { ?>
-                                <td><?= $item->template->min . '-' . $item->template->max ?>
-                                    <br> <?= $item->template->min_1 . '-' . $item->template->max_1 ?></td>
-                            <?php } ?>
-                            <td><?= $item->result ?></td>
-                            <td><?php
-                                echo Yii::$app->params['is_vaccination'][$item->template->is_vaccination] . '<br>';
-                                if ($item->template->is_vaccination == 1) {
-                                    if ($item->template->dead_days <= 0) {
-                                        echo Yii::t('lab', 'Doimiy');
-                                    } else {
-                                        echo $item->template->dead_days . ' ' . Yii::t('lab', 'Kun');
-                                    }
-                                }
-                                ?></td>
+                            <th>№</th>
+                            <th><?= Yii::t('lab', 'Parametr nomi') ?></th>
+                            <th><?= Yii::t('lab', 'Birliki') ?></th>
+                            <th><?= Yii::t('lab', 'Maksimal-minimal oraliq') ?></th>
+                            <th><?= Yii::t('lab', 'Qiymat') ?></th>
+                            <th><?= Yii::t('lab', 'Emlashga aloqadorligi') ?></th>
                         </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <?php $lg = 'uz';
+                        if (Yii::$app->language == 'ru') $lg = 'ru'; ?>
+                        <?php $n = 0;
+                        foreach ($test as $i => $item): $n++; ?>
+                            <tr>
+                                <?php ?>
+                                <td><?= $n ?></td>
+                                <td><?= $item->template->{'name_' . $lg} ?></td>
+                                <td><?= $item->template->unit->{'name_' . $lg} ?></td>
+                                <?php if ($item->type_id == 1) { ?>
+                                    <td><?= $item->template->min . '-' . $item->template->max ?></td>
+                                <?php } elseif ($item->type_id == 2) { ?>
+                                    <td><?= Yii::$app->params['result'][$item->template->min] ?></td>
+                                <?php } elseif ($item->type_id == 3) { ?>
+                                    <td><?= $item->template->min . '-' . $item->template->max . ' %' ?></td>
+                                <?php } elseif ($item->type_id == 4) { ?>
+                                    <td><?= $item->template->min . '-' . $item->template->max ?>
+                                        <br> <?= $item->template->min_1 . '-' . $item->template->max_1 ?></td>
+                                <?php } ?>
+                                <td><?= $item->result ?></td>
+                                <td><?php
+                                    echo Yii::$app->params['is_vaccination'][$item->template->is_vaccination] . '<br>';
+                                    if ($item->template->is_vaccination == 1) {
+                                        if ($item->template->dead_days <= 0) {
+                                            echo Yii::t('lab', 'Doimiy');
+                                        } else {
+                                            echo $item->template->dead_days . ' ' . Yii::t('lab', 'Kun');
+                                        }
+                                    }
+                                    ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+    <?php }?>
 
+    <?php if($model->status_id == 4){?>
 
-    <?= Html::a('Tasdiqlash', ['leader/acceptanimal', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
-    <?= Html::a('Rad etish', ['leader/declineanimal', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
+        <?= Html::a('Tasdiqlash', ['leader/acceptanimal', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Rad etish', ['leader/declineanimal', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
+    <?php }?>
 </div>

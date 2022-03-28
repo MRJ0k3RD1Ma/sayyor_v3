@@ -40,7 +40,7 @@ class SampleRegistrationSearch extends SampleRegistration
      */
     public function search($params)
     {
-        $query = SampleRegistration::find()->where(['organization_id'=>Yii::$app->user->identity->empPosts->org_id]);
+        $query = SampleRegistration::find()->where(['organization_id'=>Yii::$app->user->identity->empPosts->org_id])->orderBy(['created'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

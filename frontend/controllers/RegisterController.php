@@ -313,7 +313,6 @@ class RegisterController extends Controller
         $reg = SampleRegistration::findOne($regid);
         $model = Samples::findOne($id);
         $route = new RouteSert();
-        $cs = CompositeSamples::findOne(['registration_id'=>$regid,'sample_id'=>$id]);
         if($reg->status_id < 2){
             $reg->emp_id = Yii::$app->user->id;
             $cs = CompositeSamples::find()->where(['registration_id'=>$regid])->all();
@@ -330,8 +329,9 @@ class RegisterController extends Controller
             $sert->save();
             $reg->save();
         }
+        $cs = CompositeSamples::findOne(['registration_id'=>$regid,'sample_id'=>$id]);
 
-       if(Yii::$app->request->isPost){
+        if(Yii::$app->request->isPost){
            if($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())){
                $cs->status_id = 3;
                $route->status_id = 1;
@@ -379,6 +379,7 @@ class RegisterController extends Controller
         $directos = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>4])->andWhere(['emp_posts.org_id'=>$org_id])->all();
         $lider    = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>3])->andWhere(['emp_posts.org_id'=>$org_id])->all();
 
+        $cs = CompositeSamples::findOne(['registration_id'=>$regid,'sample_id'=>$id]);
         return $this->render('incomesamples',[
             'model'=>$model,
             'reg'=>$reg,

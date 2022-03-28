@@ -40,7 +40,7 @@ class DestructionSampleAnimalSearch extends DestructionSampleAnimal
      */
     public function search($params)
     {
-        $query = DestructionSampleAnimal::find()->where(['creator_id'=>\Yii::$app->user->id])->andWhere(['<>','state_id',3])->orderBy(['state_id'=>SORT_DESC,'created'=>SORT_DESC]);
+        $query = DestructionSampleAnimal::find()->where(['creator_id'=>\Yii::$app->user->id])->orderBy(['state_id'=>SORT_DESC,'created'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

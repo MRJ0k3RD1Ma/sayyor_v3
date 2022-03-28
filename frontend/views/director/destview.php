@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
@@ -85,19 +85,13 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'org_id',
                 ],
             ]) ?>
-        </div>
-        <div class="col-md-6">
-            <?php if($model->state_id == 3){?>
-                <?php $form = ActiveForm::begin()?>
 
-                <?= $form->field($model,'ads')->textInput()?>
-
-                <?= $form->field($model,'destruction_date')->textInput(['type'=>'date'])?>
-
-                <button class="btn btn-success">Saqlash</button>
-                <?php ActiveForm::end()?>
+            <?php if($model->state_id == 2){?>
+                <a class="btn btn-success" href="<?= Yii::$app->urlManager->createUrl(['/director/destok','id'=>$model->id])?>"><?= Yii::t('lab','Tasdiqlash')?></a>
+                <a class="btn btn-danger" href="<?= Yii::$app->urlManager->createUrl(['/director/destno','id'=>$model->id])?>"><?= Yii::t('lab','Rad etish')?></a>
             <?php }?>
         </div>
+
     </div>
 
 

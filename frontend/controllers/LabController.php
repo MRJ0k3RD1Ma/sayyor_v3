@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 
 use app\models\search\laboratory\DestructionSampleAnimalSearch;
+use common\models\DestructionSampleAnimal;
 use common\models\Employees;
 use common\models\Regulations;
 use common\models\ResultAnimal;
@@ -132,6 +133,19 @@ class LabController extends Controller
         return $this->render('dest', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionDestview($id){
+        $model = DestructionSampleAnimal::findOne($id);
+        if($model->load(Yii::$app->request->post())){
+            $model->state_id = 2;
+            $model->save();
+            Yii::$app->session->setFlash('success',Yii::t('lab','Namuna yo\'q qilish dalolatnomasi tasdiqlash uchun rahbarga yuborildi'));
+            return $this->redirect(['dest']);
+        }
+        return $this->render('destview',[
+            'model'=>$model
         ]);
     }
 

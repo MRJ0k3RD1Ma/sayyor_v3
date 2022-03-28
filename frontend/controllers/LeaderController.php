@@ -5,9 +5,11 @@ namespace frontend\controllers;
 
 use common\models\Employees;
 
+use common\models\Regulations;
 use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
 use common\models\RouteSert;
+use common\models\TemplateAnimalRegulations;
 use frontend\models\search\leader\RouteSertSearch;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -101,13 +103,21 @@ class LeaderController extends Controller
             }
         }
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
-        $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
+        $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked'=>1])->all();
+
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
+        ->innerJoin('tamplate_animal','template_animal_regulations.template_id = tamplate_animal.id')
+            ->orderBy('template_animal_regulations.regulation_id')
+            ->where('tamplate_animal.id IN (SELECT result_animal_tests.id from result_animal_tests inner join tamplate_animal on result_animal_tests.template_id=tamplate_animal.id where result_animal_tests.result_id='.$result->id.')')->all();
+        ;
+
         return $this->render('viewanimal', [
             'model' => $model,
             'sample' => $sample,
             'result' => $result,
             'emp' => $emp,
-            'test' => $test
+            'test' => $test,
+            'docs'=>$docs
         ]);
     }
 

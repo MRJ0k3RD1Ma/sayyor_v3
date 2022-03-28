@@ -62,6 +62,15 @@ YiiAsset::register($this);
                 ],
             ]) ?>
 
+            <h3><?= Yii::t('leader','Normativ hujjatlar')?></h3>
+            <ul>
+                <?php $lg = 'uz'; if(Yii::$app->language == 'ru')$lg = 'ru'?>
+                <?php foreach ($docs as $item):?>
+                    <?php $url = '#'; if($item->file) $url = '/uploads/'.$item->file;?>
+                    <li><a href="<?= $url?>"><?= $item->{'name_'.$lg}?></a></li>
+                <?php endforeach;?>
+            </ul>
+
             <?php if ($model->status_id == 1) { ?>
                 <?php $form = ActiveForm::begin() ?>
 
@@ -80,6 +89,7 @@ YiiAsset::register($this);
                 <?php ActiveForm::end() ?>
             <?php } ?>
         </div>
+
         <div class="col-md-6">
             <h3>Namuna ma'lumotlari</h3>
             <?= DetailView::widget([

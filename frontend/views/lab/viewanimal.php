@@ -54,23 +54,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]) ?>
 
-            <?php if($model->status_id == 1){?>
-                <?php $form = \yii\widgets\ActiveForm::begin()?>
-
-                <?php
-                $data = [];
-                foreach ($emp as $item){
-                    $data[$item->id] = \common\models\RouteSert::find()->where(['executor_id'=>$item->id])
-                            ->andWhere(['<>','status_id',3])->count('id')
-                        .' - '. $item->name;
-                }
-                ?>
-                <?= $form->field($model,'executor_id')->dropDownList($data,['prompt'=>Yii::t('leader','Labarantni tanlang')])?>
-                    <?= $form->field($model,'deadline')->textInput(['type'=>'date'])?>
-                    <?= $form->field($model,'ads')->textInput()?>
-                <button class="btn btn-success" type="submit">Jo'natish</button>
-                <?php \yii\widgets\ActiveForm::end()?>
-            <?php }?>
+            <h3><?= Yii::t('leader','Normativ hujjatlar')?></h3>
+            <ul>
+                <?php $lg = 'uz'; if(Yii::$app->language == 'ru')$lg = 'ru'?>
+                <?php foreach ($docs as $item):?>
+                    <?php $url = '#'; if($item->file) $url = '/uploads/'.$item->file;?>
+                    <li><a href="<?= $url?>"><?= $item->{'name_'.$lg}?></a></li>
+                <?php endforeach;?>
+            </ul>
         </div>
         <div class="col-md-6">
             <h3>Namuna ma'lumotlari</h3>
@@ -203,8 +194,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <tbody>
                     <?php $lg = 'uz'; if(Yii::$app->language == 'ru')$lg = 'ru';?>
                     <?php $n=0; foreach ($test as $i=>$item): $n++;?>
-                        <tr style="<?= $item->checked == 1 ? 'background: #fff;' : 'background: #e9e9ef;'?>">
-                            <td><?= $form->field($item,'['.$item->id.']checked')->checkbox(['value'=>1],false)->label(false)?></td>
+                        <tr id="tr-<?= $item->id?>" style="<?= $item->checked == 1 ? 'background: #fff;' : 'background: #e9e9ef;'?>">
+                            <td><?= $form->field($item,'['.$item->id.']checked')->checkbox(['value'=>1,'data-id'=>$item->id,'class'=>'checkboxok'],false)->label(false)?></td>
                             <td><?= $n?></td>
                             <td><?= $item->template->{'name_'.$lg}?></td>
                             <td><?= $item->template->unit->{'name_'.$lg}?></td>
@@ -334,3 +325,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php }?>
 
 </div>
+
+
+<?php
+$this->registerJs("
+    $('.checkboxok').change(function(){
+        // is cheked bolsa shatadi shuni yoziparaman
+        var id = this.getAttribute('data-id');
+        if(this.checked){
+            $('#tr-'+id).css('background','#fff');
+            $('#resultanimaltests-'+id+'-result').prop('disabled',false);
+        }else{
+            $('#tr-'+id).css('background','#e9e9ef');
+            $('#resultanimaltests-'+id+'-result').prop('disabled',true);
+        }
+    })
+")
+?>

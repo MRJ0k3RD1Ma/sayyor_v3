@@ -3,12 +3,14 @@
 namespace frontend\controllers;
 
 
+use common\models\DestructionSampleAnimal;
 use common\models\Employees;
 
 use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
 use common\models\RouteSert;
 use frontend\models\search\director\RouteSertSearch;
+use yii\base\BaseObject;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -109,6 +111,16 @@ class DirectorController extends Controller
         $model = RouteSert::findOne(['id' => $id]);
         $model->status_id = 3;
         if ($model->save()) {
+            $dest = new DestructionSampleAnimal();
+            $dest->state_id = 2;
+            $dest->creator_id = $model->executor_id;
+            $dest->consent_id = $model->director_id;
+            $dest->sample_id = $model->sample_id;
+            $num = DestructionSampleAnimal::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+            $num = intval($num)+1;
+            $dest->code_id = $num;
+            $dest->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
+            $dest->save();
             Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq imzolandi'));
         }
         return $this->redirect(['indexanimal']);

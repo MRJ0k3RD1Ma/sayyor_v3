@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 
+use common\models\DestructionSampleAnimal;
 use common\models\Employees;
 
 use common\models\Regulations;
@@ -137,6 +138,7 @@ class LeaderController extends Controller
         $model = RouteSert::findOne(['id' => $id]);
         $model->status_id = 5;
         if ($model->save()) {
+
             Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq tasdiqlandi'));
         }
         return $this->redirect(['indexanimal']);

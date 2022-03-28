@@ -59,6 +59,7 @@ use common\models\RouteStatus;
                                         <span class="badge badge-primary"><?= RouteSert::find()->where(['director_id'=>Yii::$app->user->id])->andWhere(['status_id'=>$item->id])->count('id')?></span>
                                     </a></li>
                             <?php endforeach;?>
+
                         </ul>
                     </li>
 
@@ -75,6 +76,7 @@ use common\models\RouteStatus;
                         </ul>
                     </li>
                 <?php endif;?>
+
                 <?php if(EmpPosts::isLeader(Yii::$app->user->identity->getId())):?>
                 <li class="menu-title" data-key="t-menu">Labaratoriya mudiri</li>
                 <?php
@@ -112,6 +114,7 @@ use common\models\RouteStatus;
                         <?php endforeach;?>
                     </ul>
                 </li>
+
                 <?php endif;?>
                 <?php if(EmpPosts::isLabor(Yii::$app->user->identity->getId())):?>
                 <li class="menu-title" data-key="t-menu">Labaratoriya</li>
@@ -135,6 +138,9 @@ use common\models\RouteStatus;
                                     <span class="badge badge-primary"><?= \common\models\RouteSert::find()->where(['executor_id'=>Yii::$app->user->id])->andWhere(['status_id'=>$item->id])->count('id')?></span>
                                 </a></li>
                         <?php endforeach;?>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/lab/dest'])?>" data-key="t-basic-tables">Namunani yo'q qilish
+                                <span class="badge badge-primary"><?= \common\models\DestructionSampleAnimal::find()->where(['creator_id'=>Yii::$app->user->id])->andWhere(['state_id'=>2])->count('id')?></span>
+                            </a></li>
                     </ul>
                 </li>
 

@@ -237,7 +237,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php ActiveForm::end()?>
         </div>
-    <?php }else{?>
+    <?php } else{?>
+
     <div class="row">
         <div>
             <h3 style="float: left">Shablon ma'lumotlari</h3>

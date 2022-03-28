@@ -247,6 +247,4 @@ YiiAsset::register($this);
 
     <?= Html::a('Tasdiqlash', ['leader/acceptanimal', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
     <?= Html::a('Rad etish', ['leader/declineanimal', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
-
-
 </div>

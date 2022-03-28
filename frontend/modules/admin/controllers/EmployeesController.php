@@ -92,6 +92,9 @@ class EmployeesController extends Controller
         if ($model->load(Yii::$app->request->post()) and $model->save()) {
             return $this->redirect(['view', 'id' => $id]);
         }
+        else {
+             errdeb($model->errors);
+        }
 
         return $this->render('add', [
             'model' => $model
@@ -127,7 +130,7 @@ class EmployeesController extends Controller
                 $model->encrypt();
 
                 if ($model->save()) {
-                    if($org->load(Yii::$app->request->post())){
+                    if ($org->load(Yii::$app->request->post())) {
                         $org->emp_id = $model->id;
                         $org->state_id = 1;
                         $org->status_id = 1;
@@ -146,7 +149,7 @@ class EmployeesController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'org'=>$org
+            'org' => $org
         ]);
     }
 

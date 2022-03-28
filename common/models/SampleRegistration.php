@@ -29,6 +29,7 @@ use Yii;
  *
  * @property Organizations $organization
  * @property ResearchCategory $researchCategory
+ * @property CompositeSamples $comp
  */
 class SampleRegistration extends \yii\db\ActiveRecord
 {

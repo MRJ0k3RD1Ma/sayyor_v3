@@ -13,10 +13,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
     <div class="sertificates-view">
 
-
+        <?php if($model->status_id == 1){?>
         <p style="font-weight: bold">
-            <a href="#" class="btn btn-primary"><?= $model->status->icon?> <?= $model->status->name_uz ?></a>
+
+                <a href="<?= Yii::$app->urlManager->createUrl(['/register/incomeproduct','id'=>$model->id])?>" class="btn btn-success"><?= Yii::t('register','Qabul qilish')?></a>
         </p>
+        <?php }?>
 
         <?= DetailView::widget([
             'model' => $model,
@@ -54,6 +56,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'sender_name',
                 'sender_phone',
                 'created',
+                [
+                    'attribute'=>'status_id',
+                    'value'=>function($d){
+                        $lg = 'uz'; if(Yii::$app->language == 'ru')$lg='ru';
+                        return $d->status->{'name_'.$lg};
+                    }
+                ],
                 //'updated',
             ],
         ]) ?>

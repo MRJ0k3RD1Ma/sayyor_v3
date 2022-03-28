@@ -66,14 +66,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $d->researchCategory->name_uz;
                     }
                 ],
-                //'results_conformity_id',
-                //'organization_id',
-                //'emp_id',
-//                            'reg_date',
-                //'reg_id',
+
                 'sender_name',
                 'sender_phone',
                 'created',
+                [
+                    'attribute'=>'status_id',
+                    'value'=>function($d){
+                        $lg = 'uz'; if(Yii::$app->language == 'ru')$lg='ru';
+                        return $d->status->{'name_'.$lg};
+                    }
+                ],
                 //'updated',
             ],
         ]) ?>

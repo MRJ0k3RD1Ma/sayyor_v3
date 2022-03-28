@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 
+use common\models\CompositeSamples;
 use common\models\DestructionSampleAnimal;
 use common\models\Employees;
 
@@ -10,6 +11,8 @@ use common\models\Regulations;
 use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
 use common\models\RouteSert;
+use common\models\SampleRegistration;
+use common\models\Samples;
 use common\models\TemplateAnimalRegulations;
 use frontend\models\search\leader\RouteSertSearch;
 use yii\web\Controller;
@@ -98,6 +101,17 @@ class LeaderController extends Controller
         $model->scenario = 'exec';
         if ($model->load(Yii::$app->request->post())) {
             $model->status_id = 2;
+            $sam = Samples::findOne($model->sample_id);
+            $sam->status_id = 4;
+            $sam->save();
+            $cs = CompositeSamples::findOne(['sample_id'=>$sam->id]);
+            $cs->status_id = 4;
+            $cs->save();
+            if(CompositeSamples::find()->where(['sample_id'=>$sam->id])->count('sample_id') == CompositeSamples::find()->where(['sample_id'=>$sam->id])->andWhere(['status_id'=>4])->count('sample_id')){
+                $reg = SampleRegistration::findOne(['id'=>$cs->registration_id]);
+                $reg->status_id = 4;
+                $reg->save();
+            }
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq muvoffaqiyatli yuborildi'));
                 return $this->redirect(['viewanimal', 'id' => $id]);

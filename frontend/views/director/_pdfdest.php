@@ -22,17 +22,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="card-body">
 
-                    <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                    <?php echo $this->render('_searchdest', [
-                        'model' => $searchModel,
-                    ]);
-                    ?>
                     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'id' => 'dest-grid',
+                        'summary' => '',
 //        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
@@ -85,6 +81,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         ],
                     ]); ?>
-<?php Pjax::end();?>
-
                 </div>

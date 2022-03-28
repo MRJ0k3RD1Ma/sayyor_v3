@@ -33,7 +33,7 @@ use Yii;
  */
 class FoodSamplingCertificate extends \yii\db\ActiveRecord
 {
-    public $region,$ownertype;
+    public $region,$ownertype,$district;
     /**
      * {@inheritdoc}
      */

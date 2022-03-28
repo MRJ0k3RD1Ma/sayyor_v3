@@ -76,4 +76,6 @@ class VetSites extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Soato::class, ['MHOBT_cod' => 'soato']);
     }
+
+
 }

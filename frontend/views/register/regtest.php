@@ -94,6 +94,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'sender_name',
                             'sender_phone',
                             'created',
+                            [
+                                'attribute'=>'status_id',
+                                'value'=>function($d){
+                                    $lg = 'uz'; if(Yii::$app->language == 'ru')$lg='ru';
+                                    return $d->status->{'name_'.$lg};
+                                }
+                            ],
                             //'updated',
                         ],
                     ]); ?>

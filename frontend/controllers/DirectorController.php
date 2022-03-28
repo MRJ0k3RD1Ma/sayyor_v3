@@ -4,12 +4,15 @@ namespace frontend\controllers;
 
 
 use app\models\search\director\DestructionSampleAnimalSearch;
+use common\models\CompositeSamples;
 use common\models\DestructionSampleAnimal;
 use common\models\Employees;
 
 use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
 use common\models\RouteSert;
+use common\models\SampleRegistration;
+use common\models\Samples;
 use frontend\models\search\director\RouteSertSearch;
 use kartik\mpdf\Pdf;
 use Mpdf\MpdfException;
@@ -120,6 +123,21 @@ class DirectorController extends Controller
         if ($model->save()) {
             $dest = new DestructionSampleAnimal();
             $dest->state_id = 3;
+            $sample = Samples::findOne($model->sample_id);
+            $sample->status_id = 5;
+            $sample->save();
+
+            $cs = CompositeSamples::findOne(['sample_id'=>$sample->id]);
+            $cs->status_id = 5;
+            $cs->save();
+
+            if(CompositeSamples::find()->where(['sample_id'=>$sample->id])->count('sample_id') == CompositeSamples::find()->where(['sample_id'=>$sample->id])->andWhere(['status_id'=>4])->count('sample_id')){
+                $reg = SampleRegistration::findOne(['id'=>$cs->registration_id]);
+                $reg->status_id = 5;
+                $reg->save();
+            }
+
+
             $dest->creator_id = $model->executor_id;
             $dest->consent_id = $model->director_id;
             $dest->sample_id = $model->sample_id;

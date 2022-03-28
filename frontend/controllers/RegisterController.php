@@ -7,6 +7,7 @@ use common\models\CompositeSamples;
 use common\models\DistrictView;
 use common\models\Emlash;
 use common\models\Employees;
+use common\models\FoodCompose;
 use common\models\FoodRegistration;
 use common\models\FoodSamples;
 use common\models\FoodSamplingCertificate;
@@ -268,9 +269,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function actionTestsend($id){
-        $model = new RouteSert();
-    }
 
     public function actionSend($id){
         $model = Samples::findOne($id);
@@ -337,6 +335,8 @@ class RegisterController extends Controller
                $route->status_id = 1;
                $model->status_id = 3;
                $route->sample_id = $id;
+               $reg->status_id = 3;
+               $reg->save();
                $model->emp_id = Yii::$app->user->id;
                $route->registration_id = $regid;
                $model->save();
@@ -390,6 +390,27 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function actionIncomeproduct($id){
+        // income qilish yoziladi food_samplesni
+
+        $model = FoodRegistration::findOne($id);
+        $model->emp_id = Yii::$app->user->id;
+        $cs = FoodCompose::find()->where(['registration_id'=>$id])->all();
+        foreach ($cs as $item){
+            $samp = FoodSamples::findOne($item->sample_id);
+            $samp->status_id = 2;
+            $samp->save();
+            $samp = null;
+        }
+        $samp = FoodSamples::findOne($cs[0]->sample_id);
+        $sert = FoodSamplingCertificate::findOne($samp->sert_id);
+        $sert->status_id = 2;
+        $model->status_id = 2;
+        $sert->save();
+        $model->save();
+        return $this->redirect(['regproductview','id'=>$id]);
+
+    }
 
 
 }

@@ -21,7 +21,9 @@ use yii\widgets\ActiveForm;
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header flex">
-                    <div></div>
+                    <div>
+                        <?=\yii\bootstrap4\Html::a('Statistika',['/komitet/stat-animal'],['class' => 'btn btn-warning'])?>
+                    </div>
                     <div class="btns flex">
                         <div class="search" style="margin-bottom: -1rem!important;">
                             <?= $form->field($model, 'q', [

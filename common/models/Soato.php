@@ -29,6 +29,8 @@ class Soato extends \yii\db\ActiveRecord
         return 'soato';
     }
 
+
+
     /**
      * {@inheritdoc}
      */

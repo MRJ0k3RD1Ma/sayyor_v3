@@ -21,7 +21,9 @@ use common\models\search\FoodSamplingCertificateSearch;
 use common\models\search\ReportAnimalSearch;
 use common\models\search\ReportDrugsSearch;
 use common\models\search\ReportFoodSearch;
+use common\models\search\SoatoSearch;
 use common\models\Sertificates;
+use common\models\Soato;
 use common\models\Vaccination;
 use common\models\VetSites;
 use kartik\mpdf\Pdf;
@@ -420,7 +422,7 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function actionListfood(int $export=null)
+    public function actionListfood(int $export = null)
     {
         $searchModel = new FoodSamplingCertificateSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -457,7 +459,7 @@ class DefaultController extends Controller
     }
 
     public
-    function actionSertapp(int $export=null)
+    function actionSertapp(int $export = null)
     {
         $searchModel = new SampleRegistrationSearch();
         $dataProvider = $searchModel->searchKomitet($this->request->queryParams);
@@ -541,17 +543,19 @@ class DefaultController extends Controller
     {
         if ($this->request->isAjax) {
             return $this->renderAjax('viewnamuna', [
-                'model' => Samples::find()->where(['id'=>$id])->one(),
+                'model' => Samples::find()->where(['id' => $id])->one(),
             ]);
-        }else{
-            return $this->render('viewnamuna',[
-                'model'=>Samples::find()->where(['id'=>$id])->one()
+        } else {
+            return $this->render('viewnamuna', [
+                'model' => Samples::find()->where(['id' => $id])->one()
             ]);
         }
     }
-    public function actionReportanimal(int $export=null){
-        $searchModel=new ReportAnimalSearch();
-        $dataProvider=$searchModel->search($this->request->queryParams);
+
+    public function actionReportanimal(int $export = null)
+    {
+        $searchModel = new ReportAnimalSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
         } elseif ($export == 2) {
@@ -577,17 +581,18 @@ class DefaultController extends Controller
                 return $e;
             }
         }
-        return $this->render('reportanimal',[
-            'model'=>$searchModel,
-            'dataProvider'=>$dataProvider
+        return $this->render('reportanimal', [
+            'model' => $searchModel,
+            'dataProvider' => $dataProvider
         ]);
     }
+
     /**
      * Lists all ReportFood models.
      *
      * @return string
      */
-    public function actionReportfood(int $export=null)
+    public function actionReportfood(int $export = null)
     {
         $searchModel = new ReportFoodSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -621,12 +626,13 @@ class DefaultController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
     /**
      * Lists all ReportDrugs models.
      *
      * @return string
      */
-    public function actionReportdrugs(int $export=null)
+    public function actionReportdrugs(int $export = null)
     {
         $searchModel = new ReportDrugsSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -660,22 +666,40 @@ class DefaultController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
     public function actionReportanimalview($id)
     {
         return $this->render('reportanimalview', [
-            'model' => ReportAnimal::findOne(['id'=>$id]),
+            'model' => ReportAnimal::findOne(['id' => $id]),
         ]);
     }
-    public function actionReportfoodview($id  )
+
+    public function actionReportfoodview($id)
     {
         return $this->render('reportfoodview', [
-            'model' => ReportFood::findOne(['id'=>$id]),
+            'model' => ReportFood::findOne(['id' => $id]),
         ]);
     }
-    public function actionReportdrugsview($id  )
+
+    public function actionReportdrugsview($id)
     {
         return $this->render('reportdrugsview', [
-            'model' => ReportDrugs::findOne(['id'=>$id]),
+            'model' => ReportDrugs::findOne(['id' => $id]),
+        ]);
+    }
+
+    public function actionStatAnimal($id = null)
+    {
+        $searchmodel2 = new SoatoSearch();
+        $dataProvider2 = $searchmodel2->ListRegions($this->request->queryParams);
+        $searchModel = new SertificatesSearch();
+        $dataProvider = $searchModel->searchKomitet($this->request->queryParams);
+        return $this->render('statanimal', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'model' => $searchmodel2,
+            'dataProvider2' => $dataProvider2
+
         ]);
     }
 }

@@ -454,7 +454,16 @@ class SiteController extends Controller
                 ]
             ]);
         }else{
-            return get_web_page(Yii::$app->params['hamsa']['url']['getanimalinfo'].'?birka='.$id,'hamsa');
+            $data = json_decode( get_web_page(Yii::$app->params['hamsa']['url']['getanimalinfo'].'?birka='.$id,'hamsa'),true);
+            $name = $data['data']['owner'];
+            $inn = $data['data']['tin'];
+            $res = $this->actionGetInn($inn);
+            if($res != -1){
+                $res = json_decode($res,true);
+                $name = $res['value']['name'];
+            }
+            $data['data']['owner'] = $name;
+            return json_encode($data);
         }
     }
 

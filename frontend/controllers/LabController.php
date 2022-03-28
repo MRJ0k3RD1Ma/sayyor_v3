@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 
+use app\models\search\laboratory\DestructionSampleAnimalSearch;
 use common\models\Employees;
 use common\models\Regulations;
 use common\models\ResultAnimal;
@@ -123,5 +124,16 @@ class LabController extends Controller
         Yii::$app->session->setFlash('success',Yii::t('lab','Natijalar muvoffaqiyatli yuborildi'));
         return $this->redirect(['viewanimal','id'=>$id]);
     }
+
+    public function actionDest(){
+        $searchModel = new DestructionSampleAnimalSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('dest', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
 
 }

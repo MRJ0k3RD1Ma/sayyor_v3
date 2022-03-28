@@ -113,4 +113,8 @@ class DestructionSampleAnimal extends \yii\db\ActiveRecord
     {
         return $this->hasOne(StateList::className(), ['id' => 'state_id']);
     }
+
+    public function getConsent(){
+        return $this->hasOne(Employees::className(),['id'=>'consent_id']);
+    }
 }

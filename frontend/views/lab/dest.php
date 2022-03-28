@@ -24,16 +24,28 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+//            'id',
             'code',
-            'code_id',
-            'sample_id',
-            'destruction_date',
-            //'ads',
+//            'code_id',
+//            'sample_id',
+            [
+                'attribute'=>'sample_id',
+                'value'=>function($d){
+                    return $d->sample->kod;
+                },
+            ],
+//            'destruction_date',
+            'ads',
             //'creator_id',
             //'created',
             //'updated',
-            //'consent_id',
+            'consent_id',
+            [
+                'attribute'=>'consent_id',
+                'value'=>function($d){
+                    return $d->consent->name;
+                }
+            ],
             //'approved_date',
             //'state_id',
             //'org_id',

@@ -20,11 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="card">
 
 
-                <?php Pjax::begin(['enablePushState' => 0, 'timeout' => false]); ?>
-                <?php echo $this->render('_searchdest', [
-                    'model' => $searchModel,
-                ]);
-                ?>
                 <div class="card-body">
 
                     <?= GridView::widget([
@@ -82,5 +77,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         ],
                     ]) ?>
-                <?php Pjax::end() ?>
-            </div>
+                </div>

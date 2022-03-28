@@ -11,7 +11,13 @@ use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
 use common\models\RouteSert;
 use frontend\models\search\director\RouteSertSearch;
+use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use yii\base\BaseObject;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -117,10 +123,10 @@ class DirectorController extends Controller
             $dest->creator_id = $model->executor_id;
             $dest->consent_id = $model->director_id;
             $dest->sample_id = $model->sample_id;
-            $num = DestructionSampleAnimal::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
-            $num = intval($num)+1;
+            $num = DestructionSampleAnimal::find()->where(['org_id' => Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+            $num = intval($num) + 1;
             $dest->code_id = $num;
-            $dest->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
+            $dest->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
             $dest->org_id = Yii::$app->user->identity->empPosts->org_id;
             $dest->save();
             Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq imzolandi'));
@@ -128,6 +134,7 @@ class DirectorController extends Controller
         return $this->redirect(['indexanimal']);
 
     }
+
     public function actionDeclineanimal($id)
     {
         $model = RouteSert::findOne(['id' => $id]);
@@ -140,9 +147,35 @@ class DirectorController extends Controller
     }
 
 
-    public function actionDest(){
+    public function actionDest(int $export = null)
+    {
         $searchModel = new DestructionSampleAnimalSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfdest', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
 
         return $this->render('dest', [
             'searchModel' => $searchModel,
@@ -150,22 +183,24 @@ class DirectorController extends Controller
         ]);
     }
 
-    public function actionDestview($id){
+    public function actionDestview($id)
+    {
         $model = DestructionSampleAnimal::findOne($id);
 
-        return $this->render('destview',[
-            'model'=>$model
+        return $this->render('destview', [
+            'model' => $model
         ]);
     }
 
-    public function actionDestok($id){
+    public function actionDestok($id)
+    {
         $model = DestructionSampleAnimal::findOne($id);
         $model->state_id = 1;
         $model->approved_date = date('Y-m-d h:i:s');
-        if($model->save()){
-            Yii::$app->session->setFlash('success','Namunani yo\'q qilish dalolatnomasi tasdiqlandi');
-        }else{
-            Yii::$app->session->setFlash('error','Tasdiqlashda xatolik');
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', 'Namunani yo\'q qilish dalolatnomasi tasdiqlandi');
+        } else {
+            Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
         return $this->redirect(['dest']);
     }

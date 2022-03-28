@@ -28,6 +28,9 @@ use Yii;
  */
 class DestructionSampleAnimal extends \yii\db\ActiveRecord
 {
+    public  $status_list ;
+
+
     /**
      * {@inheritdoc}
      */
@@ -114,7 +117,21 @@ class DestructionSampleAnimal extends \yii\db\ActiveRecord
         return $this->hasOne(StateList::className(), ['id' => 'state_id']);
     }
 
-    public function getConsent(){
-        return $this->hasOne(Employees::className(),['id'=>'consent_id']);
+    public function getConsent()
+    {
+        return $this->hasOne(Employees::className(), ['id' => 'consent_id']);
+    }
+
+    public function getStatus()
+    {
+        return self::ListStatus()[$this->state_id];
+    }
+    public static function ListStatus(){
+        return [
+            0=>Yii::t('lab', 'Barchasi'),
+            1 => Yii::t('lab', 'Namuna yo\'q qilingan'),
+            2 => Yii::t('lab', 'Rahbar tasdiqlashi kutilmoqda'),
+            3 => Yii::t('lab', 'Namuna yo\'q qilinish jarayonida')
+        ];
     }
 }

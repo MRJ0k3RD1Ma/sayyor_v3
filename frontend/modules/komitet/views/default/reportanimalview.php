@@ -14,11 +14,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="report-animal-view">
 
     <?php
-        $lang = Yii::$app->language;
-        $lg = 'uz';
-        if($lang == 'ru'){
-            $lg = 'ru';
-        }
+    $lang = Yii::$app->language;
+    $lg = 'uz';
+    if ($lang == 'ru') {
+        $lg = 'ru';
+    }
     ?>
 
     <?= DetailView::widget([
@@ -28,34 +28,34 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'type_id',
             'code',
             [
-                'attribute'=>'type_id',
-                'value'=>function($d){
+                'attribute' => 'type_id',
+                'value' => function ($d) {
                     $lang = Yii::$app->language;
                     $lg = 'uz';
-                    if($lang == 'ru'){
+                    if ($lang == 'ru') {
                         $lg = 'ru';
                     }
-                    return $d->type->{'name_'.$lg};
+                    return $d->type->{'name_' . $lg};
                 }
             ],
             [
-                'attribute'=>'cat_id',
-                'value'=>function($d){
+                'attribute' => 'cat_id',
+                'value' => function ($d) {
                     $lang = Yii::$app->language;
                     $lg = 'uz';
-                    if($lang == 'ru'){
+                    if ($lang == 'ru') {
                         $lg = 'ru';
                     }
-                    return $d->cat->{'name_'.$lg};
+                    return $d->cat->{'name_' . $lg};
                 }
             ],
 //            'cat_id',
             [
-                'attribute'=>'soato_id',
-                'value'=>function($d){
+                'attribute' => 'soato_id',
+                'value' => function ($d) {
                     $lang = Yii::$app->language;
                     $lg = 'uz';
-                    if($lang == 'ru'){
+                    if ($lang == 'ru') {
                         $lg = 'ru';
                     }
                     return \common\models\Soato::Full($d->soato_id);
@@ -66,20 +66,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'detail:ntext',
 //            'operator_id',
             [
-                'attribute'=>'operator_id',
-                'value'=>function($d){
-                    if($d->operator_id){
+                'attribute' => 'operator_id',
+                'value' => function ($d) {
+                    if ($d->operator_id) {
                         return $d->operator->name;
-                    }else{
+                    } else {
                         return null;
                     }
                 }
             ],
 //            'is_true',
             [
-                'attribute'=>'is_true',
-                'value'=>function($d){
-                    $s = [0=>Yii::t('komitet','Yo\'q'),1=>Yii::t('komitet','Ha'),-1=>Yii::t('komitet','Tekshirilmagan')];
+                'attribute' => 'is_true',
+                'value' => function ($d) {
+                    $s = [0 => Yii::t('komitet', 'Yo\'q'), 1 => Yii::t('komitet', 'Ha'), -1 => Yii::t('komitet', 'Tekshirilmagan')];
                     return $s[$d->is_true];
                 }
             ],
@@ -90,28 +90,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'code',
             'rep_id',
             'lang',
-            [
-                'label' => 'image',
-                'format' => 'html',
-                'value' => function ($model) {
-                    $img = 'http://' . Yii::$app->request->serverName . '/uploads/' . ReportAnimalImages::find()->where(['report_id' => $model->id])->one()->image;
-                    echo \lo\widgets\magnific\MagnificPopup::widget(
-                        [
-                            'target' => '#test',
-                            'options' => [
-                                'delegate' => 'a',
-                            ]
-                        ]
-                    );
-                    return
-                        '<a id="test" target="_blank" href="'.$img.'">'
-                        .   \yii\helpers\Html::img($img, ['width' => 75, 'height' => 75])
-                        . '</a>';
-                }
-            ],
             'organization_id',
         ],
     ]) ?>
+    <div class="row">
+        <?php foreach (ReportAnimalImages::find()->where(['report_id' => $model->id])->all() as $image):
+//            var_dump($image) or die();
+            $img = 'http://' . Yii::$app->request->serverName . '/uploads/' . $image->image;
+            ?>
+            <div class="col-md-2"><?= '<a id="test" target="_blank" href="' . $img . '">'
+                . \yii\helpers\Html::img($img, ['width' => '100%', 'height' => '100%'])
+                . '</a>' ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
     <div id="map"></div>
 
     <style>
@@ -130,7 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
         // Initialize and add the map
         function initMap() {
             // The location of Uluru
-            const uluru = { lat: <?= $model->lat?>, lng: <?= $model->long?> };
+            const uluru = {lat: <?= $model->lat?>, lng: <?= $model->long?>};
             // The map, centered at Uluru
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 10,
@@ -147,7 +139,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAKc6n_ShV0w0BIcrtYymLAwK4UB1g0g4&callback=initMap">
     </script>
-
 
 
 </div>

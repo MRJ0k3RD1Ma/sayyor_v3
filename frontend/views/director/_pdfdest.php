@@ -1,6 +1,5 @@
 <?php
 
-use app\models\search\lab\DestructionSampleAnimalSearch;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -8,28 +7,28 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel DestructionSampleAnimalSearch */
+/* @var $searchModel \app\models\search\director\DestructionSampleAnimalSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('food', 'Namunani yo\'q qilish dalolatnomalari ro\'yhati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="route-sert-index">
+
     <div class="row">
         <div class="col-md-12">
             <div class="card">
 
 
-                <?php Pjax::begin(['enablePushState' => 0, 'timeout' => false]); ?>
-                <?php echo $this->render('_searchdest', [
-                    'model' => $searchModel,
-                ]);
-                ?>
                 <div class="card-body">
+
+                    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
 
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'id' => 'dest-grid',
+                        'summary' => '',
 //        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
@@ -39,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => 'code',
                                 'value' => function ($d) {
-                                    $url = Yii::$app->urlManager->createUrl(['/lab/destview', 'id' => $d->id]);
+                                    $url = Yii::$app->urlManager->createUrl(['/director/destview', 'id' => $d->id]);
                                     return "<a href='{$url}'>{$d->code}</a>";
                                 },
                                 'format' => 'raw'
@@ -59,9 +58,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'updated',
 //            'consent_id',
                             [
-                                'attribute' => 'consent_id',
+                                'attribute' => 'creator_id',
                                 'value' => function ($d) {
-                                    return $d->consent->name;
+                                    return $d->creator->name;
                                 }
                             ],
                             'destruction_date',
@@ -75,12 +74,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                         2 => Yii::t('lab', 'Rahbar tasdiqlashi kutilmoqda'),
                                         3 => Yii::t('lab', 'Namuna yo\'q qilinish jarayonida')
                                     ];
-                                    return @$s[$d->state_id];
+                                    return $s[$d->state_id];
                                 }
                             ],
                             //'org_id',
 
                         ],
-                    ]) ?>
-                <?php Pjax::end() ?>
-            </div>
+                    ]); ?>
+                </div>

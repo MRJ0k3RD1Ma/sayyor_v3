@@ -13,11 +13,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
     <div class="sertificates-view">
 
-
-            <p style="font-weight: bold">
+<div class="row">
+    <div class="col-md-1">
                 <a href="#" class="btn btn-primary"><?= $model->status->icon?> <?= $model->status->name_uz ?></a>
-            </p>
-
+    </div>
+    <div class="col-md-3">
+        <a href="<?=\yii\helpers\Url::to(['ind/pdfapp','id'=>$model->id])?>" class="btn btn-primary">Arizani PDF ko'rinishda yuklab olish</a>
+    </div>
+</div>
+        <br>
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
@@ -69,8 +73,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-md-12 table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead>
+                <table class="table table-bordered table-hover">
+                    <thead>
                 <tr>
                     <th rowspan="2">№</th>
                     <th rowspan="2">Namuna belgisi</th>

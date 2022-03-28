@@ -26,9 +26,16 @@ use common\models\Vaccination;
 use common\models\VetSites;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
+use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
+use yii\base\Model;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -75,6 +82,7 @@ class IndController extends Controller
             ],
         ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -94,12 +102,12 @@ class IndController extends Controller
     public function beforeAction($action)
     {
 
-        if(Yii::$app->session->has('doc_type')){
-            if(!Yii::$app->session->has('doc_pnfl')){
+        if (Yii::$app->session->has('doc_type')) {
+            if (!Yii::$app->session->has('doc_pnfl')) {
                 header('Location: /client/site/login');
                 exit;
             }
-        }else{
+        } else {
             header('Location: /client/site/login');
             exit;
         }
@@ -108,8 +116,8 @@ class IndController extends Controller
     }
 
 
-
-    public function actionListanimal(){
+    public function actionListanimal()
+    {
 
         $searchModel = new SertificatesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -132,78 +140,80 @@ class IndController extends Controller
         return $this->render('index');
     }
 
-    public function actionCreate($type = null){
-        if($type){
-            return $this->redirect(['/ind/'.$type]);
+    public function actionCreate($type = null)
+    {
+        if ($type) {
+            return $this->redirect(['/ind/' . $type]);
         }
         return $this->render('create');
     }
 
-    public function actionAnimal(){
+    public function actionAnimal()
+    {
         $model = new Sertificates();
-        $legal = Individuals::findOne(['pnfl'=>Yii::$app->session->get('doc_pnfl')]);
+        $legal = Individuals::findOne(['pnfl' => Yii::$app->session->get('doc_pnfl')]);
         $model->sert_date = date('Y-m-d');
         $model->ownertype = 1;
         $owner_leg = new LegalEntities();
         $owner_ind = new Individuals();
         $model->status_id = 0;
-        if($model->load(Yii::$app->request->post())){
+        if ($model->load(Yii::$app->request->post())) {
 
-            $num = Sertificates::find()->filterWhere(['like','sert_date',date('Y')])->max('sert_id');
+            $num = Sertificates::find()->filterWhere(['like', 'sert_date', date('Y')])->max('sert_id');
             $vet = VetSites::findOne($model->vet_site_id);
-            $code = $vet->soato0->region_id.$vet->soato0->district_id .'-'.   substr(date('Y'),2,2).'-';
+            $code = $vet->soato0->region_id . $vet->soato0->district_id . '-' . substr(date('Y'), 2, 2) . '-';
 
-            $num = $num+1;
+            $num = $num + 1;
             $code .= $num;
             $model->sert_id = "$num";
             $model->pnfl = $legal->pnfl;
             $model->sert_full = $code;
             $model->sert_num = "{$model->sert_num}";
 
-            if($model->ownertype == 1){
-                if($owner_ind->load(Yii::$app->request->post())){
-                    if($own = Individuals::findOne(['pnfl'=>$owner_ind->pnfl])){
+            if ($model->ownertype == 1) {
+                if ($owner_ind->load(Yii::$app->request->post())) {
+                    if ($own = Individuals::findOne(['pnfl' => $owner_ind->pnfl])) {
                         $owner_ind = $own;
-                    }else{
+                    } else {
                         $owner_ind->save();
                     }
                     $model->owner_pnfl = $owner_ind->pnfl;
-                }else{
-                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                } else {
+                    Yii::$app->session->setFlash('error', Yii::t('client', 'Ma\'lumotlarni to\'ldirishda xatolik'));
                 }
-            }elseif($model->ownertype == 2){
-                if($owner_leg->load(Yii::$app->request->post())){
-                    if($own = LegalEntities::findOne(['inn'=>$owner_leg->inn])){
+            } elseif ($model->ownertype == 2) {
+                if ($owner_leg->load(Yii::$app->request->post())) {
+                    if ($own = LegalEntities::findOne(['inn' => $owner_leg->inn])) {
                         $owner_leg = $own;
-                    }else{
+                    } else {
                         $owner_leg->save();
                     }
                     $model->owner_inn = $owner_leg->inn;
-                }else{
-                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                } else {
+                    Yii::$app->session->setFlash('error', Yii::t('client', 'Ma\'lumotlarni to\'ldirishda xatolik'));
                 }
-            }else{
-                Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
-                return $this->render('animal',[
-                    'model'=>$model,
-                    'legal'=>$owner_leg,
-                    'ind'=>$owner_ind
+            } else {
+                Yii::$app->session->setFlash('error', Yii::t('client', 'Ma\'lumotlarni to\'ldirishda xatolik'));
+                return $this->render('animal', [
+                    'model' => $model,
+                    'legal' => $owner_leg,
+                    'ind' => $owner_ind
                 ]);
             }
 
 
-            if($model->save()){
-                Yii::$app->session->setFlash('success','Dalolatnoma muvoffaqtiyatli saqlandi');
-                return $this->redirect(['view','id'=>$model->id]);
-            }else{
-                Yii::$app->session->setFlash('error','Ma\'lumotlarni to\'ldirishda xatolik yuzaga keldi');
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Dalolatnoma muvoffaqtiyatli saqlandi');
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                Yii::$app->session->setFlash('error', 'Ma\'lumotlarni to\'ldirishda xatolik yuzaga keldi');
             }
         }
 
-        return $this->render('animal',[
-            'model'=>$model,
-            'legal'=>$owner_leg,
-            'ind'=>$owner_ind
+        return $this->render('animal', [
+            'model' => $model,
+            'legal' => $owner_leg,
+            'ind' => $owner_ind
         ]);
     }
 
@@ -215,21 +225,21 @@ class IndController extends Controller
     }
 
 
-
-    public function actionSend($id){
+    public function actionSend($id)
+    {
         $model = Sertificates::findOne($id);
-        $sample = Samples::find()->where(['samples.sert_id'=>$id])->all();
-        if(count($sample) == 0){
-            Yii::$app->session->setFlash('error',Yii::t('client','Dalolatnomaga namuna biriktirilmagan'));
-            return $this->redirect(['viewfood','id'=>$id]);
+        $sample = Samples::find()->where(['samples.sert_id' => $id])->all();
+        if (count($sample) == 0) {
+            Yii::$app->session->setFlash('error', Yii::t('client', 'Dalolatnomaga namuna biriktirilmagan'));
+            return $this->redirect(['viewfood', 'id' => $id]);
         }
         $reg = new SampleRegistration();
         $reg->pnfl = Yii::$app->session->get('doc_pnfl');
-        if($reg->load(Yii::$app->request->post())){
+        if ($reg->load(Yii::$app->request->post())) {
 
-            $num = SampleRegistration::find()->filterWhere(['like','created',date('Y')])->max('code_id');
+            $num = SampleRegistration::find()->filterWhere(['like', 'created', date('Y')])->max('code_id');
 
-            $code = substr(date('Y'),2,2).'-1-'.get3num($reg->organization_id).'-';
+            $code = substr(date('Y'), 2, 2) . '-1-' . get3num($reg->organization_id) . '-';
             $reg->status_id = 1;
             $num = $num + 1;
             $code .= $num;
@@ -237,12 +247,12 @@ class IndController extends Controller
             $reg->code_id = $num;
 
 
-            if($reg->save()){
-                foreach ($sample as $item){
+            if ($reg->save()) {
+                foreach ($sample as $item) {
                     $com = new CompositeSamples();
                     $com->status_id = 1;
-                    $com->sample_id  = $item->id;
-                    $com->registration_id  = $reg->id;
+                    $com->sample_id = $item->id;
+                    $com->registration_id = $reg->id;
                     $com->save();
                     $sam = Samples::findOne($com->sample_id);
                     $sam->status_id = 1;
@@ -254,17 +264,18 @@ class IndController extends Controller
             }
             $model->status_id = 1;
             $model->save();
-            return $this->redirect(['view','id'=>$model->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
 
         }
-        return $this->render('send',[
-            'sample'=>$sample,
-            'model'=>$model,
-            'reg'=>$reg
+        return $this->render('send', [
+            'sample' => $sample,
+            'model' => $model,
+            'reg' => $reg
         ]);
     }
 
-    public function actionAdd($id){
+    public function actionAdd($id)
+    {
 
         $model = $this->findModel($id);
 
@@ -276,37 +287,37 @@ class IndController extends Controller
 
         $sample->sert_id = intval($id);
 
-        if(Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
 
-            if($animal->load(Yii::$app->request->post())){
-                $num = Samples::find()->filterWhere(['like','kod',$model->sert_full])->max('samp_id');
+            if ($animal->load(Yii::$app->request->post())) {
+                $num = Samples::find()->filterWhere(['like', 'kod', $model->sert_full])->max('samp_id');
 
                 $code = $model->sert_full;
 
-                $num = $num+1;
+                $num = $num + 1;
                 $code .= $num;
-                $sample->kod = $code.'/'.$num;
+                $sample->kod = $code . '/' . $num;
                 $sample->samp_id = $num;
                 $animal->pnfl = "{$animal->pnfl}";
 
-                if($animal->save() and $sample->load(Yii::$app->request->post())){
+                if ($animal->save() and $sample->load(Yii::$app->request->post())) {
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
-                    if($sample->save(false)){
-                        Yii::$app->session->setFlash('success',Yii::t('client','Namuna muvoffaqiyatli saqlandi'));
-                        return $this->redirect(['view','id'=>$id]);
-                    }else{
-                        Yii::$app->session->setFlash('error','Maydonlar to\'ldirimlagan');
+                    if ($sample->save(false)) {
+                        Yii::$app->session->setFlash('success', Yii::t('client', 'Namuna muvoffaqiyatli saqlandi'));
+                        return $this->redirect(['view', 'id' => $id]);
+                    } else {
+                        Yii::$app->session->setFlash('error', 'Maydonlar to\'ldirimlagan');
                     }
                 }
             }
 
         }
 
-        return $this->render('add',[
-            'model'=>$model,
-            'animal'=>$animal,
-            'sample'=>$sample,
+        return $this->render('add', [
+            'model' => $model,
+            'animal' => $animal,
+            'sample' => $sample,
         ]);
     }
 
@@ -319,32 +330,34 @@ class IndController extends Controller
         throw new NotFoundHttpException(Yii::t('cp.sertificates', 'The requested page does not exist.'));
     }
 
-    public function actionVaccination($id,$sert_id){
+    public function actionVaccination($id, $sert_id)
+    {
 
         $model = new Vaccination();
         $model->animal_id = $id;
         $animal = Animals::findOne($id);
-        if($model->load(Yii::$app->request->post()) and $model->save()){
-            return $this->redirect(['view','id'=>$sert_id]);
+        if ($model->load(Yii::$app->request->post()) and $model->save()) {
+            return $this->redirect(['view', 'id' => $sert_id]);
         }
-        return $this->render('vaccination',['model'=>$model,'animal'=>$animal]);
+        return $this->render('vaccination', ['model' => $model, 'animal' => $animal]);
     }
 
-    public function actionEmlash($id,$sert_id){
+    public function actionEmlash($id, $sert_id)
+    {
 
         $model = new Emlash();
         $model->animal_id = $id;
         $animal = Animals::findOne($id);
-        if($model->load(Yii::$app->request->post()) and $model->save()){
-            return $this->redirect(['view','id'=>$sert_id]);
+        if ($model->load(Yii::$app->request->post()) and $model->save()) {
+            return $this->redirect(['view', 'id' => $sert_id]);
         }
-        return $this->render('emlash',['model'=>$model,'animal'=>$animal]);
+        return $this->render('emlash', ['model' => $model, 'animal' => $animal]);
 
     }
 
 
-
-    public function actionListfood(){
+    public function actionListfood()
+    {
         $searchModel = new FoodSamplingCertificateSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -353,7 +366,9 @@ class IndController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionSertapp(){
+
+    public function actionSertapp()
+    {
         $searchModel = new SampleRegistrationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         return $this->render('regtest', [
@@ -361,19 +376,22 @@ class IndController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionSertappview($id){
+
+    public function actionSertappview($id)
+    {
         $model = SampleRegistration::findOne($id);
         $samples = Samples::find()->select(['samples.*'])
-            ->innerJoin('composite_samples','composite_samples.sample_id = samples.id')
-            ->where(['composite_samples.registration_id'=>$id])->all();
+            ->innerJoin('composite_samples', 'composite_samples.sample_id = samples.id')
+            ->where(['composite_samples.registration_id' => $id])->all();
 
-        return $this->render('sertappview',[
-            'model'=>$model,
-            'samples'=>$samples
+        return $this->render('sertappview', [
+            'model' => $model,
+            'samples' => $samples
         ]);
     }
 
-    public function actionProduct(){
+    public function actionProduct()
+    {
         $model = new FoodSamplingCertificate();
         $model->pnfl = Yii::$app->session->get('doc_pnfl');
         $ind = new Individuals();
@@ -381,124 +399,125 @@ class IndController extends Controller
         $model->ownertype = 1;
         $model->status_id = 0;
         $model->state_id = 1;
-        if($model->load(Yii::$app->request->post())){
+        if ($model->load(Yii::$app->request->post())) {
             $vet = VetSites::findOne($model->sampling_site);
-            $soato = $vet->soato0->region_id.$vet->soato0->district_id;
-            $soato_full = $vet->soato0->res_id.$soato;
+            $soato = $vet->soato0->region_id . $vet->soato0->district_id;
+            $soato_full = $vet->soato0->res_id . $soato;
             $model->sampling_soato = $soato_full;
-            $num = FoodSamplingCertificate::find()->where(['sampling_soato'=>$model->sampling_soato])->andFilterWhere(['like','created',date('Y')])->max('food_id');
-            $code = $soato.'-'.substr(date('Y'),2,2).'-';
+            $num = FoodSamplingCertificate::find()->where(['sampling_soato' => $model->sampling_soato])->andFilterWhere(['like', 'created', date('Y')])->max('food_id');
+            $code = $soato . '-' . substr(date('Y'), 2, 2) . '-';
 
-            $num = $num+1;
+            $num = $num + 1;
             $code .= $num;
             $model->code = $code;
             $model->food_id = $num;
-            if($model->ownertype == 1){
-                if($ind->load(Yii::$app->request->post())){
-                    if($own = Individuals::findOne(['pnfl'=>$ind->pnfl])){
+            if ($model->ownertype == 1) {
+                if ($ind->load(Yii::$app->request->post())) {
+                    if ($own = Individuals::findOne(['pnfl' => $ind->pnfl])) {
                         $ind = $own;
-                    }else{
+                    } else {
                         $ind->save();
                     }
                     $model->sampler_person_pnfl = $ind->pnfl;
-                }else{
-                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                } else {
+                    Yii::$app->session->setFlash('error', Yii::t('client', 'Ma\'lumotlarni to\'ldirishda xatolik'));
                 }
-            }elseif($model->ownertype == 2){
-                if($legal->load(Yii::$app->request->post())){
-                    if($own = LegalEntities::findOne(['inn'=>$legal->inn])){
+            } elseif ($model->ownertype == 2) {
+                if ($legal->load(Yii::$app->request->post())) {
+                    if ($own = LegalEntities::findOne(['inn' => $legal->inn])) {
                         $legal = $own;
-                    }else{
+                    } else {
                         $legal->save();
                     }
                     $model->sampler_person_inn = $legal->inn;
-                }else{
-                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                } else {
+                    Yii::$app->session->setFlash('error', Yii::t('client', 'Ma\'lumotlarni to\'ldirishda xatolik'));
                 }
-            }else{
-                Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
-                return $this->render('product',[
-                    'model'=>$model,
-                    'legal'=>$legal,
-                    'ind'=>$ind
+            } else {
+                Yii::$app->session->setFlash('error', Yii::t('client', 'Ma\'lumotlarni to\'ldirishda xatolik'));
+                return $this->render('product', [
+                    'model' => $model,
+                    'legal' => $legal,
+                    'ind' => $ind
                 ]);
             }
 
-            if($model->save()){
-                Yii::$app->session->setFlash('success','Dalolatnoma muvoffaqiyatli yaratildi');
-                return $this->redirect(['viewfood','id'=>$model->id]);
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Dalolatnoma muvoffaqiyatli yaratildi');
+                return $this->redirect(['viewfood', 'id' => $model->id]);
             }
         }
-        return $this->render('product',[
-            'model'=>$model,
-            'legal'=>$legal,
-            'ind'=>$ind
+        return $this->render('product', [
+            'model' => $model,
+            'legal' => $legal,
+            'ind' => $ind
         ]);
     }
 
-    public function actionViewfood($id){
+    public function actionViewfood($id)
+    {
         $model = FoodSamplingCertificate::findOne($id);
         $samp = $model->foodSamples;
-        return $this->render('viewfood',[
-            'model'=>$model,
-            'samp'=>$samp
+        return $this->render('viewfood', [
+            'model' => $model,
+            'samp' => $samp
         ]);
     }
 
-    public function actionAddfood($id){
+    public function actionAddfood($id)
+    {
         $model = new FoodSamples();
         $food = FoodSamplingCertificate::findOne($id);
         $model->sert_id = $food->id;
-        if($model->load(Yii::$app->request->post())){
-            $num = FoodSamples::find()->where(['sert_id'=>$model->sert_id])->max('samp_id');
+        if ($model->load(Yii::$app->request->post())) {
+            $num = FoodSamples::find()->where(['sert_id' => $model->sert_id])->max('samp_id');
             $num = intval($num) + 1;
-            $model->samp_code = $food->code.'/'.$num;
+            $model->samp_code = $food->code . '/' . $num;
             $model->samp_id = $num;
             $model->status_id = 0;
-            if($model->save()){
-                Yii::$app->session->setFlash('success','Namuna ma\'lumotlari muvoffaqiyatli saqlandi');
-                return $this->redirect(['viewfood','id'=>$id]);
-            }else{
-                Yii::$app->session->setFlash('error','Maydonlar to\'ldirilmagan');
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Namuna ma\'lumotlari muvoffaqiyatli saqlandi');
+                return $this->redirect(['viewfood', 'id' => $id]);
+            } else {
+                Yii::$app->session->setFlash('error', 'Maydonlar to\'ldirilmagan');
             }
         }
 
-        return $this->render('addfood',[
-            'model'=>$model,
-            'food'=>$food
+        return $this->render('addfood', [
+            'model' => $model,
+            'food' => $food
         ]);
     }
 
 
-
-
-    public function actionSendfood($id){
+    public function actionSendfood($id)
+    {
         $model = FoodSamplingCertificate::findOne($id);
-        $sample = FoodSamples::find()->where(['food_samples.sert_id'=>$id])->all();
-        if(count($sample) == 0){
-            Yii::$app->session->setFlash('error',Yii::t('client','Dalolatnomaga namuna biriktirilmagan'));
-            return $this->redirect(['viewfood','id'=>$id]);
+        $sample = FoodSamples::find()->where(['food_samples.sert_id' => $id])->all();
+        if (count($sample) == 0) {
+            Yii::$app->session->setFlash('error', Yii::t('client', 'Dalolatnomaga namuna biriktirilmagan'));
+            return $this->redirect(['viewfood', 'id' => $id]);
         }
         $reg = new FoodRegistration();
         $reg->pnfl = Yii::$app->session->get('doc_pnfl');
-        if($reg->load(Yii::$app->request->post())){
+        if ($reg->load(Yii::$app->request->post())) {
 
-            $num = FoodRegistration::find()->filterWhere(['like','created',date('Y')])->max('code_id');
+            $num = FoodRegistration::find()->filterWhere(['like', 'created', date('Y')])->max('code_id');
 
-            $code = substr(date('Y'),2,2).'-2-'.get3num($reg->organization_id).'-';
+            $code = substr(date('Y'), 2, 2) . '-2-' . get3num($reg->organization_id) . '-';
             $reg->status_id = 1;
-            $num = $num+1;
+            $num = $num + 1;
             $code .= $num;
             $reg->code = $code;
             $reg->code_id = $num;
 
 
-            if($reg->save()){
-                foreach ($sample as $item){
+            if ($reg->save()) {
+                foreach ($sample as $item) {
                     $com = new FoodCompose();
                     $com->status_id = 1;
-                    $com->sample_id  = $item->id;
-                    $com->registration_id  = $reg->id;
+                    $com->sample_id = $item->id;
+                    $com->registration_id = $reg->id;
                     $com->save();
                     $sam = FoodSamples::findOne($com->sample_id);
                     $sam->status_id = 1;
@@ -510,19 +529,20 @@ class IndController extends Controller
             }
             $model->status_id = 1;
             $model->save();
-            Yii::$app->session->setFlash('success',Yii::t('client','Ariza muvoffaqiyatli yuborildi'));
-            return $this->redirect(['viewfood','id'=>$model->id]);
+            Yii::$app->session->setFlash('success', Yii::t('client', 'Ariza muvoffaqiyatli yuborildi'));
+            return $this->redirect(['viewfood', 'id' => $model->id]);
 
 
         }
-        return $this->render('sendfood',[
-            'sample'=>$sample,
-            'model'=>$model,
-            'reg'=>$reg
+        return $this->render('sendfood', [
+            'sample' => $sample,
+            'model' => $model,
+            'reg' => $reg
         ]);
     }
 
-    public function actionSertfood(){
+    public function actionSertfood()
+    {
         $searchModel = new FoodRegistrationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -532,21 +552,22 @@ class IndController extends Controller
         ]);
     }
 
-    public function actionSertfoodview($id){
+    public function actionSertfoodview($id)
+    {
         $model = FoodRegistration::findOne($id);
         $samples = FoodSamples::find()->select(['food_samples.*'])
-            ->innerJoin('food_compose','food_compose.sample_id = food_samples.id')
-            ->where(['food_compose.registration_id'=>$id])->all();
-        return $this->render('sertfoodview',[
-            'model'=>$model,
-            'samp'=>$samples
+            ->innerJoin('food_compose', 'food_compose.sample_id = food_samples.id')
+            ->where(['food_compose.registration_id' => $id])->all();
+        return $this->render('sertfoodview', [
+            'model' => $model,
+            'samp' => $samples
         ]);
     }
 
 
-
     // update
-    public function actionUpdateanimal($id){
+    public function actionUpdateanimal($id)
+    {
         $model = Sertificates::findOne($id);
 
         $model->sert_date = date('Y-m-d');
@@ -554,120 +575,123 @@ class IndController extends Controller
         $owner_leg = new LegalEntities();
         $owner_ind = new Individuals();
 
-        if($model->owner_inn){
+        if ($model->owner_inn) {
             $model->ownertype = 2;
-            $owner_leg = LegalEntities::findOne(['inn'=>$model->owner_inn]);
-        }elseif($model->owner_pnfl){
+            $owner_leg = LegalEntities::findOne(['inn' => $model->owner_inn]);
+        } elseif ($model->owner_pnfl) {
             $model->ownertype = 1;
-            $owner_ind = Individuals::findOne(['pnfl'=>$model->owner_pnfl]);
+            $owner_ind = Individuals::findOne(['pnfl' => $model->owner_pnfl]);
         }
 
-        if($model->load(Yii::$app->request->post())){
+        if ($model->load(Yii::$app->request->post())) {
 
 
-            $num = Sertificates::find()->filterWhere(['like','sert_date',date('Y')])->max('sert_id');
+            $num = Sertificates::find()->filterWhere(['like', 'sert_date', date('Y')])->max('sert_id');
             $vet = VetSites::findOne($model->vet_site_id);
-            $code = $vet->soato0->region_id.$vet->soato0->district_id .'-'.   substr(date('Y'),2,2).'-';
+            $code = $vet->soato0->region_id . $vet->soato0->district_id . '-' . substr(date('Y'), 2, 2) . '-';
 
-            $num = $num+1;
+            $num = $num + 1;
             $code .= $num;
             $model->sert_id = "$num";
 
             $model->sert_full = $code;
             $model->sert_num = "{$model->sert_num}";
 
-            if($model->ownertype == 1){
-                if($owner_ind->load(Yii::$app->request->post())){
-                    if($own = Individuals::findOne(['pnfl'=>$owner_ind->pnfl])){
+            if ($model->ownertype == 1) {
+                if ($owner_ind->load(Yii::$app->request->post())) {
+                    if ($own = Individuals::findOne(['pnfl' => $owner_ind->pnfl])) {
                         $owner_ind = $own;
-                    }else{
+                    } else {
                         $owner_ind->save();
                     }
                     $model->owner_pnfl = $owner_ind->pnfl;
                     $model->owner_inn = null;
-                }else{
-                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                } else {
+                    Yii::$app->session->setFlash('error', Yii::t('client', 'Ma\'lumotlarni to\'ldirishda xatolik'));
                 }
-            }elseif($model->ownertype == 2){
-                if($owner_leg->load(Yii::$app->request->post())){
-                    if($own = LegalEntities::findOne(['inn'=>$owner_leg->inn])){
+            } elseif ($model->ownertype == 2) {
+                if ($owner_leg->load(Yii::$app->request->post())) {
+                    if ($own = LegalEntities::findOne(['inn' => $owner_leg->inn])) {
                         $owner_leg = $own;
-                    }else{
+                    } else {
                         $owner_leg->update();
                     }
                     $model->owner_inn = $owner_leg->inn;
                     $model->owner_pnfl = null;
-                }else{
-                    Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
+                } else {
+                    Yii::$app->session->setFlash('error', Yii::t('client', 'Ma\'lumotlarni to\'ldirishda xatolik'));
                 }
-            }else{
-                Yii::$app->session->setFlash('error',Yii::t('client','Ma\'lumotlarni to\'ldirishda xatolik'));
-                return $this->render('animal',[
-                    'model'=>$model,
-                    'legal'=>$owner_leg,
-                    'ind'=>$owner_ind
+            } else {
+                Yii::$app->session->setFlash('error', Yii::t('client', 'Ma\'lumotlarni to\'ldirishda xatolik'));
+                return $this->render('animal', [
+                    'model' => $model,
+                    'legal' => $owner_leg,
+                    'ind' => $owner_ind
                 ]);
             }
 
 
-            if($model->save()){
-                Yii::$app->session->setFlash('success','Dalolatnomadagi o\'zgarishlar muvoffaqtiyatli saqlandi');
-                return $this->redirect(['view','id'=>$model->id]);
-            }else{
-                Yii::$app->session->setFlash('error','Ma\'lumotlarni to\'ldirishda xatolik yuzaga keldi');
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Dalolatnomadagi o\'zgarishlar muvoffaqtiyatli saqlandi');
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                Yii::$app->session->setFlash('error', 'Ma\'lumotlarni to\'ldirishda xatolik yuzaga keldi');
             }
-
 
 
         }
 
-        return $this->render('animal',[
-            'model'=>$model,
-            'legal'=>$owner_leg,
-            'ind'=>$owner_ind
+        return $this->render('animal', [
+            'model' => $model,
+            'legal' => $owner_leg,
+            'ind' => $owner_ind
         ]);
     }
-    public function actionUpdateSample($id){
+
+    public function actionUpdateSample($id)
+    {
 
         $sample = Samples::findOne($id);
         $animal = Animals::findOne($sample->animal_id);
 
 //        $sample->sert_id = intval($id);
 
-        if(Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
 
-            if($animal->load(Yii::$app->request->post())){
-                $num = Samples::find()->filterWhere(['like','kod',$model->sert_full])->max('samp_id');
+            if ($animal->load(Yii::$app->request->post())) {
+                $num = Samples::find()->filterWhere(['like', 'kod', $model->sert_full])->max('samp_id');
 
                 $code = $model->sert_full;
 
-                $num = $num+1;
+                $num = $num + 1;
                 $code .= $num;
-                $sample->kod = $code.'/'.$num;
+                $sample->kod = $code . '/' . $num;
                 $sample->samp_id = $num;
                 $animal->pnfl = "{$animal->pnfl}";
 
-                if($animal->save() and $sample->load(Yii::$app->request->post())){
+                if ($animal->save() and $sample->load(Yii::$app->request->post())) {
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
-                    if($sample->save(false)){
-                        Yii::$app->session->setFlash('success',Yii::t('client','Namunadagi o\'zgarishlar muvoffaqiyatli saqlandi'));
-                        return $this->redirect(['view','id'=>$id]);
-                    }else{
-                        Yii::$app->session->setFlash('error','Maydonlar to\'ldirimlagan');
+                    if ($sample->save(false)) {
+                        Yii::$app->session->setFlash('success', Yii::t('client', 'Namunadagi o\'zgarishlar muvoffaqiyatli saqlandi'));
+                        return $this->redirect(['view', 'id' => $id]);
+                    } else {
+                        Yii::$app->session->setFlash('error', 'Maydonlar to\'ldirimlagan');
                     }
                 }
             }
 
         }
 
-        return $this->render('add',[
-            'model'=>$model,
-            'animal'=>$animal,
-            'sample'=>$sample,
+        return $this->render('add', [
+            'model' => $model,
+            'animal' => $animal,
+            'sample' => $sample,
         ]);
     }
-    public function actionUpdateProduct($id){
+
+    public function actionUpdateProduct($id)
+    {
         $model = new FoodSamplingCertificate();
         $model->pnfl = Yii::$app->session->get('doc_pnfl');
         $ind = new Individuals();
@@ -676,10 +700,39 @@ class IndController extends Controller
         $model->status_id = 0;
         $model->state_id = 1;
 
-        return $this->render('product',[
-            'model'=>$model,
-            'legal'=>$legal,
-            'ind'=>$ind
+        return $this->render('product', [
+            'model' => $model,
+            'legal' => $legal,
+            'ind' => $ind
+        ]);
+    }
+
+    public function actionPdfapp($id)
+    {
+        $model = SampleRegistration::findOne(['id' => $id]);
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+        $pdf = new Pdf([
+            'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+            'destination' => Pdf::DEST_BROWSER,
+            'content' => $this->renderPartial('_pdfapp', ['model' => $model]),
+            'options' => [
+            ],
+            'methods' => [
+                'SetTitle' => "Ariza",
+                'SetHeader' => [' ' . '|| ' . date("r")],
+                'SetFooter' => ['| {PAGENO} |'],
+                'SetAuthor' => '@QalandarDev',
+                'SetCreator' => '@QalandarDev',
+            ]
+        ]);
+        try {
+            return $pdf->render();
+        } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+            return $e;
+        }
+        return $this->render('_pdfapp', [
+            'model' => $model
         ]);
     }
 }

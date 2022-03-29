@@ -122,4 +122,8 @@ class ResultFood extends \yii\db\ActiveRecord
     {
         return $this->hasOne(StateList::className(), ['id' => 'state_id']);
     }
+
+    public function getCreator(){
+        return $this->hasOne(Employees::className(),['id'=>'creator_id']);
+    }
 }

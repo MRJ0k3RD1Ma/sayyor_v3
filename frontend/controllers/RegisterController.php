@@ -467,6 +467,7 @@ class RegisterController extends Controller
                 $num = intval($num)+1;
                 $result->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
                 $result->code_id = $num;
+                $result->org_id = Yii::$app->user->identity->empPosts->org_id;
 
                 $result->sample_id = $cs->sample_id;
                 $result->state_id = 1;

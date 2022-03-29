@@ -225,5 +225,24 @@ class LeaderController extends Controller
         ]);
     }
 
+    public function actionAcceptfood($id){
+        $model = FoodRoute::findOne($id);
+        $model->status_id = 5;
+        if($model->save()){
+            Yii::$app->session->setFlash('success',Yii::t('lab','Natija muvoffaqiyatli tasdiqlandi. Natija rahbar tasdiqlashi uchun yuborildi.'));
+
+        }
+        return $this->redirect(['viewfood','id'=>$id]);
+    }
+
+    public function actionDeclinefood($id){
+        $model = FoodRoute::findOne($id);
+        $model->status_id = 6;
+        if($model->save()){
+            Yii::$app->session->setFlash('success',Yii::t('lab','Natija muvoffaqiyatli rad qilindi.'));
+        }
+        return $this->redirect(['viewfood','id'=>$id]);
+    }
+
 
 }

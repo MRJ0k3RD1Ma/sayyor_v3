@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 
 use app\models\search\lab\DestructionSampleAnimalSearch;
+use app\models\search\laboratory\FoodRouteSearch;
 use common\models\DestructionSampleAnimal;
 use common\models\Employees;
 use common\models\Regulations;
@@ -17,6 +18,7 @@ use Mpdf\MpdfException;
 use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
 use setasign\Fpdi\PdfParser\PdfParserException;
 use setasign\Fpdi\PdfParser\Type\PdfTypeException;
+use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\web\Controller;
@@ -184,5 +186,17 @@ class LabController extends Controller
         ]);
     }
 
+    public function actionIndexfood($status = -1){
+        $searchModel = new FoodRouteSearch();
+        if ($status != -1) {
+            $searchModel->status_id = $status;
+        }
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('indexfood', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
 }

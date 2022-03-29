@@ -27,6 +27,7 @@ use yii\db\ActiveQuery;
  * @property string|null $coments
  * @property int|null $laboratory_test_type_id
  * @property int|null $status_id
+ * @property int|null $emp_id
  * @property string|null $created
  * @property string|null $updated
  *
@@ -53,7 +54,7 @@ class FoodSamples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['samp_id', 'sert_id', 'unit_id', 'count', '_country', 'sample_box_id', 'sample_condition_id', 'verification_sample', 'laboratory_test_type_id', 'status_id', 'state_id'], 'integer'],
+            [['samp_id', 'sert_id', 'unit_id','emp_id', 'count', '_country', 'sample_box_id', 'sample_condition_id', 'verification_sample', 'laboratory_test_type_id', 'status_id', 'state_id'], 'integer'],
             [['_country'], 'required'],
             [['manufacture_date', 'sell_by', 'created', 'updated'], 'safe'],
             [['samp_code', 'tasnif_code', 'total_amount', 'producer', 'serial_num', 'coments'], 'string', 'max' => 255],
@@ -91,6 +92,7 @@ class FoodSamples extends \yii\db\ActiveRecord
             'created' => Yii::t('food', 'Yaratildi'),
             'updated' => Yii::t('food', 'O\'zgartirildi'),
             'status_id' => Yii::t('food', 'Status'),
+            'emp_id' => Yii::t('food', 'Ro\'yhatga oluvchi'),
         ];
     }
 
@@ -129,6 +131,9 @@ class FoodSamples extends \yii\db\ActiveRecord
         return $this->hasOne(SampleConditions::className(), ['id' => 'sample_condition_id']);
     }
 
+    public function getEmp(){
+        return $this->hasOne(Employees::className(),['id'=>'emp_id']);
+    }
     /**
      * Gets query for [[Sert]].
      *
@@ -160,4 +165,6 @@ class FoodSamples extends \yii\db\ActiveRecord
     public function getCountry(){
         return $this->hasOne(Countres::class,['id'=>'_country']);
     }
+
+
 }

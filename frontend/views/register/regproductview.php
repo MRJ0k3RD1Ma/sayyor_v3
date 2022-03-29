@@ -104,7 +104,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     ?>
                     <?php foreach ($samp as $item):?>
                         <tr>
-                            <td><?= $item->status->icon.' '.$item->samp_code ?></td>
+
+                            <td><a href="#"></a>
+                                <?php if($item->status_id < 3){?>
+                                    <a href="<?= Yii::$app->urlManager->createUrl(['/register/incomefood','id'=>$item->id,'regid'=>$model->id])?>"><?= $item->status->icon.' '.$item->samp_code ?></a>
+                                <?php }else{?>
+                                    <?= $item->status->icon.' '.$item->samp_code ?>
+                                <?php }?>
+                            </td>
                             <td><?= $item->tasnif->name?></td>
                             <td><?= $item->count.' '.$item->unit->{'name_'.$lg}?></td>
                             <td><?= $item->sampleBox->{'name_'.$lg}?></td>

@@ -2,8 +2,10 @@
 
 namespace app\modules\admin\controllers;
 
+use common\models\TemplateAnimalRegulations;
 use common\models\TemplateFood;
 use common\models\search\TemplateFoodSearch;
+use common\models\TemplateFoodRegulations;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -71,6 +73,13 @@ class TemplateFoodController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                foreach ($this->request->post('TemplateFood')['regulations'] as $reg) {
+                    $relation = new TemplateFoodRegulations();
+                    $relation->regulation_id = $reg;
+                    $relation->template_id = $model->id;
+                    $relation->state_id = 1;
+                    $relation->save();
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -94,6 +103,13 @@ class TemplateFoodController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            foreach ($this->request->post('TemplateFood')['regulations'] as $reg) {
+                $relation = new TemplateFoodRegulations();
+                $relation->regulation_id = $reg;
+                $relation->template_id = $model->id;
+                $relation->state_id = 1;
+                $relation->save();
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

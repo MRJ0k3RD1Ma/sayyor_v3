@@ -8,6 +8,7 @@
 use common\models\Employees;
 use common\models\Individuals;
 use common\models\Regulations;
+use common\models\ResultAnimal;
 use common\models\RouteSert;
 use common\models\Soato;
 use Endroid\QrCode\Builder\Builder;
@@ -21,8 +22,9 @@ use Endroid\QrCode\Writer\PngWriter;
 $composite = $model->comp;
 $samples = $composite[0]->sample;
 $sertificate = $samples->sert;
-$resultanimal = \common\models\ResultAnimal::findOne(['sample_id' => $samples->id]);
+$resultanimal = ResultAnimal::findOne(['sample_id' => $samples->id]);
 $routesert = RouteSert::findOne(['sample_id' => $samples->id])->registration_id;
+//\yii\helpers\VarDumper::dump($samples) or die();
 
 //errdeb($routesert);
 $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')

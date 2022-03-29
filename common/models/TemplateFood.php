@@ -27,6 +27,7 @@ use Yii;
  *
  * @property LaboratoryTestType $laboratoryTestType
  * @property TemplateUnitType $type
+ * @property TemplateFoodRegulations $TemplateFoodRegulations
  */
 class TemplateFood extends \yii\db\ActiveRecord
 {
@@ -37,6 +38,8 @@ class TemplateFood extends \yii\db\ActiveRecord
     {
         return 'template_food';
     }
+
+    public $regulations;
 
     /**
      * {@inheritdoc}
@@ -96,5 +99,15 @@ class TemplateFood extends \yii\db\ActiveRecord
     public function getType()
     {
         return $this->hasOne(TemplateUnitType::className(), ['id' => 'type_id']);
+    }
+
+    public function getRegulations()
+    {
+        return $this->hasMany(Regulations::class, ['id' => 'regulation_id'])->viaTable('template_food_regulations', ['template_id' => 'id']);
+    }
+
+    public function getTemplateFoodRegulations()
+    {
+        return $this->hasMany(TemplateFoodRegulations::class, ['template_id' => 'id']);
     }
 }

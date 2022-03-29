@@ -1,6 +1,11 @@
 <?php
 
+use common\models\Employees;
+use common\models\Regulations;
+use common\models\TamplateAnimal;
+use common\models\TemplateAnimalRegulations;
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -9,7 +14,7 @@ use yii\widgets\DetailView;
 $this->title = $model->name_uz || $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Hayvon kasalliklari tashhisi'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->id;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <div class="tamplate-animal-view">
 
@@ -29,26 +34,26 @@ $this->params['breadcrumbs'][] = $model->id;
         'attributes' => [
             [
                 'attribute' => 'type_id',
-                'value' => function (\common\models\TamplateAnimal $model) {
+                'value' => function (TamplateAnimal $model) {
                     return $model->type->name_uz;
                 }
             ],
             [
                 'label' => 'regulation',
                 'format' => 'html',
-                'value' => function (\common\models\TamplateAnimal $model) {
+                'value' => function (TamplateAnimal $model) {
                     $out = [];
-                    $rel = \common\models\TemplateAnimalRegulations::find()->where(['template_id' => $model->id])->asArray()->all();
+                    $rel = TemplateAnimalRegulations::find()->where(['template_id' => $model->id])->asArray()->all();
                     foreach (array_column($rel, 'regulation_id') as $reg) {
-                        $out[]=\common\models\Regulations::findOne(['id'=>$reg])->name_uz;
+                        $out[] = Regulations::findOne(['id' => $reg])->name_uz;
                     }
-                    return implode(",", $out);
+                    return implode("<br>", $out);
 
                 }
             ],
             [
                 'attribute' => 'gender',
-                'value' => function (\common\models\TamplateAnimal $model) {
+                'value' => function (TamplateAnimal $model) {
                     $list = [1 => 'Erkak',
                         0 => 'Urg\'ochi'];
                     return $list[$model->gender];
@@ -57,13 +62,13 @@ $this->params['breadcrumbs'][] = $model->id;
             'age',
             [
                 'attribute' => 'diseases_id',
-                'value' => function (\common\models\TamplateAnimal $model) {
+                'value' => function (TamplateAnimal $model) {
                     return $model->diseases->name_uz;
                 }
             ],
             [
                 'attribute' => 'test_method_id',
-                'value' => function (\common\models\TamplateAnimal $model) {
+                'value' => function (TamplateAnimal $model) {
                     return $model->testMethod->name_uz;
                 }
             ],
@@ -71,8 +76,8 @@ $this->params['breadcrumbs'][] = $model->id;
             'name_ru',
             [
                 'attribute' => 'unit_id',
-                'value' => function (\common\models\TamplateAnimal $model) {
-                        return $model->unit->name_uz;
+                'value' => function (TamplateAnimal $model) {
+                    return $model->unit->name_uz;
                 }
             ],
             'min',
@@ -83,14 +88,14 @@ $this->params['breadcrumbs'][] = $model->id;
             'dead_days',
             [
                 'attribute' => 'creator_id',
-                'value' => function (\common\models\TamplateAnimal $model) {
-                    return \common\models\Employees::findOne(['id'=>Yii::$app->user->identity->id])->name;
+                'value' => function (TamplateAnimal $model) {
+                    return Employees::findOne(['id' => Yii::$app->user->identity->id])->name;
                 }
             ],
             'consent_id',
             [
                 'attribute' => 'state_id',
-                'value' => function (\common\models\TamplateAnimal $model) {
+                'value' => function (TamplateAnimal $model) {
                     return $model->state->name;
                 }
             ],

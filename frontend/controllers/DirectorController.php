@@ -135,12 +135,12 @@ class DirectorController extends Controller
             $sample->status_id = 5;
             $sample->save();
 
-            $cs = CompositeSamples::findOne(['sample_id'=>$sample->id]);
+            $cs = CompositeSamples::findOne(['sample_id' => $sample->id]);
             $cs->status_id = 5;
             $cs->save();
 
-            if(CompositeSamples::find()->where(['sample_id'=>$sample->id])->count('sample_id') == CompositeSamples::find()->where(['sample_id'=>$sample->id])->andWhere(['status_id'=>4])->count('sample_id')){
-                $reg = SampleRegistration::findOne(['id'=>$cs->registration_id]);
+            if (CompositeSamples::find()->where(['sample_id' => $sample->id])->count('sample_id') == CompositeSamples::find()->where(['sample_id' => $sample->id])->andWhere(['status_id' => 4])->count('sample_id')) {
+                $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
                 $reg->status_id = 5;
                 $reg->save();
             }
@@ -224,14 +224,15 @@ class DirectorController extends Controller
         $model->state_id = 1;
         $model->approved_date = date('Y-m-d h:i:s');
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi',['code'=>$model->code]);
+            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi', ['code' => $model->code]);
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
         return $this->redirect(['dest']);
     }
 
-    public function actionIndexfood($status = -1){
+    public function actionIndexfood($status = -1)
+    {
 
         $searchModel = new FoodRouteSearch();
         if ($status != -1) {
@@ -262,9 +263,9 @@ class DirectorController extends Controller
             $sam = FoodSamples::findOne($model->sample_id);
             $sam->status_id = 4;
             $sam->save();
-            $cs = FoodCompose::findOne(['sample_id'=>$sam->id]);
+            $cs = FoodCompose::findOne(['sample_id' => $sam->id]);
 
-            $reg = FoodRegistration::findOne(['id'=>$cs->registration_id]);
+            $reg = FoodRegistration::findOne(['id' => $cs->registration_id]);
             $reg->status_id = 4;
             $reg->save();
             if ($model->save()) {
@@ -273,13 +274,12 @@ class DirectorController extends Controller
             }
         }
         $result = ResultFood::findOne(['sample_id' => $sample->id]);
-        $test = ResultFoodTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked'=>1])->all();
+        $test = ResultFoodTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked' => 1])->all();
 
-        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations','template_food_regulations.regulation_id = regulations.id')
-            ->innerJoin('template_food','template_food_regulations.template_id = template_food.id')
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations', 'template_food_regulations.regulation_id = regulations.id')
+            ->innerJoin('template_food', 'template_food_regulations.template_id = template_food.id')
             ->orderBy('template_food_regulations.regulation_id')
-            ->where('template_food.id IN (SELECT result_food_tests.id from result_food_tests inner join template_food on result_food_tests.template_id=template_food.id where result_food_tests.result_id='.$result->id.')')->all();
-        ;
+            ->where('template_food.id IN (SELECT result_food_tests.id from result_food_tests inner join template_food on result_food_tests.template_id=template_food.id where result_food_tests.result_id=' . $result->id . ')')->all();;
 
         return $this->render('viewfood', [
             'model' => $model,
@@ -287,26 +287,54 @@ class DirectorController extends Controller
             'result' => $result,
             'emp' => $emp,
             'test' => $test,
-            'docs'=>$docs
+            'docs' => $docs
         ]);
     }
 
-    public function actionAcceptfood($id){
+    public function actionAcceptfood($id)
+    {
         $model = FoodRoute::findOne($id);
         $model->status_id = 5;
-        if($model->save()){
-            Yii::$app->session->setFlash('success',Yii::t('lab','Natija muvoffaqiyatli tasdiqlandi. Natija rahbar tasdiqlashi uchun yuborildi.'));
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('lab', 'Natija muvoffaqiyatli tasdiqlandi. Natija rahbar tasdiqlashi uchun yuborildi.'));
 
         }
-        return $this->redirect(['viewfood','id'=>$id]);
+        return $this->redirect(['viewfood', 'id' => $id]);
     }
 
-    public function actionDeclinefood($id){
+    public function actionDeclinefood($id)
+    {
         $model = FoodRoute::findOne($id);
         $model->status_id = 6;
-        if($model->save()){
-            Yii::$app->session->setFlash('success',Yii::t('lab','Natija muvoffaqiyatli rad qilindi.'));
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('lab', 'Natija muvoffaqiyatli rad qilindi.'));
         }
-        return $this->redirect(['viewfood','id'=>$id]);
+        return $this->redirect(['viewfood', 'id' => $id]);
+    }
+
+    public function actionDestPdf($id)
+    {
+        $model = DestructionSampleAnimal::findOne(['id' => $id]);
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+        $pdf = new Pdf([
+            'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+            'destination' => Pdf::DEST_BROWSER,
+            'content' => $this->renderPartial('pdf-dest', ['model' => $model]),
+            'options' => [
+            ],
+            'methods' => [
+                'SetTitle' => "Ariza",
+                'SetHeader' => [' ' . '|| ' . date("r")],
+                'SetFooter' => ['| {PAGENO} |'],
+                'SetAuthor' => '@QalandarDev',
+                'SetCreator' => '@QalandarDev',
+            ]
+        ]);
+        try {
+            return $pdf->render();
+        } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+            return $e;
+        }
     }
 }

@@ -28,7 +28,7 @@ use Yii;
  */
 class Sertificates extends \yii\db\ActiveRecord
 {
-    public $district,$region,$qfi,$ownertype;
+    public $district,$region,$qfi,$ownertype,$organization_id,$owner_name,$operator,$organization;
     /**
      * {@inheritdoc}
      */

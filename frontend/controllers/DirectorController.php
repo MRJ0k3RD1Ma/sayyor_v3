@@ -163,7 +163,7 @@ class DirectorController extends Controller
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('pdf-verify', ['model' => $sample,'regmodel'=>$reg]),
+                'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg]),
                 'options' => [
                 ],
                 'methods' => [
@@ -387,6 +387,30 @@ class DirectorController extends Controller
             $dest->org_id = Yii::$app->user->identity->empPosts->org_id;
             $dest->save();
             Yii::$app->session->setFlash('success', Yii::t('lab', 'Topshiriq imzolandi. Namunani yo\'q qilish uchun {code} raqamli dalolatnoma labarantga yuborildi', ['code' => $dest->code]));
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('pdf-verify2', ['model' => $sample, 'regmodel' => $reg]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => "Ariza",
+                    'SetHeader' => [' ' . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                $upload_dir = Yii::getAlias('@uploads');
+                $content = $pdf->render();
+                $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
+                $file = fopen($fileName, 'wb+');
+                fwrite($file, $content);
+                fclose($file);
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
 
         }
 
@@ -401,15 +425,6 @@ class DirectorController extends Controller
             Yii::$app->session->setFlash('success', Yii::t('lab', 'Natija muvoffaqiyatli rad qilindi.'));
         }
         return $this->redirect(['viewfood', 'id' => $id]);
-    }
-
-    public function actionDestPdf($id)
-    {
-        $model = DestructionSampleAnimal::findOne(['id' => $id]);
-        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
-        header('Content-Disposition: attachment; name=' . $fileName);
-        $file = fopen($fileName, 'r+');
-        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
 
 
@@ -463,6 +478,31 @@ class DirectorController extends Controller
         $model->state_id = 1;
         $model->approved_date = date('Y-m-d h:i:s');
         if ($model->save()) {
+            $pdf = new Pdf([
+                'filename' => 'filename.pdf',
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+//            'destination' => Pdf::DEST_FILE,
+                'content' => $this->renderPartial('pdf-dest2', ['model' => $model]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => "Ariza",
+                    'SetHeader' => [' ' . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                $upload_dir = Yii::getAlias('@uploads');
+                $content = $pdf->render();
+                $fileName = $upload_dir . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+                $file = fopen($fileName, 'wb+');
+                fwrite($file, $content);
+                fclose($file);
+            } catch (Exception $e) {
+                return $e;
+            }
             Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi', ['code' => $model->code]);
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
@@ -491,5 +531,32 @@ class DirectorController extends Controller
         $file = fopen($fileName, 'r+');
         Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
 
+    }
+
+    public function actionPdfFood($id)
+    {
+        $model = FoodSamples::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+    }
+
+    public function actionDestPdffood($id)
+    {
+        $model = DestructionSampleFood::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+    }
+
+    public function actionDestPdf($id)
+    {
+        $model = DestructionSampleAnimal::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
 }

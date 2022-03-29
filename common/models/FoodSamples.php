@@ -165,6 +165,9 @@ class FoodSamples extends \yii\db\ActiveRecord
     public function getCountry(){
         return $this->hasOne(Countres::class,['id'=>'_country']);
     }
-
+    public function getSampleTypeIs()
+    {
+        return $this->hasOne(SampleTypes::className(), ['id' => 'sample_type_is']);
+    }
 
 }

@@ -4,6 +4,7 @@ use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
 use common\models\RouteSert;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\YiiAsset;
 use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
@@ -24,6 +25,10 @@ YiiAsset::register($this);
 
     <div class="row">
         <div class="col-md-6">
+            <div class="col-md-6">
+                <a href="<?= Url::to(['director/pdf-food', 'id' => $model->sample_id]) ?>" class="btn btn-warning">Arizani PDF
+                    ko'rinishda yuklab olish</a>
+            </div>
             <h3>Topshiriq ma'lumotlari</h3>
             <?= DetailView::widget([
                 'model' => $model,

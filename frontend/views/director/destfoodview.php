@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
@@ -17,6 +18,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-md-6">
+            <?php if ($model->state_id == 1): ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="<?= Url::to(['director/dest-pdffood', 'id' => $model->id]) ?>" class="btn btn-warning">Arizani
+                            PDF
+                            ko'rinishda yuklab olish</a>
+                    </div>
+                </div>
+            <?php endif; ?>
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [

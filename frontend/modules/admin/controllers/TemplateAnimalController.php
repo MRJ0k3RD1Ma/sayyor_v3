@@ -72,11 +72,11 @@ class TemplateAnimalController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                foreach($this->request->post('TamplateAnimal')['regulations'] as $reg){
-                    $relation=new TemplateAnimalRegulations();
-                    $relation->regulation_id=$reg;
-                    $relation->template_id=$model->id;
-                    $relation->state_id=$model->state_id;
+                foreach ($this->request->post('TamplateAnimal')['regulations'] as $reg) {
+                    $relation = new TemplateAnimalRegulations();
+                    $relation->regulation_id = $reg;
+                    $relation->template_id = $model->id;
+                    $relation->state_id = $model->state_id;
                     $relation->save();
                 }
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -102,6 +102,13 @@ class TemplateAnimalController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            foreach ($this->request->post('TamplateAnimal')['regulations'] as $reg) {
+                $relation = new TemplateAnimalRegulations();
+                $relation->regulation_id = $reg;
+                $relation->template_id = $model->id;
+                $relation->state_id = $model->state_id;
+                $relation->save();
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

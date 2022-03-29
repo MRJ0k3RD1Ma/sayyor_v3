@@ -7,6 +7,7 @@ use app\models\search\director\DestructionSampleAnimalSearch;
 use app\models\search\director\FoodRouteSearch;
 use common\models\CompositeSamples;
 use common\models\DestructionSampleAnimal;
+use common\models\DestructionSampleFood;
 use common\models\Employees;
 
 use common\models\FoodCompose;
@@ -293,11 +294,35 @@ class DirectorController extends Controller
 
     public function actionAcceptfood($id){
         $model = FoodRoute::findOne($id);
-        $model->status_id = 5;
-        if($model->save()){
-            Yii::$app->session->setFlash('success',Yii::t('lab','Natija muvoffaqiyatli tasdiqlandi. Natija rahbar tasdiqlashi uchun yuborildi.'));
+        $model->status_id = 3;
+        if ($model->save()) {
+            $dest = new DestructionSampleFood();
+            $dest->state_id = 3;
+            $sample = FoodSamples::findOne($model->sample_id);
+            $sample->status_id = 5;
+            $sample->save();
+
+            $cs = FoodCompose::findOne(['sample_id'=>$sample->id]);
+            $reg = FoodRegistration::findOne(['id'=>$cs->registration_id]);
+            $reg->status_id = 5;
+            $reg->save();
+
+
+            $dest->creator_id = $model->executor_id;
+            $dest->consent_id = $model->director_id;
+            $dest->sample_id = $model->sample_id;
+
+            $num = DestructionSampleFood::find()->where(['org_id' => Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+            $num = intval($num) + 1;
+
+            $dest->code_id = $num;
+            $dest->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
+            $dest->org_id = Yii::$app->user->identity->empPosts->org_id;
+            $dest->save();
+            Yii::$app->session->setFlash('success', Yii::t('lab', 'Topshiriq imzolandi. Namunani yo\'q qilish uchun {code} raqamli dalolatnoma labarantga yuborildi',['code'=>$dest->code]));
 
         }
+
         return $this->redirect(['viewfood','id'=>$id]);
     }
 

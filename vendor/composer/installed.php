@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '8189a1472016ec587a5831605fe165b0239096b7',
+        'reference' => '106bd890449a8f59240e7317e3ba6d60269922a4',
         'name' => 'yiisoft/yii2-app-advanced',
         'dev' => true,
     ),
@@ -422,12 +422,12 @@
             'dev_requirement' => true,
         ),
         'phpdocumentor/type-resolver' => array(
-            'pretty_version' => '1.6.0',
-            'version' => '1.6.0.0',
+            'pretty_version' => '1.6.1',
+            'version' => '1.6.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpdocumentor/type-resolver',
             'aliases' => array(),
-            'reference' => '93ebd0014cab80c4ea9f5e297ea48672f1b87706',
+            'reference' => '77a32518733312af16a44300404e945338981de3',
             'dev_requirement' => true,
         ),
         'phpoffice/phpspreadsheet' => array(
@@ -970,7 +970,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '8189a1472016ec587a5831605fe165b0239096b7',
+            'reference' => '106bd890449a8f59240e7317e3ba6d60269922a4',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(

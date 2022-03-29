@@ -8,6 +8,8 @@ use client\models\search\SampleRegistrationSearch;
 use client\models\search\SertificatesSearch;
 use common\models\Animals;
 use common\models\CompositeSamples;
+use common\models\DestructionSampleAnimal;
+use common\models\DestructionSampleFood;
 use common\models\DistrictView;
 use common\models\Emlash;
 use common\models\FoodCompose;
@@ -28,6 +30,7 @@ use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use kartik\mpdf\Pdf;
 use Mpdf\MpdfException;
+use PhpOffice\PhpSpreadsheet\Helper\Sample;
 use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
 use setasign\Fpdi\PdfParser\PdfParserException;
 use setasign\Fpdi\PdfParser\Type\PdfTypeException;
@@ -295,7 +298,6 @@ class IndController extends Controller
                 $code = $model->sert_full;
 
                 $num = $num + 1;
-                $code .= $num;
                 $sample->kod = $code . '/' . $num;
                 $sample->samp_id = $num;
                 $animal->pnfl = "{$animal->pnfl}";
@@ -304,7 +306,7 @@ class IndController extends Controller
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if ($sample->save(false)) {
-                        Yii::$app->session->setFlash('success', Yii::t('client', '{kod} raqamli namuna muvoffaqiyatli saqlandi',['kod'=>$sample->kod]));
+                        Yii::$app->session->setFlash('success', Yii::t('client', '{kod} raqamli namuna muvoffaqiyatli saqlandi', ['kod' => $sample->kod]));
                         return $this->redirect(['view', 'id' => $id]);
                     } else {
                         Yii::$app->session->setFlash('error', 'Maydonlar to\'ldirimlagan');
@@ -367,10 +369,35 @@ class IndController extends Controller
         ]);
     }
 
-    public function actionSertapp()
+    public function actionSertapp(int $export = null)
     {
         $searchModel = new SampleRegistrationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfanimal', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
         return $this->render('regtest', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -443,7 +470,7 @@ class IndController extends Controller
             }
 
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', '{code} raqamli dalolatnoma muvoffaqiyatli yaratildi',['code'=>$model->code]);
+                Yii::$app->session->setFlash('success', '{code} raqamli dalolatnoma muvoffaqiyatli yaratildi', ['code' => $model->code]);
                 return $this->redirect(['viewfood', 'id' => $model->id]);
             }
         }
@@ -476,7 +503,7 @@ class IndController extends Controller
             $model->samp_id = $num;
             $model->status_id = 0;
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', '{code} raqamli namuna ma\'lumotlari muvoffaqiyatli saqlandi',['code'=>$model->code]);
+                Yii::$app->session->setFlash('success', '{code} raqamli namuna ma\'lumotlari muvoffaqiyatli saqlandi', ['code' => $model->samp_code]);
                 return $this->redirect(['viewfood', 'id' => $id]);
             } else {
                 Yii::$app->session->setFlash('error', 'Maydonlar to\'ldirilmagan');
@@ -530,7 +557,7 @@ class IndController extends Controller
             $model->send_sample_date = date('Y-m-d');
             $model->status_id = 1;
             $model->save();
-            Yii::$app->session->setFlash('success', Yii::t('client', '{code} raqamli ariza muvoffaqiyatli yuborildi',['code'=>$reg->code]));
+            Yii::$app->session->setFlash('success', Yii::t('client', '{code} raqamli ariza muvoffaqiyatli yuborildi', ['code' => $reg->code]));
             return $this->redirect(['viewfood', 'id' => $model->id]);
 
 
@@ -673,7 +700,7 @@ class IndController extends Controller
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if ($sample->save(false)) {
-                        Yii::$app->session->setFlash('success', Yii::t('client', '{kod} raqamli namunadagi o\'zgarishlar muvoffaqiyatli saqlandi',['kod'=>$model->kod]));
+                        Yii::$app->session->setFlash('success', Yii::t('client', '{kod} raqamli namunadagi o\'zgarishlar muvoffaqiyatli saqlandi', ['kod' => $model->kod]));
                         return $this->redirect(['view', 'id' => $id]);
                     } else {
                         Yii::$app->session->setFlash('error', 'Maydonlar to\'ldirimlagan');
@@ -743,7 +770,7 @@ class IndController extends Controller
             }
 
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', '{code} raqamli dalolatnoma muvoffaqiyatli o`zgartirildi',['code'=>$model->code]);
+                Yii::$app->session->setFlash('success', '{code} raqamli dalolatnoma muvoffaqiyatli o`zgartirildi', ['code' => $model->code]);
                 return $this->redirect(['viewfood', 'id' => $model->id]);
             }
         }
@@ -781,5 +808,42 @@ class IndController extends Controller
         return $this->render('_pdfapp', [
             'model' => $model
         ]);
+    }
+
+    public function actionPdfdest($id)
+    {
+        $model = DestructionSampleAnimal::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+
+    }
+
+    public function actionPdfdestfood($id)
+    {
+        $model = DestructionSampleFood::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+
+    }
+
+    public function actionAnimalPdf($id)
+    {
+        $model = Samples::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+    }
+    public function actionFoodPdf($id)
+    {
+        $model = FoodSamples::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
 }

@@ -111,8 +111,8 @@ class LeaderController extends Controller
             $sam = Samples::findOne($model->sample_id);
             $sam->status_id = 4;
             $sam->save();
-            $cs = CompositeSamples::findOne(['sample_id'=>$sam->id]);
-            $reg = SampleRegistration::findOne(['id'=>$cs->registration_id]);
+            $cs = CompositeSamples::findOne(['sample_id' => $sam->id]);
+            $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
             $reg->status_id = 4;
             $reg->save();
 
@@ -122,13 +122,12 @@ class LeaderController extends Controller
             }
         }
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
-        $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked'=>1])->all();
+        $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked' => 1])->all();
 
-        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
-        ->innerJoin('tamplate_animal','template_animal_regulations.template_id = tamplate_animal.id')
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
+            ->innerJoin('tamplate_animal', 'template_animal_regulations.template_id = tamplate_animal.id')
             ->orderBy('template_animal_regulations.regulation_id')
-            ->where('tamplate_animal.id IN (SELECT result_animal_tests.id from result_animal_tests inner join tamplate_animal on result_animal_tests.template_id=tamplate_animal.id where result_animal_tests.result_id='.$result->id.')')->all();
-        ;
+            ->where('tamplate_animal.id IN (SELECT result_animal_tests.id from result_animal_tests inner join tamplate_animal on result_animal_tests.template_id=tamplate_animal.id where result_animal_tests.result_id=' . $result->id . ')')->all();;
 
         return $this->render('viewanimal', [
             'model' => $model,
@@ -136,7 +135,7 @@ class LeaderController extends Controller
             'result' => $result,
             'emp' => $emp,
             'test' => $test,
-            'docs'=>$docs
+            'docs' => $docs
         ]);
     }
 
@@ -164,8 +163,8 @@ class LeaderController extends Controller
     }
 
 
-
-    public function actionIndexfood($status = -1){
+    public function actionIndexfood($status = -1)
+    {
 
         $searchModel = new FoodRouteSearch();
         if ($status != -1) {
@@ -196,9 +195,9 @@ class LeaderController extends Controller
             $sam = FoodSamples::findOne($model->sample_id);
             $sam->status_id = 4;
             $sam->save();
-            $cs = FoodCompose::findOne(['sample_id'=>$sam->id]);
+            $cs = FoodCompose::findOne(['sample_id' => $sam->id]);
 
-            $reg = FoodRegistration::findOne(['id'=>$cs->registration_id]);
+            $reg = FoodRegistration::findOne(['id' => $cs->registration_id]);
             $reg->status_id = 4;
             $reg->save();
             if ($model->save()) {
@@ -207,13 +206,12 @@ class LeaderController extends Controller
             }
         }
         $result = ResultFood::findOne(['sample_id' => $sample->id]);
-        $test = ResultFoodTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked'=>1])->all();
+        $test = ResultFoodTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked' => 1])->all();
 
-        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations','template_food_regulations.regulation_id = regulations.id')
-            ->innerJoin('template_food','template_food_regulations.template_id = template_food.id')
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations', 'template_food_regulations.regulation_id = regulations.id')
+            ->innerJoin('template_food', 'template_food_regulations.template_id = template_food.id')
             ->orderBy('template_food_regulations.regulation_id')
-            ->where('template_food.id IN (SELECT result_food_tests.id from result_food_tests inner join template_food on result_food_tests.template_id=template_food.id where result_food_tests.result_id='.$result->id.')')->all();
-        ;
+            ->where('template_food.id IN (SELECT result_food_tests.id from result_food_tests inner join template_food on result_food_tests.template_id=template_food.id where result_food_tests.result_id=' . $result->id . ')')->all();;
 
         return $this->render('viewfood', [
             'model' => $model,
@@ -221,27 +219,38 @@ class LeaderController extends Controller
             'result' => $result,
             'emp' => $emp,
             'test' => $test,
-            'docs'=>$docs
+            'docs' => $docs
         ]);
     }
 
-    public function actionAcceptfood($id){
+    public function actionAcceptfood($id)
+    {
         $model = FoodRoute::findOne($id);
         $model->status_id = 5;
-        if($model->save()){
-            Yii::$app->session->setFlash('success',Yii::t('lab','Natija muvoffaqiyatli tasdiqlandi. Natija rahbar tasdiqlashi uchun yuborildi.'));
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('lab', 'Natija muvoffaqiyatli tasdiqlandi. Natija rahbar tasdiqlashi uchun yuborildi.'));
 
         }
-        return $this->redirect(['viewfood','id'=>$id]);
+        return $this->redirect(['viewfood', 'id' => $id]);
     }
 
-    public function actionDeclinefood($id){
+    public function actionDeclinefood($id)
+    {
         $model = FoodRoute::findOne($id);
         $model->status_id = 6;
-        if($model->save()){
-            Yii::$app->session->setFlash('success',Yii::t('lab','Natija muvoffaqiyatli rad qilindi.'));
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('lab', 'Natija muvoffaqiyatli rad qilindi.'));
         }
-        return $this->redirect(['viewfood','id'=>$id]);
+        return $this->redirect(['viewfood', 'id' => $id]);
+    }
+
+    public function actionDestPdf($id)
+    {
+        $model = DestructionSampleAnimal::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
 
 

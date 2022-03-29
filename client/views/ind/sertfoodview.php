@@ -1,5 +1,8 @@
 <?php
 
+use common\models\DestructionSampleFood;
+use common\models\FoodRoute;
+use common\models\RouteSert;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -28,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         if($d->inn){
                             return $d->inn.'<br>'.$d->inn0->name;
                         }elseif($d->pnfl){
-                            return $d->pnfl.'<br>'.$d->pnfl0->name.' '.$d->pnfl0->surname.' '.$d->pnfl0->middlename;
+                            return $d->pnfl.'<br>'.@$d->pnfl0->name.' '.@$d->pnfl0->surname.' '.@$d->pnfl0->middlename;
                         }else{
                             return null;
                         }
@@ -93,9 +96,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         $lg = 'ru';
                     }
                     ?>
+
                     <?php foreach ($samp as $item):?>
                         <tr>
-                            <td><?= $item->status->icon.' '.$item->samp_code ?></td>
+                            <?php
+                            $cnt=0;
+                            $destruction_id=@DestructionSampleFood::findOne(['state_id' => 1, 'sample_id' => $item->id])->id;
+                            $RouteSert=@FoodRoute::findOne(['sample_id' => $item->id,'status_id'=>3]);
+                            ?>
+                            <td rowspan="
+                            <?= $cnt + 1 ?>">
+                                <?= ($RouteSert)?Html::a($item->status->icon.' '.$item->samp_code, ['/ind/food-pdf','id'=>$item->id],['class'=>'btn btn-warning']):$item->status->icon.' '.$item->samp_code ?>
+                                <?= ($destruction_id)?Html::a("Yo'q qilish dalolatnomasi", ['/ind/pdfdestfood','id'=>$destruction_id],['class'=>'btn btn-danger']):'' ?>
+                            </td>
                             <td><?= $item->tasnif->name?></td>
                             <td><?= $item->count.' '.$item->unit->{'name_'.$lg}?></td>
                             <td><?= $item->sampleBox->{'name_'.$lg}?></td>

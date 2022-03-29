@@ -193,7 +193,8 @@ class LabController extends Controller
         ]);
     }
 
-    public function actionIndexfood($status = -1){
+    public function actionIndexfood($status = -1)
+    {
         $searchModel = new FoodRouteSearch();
         if ($status != -1) {
             $searchModel->status_id = $status;
@@ -206,7 +207,8 @@ class LabController extends Controller
         ]);
     }
 
-    public function actionViewfood($id){
+    public function actionViewfood($id)
+    {
         $model = FoodRoute::findOne($id);
         $sample = $model->sample;
 
@@ -224,11 +226,10 @@ class LabController extends Controller
 
             return $this->redirect(['viewfood', 'id' => $id]);
         }
-        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations','template_food_regulations.regulation_id = regulations.id')
-            ->innerJoin('template_food','template_food_regulations.template_id = template_food.id')
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations', 'template_food_regulations.regulation_id = regulations.id')
+            ->innerJoin('template_food', 'template_food_regulations.template_id = template_food.id')
             ->orderBy('template_food_regulations.regulation_id')
-            ->where('template_food.id IN (SELECT result_food_tests.id from result_food_tests inner join template_food on result_food_tests.template_id=template_food.id where result_food_tests.result_id='.$result->id.')')->all();
-        ;
+            ->where('template_food.id IN (SELECT result_food_tests.id from result_food_tests inner join template_food on result_food_tests.template_id=template_food.id where result_food_tests.result_id=' . $result->id . ')')->all();;
         return $this->render('viewfood', [
             'model' => $model,
             'sample' => $sample,
@@ -248,7 +249,8 @@ class LabController extends Controller
     }
 
 
-    public function actionDestfood($export = null){
+    public function actionDestfood($export = null)
+    {
         $searchModel = new DestructionSampleFoodSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         if ($export == 1) {
@@ -295,5 +297,14 @@ class LabController extends Controller
         return $this->render('destfoodview', [
             'model' => $model
         ]);
+    }
+
+    public function actionDestPdf($id)
+    {
+        $model = DestructionSampleAnimal::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
 }

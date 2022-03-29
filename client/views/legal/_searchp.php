@@ -11,15 +11,12 @@ use yii\widgets\ActiveForm;
 <div class="animals-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
         'method' => 'get',
         'id' => 'animals-grid-filters',
         'fieldConfig' => [
         ],
     ]); ?>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
+
                 <div class="card-header flex">
                     <div></div>
                     <div class="btns flex">
@@ -34,7 +31,7 @@ use yii\widgets\ActiveForm;
                             $char = (count(Yii::$app->request->queryParams) > 0) ? "&" : "?";
                             ?>
                             <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
-                             </button>
+                            </button>
                             <div class="export-btn">
                                 <button>
                                     <?= Html::a('<span class="fa fa-file-excel"></span> Excel ', Yii::$app->request->url . $char . 'export=1', ['data-pjax' => 0, 'export' => 1]) ?>
@@ -43,19 +40,17 @@ use yii\widgets\ActiveForm;
 
                                     <?=
 
-                                    Html::a('<span class="fa fa-file-pdf"></span> PDF ', Yii::$app->request->url . $char . 'export=2', ['data-pjax' => 0]) ?>
+                                    Html::a('<span class="fa fa-file-pdf"></span> PDF ', Yii::$app->request->url . $char . 'export=2', ['data-pjax' => 0,'target'=>'_blank']) ?>
                                 </button>
                             </div>
 
                         </div>
+                        <?= Html::a(Yii::t('client', 'Dalolatnoma qo\'shish'), ['product'], ['class' => 'btn btn-success']) ?>
+
                     </div>
                 </div>
-                <div class="card-body">
 
-                </div>
-            </div>
-        </div>
-    </div>
+
     <?php ActiveForm::end(); ?>
 
 </div>

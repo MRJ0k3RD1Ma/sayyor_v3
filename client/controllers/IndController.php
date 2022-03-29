@@ -476,7 +476,7 @@ class IndController extends Controller
             $model->samp_id = $num;
             $model->status_id = 0;
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', '{code} raqamli namuna ma\'lumotlari muvoffaqiyatli saqlandi',['code'=>$model->code]);
+                Yii::$app->session->setFlash('success', '{code} raqamli namuna ma\'lumotlari muvoffaqiyatli saqlandi',['code'=>$model->samp_code]);
                 return $this->redirect(['viewfood', 'id' => $id]);
             } else {
                 Yii::$app->session->setFlash('error', 'Maydonlar to\'ldirilmagan');

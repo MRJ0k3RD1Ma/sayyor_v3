@@ -159,16 +159,16 @@ YiiAsset::register($this);
             foreach ($samp as  $item): ?>
                 <tr>
                     <td><?= $item->status->icon . ' ' . $item->samp_code ?></td>
-                    <td><?= $item->tasnif->name ?></td>
-                    <td><?= $item->count . ' ' . $item->unit->{'name_' . $lg} ?></td>
-                    <td><?= $item->sampleBox->{'name_' . $lg} ?></td>
+                    <td><?= @$item->tasnif->name ?></td>
+                    <td><?= $item->count . ' ' . @$item->unit->{'name_' . $lg} ?></td>
+                    <td><?= @$item->sampleBox->{'name_' . $lg} ?></td>
                     <td><?= @$item->sampleCondition->{'name_' . $lg} ?></td>
                     <td><?= $item->country->code ?></td>
                     <td><?= $item->total_amount ?></td>
                     <td><?= $item->producer ?></td>
                     <td><?= $item->serial_num ?></td>
                     <td><?= $item->sell_by ?></td>
-                    <td><?= $item->laboratoryTestType->{'name_' . $lg} ?></td>
+                    <td><?= @$item->laboratoryTestType->{'name_' . $lg} ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

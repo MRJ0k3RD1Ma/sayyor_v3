@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         if($d->inn){
                             return $d->inn.'<br>'.$d->inn0->name;
                         }elseif($d->pnfl){
-                            return $d->pnfl.'<br>'.$d->pnfl0->name.' '.$d->pnfl0->surname.' '.$d->pnfl0->middlename;
+                            return $d->pnfl.'<br>'.@$d->pnfl0->name.' '.@$d->pnfl0->surname.' '.@$d->pnfl0->middlename;
                         }else{
                             return null;
                         }

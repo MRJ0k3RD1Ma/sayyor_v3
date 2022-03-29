@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if($model->status_id == 0 or \common\models\Samples::find()->where(['sert_id'=>$model->id])->andWhere(['status_id'=>0])->count('id') > 0){?>
             <?= Html::a(Yii::t('cp.sertificates', 'Arizani yuborish'), ['send', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?php }?>
-        <a href="#" class="btn btn-primary">Arizani PDF ko'rinishda yuklab olish</a>
     </p>
     <p><?= Yii::t('client','Umumiy {n} ta namuna. Shundan {m} tasiga ariza berilmagan',['n'=>count($model->samples),'m'=>\common\models\Samples::find()->where(['sert_id'=>$model->id])->andWhere(['status_id'=>0])->count('id')])?></p>
 

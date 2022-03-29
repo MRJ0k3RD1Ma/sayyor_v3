@@ -152,7 +152,7 @@ YiiAsset::register($this);
     <?php if($model->status_id >= 2){?>
         <div class="row">
             <div class="col-md-6">
-                <h3>Shablon ma'lumotlari</h3>
+                <h3>Tekshiruv sharoiti</h3>
                 <?= DetailView::widget([
                     'model' => $result,
                     'attributes' => [

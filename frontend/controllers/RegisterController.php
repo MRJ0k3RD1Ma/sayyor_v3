@@ -335,7 +335,7 @@ class RegisterController extends Controller
 
         if(Yii::$app->request->isPost){
            if($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())){
-               $cs->status_id = 3;
+
                $route->status_id = 1;
                $model->status_id = 3;
                $route->sample_id = $id;
@@ -445,7 +445,6 @@ class RegisterController extends Controller
 
         if (Yii::$app->request->isPost) {
             if ($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())) {
-                $cs->status_id = 3;
                 $route->status_id = 1;
                 $model->status_id = 3;
                 $route->sample_id = $id;

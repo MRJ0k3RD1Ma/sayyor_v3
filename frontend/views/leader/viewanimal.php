@@ -177,7 +177,7 @@ YiiAsset::register($this);
     <?php if($model->status_id >= 2){?>
         <div class="row">
             <div class="col-md-6">
-                <h3>Shablon ma'lumotlari</h3>
+                <h3>Tekshiruv sharoiti</h3>
                 <?= DetailView::widget([
                     'model' => $result,
                     'attributes' => [
@@ -200,8 +200,8 @@ YiiAsset::register($this);
                         <tr>
                             <th>№</th>
                             <th><?= Yii::t('lab', 'Parametr nomi') ?></th>
-                            <th><?= Yii::t('lab', 'Birliki') ?></th>
-                            <th><?= Yii::t('lab', 'Maksimal-minimal oraliq') ?></th>
+                            <th><?= Yii::t('lab', 'Birlik') ?></th>
+                            <th><?= Yii::t('lab', 'Minimal-maksimal oraliq') ?></th>
                             <th><?= Yii::t('lab', 'Qiymat') ?></th>
                             <th><?= Yii::t('lab', 'Emlashga aloqadorligi') ?></th>
                         </tr>

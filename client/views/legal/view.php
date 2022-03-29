@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
-            [
+            /*[
                 'label'=>Yii::t('client','Arizani kuzatish'),
                 'value'=>function($d){
                     $result = Builder::create()
@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 },
                 'format'=>'raw'
-            ],
+            ],*/
 //            'operator',
         ],
     ]) ?>

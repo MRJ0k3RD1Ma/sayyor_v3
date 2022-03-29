@@ -153,7 +153,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if($model->status_id == 2 or $model->status_id == 6){?>
         <div class="row">
             <div>
-                <h3 style="float: left">Shablon ma'lumotlari</h3>
+                <h3 style="float: left">Tekshiruv sharoiti</h3>
                 <a href="<?= Yii::$app->urlManager->createUrl(['/lab/sendanimal','id'=>$model->id])?>" class="btn btn-primary" style="float:right"><?= Yii::t('lab','Natijalarni yuborish')?></a>
             </div>
             <?php $form = ActiveForm::begin()?>
@@ -185,8 +185,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <th></th>
                         <th>№</th>
                         <th><?= Yii::t('lab','Parametr nomi')?></th>
-                        <th><?= Yii::t('lab','Birliki')?></th>
-                        <th><?= Yii::t('lab','Maksimal-minimal oraliq')?></th>
+                        <th><?= Yii::t('lab','Birlik')?></th>
+                        <th><?= Yii::t('lab','Minimal-maksimal oraliq')?></th>
                         <th colspan="2"><?= Yii::t('lab','Qiymat')?></th>
                         <th><?= Yii::t('lab','Emlashga aloqadorligi')?></th>
                     </tr>
@@ -241,7 +241,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div>
-            <h3 style="float: left">Shablon ma'lumotlari</h3>
+            <h3 style="float: left">Tekshiruv sharoiti</h3>
         </div>
         <?php $form = ActiveForm::begin()?>
 
@@ -272,8 +272,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th></th>
                     <th>№</th>
                     <th><?= Yii::t('lab','Parametr nomi')?></th>
-                    <th><?= Yii::t('lab','Birliki')?></th>
-                    <th><?= Yii::t('lab','Maksimal-minimal oraliq')?></th>
+                    <th><?= Yii::t('lab','Birlik')?></th>
+                    <th><?= Yii::t('lab','Minimal-maksimal oraliq')?></th>
                     <th colspan="2"><?= Yii::t('lab','Qiymat')?></th>
                     <th><?= Yii::t('lab','Emlashga aloqadorligi')?></th>
                 </tr>

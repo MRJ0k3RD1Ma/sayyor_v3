@@ -41,13 +41,20 @@ $this->params['breadcrumbs'][] = $model->id;
                 }
             ],
             [
+                'attribute'=>'type_id',
+                'value'=>function($d){
+                    $lg = 'uz'; if(Yii::$app->language == 'ru')$lg='ru';
+                    return $d->type->{'name_'.$lg};
+                }
+            ],
+            [
                 'attribute' => 'creator_id',
                 'value' => function (\common\models\Regulations $model) {
                     return $model->creator->name;
                 }
             ],
-            'status',
-//            'created:datetime',
+
+            'created:datetime',
 //            'updated:datetime',
         ],
     ]) ?>

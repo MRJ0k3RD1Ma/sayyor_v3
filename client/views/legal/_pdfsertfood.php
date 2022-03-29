@@ -10,7 +10,7 @@ use yii\grid\ActionColumn;
 /* @var $searchModel common\models\search\SertificatesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('cp.sertificates', 'Dalolatnomalar');
+$this->title = Yii::t('cp.sertificates', 'Arizalar ro\'yhati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sertificates-index">
@@ -18,11 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <?= $this->render('_search',['model'=>$searchModel])?>
+
                 <div class="card-body">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
 //                        'filterModel' => $searchModel,
+                        'summary'=>'',
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
@@ -31,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute'=>'code',
                                 'value'=>function($d){
-                                    $url = Yii::$app->urlManager->createUrl(['/legal/sertappview','id'=>$d->id]);
+                                    $url = Yii::$app->urlManager->createUrl(['/legal/sertfoodview','id'=>$d->id]);
                                     return "<a href='{$url}'>{$d->code}</a>";
                                 },
                                 'filter'=>false,
@@ -42,8 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'value'=>function($d){
                                     $res = "";
                                     foreach ($d->comp as $item){
-                                         $res .= $d->status->icon.$item->sample->kod.'<br>';
-                                     }
+                                        $res .= $d->status->icon.$item->sample->samp_code.'<br>';
+                                    }
                                     return $res;
                                 },
                                 'format'=>'raw',

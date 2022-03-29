@@ -554,6 +554,7 @@ class IndController extends Controller
 
                 }
             }
+            $model->send_sample_date = date('Y-m-d');
             $model->status_id = 1;
             $model->save();
             Yii::$app->session->setFlash('success', Yii::t('client', '{code} raqamli ariza muvoffaqiyatli yuborildi', ['code' => $reg->code]));

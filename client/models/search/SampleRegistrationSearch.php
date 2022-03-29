@@ -80,17 +80,16 @@ class SampleRegistrationSearch extends SampleRegistration
             'results_conformity_id' => $this->results_conformity_id,
             'organization_id' => $this->organization_id,
             'emp_id' => $this->emp_id,
-            'reg_date' => $this->reg_date,
             'reg_id' => $this->reg_id,
-            'created' => $this->created,
-            'updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'pnfl', $this->pnfl])
-            ->andFilterWhere(['like', 'inn', $this->inn])
-            ->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'sender_name', $this->sender_name])
-            ->andFilterWhere(['like', 'sender_phone', $this->sender_phone]);
+        $query->andFilterWhere(['like', 'pnfl', $this->q])
+            ->andFilterWhere(['like', 'inn', $this->q])
+            ->andFilterWhere(['like', 'code', $this->q])
+            ->andFilterWhere(['like', 'sender_name', $this->q])
+            ->andFilterWhere(['like', 'sender_phone', $this->q])
+            ->andFilterWhere(['like', 'reg_date', $this->q])
+            ->andFilterWhere(['like', 'created', $this->q]);
 
         return $dataProvider;
     }

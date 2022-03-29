@@ -140,6 +140,11 @@ class DirectorController extends Controller
             $sample->save();
 
             $cs = CompositeSamples::findOne(['sample_id' => $sample->id]);
+
+
+            $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
+            $reg->status_id = 5;
+            $reg->save();
             $cs->status_id = 5;
             $cs->save();
             $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
@@ -159,7 +164,7 @@ class DirectorController extends Controller
             $dest->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
             $dest->org_id = Yii::$app->user->identity->empPosts->org_id;
             $dest->save();
-            Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq imzolandi'));
+            Yii::$app->session->setFlash('success', Yii::t('leader', 'Namuna tekshiruv natijasi imzolandi. Namunani yo\'q qilish uchun topshiriq yuborildi.'));
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
@@ -194,7 +199,7 @@ class DirectorController extends Controller
         $model = RouteSert::findOne(['id' => $id]);
         $model->status_id = 6;
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq rad etildi'));
+            Yii::$app->session->setFlash('success', Yii::t('leader', 'Namuna tekshiruv natijasi rad etildi'));
         }
         return $this->redirect(['indexanimal']);
 
@@ -291,7 +296,7 @@ class DirectorController extends Controller
         $model->state_id = 3;
         $model->approved_date = date('Y-m-d h:i:s');
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi', ['code' => $model->code]);
+            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi rad etildi',['code'=>$model->code]);
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
@@ -422,7 +427,7 @@ class DirectorController extends Controller
         $model = FoodRoute::findOne($id);
         $model->status_id = 6;
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', Yii::t('lab', 'Natija muvoffaqiyatli rad qilindi.'));
+            Yii::$app->session->setFlash('success', Yii::t('lab', 'Namuna tekshiruv natijasi rad qilindi.'));
         }
         return $this->redirect(['viewfood', 'id' => $id]);
     }
@@ -516,7 +521,7 @@ class DirectorController extends Controller
         $model->state_id = 3;
         $model->approved_date = date('Y-m-d h:i:s');
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi', ['code' => $model->code]);
+            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi rad qilindi',['code'=>$model->code]);
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }

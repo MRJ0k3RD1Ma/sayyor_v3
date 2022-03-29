@@ -8,7 +8,7 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
-
+use Yii;
 /**
  * RegulationController implements the CRUD actions for Regulations model.
  */
@@ -69,11 +69,11 @@ class RegulationController extends Controller
     public function actionCreate()
     {
         $model = new Regulations();
-
+        $model->status = 1;
         if ($this->request->isPost && $model->load($this->request->post())) {
             $file = UploadedFile::getInstance($model, 'file');
             if ($file instanceof UploadedFile) {
-                $fileName = urlencode($file->baseName);
+                $fileName = microtime(true);
                 $file->saveAs('uploads/' . $fileName . '.' . $file->extension);
                 $model->file = $fileName . '.' . $file->extension;
             }
@@ -104,7 +104,7 @@ class RegulationController extends Controller
             $file = UploadedFile::getInstance($model, 'file');
             $lastFile = Regulations::findOne(['id' => $model->id])->file;
             if ($file instanceof UploadedFile) {
-                $fileName = urlencode($file->baseName);
+                $fileName = microtime(true);
                 $file->saveAs('uploads/' . $fileName . '.' . $file->extension);
                 $model->file = $fileName . '.' . $file->extension;
             } elseif (file_exists('uploads/' . $lastFile)) {
@@ -113,7 +113,6 @@ class RegulationController extends Controller
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-//            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [

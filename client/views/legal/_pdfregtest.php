@@ -18,11 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <?= $this->render('_search',['model'=>$searchModel])?>
+
                 <div class="card-body">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
 //                        'filterModel' => $searchModel,
+                        'summary'=>'',
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 

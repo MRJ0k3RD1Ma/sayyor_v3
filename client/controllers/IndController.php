@@ -304,7 +304,7 @@ class IndController extends Controller
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if ($sample->save(false)) {
-                        Yii::$app->session->setFlash('success', Yii::t('client', 'Namuna muvoffaqiyatli saqlandi'));
+                        Yii::$app->session->setFlash('success', Yii::t('client', '{kod} raqamli namuna muvoffaqiyatli saqlandi',['kod'=>$model->kod]));
                         return $this->redirect(['view', 'id' => $id]);
                     } else {
                         Yii::$app->session->setFlash('error', 'Maydonlar to\'ldirimlagan');
@@ -443,7 +443,7 @@ class IndController extends Controller
             }
 
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Dalolatnoma muvoffaqiyatli yaratildi');
+                Yii::$app->session->setFlash('success', '{code} raqamli dalolatnoma muvoffaqiyatli yaratildi',['code'=>$model->code]);
                 return $this->redirect(['viewfood', 'id' => $model->id]);
             }
         }
@@ -476,7 +476,7 @@ class IndController extends Controller
             $model->samp_id = $num;
             $model->status_id = 0;
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Namuna ma\'lumotlari muvoffaqiyatli saqlandi');
+                Yii::$app->session->setFlash('success', '{code} raqamli namuna ma\'lumotlari muvoffaqiyatli saqlandi',['code'=>$model->code]);
                 return $this->redirect(['viewfood', 'id' => $id]);
             } else {
                 Yii::$app->session->setFlash('error', 'Maydonlar to\'ldirilmagan');
@@ -672,7 +672,7 @@ class IndController extends Controller
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if ($sample->save(false)) {
-                        Yii::$app->session->setFlash('success', Yii::t('client', 'Namunadagi o\'zgarishlar muvoffaqiyatli saqlandi'));
+                        Yii::$app->session->setFlash('success', Yii::t('client', '{kod} raqamli namunadagi o\'zgarishlar muvoffaqiyatli saqlandi',['kod'=>$model->kod]));
                         return $this->redirect(['view', 'id' => $id]);
                     } else {
                         Yii::$app->session->setFlash('error', 'Maydonlar to\'ldirimlagan');
@@ -742,7 +742,7 @@ class IndController extends Controller
             }
 
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Dalolatnoma muvoffaqiyatli yaratildi');
+                Yii::$app->session->setFlash('success', '{code} raqamli dalolatnoma muvoffaqiyatli o`zgartirildi',['code'=>$model->code]);
                 return $this->redirect(['viewfood', 'id' => $model->id]);
             }
         }

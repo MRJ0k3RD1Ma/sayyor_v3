@@ -296,7 +296,7 @@ class LegalController extends Controller
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if($sample->save(false)){
-                        Yii::$app->session->setFlash('success',Yii::t('client','Namuna muvoffaqiyatli saqlandi'));
+                        Yii::$app->session->setFlash('success',Yii::t('client','{kod} raqamli namuna muvoffaqiyatli saqlandi',['kod'=>$sample->kod]));
                         return $this->redirect(['view','id'=>$id]);
                     }else{
                         Yii::$app->session->setFlash('error','Maydonlar to\'ldirimlagan');
@@ -425,7 +425,7 @@ class LegalController extends Controller
             }
 
             if($model->save()){
-                Yii::$app->session->setFlash('success','Dalolatnoma Muvoffaqiyatli yaratildi');
+                Yii::$app->session->setFlash('success','{code} raqamli dalolatnoma Muvoffaqiyatli yaratildi',['code'=>$model->code]);
                 return $this->redirect(['viewfood','id'=>$model->id]);
             }
         }

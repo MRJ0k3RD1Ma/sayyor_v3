@@ -22,7 +22,8 @@ use Yii;
  * @property string|null $created
  * @property string|null $updated
  * @property int|null $state_id
- * @property int|null sample_id
+ * @property int|null $sample_id
+ * @property int|null $org_id
  */
 class ResultAnimal extends \yii\db\ActiveRecord
 {
@@ -41,7 +42,7 @@ class ResultAnimal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code_id', 'temprature','sample_id','humidity', 'creator_id', 'consent_id', 'state_id'], 'integer'],
+            [['code_id', 'temprature','org_id','sample_id','humidity', 'creator_id', 'consent_id', 'state_id'], 'integer'],
             [['conditions'], 'string'],
             [['created', 'updated', 'end_date', ], 'safe'],
             [['code', 'reagent_name', 'reagent_series','ads'], 'string', 'max' => 255],
@@ -69,6 +70,7 @@ class ResultAnimal extends \yii\db\ActiveRecord
             'created' => Yii::t('model', 'Yaratildi'),
             'updated' => Yii::t('model', 'O\'zgartirildi'),
             'state_id' => Yii::t('model', 'Holati'),
+            'org_id' => Yii::t('model', 'Tashkilot'),
         ];
     }
 }

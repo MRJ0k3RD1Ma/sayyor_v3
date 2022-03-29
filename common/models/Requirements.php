@@ -10,6 +10,8 @@ use Yii;
  * @property int $id
  * @property string|null $name_uz
  * @property string|null $name_ru
+
+ * @property ResultFood[] $resultFoods
  */
 class Requirements extends \yii\db\ActiveRecord
 {
@@ -37,9 +39,20 @@ class Requirements extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name_uz' => Yii::t('app', 'Nomi Uz'),
-            'name_ru' => Yii::t('app', 'Nomi Ru'),
+            'id' => Yii::t('model', 'ID'),
+            'name_uz' => Yii::t('model', 'Nomi(UZ)'),
+            'name_ru' => Yii::t('model', 'Nomi(RU)'),
         ];
     }
+
+    /**
+     * Gets query for [[ResultFoods]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getResultFoods()
+    {
+        return $this->hasMany(ResultFood::className(), ['require_id' => 'id']);
+    }
+
 }

@@ -59,18 +59,18 @@ class DestructionSampleFood extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('model', 'ID'),
-            'code' => Yii::t('model', 'Code'),
-            'code_id' => Yii::t('model', 'Code ID'),
-            'sample_id' => Yii::t('model', 'Sample ID'),
-            'destruction_date' => Yii::t('model', 'Destruction Date'),
-            'ads' => Yii::t('model', 'Ads'),
-            'creator_id' => Yii::t('model', 'Creator ID'),
-            'created' => Yii::t('model', 'Created'),
-            'updated' => Yii::t('model', 'Updated'),
-            'consent_id' => Yii::t('model', 'Consent ID'),
-            'approved_date' => Yii::t('model', 'Approved Date'),
-            'state_id' => Yii::t('model', 'State ID'),
-            'org_id' => Yii::t('model', 'Org ID'),
+            'code' => Yii::t('model', 'Raqami'),
+            'code_id' => Yii::t('model', 'Raqami'),
+            'sample_id' => Yii::t('model', 'Namuna'),
+            'destruction_date' => Yii::t('model', 'Namuna yo\'q qilingan sana'),
+            'ads' => Yii::t('model', 'Izoh'),
+            'creator_id' => Yii::t('model', 'Labarant'),
+            'created' => Yii::t('model', 'Yaratildi'),
+            'updated' => Yii::t('model', 'O\'zgartirildi'),
+            'consent_id' => Yii::t('model', 'Tasdiqladi'),
+            'approved_date' => Yii::t('model', 'Yuborilgan sana'),
+            'state_id' => Yii::t('model', 'Holat'),
+            'org_id' => Yii::t('model', 'Tashkilot'),
         ];
     }
 
@@ -82,6 +82,10 @@ class DestructionSampleFood extends \yii\db\ActiveRecord
     public function getConsent()
     {
         return $this->hasOne(Employees::className(), ['id' => 'consent_id']);
+    }
+    public function getCreator()
+    {
+        return $this->hasOne(Employees::className(), ['id' => 'creator_id']);
     }
 
     /**

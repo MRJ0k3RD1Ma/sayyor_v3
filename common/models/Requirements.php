@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string|null $name_uz
  * @property string|null $name_ru
- *
+
  * @property ResultFood[] $resultFoods
  */
 class Requirements extends \yii\db\ActiveRecord
@@ -54,4 +54,5 @@ class Requirements extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ResultFood::className(), ['require_id' => 'id']);
     }
+
 }

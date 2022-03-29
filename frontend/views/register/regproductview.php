@@ -13,10 +13,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
     <div class="sertificates-view">
 
-
+        <?php if($model->status_id == 1){?>
         <p style="font-weight: bold">
-            <a href="#" class="btn btn-primary"><?= $model->status->icon?> <?= $model->status->name_uz ?></a>
+
+                <a href="<?= Yii::$app->urlManager->createUrl(['/register/incomeproduct','id'=>$model->id])?>" class="btn btn-success"><?= Yii::t('register','Qabul qilish')?></a>
         </p>
+        <?php }?>
 
         <?= DetailView::widget([
             'model' => $model,
@@ -54,6 +56,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'sender_name',
                 'sender_phone',
                 'created',
+                [
+                    'attribute'=>'status_id',
+                    'value'=>function($d){
+                        $lg = 'uz'; if(Yii::$app->language == 'ru')$lg='ru';
+                        return $d->status->{'name_'.$lg};
+                    }
+                ],
                 //'updated',
             ],
         ]) ?>
@@ -95,7 +104,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     ?>
                     <?php foreach ($samp as $item):?>
                         <tr>
-                            <td><?= $item->status->icon.' '.$item->samp_code ?></td>
+
+                            <td><a href="#"></a>
+                                <?php if($item->status_id < 3){?>
+                                    <a href="<?= Yii::$app->urlManager->createUrl(['/register/incomefood','id'=>$item->id,'regid'=>$model->id])?>"><?= $item->status->icon.' '.$item->samp_code ?></a>
+                                <?php }else{?>
+                                    <?= $item->status->icon.' '.$item->samp_code ?>
+                                <?php }?>
+                            </td>
                             <td><?= $item->tasnif->name?></td>
                             <td><?= $item->count.' '.$item->unit->{'name_'.$lg}?></td>
                             <td><?= $item->sampleBox->{'name_'.$lg}?></td>

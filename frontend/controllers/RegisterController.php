@@ -7,7 +7,9 @@ use common\models\CompositeSamples;
 use common\models\DistrictView;
 use common\models\Emlash;
 use common\models\Employees;
+use common\models\FoodCompose;
 use common\models\FoodRegistration;
+use common\models\FoodRoute;
 use common\models\FoodSamples;
 use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
@@ -15,10 +17,13 @@ use common\models\LegalEntities;
 use common\models\QfiView;
 use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
+use common\models\ResultFood;
+use common\models\ResultFoodTests;
 use common\models\RouteSert;
 use common\models\SampleRegistration;
 use common\models\Samples;
 use common\models\TamplateAnimal;
+use common\models\TemplateFood;
 use frontend\models\search\registr\FoodRegistrationSearch;
 use frontend\models\search\lab\FoodSamplingCertificateSearch;
 use common\models\Sertificates;
@@ -268,9 +273,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function actionTestsend($id){
-        $model = new RouteSert();
-    }
 
     public function actionSend($id){
         $model = Samples::findOne($id);
@@ -337,6 +339,8 @@ class RegisterController extends Controller
                $route->status_id = 1;
                $model->status_id = 3;
                $route->sample_id = $id;
+               $reg->status_id = 3;
+               $reg->save();
                $model->emp_id = Yii::$app->user->id;
                $route->registration_id = $regid;
                $model->save();
@@ -354,7 +358,10 @@ class RegisterController extends Controller
                    ->andWhere(['test_method_id'=>$cs->sample->test_mehod_id])->all();
                $result = new ResultAnimal();
 
-
+               $num = ResultAnimal::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+               $num = intval($num);
+               $result->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
+               $result->code_id = $num;
 
                $result->sample_id = $cs->sample_id;
                $result->state_id = 1;
@@ -390,6 +397,112 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function actionIncomeproduct($id){
+        // income qilish yoziladi food_samplesni
+
+        $model = FoodRegistration::findOne($id);
+        $model->emp_id = Yii::$app->user->id;
+        $cs = FoodCompose::find()->where(['registration_id'=>$id])->all();
+        foreach ($cs as $item){
+            $samp = FoodSamples::findOne($item->sample_id);
+            $samp->status_id = 2;
+            $samp->save();
+            $samp = null;
+        }
+        $samp = FoodSamples::findOne($cs[0]->sample_id);
+        $sert = FoodSamplingCertificate::findOne($samp->sert_id);
+        $sert->status_id = 2;
+        $model->status_id = 2;
+        $sert->save();
+        $model->save();
+        return $this->redirect(['regproductview','id'=>$id]);
+
+    }
+
+
+    public function actionIncomefood($id,$regid)
+    {
+        $reg = FoodRegistration::findOne($regid);
+        $model = FoodSamples::findOne($id);
+        $route = new FoodRoute();
+        if ($reg->status_id < 2) {
+            $reg->emp_id = Yii::$app->user->id;
+            $cs = FoodCompose::find()->where(['registration_id' => $regid])->all();
+            foreach ($cs as $item) {
+                $samp = FoodSamples::findOne($item->sample_id);
+                $samp->status_id = 2;
+                $samp->save();
+                $samp = null;
+            }
+            $samp = FoodSamples::findOne($cs[0]->sample_id);
+            $sert = FoodSamplingCertificate::findOne($samp->sert_id);
+            $sert->status_id = 2;
+            $reg->status_id = 2;
+            $sert->save();
+            $reg->save();
+        }
+        $cs = FoodCompose::findOne(['registration_id' => $regid, 'sample_id' => $id]);
+
+        if (Yii::$app->request->isPost) {
+            if ($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())) {
+                $cs->status_id = 3;
+                $route->status_id = 1;
+                $model->status_id = 3;
+                $route->sample_id = $id;
+                $reg->status_id = 3;
+                $reg->save();
+                $model->emp_id = Yii::$app->user->id;
+                $route->registration_id = $regid;
+                $model->save();
+                $cs->save();
+                $route->save();
+
+
+                $template = TemplateFood::find()
+                    ->where(['laboratory_test_type_id' => $cs->sample->laboratory_test_type_id])
+                    ->andWhere(['tasnif_code' => $cs->sample->tasnif_code])->all();
+                $result = new ResultFood();
+
+                $num = ResultFood::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+                $num = intval($num)+1;
+                $result->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
+                $result->code_id = $num;
+                $result->org_id = Yii::$app->user->identity->empPosts->org_id;
+
+                $result->sample_id = $cs->sample_id;
+                $result->state_id = 1;
+                $result->creator_id = $route->executor_id;
+                $result->save();
+                foreach ($template as $item) {
+                    $test = new ResultFoodTests();
+                    $test->result_id = $result->id;
+                    $test->template_id = $item->id;
+                    $test->type_id = $item->type_id;
+                    $test->save();
+                    $test = null;
+                }
+
+                Yii::$app->session->setFlash('success', Yii::t('test', 'Namuna {number} raqami bilan saqlandi',['number'=>$result->code]));
+                return $this->redirect(['/register/regproductview', 'id' => $regid]);
+            }
+        }
+
+        $org_id = Yii::$app->user->identity->empPosts->org_id;
+
+        $directos = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>4])->andWhere(['emp_posts.org_id'=>$org_id])->all();
+        $lider    = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>3])->andWhere(['emp_posts.org_id'=>$org_id])->all();
+
+        return $this->render('incomefood',[
+            'model'=>$model,
+            'reg'=>$reg,
+            'cs'=>$cs,
+            'route'=>$route,
+            'director'=>$directos,
+            'lider'=>$lider
+        ]);
+
+
+    }
 
 
 }

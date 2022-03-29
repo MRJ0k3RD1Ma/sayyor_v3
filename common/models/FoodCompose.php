@@ -47,10 +47,10 @@ class FoodCompose extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('food', 'ID'),
-            'sample_id' => Yii::t('food', 'Sample ID'),
-            'registration_id' => Yii::t('food', 'Registration ID'),
-            'status_id' => Yii::t('food', 'Status ID'),
-            'ads' => Yii::t('food', 'Ads'),
+            'sample_id' => Yii::t('food', 'Namuna raqami'),
+            'registration_id' => Yii::t('food', 'Ariza raqami'),
+            'status_id' => Yii::t('food', 'Namuna holati'),
+            'ads' => Yii::t('food', 'Izoh'),
         ];
     }
 

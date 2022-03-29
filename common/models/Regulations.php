@@ -15,6 +15,7 @@ use yii\db\Expression;
  * @property string|null $file
  * @property int|null $creator_id
  * @property int|null $status
+ * @property int|null $type_id
  * @property string $created
  * @property string|null $updated
  *
@@ -50,12 +51,13 @@ class Regulations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['creator_id', 'status'], 'integer'],
+            [['creator_id', 'status','type_id'], 'integer'],
             [['created', 'updated'], 'safe'],
             [['name_uz', 'name_ru','file'], 'string', 'max' => 255],
             [['file'],'file'],
             [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['creator_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => StatusList::className(), 'targetAttribute' => ['status' => 'id']],
+            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => RegulationTypes::className(), 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
 
@@ -66,13 +68,14 @@ class Regulations extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('model.food_sampling_certificate', 'ID'),
-            'name_uz' => Yii::t('model.food_sampling_certificate', 'Name Uz'),
-            'name_ru' => Yii::t('model.food_sampling_certificate', 'Name Ru'),
-            'file' => Yii::t('model.food_sampling_certificate', 'File'),
-            'creator_id' => Yii::t('model.food_sampling_certificate', 'Creator ID'),
+            'name_uz' => Yii::t('model.food_sampling_certificate', 'Nomi(UZ)'),
+            'name_ru' => Yii::t('model.food_sampling_certificate', 'Nomi(RU)'),
+            'file' => Yii::t('model.food_sampling_certificate', 'Fayl'),
+            'creator_id' => Yii::t('model.food_sampling_certificate', 'Kirituvchi'),
             'status' => Yii::t('model.food_sampling_certificate', 'Status'),
-            'created' => Yii::t('model.food_sampling_certificate', 'Created'),
-            'updated' => Yii::t('model.food_sampling_certificate', 'Updated'),
+            'created' => Yii::t('model.food_sampling_certificate', 'Kiritildi'),
+            'updated' => Yii::t('model.food_sampling_certificate', 'O\'zgartirildi'),
+            'type_id' => Yii::t('model.food_sampling_certificate', 'Turi'),
         ];
     }
 
@@ -104,6 +107,10 @@ class Regulations extends \yii\db\ActiveRecord
     public function getTemplateAnimalRegulations()
     {
         return $this->hasMany(TemplateAnimalRegulations::className(), ['regulation_id' => 'id']);
+    }
+
+    public function getType(){
+        return $this->hasOne(RegulationTypes::className(),['id'=>'type_id']);
     }
 
     /**

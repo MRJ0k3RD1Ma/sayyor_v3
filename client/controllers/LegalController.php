@@ -502,6 +502,7 @@ class LegalController extends Controller
                     $com->save();
                     $sam = FoodSamples::findOne($com->sample_id);
                     $sam->status_id = 1;
+
                     $sam->save();
                     $sam = null;
                     $com = null;
@@ -509,6 +510,7 @@ class LegalController extends Controller
                 }
             }
             $model->status_id = 1;
+            $model->send_sample_date = date('Y-m-d');
             if($model->save()){
                 Yii::$app->session->setFlash('success',Yii::t('client','Ariza muvoffaqiyatli yuborildi'));
             }

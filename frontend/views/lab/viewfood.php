@@ -264,8 +264,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th></th>
                     <th>№</th>
                     <th><?= Yii::t('lab','Parametr nomi')?></th>
-                    <th><?= Yii::t('lab','Birliki')?></th>
-                    <th><?= Yii::t('lab','Maksimal-minimal oraliq')?></th>
+                    <th><?= Yii::t('lab','Birlik')?></th>
+                    <th><?= Yii::t('lab','Minimal-maksimal oraliq')?></th>
                     <th colspan="2"><?= Yii::t('lab','Qiymat')?></th>
                 </tr>
                 </thead>

@@ -142,9 +142,9 @@ class DirectorController extends Controller
             $cs = CompositeSamples::findOne(['sample_id' => $sample->id]);
             $cs->status_id = 5;
             $cs->save();
-
+            $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
             if (CompositeSamples::find()->where(['sample_id' => $sample->id])->count('sample_id') == CompositeSamples::find()->where(['sample_id' => $sample->id])->andWhere(['status_id' => 4])->count('sample_id')) {
-                $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
+
                 $reg->status_id = 5;
                 $reg->save();
             }
@@ -160,6 +160,30 @@ class DirectorController extends Controller
             $dest->org_id = Yii::$app->user->identity->empPosts->org_id;
             $dest->save();
             Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq imzolandi'));
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('pdf-verify', ['model' => $sample,'regmodel'=>$reg]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => "Ariza",
+                    'SetHeader' => [' ' . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                $upload_dir = Yii::getAlias('@uploads');
+                $content = $pdf->render();
+                $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
+                $file = fopen($fileName, 'wb+');
+                fwrite($file, $content);
+                fclose($file);
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
         }
         return $this->redirect(['indexanimal']);
 
@@ -261,18 +285,21 @@ class DirectorController extends Controller
         return $this->redirect(['dest']);
     }
 
-    public function actionDestno($id){
+    public function actionDestno($id)
+    {
         $model = DestructionSampleAnimal::findOne($id);
         $model->state_id = 3;
         $model->approved_date = date('Y-m-d h:i:s');
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi',['code'=>$model->code]);
+            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi', ['code' => $model->code]);
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
         return $this->redirect(['dest']);
     }
-    public function actionIndexfood($status = -1){
+
+    public function actionIndexfood($status = -1)
+    {
 
         $searchModel = new FoodRouteSearch();
         if ($status != -1) {
@@ -342,8 +369,8 @@ class DirectorController extends Controller
             $sample->status_id = 5;
             $sample->save();
 
-            $cs = FoodCompose::findOne(['sample_id'=>$sample->id]);
-            $reg = FoodRegistration::findOne(['id'=>$cs->registration_id]);
+            $cs = FoodCompose::findOne(['sample_id' => $sample->id]);
+            $reg = FoodRegistration::findOne(['id' => $cs->registration_id]);
             $reg->status_id = 5;
             $reg->save();
 
@@ -359,11 +386,11 @@ class DirectorController extends Controller
             $dest->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
             $dest->org_id = Yii::$app->user->identity->empPosts->org_id;
             $dest->save();
-            Yii::$app->session->setFlash('success', Yii::t('lab', 'Topshiriq imzolandi. Namunani yo\'q qilish uchun {code} raqamli dalolatnoma labarantga yuborildi',['code'=>$dest->code]));
+            Yii::$app->session->setFlash('success', Yii::t('lab', 'Topshiriq imzolandi. Namunani yo\'q qilish uchun {code} raqamli dalolatnoma labarantga yuborildi', ['code' => $dest->code]));
 
         }
 
-        return $this->redirect(['viewfood','id'=>$id]);
+        return $this->redirect(['viewfood', 'id' => $id]);
     }
 
     public function actionDeclinefood($id)
@@ -380,13 +407,14 @@ class DirectorController extends Controller
     {
         $model = DestructionSampleAnimal::findOne(['id' => $id]);
         $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
-        header('Content-Disposition: attachment; name='.$fileName);
+        header('Content-Disposition: attachment; name=' . $fileName);
         $file = fopen($fileName, 'r+');
-        Yii::$app->response->sendFile($fileName, $model::tableName()."_".$model->id.".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
 
 
-    public function actionDestfood($export = null){
+    public function actionDestfood($export = null)
+    {
         $searchModel = new DestructionSampleFoodSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         if ($export == 1) {
@@ -435,22 +463,33 @@ class DirectorController extends Controller
         $model->state_id = 1;
         $model->approved_date = date('Y-m-d h:i:s');
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi',['code'=>$model->code]);
+            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi', ['code' => $model->code]);
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
         return $this->redirect(['destfood']);
     }
 
-    public function actionDestfoodno($id){
+    public function actionDestfoodno($id)
+    {
         $model = DestructionSampleFood::findOne($id);
         $model->state_id = 3;
         $model->approved_date = date('Y-m-d h:i:s');
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi',['code'=>$model->code]);
+            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi', ['code' => $model->code]);
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
         return $this->redirect(['destfood']);
+    }
+
+    public function actionPdfAnimal($id)
+    {
+        $model = Samples::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+
     }
 }

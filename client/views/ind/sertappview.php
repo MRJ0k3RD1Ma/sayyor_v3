@@ -1,9 +1,12 @@
 <?php
 
+use common\models\DestructionSampleAnimal;
 use common\models\Emlash;
+use common\models\RouteSert;
 use common\models\Vaccination;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\VarDumper;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
@@ -18,13 +21,13 @@ YiiAsset::register($this);
     <div class="sertificates-view">
 
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <a href="#" class="btn btn-primary"><?= $model->status->icon ?> <?= $model->status->name_uz ?></a>
             </div>
-            <div class="col-md-3">
-                <a href="<?= Url::to(['ind/pdfapp', 'id' => $model->id]) ?>" class="btn btn-primary">Arizani PDF
-                    ko'rinishda yuklab olish</a>
-            </div>
+<!--            <div class="col-md-3">-->
+<!--                <a href="--><?//= Url::to(['ind/pdfapp', 'id' => $model->id]) ?><!--" class="btn btn-primary">Arizani PDF-->
+<!--                    ko'rinishda yuklab olish</a>-->
+<!--            </div>-->
         </div>
         <br>
         <?= DetailView::widget([
@@ -116,7 +119,15 @@ YiiAsset::register($this);
                     }
                     ?>
                     <tr>
-                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->status->icon ?> <?= $item->kod ?></td>
+                        <?php
+                        $destruction_id=@DestructionSampleAnimal::findOne(['state_id' => 1, 'sample_id' => $item->id])->id;
+                        $RouteSert=@RouteSert::findOne(['sample_id' => $item->id,'status_id'=>3]);
+                        ?>
+                        <td rowspan="
+                            <?= $cnt + 1 ?>">
+                            <?= ($RouteSert)?Html::a($item->status->icon.' '.$item->kod, ['/ind/animal-pdf','id'=>$item->id],['class'=>'btn btn-warning']):$item->status->icon.' '.$item->kod ?>
+                            <?= ($destruction_id)?Html::a("Yo'q qilish dalolatnomasi", ['/ind/pdfdest','id'=>$destruction_id],['class'=>'btn btn-danger']):'' ?>
+                        </td>
                         <td rowspan="<?= $cnt + 1 ?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1 ?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1 ?>"><?= $item->sampleBox->name_uz ?></td>

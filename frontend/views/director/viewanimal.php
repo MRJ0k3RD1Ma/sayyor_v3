@@ -4,12 +4,13 @@ use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
 use common\models\RouteSert;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\YiiAsset;
 use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Samples */
+/* @var $model common\models\RouteSert */
 /* @var $result ResultAnimal */
 /* @var $item ResultAnimalTests */
 /* @var $d \common\models\Samples */
@@ -24,7 +25,15 @@ YiiAsset::register($this);
 
     <div class="row">
         <div class="col-md-6">
-            <h3>Topshiriq ma'lumotlari</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Topshiriq ma'lumotlari</h3>
+                </div>
+                <div class="col-md-6">
+                    <a href="<?= Url::to(['director/pdf-animal', 'id' => $model->sample_id]) ?>" class="btn btn-warning">Arizani PDF
+                        ko'rinishda yuklab olish</a>
+                </div>
+            </div>
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [

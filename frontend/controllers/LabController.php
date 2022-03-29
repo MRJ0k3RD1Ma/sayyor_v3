@@ -7,9 +7,12 @@ use app\models\search\lab\DestructionSampleAnimalSearch;
 use app\models\search\laboratory\FoodRouteSearch;
 use common\models\DestructionSampleAnimal;
 use common\models\Employees;
+use common\models\FoodRoute;
 use common\models\Regulations;
 use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
+use common\models\ResultFood;
+use common\models\ResultFoodTests;
 use common\models\RouteSert;
 use common\models\TamplateAnimal;
 use frontend\models\search\laboratory\RouteSertSearch;
@@ -199,4 +202,44 @@ class LabController extends Controller
         ]);
     }
 
+    public function actionViewfood($id){
+        $model = FoodRoute::findOne($id);
+        $sample = $model->sample;
+
+        $result = ResultFood::findOne(['sample_id' => $sample->id]);
+
+        $test = ResultFoodTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
+        $result->creator_id = Yii::$app->user->id;
+        if (Model::loadMultiple($test, Yii::$app->request->post()) and $result->load(Yii::$app->request->post())) {
+            $result->created = date('Y-m-d h:i:s');
+            $result->save();
+            foreach ($test as $item) {
+                $item->save();
+            }
+            Yii::$app->session->setFlash('success', Yii::t('lab', 'Natijalar muvoffaqiyatli saqlandi'));
+
+            return $this->redirect(['viewfood', 'id' => $id]);
+        }
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations','template_food_regulations.regulation_id = regulations.id')
+            ->innerJoin('template_food','template_food_regulations.template_id = template_food.id')
+            ->orderBy('template_food_regulations.regulation_id')
+            ->where('template_food.id IN (SELECT result_food_tests.id from result_food_tests inner join template_food on result_food_tests.template_id=template_food.id where result_food_tests.result_id='.$result->id.')')->all();
+        ;
+        return $this->render('viewfood', [
+            'model' => $model,
+            'sample' => $sample,
+            'result' => $result,
+            'test' => $test,
+            'docs' => $docs
+        ]);
+    }
+
+    public function actionSendfood($id)
+    {
+        $model = FoodRoute::findOne($id);
+        $model->status_id = 4;
+        $model->save();
+        Yii::$app->session->setFlash('success', Yii::t('lab', 'Natijalar muvoffaqiyatli yuborildi'));
+        return $this->redirect(['viewfood', 'id' => $id]);
+    }
 }

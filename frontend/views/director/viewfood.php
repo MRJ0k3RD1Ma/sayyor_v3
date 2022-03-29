@@ -71,23 +71,7 @@ YiiAsset::register($this);
                 <?php endforeach;?>
             </ul>
 
-            <?php if ($model->status_id == 1) { ?>
-                <?php $form = ActiveForm::begin() ?>
 
-                <?php
-                $data = [];
-                foreach ($emp as $item) {
-                    $data[$item->id] = \common\models\FoodRoute::find()->where(['executor_id' => $item->id])
-                            ->andWhere(['<>', 'status_id', 3])->count('id')
-                        . ' - ' . $item->name;
-                }
-                ?>
-                <?= $form->field($model, 'executor_id')->dropDownList($data, ['prompt' => Yii::t('leader', 'Labarantni tanlang')]) ?>
-                <?= $form->field($model, 'deadline')->textInput(['type' => 'date']) ?>
-                <?= $form->field($model, 'ads')->textInput() ?>
-                <button class="btn btn-success" type="submit">Jo'natish</button>
-                <?php ActiveForm::end() ?>
-            <?php } ?>
         </div>
 
         <div class="col-md-6">
@@ -169,8 +153,29 @@ YiiAsset::register($this);
                     'attributes' => [
                         'code',
                         'ads',
-                        'require_id',
-                        'creator_id',
+//                        'require_id',
+//                        'creator_id',
+                        [
+                            'attribute'=>'require_id',
+                            'value'=>function($d){
+                                $lg = 'uz'; if(Yii::$app->language == 'ru'){$lg = 'ru';}
+                                if($d->require_id){
+                                    return $d->require->{'name_'.$lg};
+                                }else{
+                                    return null;
+                                }
+                            }
+                        ],
+                        [
+                            'attribute'=>'creator_id',
+                            'value'=>function($d){
+                                if($d->creator_id){
+                                    return $d->creator->name;
+                                }else{
+                                    return null;
+                                }
+                            }
+                        ],
                         'created',
                         'updated',
                     ]
@@ -221,9 +226,9 @@ YiiAsset::register($this);
         </div>
     <?php }?>
 
-    <?php if($model->status_id == 4){?>
+    <?php if($model->status_id == 5){?>
 
-        <?= Html::a('Tasdiqlash', ['leader/acceptfood', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Rad etish', ['leader/declinefood', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
+        <?= Html::a('Tasdiqlash', ['director/acceptfood', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Rad etish', ['director/declinefood', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
     <?php }?>
 </div>

@@ -71,9 +71,11 @@ use common\models\RouteStatus;
                             <span data-key="t-tables"><?= Yii::t('app','Oziq-ovqat havsizligi')?></span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
-                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/indexfood'])?>" data-key="t-basic-tables">Barchasi </a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/indexfood'])?>" data-key="t-basic-tables">Barchasi <span class="badge badge-primary"><?= \common\models\FoodRoute::find()->where(['director_id'=>Yii::$app->user->id])->count('id')?></span></a></li>
                             <?php foreach (RouteStatus::find()->all() as $item):?>
-                                <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/indexfood','status'=>$item->id])?>" data-key="t-basic-tables"><?= $item->{'name_'.$lg}?></a></li>
+                                <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/indexfood','status'=>$item->id])?>" data-key="t-basic-tables"><?= $item->{'name_'.$lg}?>
+                                        <span class="badge badge-primary"><?= \common\models\FoodRoute::find()->where(['director_id'=>Yii::$app->user->id])->andWhere(['status_id'=>$item->id])->count('id')?></span>
+                                    </a></li>
                             <?php endforeach;?>
                         </ul>
                     </li>

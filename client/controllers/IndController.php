@@ -304,7 +304,7 @@ class IndController extends Controller
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if ($sample->save(false)) {
-                        Yii::$app->session->setFlash('success', Yii::t('client', '{kod} raqamli namuna muvoffaqiyatli saqlandi',['kod'=>$model->kod]));
+                        Yii::$app->session->setFlash('success', Yii::t('client', '{kod} raqamli namuna muvoffaqiyatli saqlandi',['kod'=>$sample->kod]));
                         return $this->redirect(['view', 'id' => $id]);
                     } else {
                         Yii::$app->session->setFlash('error', 'Maydonlar to\'ldirimlagan');
@@ -529,7 +529,7 @@ class IndController extends Controller
             }
             $model->status_id = 1;
             $model->save();
-            Yii::$app->session->setFlash('success', Yii::t('client', 'Ariza muvoffaqiyatli yuborildi'));
+            Yii::$app->session->setFlash('success', Yii::t('client', '{code} raqamli ariza muvoffaqiyatli yuborildi',['code'=>$reg->code]));
             return $this->redirect(['viewfood', 'id' => $model->id]);
 
 

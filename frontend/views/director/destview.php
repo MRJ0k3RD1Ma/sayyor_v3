@@ -19,12 +19,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-3">
-                    <a href="<?= Url::to(['director/dest-pdf', 'id' => $model->id]) ?>" class="btn btn-warning">Arizani PDF
-                        ko'rinishda yuklab olish</a>
+            <?php if ($model->state_id == 1): ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="<?= Url::to(['director/dest-pdf', 'id' => $model->id]) ?>" class="btn btn-warning">Arizani
+                            PDF
+                            ko'rinishda yuklab olish</a>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [

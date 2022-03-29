@@ -23,6 +23,7 @@ use common\models\ResultFoodTests;
 use common\models\RouteSert;
 use common\models\SampleRegistration;
 use common\models\Samples;
+use Exception;
 use frontend\models\search\director\RouteSertSearch;
 use kartik\mpdf\Pdf;
 use Mpdf\MpdfException;
@@ -31,6 +32,7 @@ use setasign\Fpdi\PdfParser\PdfParserException;
 use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -226,10 +228,36 @@ class DirectorController extends Controller
         $model->state_id = 1;
         $model->approved_date = date('Y-m-d h:i:s');
         if ($model->save()) {
+            $pdf = new Pdf([
+                'filename' => 'filename.pdf',
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+//            'destination' => Pdf::DEST_FILE,
+                'content' => $this->renderPartial('pdf-dest', ['model' => $model]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => "Ariza",
+                    'SetHeader' => [' ' . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                $upload_dir = Yii::getAlias('@uploads');
+                $content = $pdf->render();
+                $fileName = $upload_dir . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+                $file = fopen($fileName, 'wb+');
+                fwrite($file, $content);
+                fclose($file);
+            } catch (Exception $e) {
+                return $e;
+            }
             Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi tasdiqlandi', ['code' => $model->code]);
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
+
         return $this->redirect(['dest']);
     }
 
@@ -351,27 +379,10 @@ class DirectorController extends Controller
     public function actionDestPdf($id)
     {
         $model = DestructionSampleAnimal::findOne(['id' => $id]);
-        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
-
-        $pdf = new Pdf([
-            'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
-            'destination' => Pdf::DEST_BROWSER,
-            'content' => $this->renderPartial('pdf-dest', ['model' => $model]),
-            'options' => [
-            ],
-            'methods' => [
-                'SetTitle' => "Ariza",
-                'SetHeader' => [' ' . '|| ' . date("r")],
-                'SetFooter' => ['| {PAGENO} |'],
-                'SetAuthor' => '@QalandarDev',
-                'SetCreator' => '@QalandarDev',
-            ]
-        ]);
-        try {
-            return $pdf->render();
-        } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
-            return $e;
-        }
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name='.$fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName()."_".$model->id.".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
 
 

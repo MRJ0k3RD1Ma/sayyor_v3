@@ -1,4 +1,6 @@
 <?php
+
+
 /*@var DestructionSampleAnimal $model*/
 ?>
 <table class="table table-bordered table-hover">

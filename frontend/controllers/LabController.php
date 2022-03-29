@@ -4,8 +4,10 @@ namespace frontend\controllers;
 
 
 use app\models\search\lab\DestructionSampleAnimalSearch;
+use app\models\search\lab\DestructionSampleFoodSearch;
 use app\models\search\laboratory\FoodRouteSearch;
 use common\models\DestructionSampleAnimal;
+use common\models\DestructionSampleFood;
 use common\models\Employees;
 use common\models\FoodRoute;
 use common\models\Regulations;
@@ -180,6 +182,8 @@ class LabController extends Controller
         $model = DestructionSampleAnimal::findOne($id);
         if ($model->load(Yii::$app->request->post())) {
             $model->state_id = 2;
+
+            $model->destruction_date = date('Y-m-d h:i:s');
             $model->save();
             Yii::$app->session->setFlash('success', Yii::t('lab', 'Namuna yo\'q qilish dalolatnomasi tasdiqlash uchun rahbarga yuborildi'));
             return $this->redirect(['dest']);
@@ -241,5 +245,55 @@ class LabController extends Controller
         $model->save();
         Yii::$app->session->setFlash('success', Yii::t('lab', 'Natijalar muvoffaqiyatli yuborildi'));
         return $this->redirect(['viewfood', 'id' => $id]);
+    }
+
+
+    public function actionDestfood($export = null){
+        $searchModel = new DestructionSampleFoodSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfdest', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
+        return $this->render('destfood', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionDestfoodview($id)
+    {
+        $model = DestructionSampleFood::findOne($id);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->state_id = 2;
+            $model->destruction_date = date('Y-m-d h:i:s');
+            $model->save();
+            Yii::$app->session->setFlash('success', Yii::t('lab', 'Namuna yo\'q qilish dalolatnomasi tasdiqlash uchun rahbarga yuborildi'));
+            return $this->redirect(['destfood']);
+        }
+        return $this->render('destfoodview', [
+            'model' => $model
+        ]);
     }
 }

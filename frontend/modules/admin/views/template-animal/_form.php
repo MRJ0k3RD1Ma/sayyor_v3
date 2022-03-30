@@ -65,9 +65,11 @@ use yii\widgets\ActiveForm;
                 ArrayHelper::map(TemplateUnit::find()->asArray()->all(), 'id', 'name_uz')
             ) ?>
 
+            <div class="isfalse">
+
             <?= $form->field($model, 'min')->textInput(['maxlength' => true]) ?>
 
-            <div class="oraliq">
+            <div class="oraliq" style="display: none">
 
                 <?= $form->field($model, 'min_1')->textInput(['maxlength' => true]) ?>
 
@@ -75,17 +77,26 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'max')->textInput(['maxlength' => true]) ?>
 
-            <div class="oraliq">
+            <div class="oraliq" style="display: none">
 
                 <?= $form->field($model, 'max_1')->textInput(['maxlength' => true]) ?>
 
             </div>
 
+            </div>
+
+            <div class="istrue" style="display: none">
+
+                <?= $form->field($model, 'true')->dropDownList([0=>'Yo\'q',1=>'Ha']) ?>
+                <?= $form->field($model, 'true1')->dropDownList([0=>'Yo\'q',1=>'Ha']) ?>
+            </div>
             <?= $form->field($model, 'is_vaccination')->dropDownList([0 => 'Yo\'q', 1 => 'Ha', 2 => 'Baribir']) ?>
 
             <?= $form->field($model, 'dead_days')->textInput(['type' => 'number']) ?>
 
             <?= $form->field($model, 'creator_id')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false) ?>
+            
+            <?= $form->field($model, 'consent_id')->dropDownList(ArrayHelper::map(\common\models\Employees::find()->all(),'id','name'),['prompt'=>Yii::t('cp','Tasdiqlovchini tanlang')]) ?>
 
             <!--Tasdiqlovchi kiritish keyinroq Abduraxmon aytgan roldagi odamga beriladi-->
 
@@ -94,7 +105,7 @@ use yii\widgets\ActiveForm;
             ) ?>
         </div>
         <div class="form-group">
-            <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('app', 'Saqlash'), ['class' => 'btn btn-success']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>
@@ -111,8 +122,19 @@ use yii\widgets\ActiveForm;
 $url = Yii::$app->urlManager->createUrl(['/cp/template-animal/gettype']);
 // minimal va maksimallarni aniqlashtirib ishlash kerak
 $this->registerJs("
-    $('#templateanimal-unit_id').change(function(){
-    
+    $('#tamplateanimal-unit_id').change(function(){
+//         alert($('#tamplateanimal-unit_id').val());
+          $.get('{$url}?id='+$('#tamplateanimal-unit_id').val()).done(function(data){
+              $('.oraliq').hide();
+              $('.istrue').hide();
+              $('.isfalse').css('display','block');
+              if(data == 4){
+                $('.oraliq').show();
+              }else if(data == 2){
+                 $('.istrue').css('display','block');
+                 $('.isfalse').css('display','none');
+              }
+          })
     })
 ")
 

@@ -40,6 +40,7 @@ use yii\db\Expression;
  */
 class TamplateAnimal extends \yii\db\ActiveRecord
 {
+    public $true,$true1;
     public function behaviors()
     {
         return [
@@ -66,7 +67,7 @@ class TamplateAnimal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type_id', 'gender', 'age', 'diseases_id', 'test_method_id', 'unit_id', 'is_vaccination', 'dead_days', 'creator_id', 'consent_id', 'state_id'], 'integer'],
+            [['type_id', 'gender','true','true1', 'age', 'diseases_id', 'test_method_id', 'unit_id', 'is_vaccination', 'dead_days', 'creator_id', 'consent_id', 'state_id'], 'integer'],
             [['created', 'updated'], 'safe'],
             [['name_uz', 'name_ru', 'min', 'min_1', 'max', 'max_1'], 'string', 'max' => 255],
             [['diseases_id'], 'exist', 'skipOnError' => true, 'targetClass' => Diseases::className(), 'targetAttribute' => ['diseases_id' => 'id']],
@@ -103,6 +104,8 @@ class TamplateAnimal extends \yii\db\ActiveRecord
             'created' => Yii::t('app', 'Yaratildi'),
             'updated' => Yii::t('app', 'O\'zgartirildi'),
             'state_id' => Yii::t('app', 'Holati'),
+            'true' => Yii::t('app', 'Minimal'),
+            'true1' => Yii::t('app', 'Maksimal'),
         ];
     }
 

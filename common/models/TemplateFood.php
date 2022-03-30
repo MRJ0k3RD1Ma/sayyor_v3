@@ -31,6 +31,7 @@ use Yii;
  */
 class TemplateFood extends \yii\db\ActiveRecord
 {
+    public $true,$true1;
     /**
      * {@inheritdoc}
      */
@@ -47,7 +48,7 @@ class TemplateFood extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['laboratory_test_type_id', 'type_id', 'creator_id', 'consept_id'], 'integer'],
+            [['laboratory_test_type_id', 'type_id', 'creator_id', 'consept_id','true','true1'], 'integer'],
             [['created', 'updated'], 'safe'],
             [['tasnif_code', 'name_uz', 'name_ru', 'unit_uz', 'unit_ru', 'min', 'min_1', 'max', 'max_1', 'ads'], 'string', 'max' => 255],
             [['laboratory_test_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => LaboratoryTestType::className(), 'targetAttribute' => ['laboratory_test_type_id' => 'id']],

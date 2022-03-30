@@ -53,22 +53,57 @@ use yii\bootstrap4\ActiveForm;
     <?= $form->field($model, 'unit_ru')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'type_id')->dropDownList(ArrayHelper::map(TemplateUnitType::find()->all(), 'id', 'name_uz')) ?>
+    <div class="isfalse">
 
-    <?= $form->field($model, 'min')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'min')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'min_1')->textInput(['maxlength' => true]) ?>
+        <div class="oraliq" style="display: none">
 
-    <?= $form->field($model, 'max')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'min_1')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'max_1')->textInput(['maxlength' => true]) ?>
+        </div>
+
+        <?= $form->field($model, 'max')->textInput(['maxlength' => true]) ?>
+
+        <div class="oraliq" style="display: none">
+
+            <?= $form->field($model, 'max_1')->textInput(['maxlength' => true]) ?>
+
+        </div>
+
+    </div>
+
+    <div class="istrue" style="display: none">
+
+        <?= $form->field($model, 'true')->dropDownList([0=>'Yo\'q',1=>'Ha']) ?>
+        <?= $form->field($model, 'true1')->dropDownList([0=>'Yo\'q',1=>'Ha']) ?>
+    </div>
 
     <?= $form->field($model, 'ads')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model,'consept_id')->dropDownList(ArrayHelper::map(\common\models\Employees::find()->all(),'id','name'))?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Saqlash'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+$this->registerJs("
+    $('#templatefood-type_id').change(function(){
+          $('.oraliq').hide();
+          $('.istrue').hide();
+          $('.isfalse').css('display','block');
+          data = $('#templatefood-type_id').val();
+          if(data == 4){
+            $('.oraliq').show();
+          }else if(data == 2){
+             $('.istrue').css('display','block');
+             $('.isfalse').css('display','none');
+          }
+    })
+")
+?>

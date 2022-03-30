@@ -5,6 +5,8 @@ namespace app\modules\admin\controllers;
 use common\models\TamplateAnimal;
 use common\models\search\TamplateAnimalSearch;
 use common\models\TemplateAnimalRegulations;
+use common\models\TemplateUnit;
+use common\models\TemplateUnitType;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -71,7 +73,12 @@ class TemplateAnimalController extends Controller
         $model = new TamplateAnimal();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            if ($model->load($this->request->post())) {
+                if($model->unit->type_id == 2){
+                    $model->min = $model->true;
+                    $model->max = $model->true1;
+                }
+                $model->save();
                 foreach ($this->request->post('TamplateAnimal')['regulations'] as $reg) {
                     $relation = new TemplateAnimalRegulations();
                     $relation->regulation_id = $reg;
@@ -100,8 +107,13 @@ class TemplateAnimalController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if($model->unit->type_id == 2){$model->true = $model->min; $model->true1 = $model->max;}
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            if($model->unit->type_id == 2){
+                $model->min = $model->true;
+                $model->max = $model->true1;
+            }
+            $model->save();
             foreach ($this->request->post('TamplateAnimal')['regulations'] as $reg) {
                 $relation = new TemplateAnimalRegulations();
                 $relation->regulation_id = $reg;
@@ -145,5 +157,9 @@ class TemplateAnimalController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function actionGettype($id){
+        return TemplateUnit::findOne($id)->type_id;
     }
 }

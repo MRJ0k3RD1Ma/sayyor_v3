@@ -11,8 +11,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\TemplateFood */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Template Foods'), 'url' => ['index']];
+$this->title = $model->name_uz;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Shablonlar'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>

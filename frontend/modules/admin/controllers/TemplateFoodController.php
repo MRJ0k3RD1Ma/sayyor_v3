@@ -72,7 +72,12 @@ class TemplateFoodController extends Controller
         $model = new TemplateFood();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            if ($model->load($this->request->post())) {
+                if($model->type_id == 2){
+                    $model->min = $model->true;
+                    $model->max = $model->true1;
+                }
+                $model->save();
                 foreach ($this->request->post('TemplateFood')['regulations'] as $reg) {
                     $relation = new TemplateFoodRegulations();
                     $relation->regulation_id = $reg;
@@ -101,8 +106,16 @@ class TemplateFoodController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if($model->type_id == 2){
+            $model->true = $model->min;
+            $model->true1 = $model->max;
+        }
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            if($model->type_id == 2){
+                $model->min = $model->true;
+                $model->max = $model->true1;
+            }
+            $model->save();
             foreach ($this->request->post('TemplateFood')['regulations'] as $reg) {
                 $relation = new TemplateFoodRegulations();
                 $relation->regulation_id = $reg;

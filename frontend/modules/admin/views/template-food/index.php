@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\TemplateFoodSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Template Foods');
+$this->title = Yii::t('app', 'Oziq-ovqat ekspertizasi shablonlari');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="template-food-index">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Template Food'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Shablon qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -28,13 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+//            'id',
             'tasnif_code',
-            'laboratory_test_type_id',
+//            'laboratory_test_type_id',
             'name_uz',
             'name_ru',
-            //'unit_uz',
-            //'unit_ru',
+            'unit_uz',
+            'unit_ru',
             //'type_id',
             //'min',
             //'min_1',
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'ads',
             //'creator_id',
             //'consept_id',
-            //'created',
+            'created',
             //'updated',
             [
                 'class' => ActionColumn::className(),

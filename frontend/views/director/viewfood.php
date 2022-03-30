@@ -24,7 +24,7 @@ YiiAsset::register($this);
 
 
     <div class="row">
-        <div class="col-md-6">
+
             <?php if($model->status_id == 3){?>
                 <div class="col-md-12">
                     <a href="<?= Url::to(['director/pdf-animal', 'id' => $model->sample_id]) ?>" class="btn btn-warning">Arizani PDF

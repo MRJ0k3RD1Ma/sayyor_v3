@@ -137,6 +137,32 @@ YiiAsset::register($this);
                         },
                         'format' => 'raw'
                     ],
+                    [
+                        'label'=>Yii::t('lab','Vaksinalashlar tarixi'),
+                        'value'=>function($d){
+                            $vac = $d->animal->vaccinations;
+                            $res = "";
+                            $lg = 'uz'; if(Yii::$app->language=='ru')$lg='ru';
+                            foreach ($vac as $item){
+                                $res .= "{$item->disease->{'name_'.$lg}} - {$item->disease_date}<br>";
+                            }
+                            return $res;
+                        },
+                        'format'=>'raw',
+                    ],
+                    [
+                        'label'=>Yii::t('lab','Davolashlar tarixi'),
+                        'value'=>function($d){
+                            $vac = $d->animal->emlash;
+                            $res = "";
+                            $lg = 'uz'; if(Yii::$app->language=='ru')$lg='ru';
+                            foreach ($vac as $item){
+                                $res .= "{$item->antibiotic} - {$item->emlash_date}<br>";
+                            }
+                            return $res;
+                        },
+                        'format'=>'raw',
+                    ],
 //            'sert_id',
 //                    'suspected_disease_id',
                     [

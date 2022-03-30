@@ -24,10 +24,7 @@ YiiAsset::register($this);
             <div class="col-md-2">
                 <a href="#" class="btn btn-primary"><?= $model->status->icon ?> <?= $model->status->name_uz ?></a>
             </div>
-<!--            <div class="col-md-3">-->
-<!--                <a href="--><?//= Url::to(['ind/pdfapp', 'id' => $model->id]) ?><!--" class="btn btn-primary">Arizani PDF-->
-<!--                    ko'rinishda yuklab olish</a>-->
-<!--            </div>-->
+
         </div>
         <br>
         <?= DetailView::widget([

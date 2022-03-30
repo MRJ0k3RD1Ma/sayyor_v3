@@ -154,12 +154,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
                             <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
                         </tr>
-                        <tr>
-                            <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>
-                            <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' '?></td>
-                            <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
-                            <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
-                        </tr>
+
                     <?php endfor; ?>
                 <?php endforeach;?>
 

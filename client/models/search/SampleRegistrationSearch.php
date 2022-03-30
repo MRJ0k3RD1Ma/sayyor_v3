@@ -52,9 +52,9 @@ class SampleRegistrationSearch extends SampleRegistration
     public function search($params)
     {
         if(Yii::$app->session->getFlash('doc_type') == 'inn'){
-            $query = SampleRegistration::find()->where(['inn'=>Yii::$app->session->get('doc_inn')]);
+            $query = SampleRegistration::find()->where(['inn'=>Yii::$app->session->get('doc_inn')])->orderBy(['created'=>SORT_DESC]);
         }else{
-            $query = SampleRegistration::find()->where(['pnfl'=>Yii::$app->session->get('doc_pnfl')]);
+            $query = SampleRegistration::find()->where(['pnfl'=>Yii::$app->session->get('doc_pnfl')])->orderBy(['created'=>SORT_DESC]);
         }
 
         // add conditions that should always apply here

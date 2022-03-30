@@ -107,6 +107,9 @@ class Animals extends \yii\db\ActiveRecord
         return $this->hasMany(Vaccination::className(), ['animal_id' => 'id']);
     }
 
+    public function getEmlash(){
+        return $this->hasMany(Emlash::className(),['animal_id'=>'id']);
+    }
     /**
      * Gets query for [[VetSite]].
      *

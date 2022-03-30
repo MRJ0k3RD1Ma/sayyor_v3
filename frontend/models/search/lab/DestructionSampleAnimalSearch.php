@@ -50,7 +50,7 @@ class DestructionSampleAnimalSearch extends DestructionSampleAnimal
      */
     public function search($params)
     {
-        $query = DestructionSampleAnimal::find();
+        $query = DestructionSampleAnimal::find()->orderBy(['state_id' => SORT_DESC, 'created' => SORT_DESC]);
 
         // add conditions that should always apply here
 

@@ -93,6 +93,7 @@ class FoodSamples extends \yii\db\ActiveRecord
             'updated' => Yii::t('food', 'O\'zgartirildi'),
             'status_id' => Yii::t('food', 'Status'),
             'emp_id' => Yii::t('food', 'Ro\'yhatga oluvchi'),
+            '_country' => Yii::t('food', 'Davlat'),
         ];
     }
 

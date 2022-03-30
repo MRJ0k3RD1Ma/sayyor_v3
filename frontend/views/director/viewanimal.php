@@ -24,16 +24,17 @@ YiiAsset::register($this);
 
 
     <div class="row">
+       <?php if($model->status_id == 3){?>
+           <div class="col-md-12">
+               <a href="<?= Url::to(['director/pdf-animal', 'id' => $model->sample_id]) ?>" class="btn btn-warning">Arizani PDF
+                   ko'rinishda yuklab olish</a>
+
+           </div>
+        <?php }?>
         <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Topshiriq ma'lumotlari</h3>
-                </div>
-                <div class="col-md-6">
-                    <a href="<?= Url::to(['director/pdf-animal', 'id' => $model->sample_id]) ?>" class="btn btn-warning">Arizani PDF
-                        ko'rinishda yuklab olish</a>
-                </div>
-            </div>
+
+            <h3>Topshiriq ma'lumotlari</h3>
+
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
@@ -135,6 +136,32 @@ YiiAsset::register($this);
                             return $res;
                         },
                         'format' => 'raw'
+                    ],
+                    [
+                        'label'=>Yii::t('lab','Vaksinalashlar tarixi'),
+                        'value'=>function($d){
+                            $vac = $d->animal->vaccinations;
+                            $res = "";
+                            $lg = 'uz'; if(Yii::$app->language=='ru')$lg='ru';
+                            foreach ($vac as $item){
+                                $res .= "{$item->disease->{'name_'.$lg}} - {$item->disease_date}<br>";
+                            }
+                            return $res;
+                        },
+                        'format'=>'raw',
+                    ],
+                    [
+                        'label'=>Yii::t('lab','Davolashlar tarixi'),
+                        'value'=>function($d){
+                            $vac = $d->animal->emlash;
+                            $res = "";
+                            $lg = 'uz'; if(Yii::$app->language=='ru')$lg='ru';
+                            foreach ($vac as $item){
+                                $res .= "{$item->antibiotic} - {$item->emlash_date}<br>";
+                            }
+                            return $res;
+                        },
+                        'format'=>'raw',
                     ],
 //            'sert_id',
 //                    'suspected_disease_id',

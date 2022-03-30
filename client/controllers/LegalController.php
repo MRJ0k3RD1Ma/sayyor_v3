@@ -515,6 +515,7 @@ class LegalController extends Controller
         $model = new FoodSamples();
         $food = FoodSamplingCertificate::findOne($id);
         $model->sert_id = $food->id;
+        $model->_country = 192;
         if($model->load(Yii::$app->request->post())){
             $num = FoodSamples::find()->where(['sert_id'=>$model->sert_id])->max('samp_id');
             $num = intval($num) + 1;

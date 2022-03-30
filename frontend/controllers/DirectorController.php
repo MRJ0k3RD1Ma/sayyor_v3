@@ -15,6 +15,7 @@ use common\models\FoodCompose;
 use common\models\FoodRegistration;
 use common\models\FoodRoute;
 use common\models\FoodSamples;
+use common\models\FoodSamplingCertificate;
 use common\models\Regulations;
 use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
@@ -23,6 +24,7 @@ use common\models\ResultFoodTests;
 use common\models\RouteSert;
 use common\models\SampleRegistration;
 use common\models\Samples;
+use common\models\Sertificates;
 use Exception;
 use frontend\models\search\director\RouteSertSearch;
 use kartik\mpdf\Pdf;
@@ -138,10 +140,10 @@ class DirectorController extends Controller
             $sample = Samples::findOne($model->sample_id);
             $sample->status_id = 5;
             $sample->save();
-
+            $dal = Sertificates::findOne($sample->sert_id);
+            $dal->status_id = 5;
+            $dal->save();
             $cs = CompositeSamples::findOne(['sample_id' => $sample->id]);
-
-
             $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
             $reg->status_id = 5;
             $reg->save();
@@ -373,7 +375,9 @@ class DirectorController extends Controller
             $sample = FoodSamples::findOne($model->sample_id);
             $sample->status_id = 5;
             $sample->save();
-
+            $dal = FoodSamplingCertificate::findOne($sample->sert_id);
+            $dal->status_id = 5;
+            $dal->save();
             $cs = FoodCompose::findOne(['sample_id' => $sample->id]);
             $reg = FoodRegistration::findOne(['id' => $cs->registration_id]);
             $reg->status_id = 5;

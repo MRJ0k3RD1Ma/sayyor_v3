@@ -103,7 +103,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
+<div>
+    <h4 style="float: left">Namunalar ro'yhati</h4>
+    <?php if($model->status_id==0){ ?>
+        <span style="float: right"><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/add','id'=>$model->id])?>">
+                    <span class="fa fa-plus"></span> Namuna qo'shish
+                </a>
+            </span>
+    <?php } ?>
 
+</div>
 <div class="row">
     <div class="col-md-12 table-responsive">
         <table class="table table-bordered table-hover">
@@ -168,11 +177,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </tr>
                     <?php endfor; ?>
                 <?php endforeach;?>
-                <?php if($model->status_id == 0){?>
-                    <tr>
-                        <td colspan="15"><a href="<?= Yii::$app->urlManager->createUrl(['/legal/add','id'=>$model->id])?>" class="btn btn-primary">Yana qo'shish</a></td>
-                    </tr>
-                <?php }?>
+
             </tbody>
         </table>
     </div>

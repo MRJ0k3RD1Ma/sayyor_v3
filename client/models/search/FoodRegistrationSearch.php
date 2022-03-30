@@ -50,9 +50,9 @@ class FoodRegistrationSearch extends FoodRegistration
     public function search($params)
     {
         if(Yii::$app->session->getFlash('doc_type') == 'inn'){
-            $query = FoodRegistration::find()->where(['inn'=>Yii::$app->session->get('doc_inn')]);
+            $query = FoodRegistration::find()->where(['inn'=>Yii::$app->session->get('doc_inn')])->orderBy(['created'=>SORT_DESC]);
         }else{
-            $query = FoodRegistration::find()->where(['pnfl'=>Yii::$app->session->get('doc_pnfl')]);
+            $query = FoodRegistration::find()->where(['pnfl'=>Yii::$app->session->get('doc_pnfl')])->orderBy(['created'=>SORT_DESC]);
         }
         // add conditions that should always apply here
 

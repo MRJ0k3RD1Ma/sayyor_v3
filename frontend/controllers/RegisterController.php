@@ -99,6 +99,7 @@ class RegisterController extends Controller
         $model = $this->findModel($id);
         $model->operator = Yii::$app->user->id;
         $model->status_id = 2;
+
         $model->save();
         return $this->redirect(['viewtest','id'=>$model->id]);
     }
@@ -339,6 +340,9 @@ class RegisterController extends Controller
                $route->status_id = 1;
                $model->status_id = 3;
                $route->sample_id = $id;
+               $dal = Sertificates::findOne($model->sert_id);
+               $dal->status_id = 3;
+               $dal->save();
                $reg->status_id = 3;
                $reg->save();
                $model->emp_id = Yii::$app->user->id;
@@ -449,6 +453,9 @@ class RegisterController extends Controller
                 $model->status_id = 3;
                 $route->sample_id = $id;
                 $reg->status_id = 3;
+                $dal = Sertificates::findOne($model->sert_id);
+                $dal->status_id = 3;
+                $dal->save();
                 $reg->save();
                 $model->emp_id = Yii::$app->user->id;
                 $route->registration_id = $regid;

@@ -16,11 +16,13 @@ YiiAsset::register($this);
 ?>
 <div class="food-sampling-certificate-view">
 
-    <p>
-        <a class="btn btn-success"
-           href="<?= Yii::$app->urlManager->createUrl(['/ind/sendfood', 'id' => $model->id]) ?>">Ariza yuborish</a>
-    </p>
+    <?php if($model->status_id == 0){?>
+        <p>
+            <a class="btn btn-success"
+               href="<?= Yii::$app->urlManager->createUrl(['/ind/sendfood', 'id' => $model->id]) ?>">Ariza yuborish</a>
+        </p>
 
+    <?php }?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [

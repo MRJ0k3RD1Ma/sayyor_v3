@@ -40,7 +40,7 @@ class DestructionSampleFoodSearch extends DestructionSampleFood
      */
     public function search($params)
     {
-        $query = DestructionSampleFood::find()->where(['creator_id'=>\Yii::$app->user->id])->orderBy(['state_id'=>SORT_DESC,'created'=>SORT_DESC]);
+        $query = DestructionSampleFood::find()->orderBy(['state_id'=>SORT_DESC,'created'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

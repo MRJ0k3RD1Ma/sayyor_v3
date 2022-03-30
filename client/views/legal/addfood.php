@@ -36,6 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($model, 'count')->textInput() ?>
 
     <?= $form->field($model, 'sample_box_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SampleBoxes::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Namuna o\'ramini tanlang')]) ?>
+    <?= $form->field($model, '_country')->dropDownList(
+        \yii\helpers\ArrayHelper::map(\common\models\Countres::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('client', 'Davlatni tanlang'),'class'=>'form-control select2list']) ?>
 
     <?= $form->field($model, 'sample_condition_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SampleConditions::find()->all(),'id','name_'.$lg),[
             'prompt'=>Yii::t('client','Namuna holatini tanlang')

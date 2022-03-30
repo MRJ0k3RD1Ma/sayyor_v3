@@ -107,7 +107,7 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
 
-                    <a class="dropdown-item" data-method="post" href="<?= Yii::$app->urlManager->createUrl(['/site/logout'])?>"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a>
+                    <a class="dropdown-item" data-method="post" href="<?= Yii::$app->urlManager->createUrl(['/site/logout'])?>"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Chiqish</a>
                 </div>
             </div>
 

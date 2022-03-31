@@ -88,3 +88,7 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+td{
+    vertical-align: middle;
+    text-align: center;
+}

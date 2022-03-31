@@ -1,5 +1,7 @@
 <?php
 
+use common\models\DestructionSampleAnimal;
+use common\models\RouteSert;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -106,7 +108,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     ?>
                     <tr>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->status->icon?> <?= $item->kod?></td>
+                        <?php
+                        $destruction_id=@DestructionSampleAnimal::findOne(['state_id' => 1, 'sample_id' => $item->id])->id;
+                        $RouteSert=@RouteSert::findOne(['sample_id' => $item->id,'status_id'=>3]);
+                        ?>
+                        <td rowspan="
+                            <?= $cnt + 1 ?>">
+                            <?= ($RouteSert)?Html::a($item->status->icon.' '.$item->kod, ['/legal/animal-pdf','id'=>$item->id],['class'=>'btn btn-warning']):$item->status->icon.' '.$item->kod ?>
+                            <?= ($destruction_id)?Html::a("Yo'q qilish dalolatnomasi", ['/legal/pdfdest','id'=>$destruction_id],['class'=>'btn btn-danger']):'' ?>
+                        </td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>

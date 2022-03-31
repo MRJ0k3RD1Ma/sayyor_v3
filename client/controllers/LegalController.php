@@ -635,4 +635,21 @@ class LegalController extends Controller
             'samp'=>$samples
         ]);
     }
+
+    public function actionAnimalPdf($id)
+    {
+        $model = Samples::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+    }
+    public function actionFoodPdf($id)
+    {
+        $model = FoodSamples::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+    }
 }

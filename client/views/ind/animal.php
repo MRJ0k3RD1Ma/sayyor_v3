@@ -1,14 +1,14 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Sertificates */
 /* @var $ind common\models\Individuals */
 /* @var $legal common\models\LegalEntities */
 /* @var $reg common\models\SampleRegistration */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form ActiveForm */
 ?>
 
     <div class="sertificates-form">

@@ -28,10 +28,11 @@ $samples = $model;
 $sertificate = $samples->sert;
 $resultanimal = ResultFood::findOne(['sample_id' => $samples->id]);
 $routesert = FoodRoute::findOne(['sample_id' => $samples->id])->registration_id;
-//\yii\helpers\VarDumper::dump($samples) or die();
+
+$lg = 'uz';if(Yii::$app->language=='ru'){$lg='ru';}
 
 //errdeb($routesert);
-$docs = $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations', 'template_food_regulations.regulation_id = regulations.id')
+$docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations', 'template_food_regulations.regulation_id = regulations.id')
     ->innerJoin('template_food', 'template_food_regulations.template_id = template_food.id')
     ->orderBy('template_food_regulations.regulation_id')
     ->where('template_food.id IN (SELECT result_food_tests.id from result_food_tests inner join template_food on result_food_tests.template_id=template_food.id where result_food_tests.result_id=' . $routesert . ')')->all();;
@@ -100,8 +101,7 @@ $qr = function () use ($sertificate) {
 </div>
 <br>
 <div>
-    Текшириш усули буйича НХ: (танланган шаблон буйича 07102 да танланган шаблонда келтирилган «норматив хужжат» поляси,
-    бир нечта булиши мумкин, факат такрорланмасин)
+    Текшириш усули буйича НХ: <?php foreach ($docs as $item){echo $item->{'name_'.$lg};}?>
 </div>
 <br>
 <div>

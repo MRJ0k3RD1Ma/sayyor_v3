@@ -355,6 +355,9 @@ class RegisterController extends Controller
                    $des->ads = $cs->ads;
                    $des->consent_id = $route->director_id;
                    $des->save();
+                   $model->save();
+                   $reg->save();
+                   $cs->save();
                    return $this->redirect(['/register/regview', 'id' => $regid]);
                }
                $route->status_id = 1;
@@ -489,6 +492,9 @@ class RegisterController extends Controller
                     $des->ads = $cs->ads;
                     $des->consent_id = $route->director_id;
                     $des->save();
+                    $model->save();
+                    $reg->save();
+                    $cs->save();
                     return $this->redirect(['/register/regproductview', 'id' => $regid]);
                 }
 
@@ -496,7 +502,7 @@ class RegisterController extends Controller
                 $model->status_id = 3;
                 $route->sample_id = $id;
                 $reg->status_id = 3;
-                $dal = Sertificates::findOne($model->sert_id);
+                $dal = FoodSamplingCertificate::findOne($model->sert_id);
                 $dal->status_id = 3;
                 $dal->save();
                 $reg->save();

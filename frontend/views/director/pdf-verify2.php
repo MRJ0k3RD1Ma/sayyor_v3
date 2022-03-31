@@ -3,17 +3,20 @@
 /* @var $regmodel common\models\SampleRegistration */
 /* @var $model common\models\Samples */
 /* @var $composite common\models\CompositeSamples */
-
+/* @var $result common\models\ResultFood */
+/* @var $samples \common\models\FoodSamples*/
 /* @var $sertificate common\models\Sertificates */
 
 use common\models\Employees;
 use common\models\FoodRoute;
 use common\models\Individuals;
+use common\models\LegalEntities;
 use common\models\Regulations;
 use common\models\ResultAnimal;
 use common\models\ResultFood;
 use common\models\RouteSert;
 use common\models\Soato;
+use common\models\Tshx;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
@@ -27,34 +30,12 @@ $composite = $regmodel->comp;
 $samples = $model;
 $sertificate = $samples->sert;
 $resultanimal = ResultFood::findOne(['sample_id' => $samples->id]);
-$routesert = FoodRoute::findOne(['sample_id' => $samples->id])->registration_id;
+$route = FoodRoute::findOne(['sample_id' => $samples->id]);
+$routesert = $route->registration_id;
 
-$lg = 'uz';if(Yii::$app->language=='ru'){$lg='ru';}
+$lg = 'uz';
 
-//errdeb($routesert);
-$docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations', 'template_food_regulations.regulation_id = regulations.id')
-    ->innerJoin('template_food', 'template_food_regulations.template_id = template_food.id')
-    ->orderBy('template_food_regulations.regulation_id')
-    ->where('template_food.id IN (SELECT result_food_tests.id from result_food_tests inner join template_food on result_food_tests.template_id=template_food.id where result_food_tests.result_id=' . $routesert . ')')->all();;
 
-//errdeb($routesert);
-$qr = function () use ($sertificate) {
-    $result = Builder::create()
-        ->writer(new PngWriter())
-        ->writerOptions([])
-        ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsert', 'id' => $sertificate->id]))
-        ->encoding(new Encoding('UTF-8'))
-        ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
-        ->size(100)
-        ->margin(3)
-        ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
-//                        ->logoPath(Yii::$app->basePath.'/web/favicon.ico')
-        ->labelText('')
-        ->labelFont(new NotoSans(20))
-        ->labelAlignment(new LabelAlignmentCenter())
-        ->build();
-    return "<img src='{$result->getDataUri()}'>";
-}
 ?>
 
 <table class="table table-bordered table-hover">
@@ -66,89 +47,160 @@ $qr = function () use ($sertificate) {
             ?>
         </th>
         <th style="width: 50%;height: 100px;text-align: center;vertical-align: middle">
-            <img src="<?= Yii::$app->homeUrl . "/tmp/img.png" ?>" alt="">
+            <?php
+            $qr = Builder::create()
+                ->writer(new PngWriter())
+                ->writerOptions([])
+                ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsertfood', 'id' => $sertificate->id]))
+                ->encoding(new Encoding('UTF-8'))
+                ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+                ->size(100)
+                ->margin(3)
+                ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+//                        ->logoPath(Yii::$app->basePath.'/web/favicon.ico')
+                ->labelText('')
+                ->labelFont(new NotoSans(20))
+                ->labelAlignment(new LabelAlignmentCenter())
+                ->build();
+            echo "<img src='{$qr->getDataUri()}'>";
+            ?>
         </th>
     </tr>
     </thead>
 
 </table>
 <div class="align-content-center" style="text-align: center">
-    <b>ТЕКШИРИШ БАЁННОМАСИ № <?= $regmodel->code ?></b>
+    <b>TEKSHIRUV BAYONNOMASI № <?= $resultanimal->code ?></b>
 </div>
 <br>
 <div>
-    Буюртмачи номи ва манзили: <?php
-    $ind = Individuals::findOne(['pnfl' => $regmodel->pnfl]);
-    echo $regmodel->pnfl . " " . $regmodel->inn . " "
-        . @$ind->surname . " "
-        . @$ind->name . " "
-        . @$ind->middlename . " "
-        . @Soato::Full($ind->soato_id);
+    Buyurtmachi nomi va manzili: <?php
+    if ($regmodel->inn) {
+        $legal = LegalEntities::findOne(['inn' => $regmodel->inn]);
+        echo $legal->inn
+            . " "
+            . $legal->name
+            . " "
+            . Tshx::findOne(['id' => $legal->tshx_id])->name_uz
+            . " "
+            . Soato::Full($legal->soato_id);
 
+    }else {
+        $ind = Individuals::findOne(['pnfl' => $regmodel->pnfl]);
+        echo $regmodel->pnfl . " " . $regmodel->inn . " "
+            . $ind->surname . " "
+            . $ind->name . " "
+            . $ind->middlename . " "
+            . Soato::Full($ind->soato_id);
+    }
     ?>
 </div>
 <br>
 <div>
-    Текширув объекти: намуна номи:<?= @$samples->sampleTypeIs->name_uz ?>,кушимча маълумот:<?= $samples->coments ?>
-    ,намуна
-    коди: <?= $samples->samp_code ?>
+    Tekshiruv obyekti: Namuna nomi: <?= $samples->tasnif_code.'-'.$samples->tasnif->name?>; Qo'shimcha ma'lumotlar:
+    Ishlab chiqarilgan davlat: <?= @$samples->country->name_uz ?>
+    Ishlab chiqaruvchi: <?= $samples->producer?>
+    Seriya raqami: <?= $samples->serial_num?>
+    Ishlab chiqarilgan sana: <?= $samples->manufacture_date?>
+    Muddati: <?= $samples->sell_by?>; Namuna kodi: <?= $samples->samp_code?>
+
 </div>
 <br>
 <div>
-    Намуна олинган жойи: <?= //$sertificate->vetSite->name
-    // ,манзили: <?= @Soato::Full($sertificate->vetSite->soato)
-    ''; ?>
+    Намуна олинган жойи: <?= $sertificate->samplingSite->name ?>, manzili: <?= Soato::Full($sertificate->samplingSite->soato) ?>
 </div>
 <br>
 <div>
-    Текшириш усули буйича НХ: <?php foreach ($docs as $item){echo $item->{'name_'.$lg};}?>
+    Tekshiruv maqsadi va vazifasi: <?= $sertificate->verificationPupose->name_uz?>
 </div>
 <br>
 <div>
-    Текширувни утказиш шароити: (Натижани кайд этиш (07101) дан олинади: температура, намлик, регантлар, бошка шартлар,
-    изох полялари)
+    Tekshirish usuli bo'yicha NH: <?php foreach ($docs as $item){echo $item->{'name_'.$lg};}?>
 </div>
+
 <br>
 <div style="text-align: center">
-    <b>Текширув натижалари:</b>
+    <b>Tekshiruv natijalari:</b>
 </div>
 <br>
 <table class="table table-bordered table-hover" style="text-align: center">
     <thead>
     <tr>
         <th rowspan="2" style="text-align: center;vertical-align: middle;">
-            Параметр (талаб) номи
+            Parametr (talab) nomi
         </th>
-        <th colspan="2">
-            Параметр кийматлари
+        <th colspan="3">
+            Parametr qiymatlari
         </th>
-        <th rowspan="2" style="vertical-align: middle;">
-            Талабга мослик
+        <th rowspan="2">
+            Talabga mosligi
         </th>
     </tr>
     <tr>
+        <th>Birlik</th>
         <th>
-            НХ буйича
+            NH bo'yicha
         </th>
         <th>
-            Хакикатда
+            Haqiqatda
         </th>
+
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td>
-            Data
-        </td>
-        <td>
-            Data
-        </td>
-        <td>
-            Data
-        </td>
-        <td>
-            Data
-        </td>
+        <td>Namuna raqami</td>
+        <td colspan="3"><?= $samples->samp_code?></td>
     </tr>
+    <?php foreach ($resultanimal->tests as $item): ?>
+        <tr>
+            <td><?= $item->template->name_uz?></td>
+            <td><?= $item->template->unit_uz ?></td>
+            <?php if ($item->type_id == 1) { ?>
+                <td><?= $item->template->min . '-' . $item->template->max ?></td>
+            <?php } elseif ($item->type_id == 2) { ?>
+                <td><?= Yii::$app->params['result'][$item->template->min] ?></td>
+            <?php } elseif ($item->type_id == 3) { ?>
+                <td><?= $item->template->min . '-' . $item->template->max . ' %' ?></td>
+            <?php } elseif ($item->type_id == 4) { ?>
+                <td><?= $item->template->min . '-' . $item->template->max ?>
+                    <br> <?= $item->template->min_1 . '-' . $item->template->max_1 ?></td>
+            <?php } ?>
+
+
+            <?php if ($item->type_id == 1) { ?>
+                <td><?= $item->result ?></td>
+            <?php } elseif ($item->type_id == 2) { ?>
+                <td><?= Yii::$app->params['result'][$item->result] ?></td>
+            <?php } elseif ($item->type_id == 3) { ?>
+                <td><?= $item->template->min . '-' . $item->template->max ?></td>
+            <?php } elseif ($item->type_id == 4) { ?>
+                <td><?= $item->result.'-'.$item->result_2?></td>
+            <?php } ?>
+
+
+            <?php if ($item->type_id == 1) { ?>
+                <td><?php if(intval($item->template->min) <= intval($item->result) and intval($item->result)<= intval($item->template->max)){echo 'Ha';}else{echo 'Yo\'q';} ?></td>
+            <?php } elseif ($item->type_id == 2) { ?>
+                <td><?= Yii::$app->params['result'][$item->result] ?></td>
+            <?php } elseif ($item->type_id == 3) { ?>
+                <td><?= $item->template->min . '-' . $item->template->max ?></td>
+            <?php } elseif ($item->type_id == 4) { ?>
+                <td><?= $item->result.'-'.$item->result_2?></td>
+            <?php } ?>
+
+
+        </tr>
+    <?php endforeach;?>
     </tbody>
 </table>
+
+<br>
+<p>Tekshirish sanasi: <?= $route->updated ?></p>
+<p>Qo'shimcha ma'lumot: <?= $resultanimal->ads ?></p>
+<p>
+    Tekshirish o'tkazdi: <?= $route->executor->name ?>
+</p>
+<p>
+    Tasdiqladi: <?= $route->director->name ?>
+</p>

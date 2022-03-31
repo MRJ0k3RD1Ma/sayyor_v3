@@ -27,7 +27,7 @@ YiiAsset::register($this);
 
             <?php if($model->status_id == 3){?>
                 <div class="col-md-12">
-                    <a href="<?= Url::to(['director/pdf-animal', 'id' => $model->sample_id]) ?>" class="btn btn-warning">Arizani PDF
+                    <a href="<?= Url::to(['director/pdf-food', 'id' => $model->sample_id]) ?>" class="btn btn-warning">Arizani PDF
                         ko'rinishda yuklab olish</a>
 
                 </div>

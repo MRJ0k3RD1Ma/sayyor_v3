@@ -1,13 +1,10 @@
 <?php
 
 use common\models\DestructionSampleAnimal;
-<<<<<<< HEAD
-use common\models\RouteSert;
-=======
+
 use common\models\Emlash;
 use common\models\RouteSert;
 use common\models\Vaccination;
->>>>>>> 60fc18472e12d36188611cd151b1e7549adcbdaf
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;

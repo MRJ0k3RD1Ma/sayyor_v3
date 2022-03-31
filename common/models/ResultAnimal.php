@@ -64,7 +64,7 @@ class ResultAnimal extends \yii\db\ActiveRecord
             'reagent_series' => Yii::t('model', 'Reaktiv seriyasi'),
             'conditions' => Yii::t('model', 'Boshqa sharoitlar'),
             'end_date' => Yii::t('model', 'Test tugash vaqti'),
-            'ads' => Yii::t('model', 'Izoh'),
+            'ads' => Yii::t('model', 'Umumlashgan natija'),
             'creator_id' => Yii::t('model', 'Labarant'),
             'consent_id' => Yii::t('model', 'Tasdiqladi'),
             'created' => Yii::t('model', 'Yaratildi'),

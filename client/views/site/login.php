@@ -49,9 +49,13 @@ $this->title = Yii::t('login', "Tizimga kirish");
                         </div>
 
 
-                        <div class="sign">
-                            <div>
-                                <button class="btn btn-primary"><?= Yii::t('login', 'Kirish') ?> </button>
+                        <div class="sign row">
+                            <div class="col-md-6">
+                                <button class="btn btn-success btn-block"><?= Yii::t('login', 'Kirish') ?> </button>
+                            </div>
+                            <div class="col-md-6">
+                                <a class="btn btn-primary btn-block mt-2"
+                                   href="/site"><?= Yii::t('login', 'Login parol yordamida kirish') ?></a>
                             </div>
                         </div>
                     </div>
@@ -77,10 +81,15 @@ $this->title = Yii::t('login', "Tizimga kirish");
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <a class="btn btn-success sign-in" href="#" onclick="authorize();" role="button"><i
-                                            class="fa fa-sign-in"></i>Kirish</a>
+                            <div class="sign row">
+                                <div class="col-md-6">
+                                    <a class="btn btn-success btn-block sign-in mt-2" href="#" onclick="authorize();" role="button"><i
+                                                class="fa fa-sign-in"></i>Kirish</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a class="btn btn-primary btn-block mt-2"
+                                       href="/site"><?= Yii::t('login', 'Login parol yordamida kirish') ?></a>
+                                </div>
                             </div>
 
                         </div>
@@ -113,7 +122,7 @@ $this->title = Yii::t('login', "Tizimga kirish");
 
                 </div>
 
-                <a class="btn btn-primary" href="/site/">Login parol yordamida kirish</a>
+                <a class="btn btn-primary btn-block" id='login' href="/site/"><?= Yii::t('login', 'Login parol yordamida kirish') ?></a>
             </div>
             <?php ActiveForm::end() ?>
         </div>
@@ -288,11 +297,13 @@ $this->registerJs("
 //        if(this.value == 'inn'){
             $('.ind').hide();
             $('.yur').show();
+            $('#login').hide();
 //            $('#innform-name').attr('placeholder','Tashkilot nomi')
         }else{
 //            $('#innform-name').attr('placeholder','FIO')
             $('.yur').hide();
             $('.ind').show();
+            $('#login').hide();
         }
     })
     

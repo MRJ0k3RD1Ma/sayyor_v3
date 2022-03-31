@@ -8,10 +8,12 @@
 
 use common\models\Employees;
 use common\models\Individuals;
+use common\models\LegalEntities;
 use common\models\Regulations;
 use common\models\ResultAnimal;
 use common\models\RouteSert;
 use common\models\Soato;
+use common\models\Tshx;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
@@ -74,13 +76,24 @@ $qr = function () use ($sertificate) {
 <br>
 <div>
     Буюртмачи номи ва манзили: <?php
-    $ind = Individuals::findOne(['pnfl' => $regmodel->pnfl]);
-    echo $regmodel->pnfl . " " . $regmodel->inn . " "
-        . $ind->surname . " "
-        . $ind->name . " "
-        . $ind->middlename . " "
-        . Soato::Full($ind->soato_id);
+    if ($regmodel->inn) {
+        $legal = LegalEntities::findOne(['inn' => $regmodel->inn]);
+        echo $legal->inn
+            . " "
+            . $legal->name
+            . " "
+            . Tshx::findOne(['id' => $legal->tshx_id])->name_uz
+            . " "
+            . Soato::Full($legal->soato_id);
 
+    }else {
+        $ind = Individuals::findOne(['pnfl' => $regmodel->pnfl]);
+        echo $regmodel->pnfl . " " . $regmodel->inn . " "
+            . $ind->surname . " "
+            . $ind->name . " "
+            . $ind->middlename . " "
+            . Soato::Full($ind->soato_id);
+    }
     ?>
 </div>
 <br>

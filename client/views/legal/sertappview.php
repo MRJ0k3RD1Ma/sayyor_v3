@@ -1,6 +1,11 @@
 <?php
 
+use common\models\DestructionSampleAnimal;
+use common\models\Emlash;
+use common\models\RouteSert;
+use common\models\Vaccination;
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -9,7 +14,7 @@ use yii\widgets\DetailView;
 $this->title = $model->code;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Arizalar ro\'yhati'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
     <div class="sertificates-view">
 
@@ -97,8 +102,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 </thead>
                 <tbody>
                 <?php $n=0; foreach ($samples as $item): $n++;
-                    $cnt_vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->count('*');
-                    $cnt_eml = \common\models\Emlash::find()->where(['animal_id'=>$item->animal_id])->count('*');
+                    $cnt_vac = Vaccination::find()->where(['animal_id'=>$item->animal_id])->count('*');
+                    $cnt_eml = Emlash::find()->where(['animal_id'=>$item->animal_id])->count('*');
                     if($cnt_vac > $cnt_eml){
                         $cnt = $cnt_vac;
                     }else{
@@ -106,7 +111,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     ?>
                     <tr>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->status->icon?> <?= $item->kod?></td>
+                        <?php
+                        $destruction_id=@DestructionSampleAnimal::findOne(['state_id' => 1, 'sample_id' => $item->id])->id;
+                        $RouteSert=@RouteSert::findOne(['sample_id' => $item->id,'status_id'=>3]);
+                        ?>
+                        <td rowspan="
+                            <?= $cnt + 1 ?>">
+                            <?= ($RouteSert)?Html::a($item->status->icon.' '.$item->kod, ['/legal/animal-pdf','id'=>$item->id],['class'=>'btn btn-warning']):$item->status->icon.' '.$item->kod ?>
+                            <?= ($destruction_id)?Html::a("Yo'q qilish dalolatnomasi", ['/legal/pdfdest','id'=>$destruction_id],['class'=>'btn btn-danger']):'' ?>
+                        </td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>
@@ -122,8 +135,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     </tr>
                     <?php
-                    $vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->orderBy(['disease_date'=>SORT_DESC])->all();
-                    $eml = \common\models\Emlash::find()->where(['animal_id'=>$item->animal_id])->orderBy(['emlash_date'=>SORT_DESC])->all();
+                    $vac = Vaccination::find()->where(['animal_id'=>$item->animal_id])->orderBy(['disease_date'=>SORT_DESC])->all();
+                    $eml = Emlash::find()->where(['animal_id'=>$item->animal_id])->orderBy(['emlash_date'=>SORT_DESC])->all();
                     for ($i=0;$i<$cnt; $i++):?>
                         <tr>
                             <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>

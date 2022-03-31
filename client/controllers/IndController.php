@@ -124,12 +124,36 @@ class IndController extends Controller
     }
 
 
-    public function actionListanimal()
+    public function actionListanimal(int $export = null)
     {
 
         $searchModel = new SertificatesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
 
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfindextest', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
         return $this->render('indextest', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use common\models\Animals;
 use common\models\CompositeSamples;
+use common\models\DestructionSampleAnimal;
+use common\models\DestructionSampleFood;
 use common\models\DistrictView;
 use common\models\Emlash;
 use common\models\Employees;
@@ -336,7 +338,28 @@ class RegisterController extends Controller
 
         if(Yii::$app->request->isPost){
            if($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())){
-
+               if($cs->status_id == 2){
+                   $model->status_id = 6;
+                   $reg->status_id = 6;
+                   $dal = Sertificates::findOne($model->sert_id);
+                   $dal->status_id = 6;
+                   $dal->save();
+                   $des = new DestructionSampleAnimal();
+                   $des->sample_id = $cs->sample_id;
+                   $des->creator_id = Yii::$app->user->id;
+                   $num = DestructionSampleAnimal::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+                   $num = intval($num)+1;
+                   $des->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
+                   $des->destruction_date = date('Y-m-d h:i:s');
+                   $des->state_id = 2;
+                   $des->ads = $cs->ads;
+                   $des->consent_id = $route->director_id;
+                   $des->save();
+                   $model->save();
+                   $reg->save();
+                   $cs->save();
+                   return $this->redirect(['/register/regview', 'id' => $regid]);
+               }
                $route->status_id = 1;
                $model->status_id = 3;
                $route->sample_id = $id;
@@ -451,11 +474,35 @@ class RegisterController extends Controller
 
         if (Yii::$app->request->isPost) {
             if ($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())) {
+
+                if($cs->status_id == 2){
+                    $model->status_id = 6;
+                    $reg->status_id = 6;
+                    $dal = FoodSamplingCertificate::findOne($model->sert_id);
+                    $dal->status_id = 6;
+                    $dal->save();
+                    $des = new DestructionSampleFood();
+                    $des->sample_id = $cs->sample_id;
+                    $des->creator_id = Yii::$app->user->id;
+                    $num = DestructionSampleFood::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+                    $num = intval($num)+1;
+                    $des->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
+                    $des->destruction_date = date('Y-m-d h:i:s');
+                    $des->state_id = 2;
+                    $des->ads = $cs->ads;
+                    $des->consent_id = $route->director_id;
+                    $des->save();
+                    $model->save();
+                    $reg->save();
+                    $cs->save();
+                    return $this->redirect(['/register/regproductview', 'id' => $regid]);
+                }
+
                 $route->status_id = 1;
                 $model->status_id = 3;
                 $route->sample_id = $id;
                 $reg->status_id = 3;
-                $dal = Sertificates::findOne($model->sert_id);
+                $dal = FoodSamplingCertificate::findOne($model->sert_id);
                 $dal->status_id = 3;
                 $dal->save();
                 $reg->save();

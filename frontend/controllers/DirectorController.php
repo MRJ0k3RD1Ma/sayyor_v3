@@ -167,10 +167,19 @@ class DirectorController extends Controller
             $dest->org_id = Yii::$app->user->identity->empPosts->org_id;
             $dest->save();
             Yii::$app->session->setFlash('success', Yii::t('leader', 'Namuna tekshiruv natijasi imzolandi. Namunani yo\'q qilish uchun topshiriq yuborildi.'));
+
+            $result = ResultAnimal::findOne(['sample_id'=>$dest->sample_id]);
+            $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
+                ->innerJoin('tamplate_animal','tamplate_animal.id=template_animal_regulations.template_id')
+                ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_animal_tests.checked = 1 and result_id='.$result->id.')')
+                ->groupBy('regulations.id')->all();
+            //->innerJoin('result_food_tests','template_food.id = result_food_tests.template_id and result_food_tests.checked=1')
+            ;
+
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg]),
+                'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg,'docs'=>$docs]),
                 'options' => [
                 ],
                 'methods' => [
@@ -463,15 +472,24 @@ class DirectorController extends Controller
             $dest->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
             $dest->org_id = Yii::$app->user->identity->empPosts->org_id;
             $dest->save();
+
             Yii::$app->session->setFlash('success', Yii::t('lab', 'Topshiriq imzolandi. Namunani yo\'q qilish uchun {code} raqamli dalolatnoma labarantga yuborildi', ['code' => $dest->code]));
+
+            $result = ResultFood::findOne(['sample_id'=>$dest->sample_id]);
+            $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations','template_food_regulations.regulation_id = regulations.id')
+            ->innerJoin('template_food','template_food.id=template_food_regulations.template_id')
+            ->where('template_food.id in (select result_food_tests.template_id from result_food_tests where result_food_tests.checked = 1 and result_id='.$result->id.')')
+                ->groupBy('regulations.id')->all();
+                //->innerJoin('result_food_tests','template_food.id = result_food_tests.template_id and result_food_tests.checked=1')
+            ;
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('pdf-verify2', ['model' => $sample, 'regmodel' => $reg]),
+                'content' => $this->renderPartial('pdf-verify2', ['model' => $sample, 'regmodel' => $reg,'docs'=>$docs,'result'=>$result]),
                 'options' => [
                 ],
                 'methods' => [
-                    'SetTitle' => "Ariza",
+                    'SetTitle' => "Tekshiruv dalolatnomas",
                     'SetHeader' => [' ' . '|| ' . date("r")],
                     'SetFooter' => ['| {PAGENO} |'],
                     'SetAuthor' => '@QalandarDev',

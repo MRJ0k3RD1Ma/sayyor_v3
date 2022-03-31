@@ -73,4 +73,8 @@ class ResultAnimal extends \yii\db\ActiveRecord
             'org_id' => Yii::t('model', 'Tashkilot'),
         ];
     }
+
+    public function getTests(){
+        return $this->hasMany(ResultAnimalTests::className(),['result_id'=>'id']);
+    }
 }

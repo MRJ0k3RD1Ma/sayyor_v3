@@ -27,8 +27,13 @@ $composite = $regmodel->comp;
 $samples = $model;
 $sertificate = $samples->sert;
 $resultanimal = ResultAnimal::findOne(['sample_id' => $samples->id]);
-$routesert = RouteSert::findOne(['sample_id' => $samples->id])->registration_id;
-//\yii\helpers\VarDumper::dump($samples) or die();
+
+
+$route = RouteSert::findOne(['sample_id' => $samples->id]);
+$routesert = $route->registration_id;
+
+$lg = 'uz';
+
 
 //errdeb($routesert);
 $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
@@ -64,18 +69,32 @@ $qr = "<img src='{$result->getDataUri()}'>";
             ?>
         </th>
         <th style="width: 50%;height: 100px;text-align: center;vertical-align: middle">
-            <?= $qr ?>
+            <?php  $result = Builder::create()
+                ->writer(new PngWriter())
+                ->writerOptions([])
+                ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsert', 'id' => $sertificate->id]))
+                ->encoding(new Encoding('UTF-8'))
+                ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+                ->size(100)
+                ->margin(3)
+                ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+//                        ->logoPath(Yii::$app->basePath.'/web/favicon.ico')
+                ->labelText('')
+                ->labelFont(new NotoSans(20))
+                ->labelAlignment(new LabelAlignmentCenter())
+                ->build();
+            echo "<img src='{$result->getDataUri()}'>";?>
         </th>
     </tr>
     </thead>
 
 </table>
 <div class="align-content-center" style="text-align: center">
-    <b>ТЕКШИРИШ БАЁННОМАСИ № <?= $regmodel->code ?></b>
+    <b>TEKSHIRISH BAYONNOMASI № <?= $regmodel->code ?></b>
 </div>
 <br>
 <div>
-    Буюртмачи номи ва манзили: <?php
+    Buyurtmachi nomi va manzili: <?php
     if ($regmodel->inn) {
         $legal = LegalEntities::findOne(['inn' => $regmodel->inn]);
         echo $legal->inn
@@ -98,64 +117,89 @@ $qr = "<img src='{$result->getDataUri()}'>";
 </div>
 <br>
 <div>
-    Текширув объекти: намуна номи:<?= $samples->sampleTypeIs->name_uz ?>,кушимча маълумот:<?= $samples->label ?>,намуна
-    коди: <?= $samples->kod ?>
+    <?php
+    $res = "";
+    $d = $samples;
+    $res .= $d->animal->type->{'name_' . $lg} . '<br>';
+    $res .= Yii::t('lab', 'Holati:') . ' ' . $d->animal->cat->{'name_' . $lg} . '<br>';
+    $res .= Yii::t('lab', 'Jinsi:') . ' ' . Yii::$app->params['gender'][$d->animal->gender] . '<br>';
+    $d1 = new DateTime($d->animal->birthday);
+    $d2 = new DateTime(date('Y-m-d'));
+    $interval = $d1->diff($d2);
+    $diff = $interval->m + ($interval->y * 12);
+    $res .= Yii::t('lab', 'Tug\'ilgan sanasi:') . ' ' . $d->animal->birthday . '(' . $diff . ' oy)';
+    ?>
+    Tekshiruv obyekti: Namuna nomi: <?= $samples->sampleTypeIs->name_uz ?>,:<?= $res?>, Namuna kodi: <?= $samples->kod ?>
 </div>
 <br>
 <div>
-    Намуна олинган жойи: <?= $sertificate->vetSite->name ?>,манзили: <?= Soato::Full($sertificate->vetSite->soato) ?>
+    Namuna olingan joy: <?= $sertificate->vetSite->name ?>, manzili: <?= Soato::Full($sertificate->vetSite->soato) ?>
 </div>
 <br>
 <div>
-    Текшириш усули буйича НХ: (танланган шаблон буйича 07102 да танланган шаблонда келтирилган «норматив хужжат» поляси,
-    бир нечта булиши мумкин, факат такрорланмасин)
+    Tekshirish usuli bo'yicha NH: <?php $n=0; foreach ($docs as $item){$n++; echo '<br>'.$n.'.'.$item->{'name_'.$lg}.' ';} ?>
 </div>
 <br>
 <div>
-    Текширувни утказиш шароити: (Натижани кайд этиш (07101) дан олинади: температура, намлик, регантлар, бошка шартлар,
-    изох полялари)
+    Tekshirish o'tkazilgan shartoit: Tempratura:<?= $resultanimal->temprature?>, Namlik: <?= $resultanimal->humidity?>, Regantlar: <?= $resultanimal->reagent_series.' '.$resultanimal->reagent_name?>, Boshqa sharoitlar:<?= $resultanimal->conditions?>, Izoh:<?= $resultanimal->ads?>
 </div>
 <br>
 <div style="text-align: center">
-    <b>Текширув натижалари:</b>
+    <b>Tekshiruv natijalari:</b>
 </div>
 <br>
 <table class="table table-bordered table-hover" style="text-align: center">
     <thead>
     <tr>
         <th rowspan="2" style="text-align: center;vertical-align: middle;">
-            Параметр (талаб) номи
+            Parametr (talab) nomi
         </th>
-        <th colspan="2">
-            Параметр кийматлари
+        <th colspan="3">
+            Parametr qiymatlari
         </th>
-        <th rowspan="2" style="vertical-align: middle;">
-            Талабга мослик
-        </th>
+
     </tr>
     <tr>
         <th>
-            НХ буйича
+            NH bo'yicha
         </th>
         <th>
-            Хакикатда
+            Haqiqatda
         </th>
+        <th>Birlik</th>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td>
-            Data
-        </td>
-        <td>
-            Data
-        </td>
-        <td>
-            Data
-        </td>
-        <td>
-            Data
-        </td>
+        <td>Namuna raqami</td>
+        <td colspan="3"><?= $samples->kod?></td>
     </tr>
+    <?php foreach ($resultanimal->tests as $item): ?>
+        <tr>
+            <td><?= $item->template->name_uz?></td>
+            <?php if ($item->type_id == 1) { ?>
+                <td><?= $item->template->min . '-' . $item->template->max ?></td>
+            <?php } elseif ($item->type_id == 2) { ?>
+                <td><?= Yii::$app->params['result'][$item->template->min] ?></td>
+            <?php } elseif ($item->type_id == 3) { ?>
+                <td><?= $item->template->min . '-' . $item->template->max . ' %' ?></td>
+            <?php } elseif ($item->type_id == 4) { ?>
+                <td><?= $item->template->min . '-' . $item->template->max ?>
+                    <br> <?= $item->template->min_1 . '-' . $item->template->max_1 ?></td>
+            <?php } ?>
+            <td><?= $item->result ?></td>
+            <td><?= $item->template->unit->{'name_' . $lg} ?></td>
+        </tr>
+    <?php endforeach;?>
     </tbody>
 </table>
+
+<br>
+<p>Tekshirish sanasi: <?= $route->updated ?></p>
+<p>Qo'shimcha ma'lumot: <?= $resultanimal->ads ?></p>
+<p>
+    Tekshirish o'tkazdi: <?= $route->executor->name ?>
+</p>
+<p>
+    Tasdiqladi: <?= $route->director->name ?>
+</p>

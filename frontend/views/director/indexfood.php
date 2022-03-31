@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /* @var $searchModel frontend\models\search\RouteSertSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('food', 'Namunalar ro\'yhati');
+$this->title = Yii::t('food', 'Oziq-ovqat havfsizligi namunalar ro\'yhati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="route-sert-index">

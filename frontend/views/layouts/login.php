@@ -325,7 +325,7 @@ if (Yii::$app->session->hasFlash('error')) {
     $this->registerJs("
         $(document).ready(function(){
             Swal.fire({
-              icon: 'error',
+              icon: 'warning',
               title: \"{$xato}\",
               text: \"{$txt}\"
             })

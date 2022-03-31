@@ -1,13 +1,9 @@
 <?php
 
 use common\models\DestructionSampleAnimal;
-<<<<<<< HEAD
 use common\models\RouteSert;
-=======
 use common\models\Emlash;
-use common\models\RouteSert;
 use common\models\Vaccination;
->>>>>>> 60fc18472e12d36188611cd151b1e7549adcbdaf
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
@@ -23,32 +19,32 @@ YiiAsset::register($this);
     <div class="sertificates-view">
 
 
-            <p style="font-weight: bold">
-                <a href="#" class="btn btn-primary"><?= $model->status->icon?> <?= $model->status->name_uz ?></a>
-            </p>
+        <p style="font-weight: bold">
+            <a href="#" class="btn btn-primary"><?= $model->status->icon ?> <?= $model->status->name_uz ?></a>
+        </p>
 
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
                 'code',
                 [
-                    'label'=>Yii::t('register','Yuboruvchi'),
-                    'value'=>function($d){
-                        if($d->inn){
-                            return $d->inn.'<br>'.$d->inn0->name;
-                        }elseif($d->pnfl){
-                            return $d->pnfl.'<br>'.$d->pnfl0->name.' '.$d->pnfl0->surname.' '.$d->pnfl0->middlename;
-                        }else{
+                    'label' => Yii::t('register', 'Yuboruvchi'),
+                    'value' => function ($d) {
+                        if ($d->inn) {
+                            return $d->inn . '<br>' . $d->inn0->name;
+                        } elseif ($d->pnfl) {
+                            return $d->pnfl . '<br>' . $d->pnfl0->name . ' ' . $d->pnfl0->surname . ' ' . $d->pnfl0->middlename;
+                        } else {
                             return null;
                         }
                     },
-                    'format'=>'raw'
+                    'format' => 'raw'
                 ],
 //                            'is_research',
                 [
-                    'attribute'=>'is_research',
-                    'value'=>function($d){
-                        $s = [0=>'Shoshilinch emas',1=>'Shohilinch'];
+                    'attribute' => 'is_research',
+                    'value' => function ($d) {
+                        $s = [0 => 'Shoshilinch emas', 1 => 'Shohilinch'];
                         return $s[$d->is_research];
                     }
                 ],
@@ -56,8 +52,8 @@ YiiAsset::register($this);
                 //'code',
                 //'research_category_id',
                 [
-                    'attribute'=>'research_category_id',
-                    'value'=>function($d){
+                    'attribute' => 'research_category_id',
+                    'value' => function ($d) {
                         return $d->researchCategory->name_uz;
                     }
                 ],
@@ -105,57 +101,62 @@ YiiAsset::register($this);
                 </tr>
                 </thead>
                 <tbody>
-                <?php $n=0; foreach ($samples as $item): $n++;
-                    $cnt_vac = Vaccination::find()->where(['animal_id'=>$item->animal_id])->count('*');
-                    $cnt_eml = Emlash::find()->where(['animal_id'=>$item->animal_id])->count('*');
-                    if($cnt_vac > $cnt_eml){
+                <?php $n = 0;
+                foreach ($samples as $item): $n++;
+                    $cnt_vac = Vaccination::find()->where(['animal_id' => $item->animal_id])->count('*');
+                    $cnt_eml = Emlash::find()->where(['animal_id' => $item->animal_id])->count('*');
+                    if ($cnt_vac > $cnt_eml) {
                         $cnt = $cnt_vac;
-                    }else{
+                    } else {
                         $cnt = $cnt_eml;
                     }
                     ?>
                     <tr>
                         <?php
-                        $destruction_id=@DestructionSampleAnimal::findOne(['state_id' => 1, 'sample_id' => $item->id])->id;
-                        $RouteSert=@RouteSert::findOne(['sample_id' => $item->id,'status_id'=>3]);
+                        $destruction_id = @DestructionSampleAnimal::findOne(['state_id' => 1, 'sample_id' => $item->id])->id;
+                        $RouteSert = @RouteSert::findOne(['sample_id' => $item->id, 'status_id' => 3]);
                         ?>
                         <td rowspan="
                             <?= $cnt + 1 ?>">
-                            <?= ($RouteSert)?Html::a($item->status->icon.' '.$item->kod, ['/legal/animal-pdf','id'=>$item->id],['class'=>'btn btn-warning']):$item->status->icon.' '.$item->kod ?>
-                            <?= ($destruction_id)?Html::a("Yo'q qilish dalolatnomasi", ['/legal/pdfdest','id'=>$destruction_id],['class'=>'btn btn-danger']):'' ?>
+                            <div style="margin: 5px;">
+                                <?= ($RouteSert) ? Html::a($item->status->icon . ' ' . $item->kod, ['/legal/animal-pdf', 'id' => $item->id], ['class' => 'btn btn-warning']) : $item->status->icon . ' ' . $item->kod ?>
+                            </div>
+                            <div style="margin: 5px;">
+                                <?= ($destruction_id) ? Html::a("Yo'q qilish dalolatnomasi", ['/legal/pdfdest', 'id' => $destruction_id], ['class' => 'btn btn-danger']) : '' ?>
+                            </div>
                         </td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->animal_id ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->animal->type->name_uz ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= Yii::$app->params['gender'][$item->animal->gender] ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->animal->birthday ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->label ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->sampleTypeIs->name_uz ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->sampleBox->name_uz ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->animal_id ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->animal->type->name_uz ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= Yii::$app->params['gender'][$item->animal->gender] ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->animal->birthday ?></td>
                         <td colspan="2"></td>
                         <td colspan="2"></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->suspectedDisease->name_uz?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->testMehod->name_uz?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->repeat_code?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->suspectedDisease->name_uz ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->testMehod->name_uz ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->repeat_code ?></td>
 
                     </tr>
                     <?php
-                    $vac = Vaccination::find()->where(['animal_id'=>$item->animal_id])->orderBy(['disease_date'=>SORT_DESC])->all();
-                    $eml = Emlash::find()->where(['animal_id'=>$item->animal_id])->orderBy(['emlash_date'=>SORT_DESC])->all();
-                    for ($i=0;$i<$cnt; $i++):?>
+                    $vac = Vaccination::find()->where(['animal_id' => $item->animal_id])->orderBy(['disease_date' => SORT_DESC])->all();
+                    $eml = Emlash::find()->where(['animal_id' => $item->animal_id])->orderBy(['emlash_date' => SORT_DESC])->all();
+                    for ($i = 0; $i < $cnt; $i++):?>
                         <tr>
                             <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>
-                            <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' '?></td>
+                            <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' ' ?></td>
                             <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
-                            <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
+                            <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' ' ?></td>
                         </tr>
                         <tr>
                             <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>
-                            <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' '?></td>
+                            <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' ' ?></td>
                             <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
-                            <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
+                            <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' ' ?></td>
                         </tr>
                     <?php endfor; ?>
-                <?php endforeach;?>
+                <?php endforeach; ?>
 
                 </tbody>
             </table>
@@ -163,7 +164,7 @@ YiiAsset::register($this);
     </div>
 
 
-    <div class="modal fade bs-example-modal-lg" id="sendmodal" tabindex="-1"  style="display: none;" aria-hidden="true">
+    <div class="modal fade bs-example-modal-lg" id="sendmodal" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">

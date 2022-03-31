@@ -33,7 +33,7 @@ use common\models\RouteStatus;
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/register/regtest'])?>" data-key="t-basic-tables"><?= Yii::t('menu','Hayvon kasalliklari tashhisi')?></a></li>
-                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/register/regproduct'])?>" data-key="t-data-tables"><?= Yii::t('menu','Oziq-ovqat havsizligi')?></a></li>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/register/regproduct'])?>" data-key="t-data-tables"><?= Yii::t('menu','Oziq-ovqat havfsizligi')?></a></li>
                     </ul>
                 </li>
                 <?php endif;?>
@@ -68,7 +68,7 @@ use common\models\RouteStatus;
                     <li>
                         <a href="javascript: void(0);" class="has-arrow">
                             <i data-feather="sliders"></i>
-                            <span data-key="t-tables"><?= Yii::t('app','Oziq-ovqat havsizligi')?></span>
+                            <span data-key="t-tables"><?= Yii::t('app','Oziq-ovqat havfsizligi')?></span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
                             <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/indexfood'])?>" data-key="t-basic-tables">Barchasi <span class="badge badge-primary"><?= \common\models\FoodRoute::find()->where(['director_id'=>Yii::$app->user->id])->count('id')?></span></a></li>
@@ -112,7 +112,7 @@ use common\models\RouteStatus;
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="sliders"></i>
-                        <span data-key="t-tables"><?= Yii::t('app','Oziq-ovqat havsizligi')?></span>
+                        <span data-key="t-tables"><?= Yii::t('app','Oziq-ovqat havfsizligi')?></span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/leader/indexfood'])?>" data-key="t-basic-tables">Barchasi <span class="badge badge-primary"><?= \common\models\FoodRoute::find()->where(['leader_id'=>Yii::$app->user->id])->count('id')?></span></a></li>
@@ -157,7 +157,7 @@ use common\models\RouteStatus;
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="sliders"></i>
-                        <span data-key="t-tables"><?= Yii::t('app','Oziq-ovqat havsizligi')?></span>
+                        <span data-key="t-tables"><?= Yii::t('app','Oziq-ovqat havfsizligi')?></span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/lab/indexfood'])?>" data-key="t-basic-tables">Barchasi <span class="badge badge-primary"><?= \common\models\FoodRoute::find()->where(['executor_id'=>Yii::$app->user->id])->count('id')?></span></a></li>

@@ -11,6 +11,7 @@ use Yii;
  * @property string|null $name_uz
  * @property string|null $name_ru
  * @property string|null $icon
+ * @property string|null $class
  *
  * @property RouteSert[] $routeSerts
  */
@@ -30,7 +31,7 @@ class RouteStatus extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name_uz', 'name_ru', 'icon'], 'string', 'max' => 255],
+            [['name_uz', 'name_ru', 'icon','class'], 'string', 'max' => 255],
         ];
     }
 

@@ -53,10 +53,11 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'status_id',
             [
                 'attribute'=>'status_id',
+                'format'=>'html',
                 'value'=>function($d){
                     $lg = 'uz';
                     if(Yii::$app->language == 'ru'){$lg = 'ru';}
-                    return $d->status->{'name_'.$lg};
+                    return "<span class='".$d->status->icon."'>".@$d->status->class.' '.$d->status->{'name_'.$lg}."</span>";
                 }
             ],
         ],

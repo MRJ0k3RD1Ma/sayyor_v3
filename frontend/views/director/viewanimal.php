@@ -79,7 +79,7 @@ YiiAsset::register($this);
                 $data = [];
                 foreach ($emp as $item) {
                     $data[$item->id] = RouteSert::find()->where(['executor_id' => $item->id])
-                            ->andWhere(['<>', 'status_id', 3])->count('id')
+                            ->andWhere(['<>', 'status_id', 2])->count('id')
                         . ' - ' . $item->name;
                 }
                 ?>

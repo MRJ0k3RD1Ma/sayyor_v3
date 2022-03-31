@@ -36,23 +36,23 @@ $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_anim
     ->orderBy('template_animal_regulations.regulation_id')
     ->where('tamplate_animal.id IN (SELECT result_animal_tests.id from result_animal_tests inner join tamplate_animal on result_animal_tests.template_id=tamplate_animal.id where result_animal_tests.result_id=' . $routesert . ')')->all();
 //errdeb($routesert);
-$qr = function () use ($sertificate) {
-    $result = Builder::create()
-        ->writer(new PngWriter())
-        ->writerOptions([])
-        ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsert', 'id' => $sertificate->id]))
-        ->encoding(new Encoding('UTF-8'))
-        ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
-        ->size(100)
-        ->margin(3)
-        ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+//$qr = function () use ($sertificate) {
+$result = Builder::create()
+    ->writer(new PngWriter())
+    ->writerOptions([])
+    ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/get-myresult', 'id' => $sertificate->id]))
+    ->encoding(new Encoding('UTF-8'))
+    ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+    ->size(150)
+    ->margin(1)
+    ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
 //                        ->logoPath(Yii::$app->basePath.'/web/favicon.ico')
-        ->labelText('')
-        ->labelFont(new NotoSans(20))
-        ->labelAlignment(new LabelAlignmentCenter())
-        ->build();
-    return "<img src='{$result->getDataUri()}'>";
-}
+    ->labelText('')
+    ->labelFont(new NotoSans(20))
+    ->labelAlignment(new LabelAlignmentCenter())
+    ->build();
+$qr = "<img src='{$result->getDataUri()}'>";
+//};
 ?>
 
 <table class="table table-bordered table-hover">
@@ -64,7 +64,7 @@ $qr = function () use ($sertificate) {
             ?>
         </th>
         <th style="width: 50%;height: 100px;text-align: center;vertical-align: middle">
-            <img src="<?= Yii::$app->homeUrl . "/tmp/img.png" ?>" alt="">
+            <?= $qr ?>
         </th>
     </tr>
     </thead>
@@ -86,7 +86,7 @@ $qr = function () use ($sertificate) {
             . " "
             . Soato::Full($legal->soato_id);
 
-    }else {
+    } else {
         $ind = Individuals::findOne(['pnfl' => $regmodel->pnfl]);
         echo $regmodel->pnfl . " " . $regmodel->inn . " "
             . $ind->surname . " "

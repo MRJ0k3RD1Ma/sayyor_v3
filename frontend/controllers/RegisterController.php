@@ -363,7 +363,7 @@ class RegisterController extends Controller
                $result = new ResultAnimal();
 
                $num = ResultAnimal::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
-               $num = intval($num);
+               $num = intval($num)+1;
                $result->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
                $result->code_id = $num;
 

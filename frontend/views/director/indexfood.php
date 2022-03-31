@@ -27,21 +27,22 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'id',
 //            'director_id',
             [
-                'attribute'=>'sample_id',
-                'value'=>function($d){
-                    $url = Yii::$app->urlManager->createUrl(['/director/viewfood','id'=>$d->id]);
+                'attribute' => 'sample_id',
+                'value' => function ($d) {
+                    $url = Yii::$app->urlManager->createUrl(['/director/viewfood', 'id' => $d->id]);
                     return "<a href='{$url}'>{$d->sample->samp_code}</a>";
                 },
-                'format'=>'raw'
+                'format' => 'raw'
             ],
 //            'leader_id',
 //            'executor_id',
             [
-                'attribute'=>'executor_id',
-                'value'=>function($d){
-                    if($d->executor_id){
+                'attribute' => 'executor_id',
+                'value' => function ($d) {
+                    if ($d->executor_id) {
                         return $d->executor->name;
-                    }return null;
+                    }
+                    return null;
                 }
             ],
             'deadline',
@@ -53,11 +54,14 @@ $this->params['breadcrumbs'][] = $this->title;
             //'registration_id',
 //            'status_id',
             [
-                'attribute'=>'status_id',
-                'value'=>function($d){
+                'attribute' => 'status_id',
+                'format' => 'html',
+                'value' => function ($d) {
                     $lg = 'uz';
-                    if(Yii::$app->language == 'ru'){$lg = 'ru';}
-                    return $d->status->{'name_'.$lg};
+                    if (Yii::$app->language == 'ru') {
+                        $lg = 'ru';
+                    }
+                    return "<span class='" . $d->status->icon . "'>" . @$d->status->class . ' ' . $d->status->{'name_' . $lg} . "</span>";
                 }
             ],
         ],

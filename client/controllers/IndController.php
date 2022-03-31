@@ -51,6 +51,7 @@ use frontend\models\ContactForm;
 use yii\web\NotFoundHttpException;
 use yii\captcha\CaptchaAction;
 use yii\web\ErrorAction;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -132,7 +133,7 @@ class IndController extends Controller
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
         } elseif ($export == 2) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
@@ -385,11 +386,35 @@ class IndController extends Controller
 
     }
 
-    public function actionListfood()
+    public function actionListfood(int $export = null)
     {
         $searchModel = new FoodSamplingCertificateSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdflistfood', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
         return $this->render('listfood', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -403,7 +428,7 @@ class IndController extends Controller
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
         } elseif ($export == 2) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
@@ -603,7 +628,7 @@ class IndController extends Controller
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
         } elseif ($export == 2) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
@@ -833,7 +858,7 @@ class IndController extends Controller
     public function actionPdfapp($id)
     {
         $model = SampleRegistration::findOne(['id' => $id]);
-        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        Yii::$app->response->format = Response::FORMAT_RAW;
 
         $pdf = new Pdf([
             'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts

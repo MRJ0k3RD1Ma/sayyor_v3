@@ -18,14 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                    <?php echo $this->render('_searchlistfood', [
-                        'model' => $searchModel,
-                    ]);
-                    ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
-                        'id'=>'listfood-grid',
+//                        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
@@ -127,6 +122,4 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-
-
 </div>

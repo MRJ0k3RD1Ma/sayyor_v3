@@ -75,7 +75,8 @@ class SertificatesSearch extends Sertificates
         $query->orFilterWhere(['like', 'sert_id', $this->q])
             ->orFilterWhere(['like', 'sert_num', $this->q])
             ->orFilterWhere(['like', 'pnfl', $this->q])
-            ->orFilterWhere(['like', 'owner_name', $this->q]);
+            ->orFilterWhere(['like', 'owner_name', $this->q])
+            ->orFilterWhere(['like', 'code', $this->q]);
 
         return $dataProvider;
     }

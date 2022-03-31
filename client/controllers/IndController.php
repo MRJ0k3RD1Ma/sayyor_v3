@@ -49,6 +49,8 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\web\NotFoundHttpException;
+use yii\captcha\CaptchaAction;
+use yii\web\ErrorAction;
 
 /**
  * Site controller
@@ -93,15 +95,18 @@ class IndController extends Controller
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => ErrorAction::class,
             ],
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
+                'class' => CaptchaAction::class,
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
     }
 
+    /**
+     * @throws BadRequestHttpException
+     */
     public function beforeAction($action)
     {
 
@@ -166,12 +171,12 @@ class IndController extends Controller
             $vet = VetSites::findOne($model->vet_site_id);
             $code = $vet->soato0->region_id . $vet->soato0->district_id . '-' . substr(date('Y'), 2, 2) . '-';
 
-            $num = $num + 1;
+            ++$num;
             $code .= $num;
-            $model->sert_id = "$num";
+            $model->sert_id = (string)$num;
             $model->pnfl = $legal->pnfl;
             $model->sert_full = $code;
-            $model->sert_num = "{$model->sert_num}";
+            $model->sert_num = (string)($model->sert_num);
 
             if ($model->ownertype == 1) {
                 if ($owner_ind->load(Yii::$app->request->post())) {
@@ -226,7 +231,6 @@ class IndController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
 
     public function actionSend($id)
     {
@@ -356,7 +360,6 @@ class IndController extends Controller
         return $this->render('emlash', ['model' => $model, 'animal' => $animal]);
 
     }
-
 
     public function actionListfood()
     {
@@ -517,7 +520,6 @@ class IndController extends Controller
         ]);
     }
 
-
     public function actionSendfood($id)
     {
         $model = FoodSamplingCertificate::findOne($id);
@@ -593,8 +595,6 @@ class IndController extends Controller
         ]);
     }
 
-
-    // update
     public function actionUpdateanimal($id)
     {
         $model = Sertificates::findOne($id);
@@ -839,6 +839,7 @@ class IndController extends Controller
         $file = fopen($fileName, 'r+');
         Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
+
     public function actionFoodPdf($id)
     {
         $model = FoodSamples::findOne(['id' => $id]);

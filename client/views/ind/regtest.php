@@ -9,6 +9,7 @@ use yii\grid\GridView;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\helpers\VarDumper;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\SertificatesSearch */
@@ -22,36 +23,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header flex">
-                    <div></div>
-                    <div class="btns flex">
-                        <div class="search">
-
-                            <input type="search">
-                            <button class="btn"><span class="fa fa-search"></span></button>
-
-                        </div>
-                        <div class="export">
-                            <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
-                            </button>
-                            <div class="export-btn">
-                                <button class=""><span class="fa fa-file-excel"></span> Excel</button>
-                                <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
                 <div class="card-body">
+                    <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+                    <?php echo $this->render('_searchsertapp', [
+                        'model' => $searchModel,
+                    ]);
+                    ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
-//                        'filterModel' => $searchModel,
+                        'id'=>'sertapp-grid',
+
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
-
-//                            'id',
-//                            'code',
                             [
                                 'attribute' => 'code',
                                 'value' => function ($d) {
@@ -79,7 +62,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 },
                                 'format' => 'raw'
                             ],
-//                            'is_research',
                             [
                                 'attribute' => 'is_research',
                                 'value' => function ($d) {
@@ -87,36 +69,27 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return $s[$d->is_research];
                                 }
                             ],
-//                            'code_id',
-                            //'code',
-                            //'research_category_id',
                             [
                                 'attribute' => 'research_category_id',
                                 'value' => function ($d) {
                                     return $d->researchCategory->name_uz;
                                 }
                             ],
-                            //'results_conformity_id',
-                            //'organization_id',
-                            //'emp_id',
-//                            'reg_date',
-                            //'reg_id',
                             'sender_name',
                             'sender_phone',
                             'created',
                             [
                                 'attribute' => 'status_id',
-                                'label'=>"Status",
+                                'label' => "Status",
                                 'value' => function ($model) {
-                                    return SertStatus::findOne(['id'=>(int)$model->status_id])->name_uz;
-                                    }
+                                    return SertStatus::findOne(['id' => (int)$model->status_id])->name_uz;
+                                }
                             ]
                         ],
-                    ]); ?>
+                    ]) ?>
+                    <?php Pjax::end() ?>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>

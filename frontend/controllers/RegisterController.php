@@ -376,6 +376,8 @@ class RegisterController extends Controller
                     $test->result_id = $result->id;
                     $test->template_id = $item->id;
                     $test->type_id = $item->type_id;
+                   $test->result = '';
+                   $test->result_2 = '';
                     $test->save();
                     $test = null;
                }
@@ -483,6 +485,8 @@ class RegisterController extends Controller
                     $test = new ResultFoodTests();
                     $test->result_id = $result->id;
                     $test->template_id = $item->id;
+                    $test->result = '';
+                    $test->result_2 = '';
                     $test->type_id = $item->type_id;
                     $test->save();
                     $test = null;

@@ -104,7 +104,7 @@ $this->title = Yii::t('login',"Tizimga kirish");
 
                     </div>
 
-                    <a href="/site/">Login parol yordamida kirish</a>
+                    <a class="btn btn-primary" href="/site/">Login parol yordamida kirish</a>
 
 
                 </div>

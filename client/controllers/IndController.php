@@ -49,6 +49,9 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\web\NotFoundHttpException;
+use yii\captcha\CaptchaAction;
+use yii\web\ErrorAction;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -93,15 +96,18 @@ class IndController extends Controller
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => ErrorAction::class,
             ],
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
+                'class' => CaptchaAction::class,
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
     }
 
+    /**
+     * @throws BadRequestHttpException
+     */
     public function beforeAction($action)
     {
 
@@ -119,12 +125,36 @@ class IndController extends Controller
     }
 
 
-    public function actionListanimal()
+    public function actionListanimal(int $export = null)
     {
 
         $searchModel = new SertificatesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfindextest', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
         return $this->render('indextest', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -166,12 +196,12 @@ class IndController extends Controller
             $vet = VetSites::findOne($model->vet_site_id);
             $code = $vet->soato0->region_id . $vet->soato0->district_id . '-' . substr(date('Y'), 2, 2) . '-';
 
-            $num = $num + 1;
+            ++$num;
             $code .= $num;
-            $model->sert_id = "$num";
+            $model->sert_id = (string)$num;
             $model->pnfl = $legal->pnfl;
             $model->sert_full = $code;
-            $model->sert_num = "{$model->sert_num}";
+            $model->sert_num = (string)($model->sert_num);
 
             if ($model->ownertype == 1) {
                 if ($owner_ind->load(Yii::$app->request->post())) {
@@ -226,7 +256,6 @@ class IndController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
 
     public function actionSend($id)
     {
@@ -357,12 +386,35 @@ class IndController extends Controller
 
     }
 
-
-    public function actionListfood()
+    public function actionListfood(int $export = null)
     {
         $searchModel = new FoodSamplingCertificateSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdflistfood', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
         return $this->render('listfood', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -376,7 +428,7 @@ class IndController extends Controller
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
         } elseif ($export == 2) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
@@ -517,7 +569,6 @@ class IndController extends Controller
         ]);
     }
 
-
     public function actionSendfood($id)
     {
         $model = FoodSamplingCertificate::findOne($id);
@@ -570,11 +621,35 @@ class IndController extends Controller
         ]);
     }
 
-    public function actionSertfood()
+    public function actionSertfood(int $export = null)
     {
         $searchModel = new FoodRegistrationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfsertfood', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
         return $this->render('sertfood', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -593,8 +668,6 @@ class IndController extends Controller
         ]);
     }
 
-
-    // update
     public function actionUpdateanimal($id)
     {
         $model = Sertificates::findOne($id);
@@ -785,7 +858,7 @@ class IndController extends Controller
     public function actionPdfapp($id)
     {
         $model = SampleRegistration::findOne(['id' => $id]);
-        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        Yii::$app->response->format = Response::FORMAT_RAW;
 
         $pdf = new Pdf([
             'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
@@ -839,6 +912,7 @@ class IndController extends Controller
         $file = fopen($fileName, 'r+');
         Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
+
     public function actionFoodPdf($id)
     {
         $model = FoodSamples::findOne(['id' => $id]);

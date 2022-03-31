@@ -115,7 +115,7 @@ class DirectorController extends Controller
         $sample = $model->sample;
         $emp = Employees::find()->select(['employees.*'])
             ->innerJoin('emp_posts', 'emp_posts.emp_id = employees.id')
-            ->where(['emp_posts.post_id' => 4])
+            ->where(['emp_posts.post_id' => 2])
             ->andWhere(['emp_posts.org_id' => Yii::$app->user->identity->empPosts->org_id])
             ->andWhere(['emp_posts.gov_id' => Yii::$app->user->identity->empPosts->gov_id])->all();
         $model->scenario = 'exec';

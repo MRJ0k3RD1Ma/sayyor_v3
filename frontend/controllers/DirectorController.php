@@ -133,7 +133,7 @@ class DirectorController extends Controller
     public function actionVerifyanimal($id)
     {
         $model = RouteSert::findOne(['id' => $id]);
-        $model->status_id = 3;
+        $model->status_id = 5;
         if ($model->save()) {
             $dest = new DestructionSampleAnimal();
             $dest->state_id = 3;
@@ -197,6 +197,7 @@ class DirectorController extends Controller
                 $file = fopen($fileName, 'wb+');
                 fwrite($file, $content);
                 fclose($file);
+                return $pdf->render();
             } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
                 return $e;
             }
@@ -216,6 +217,73 @@ class DirectorController extends Controller
 
     }
 
+    public function actionRenderPdf($id){
+        $model = RouteSert::findOne(['id' => $id]);
+        $sample = Samples::findOne($model->sample_id);
+        $cs = CompositeSamples::findOne(['sample_id' => $sample->id]);
+        $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
+        return $this->render('pdf-verify',['model' => $sample, 'regmodel' => $reg]);
+        $model->status_id = 5;
+        if ($model->save()) {
+            $dest = new DestructionSampleAnimal();
+            $dest->state_id = 3;
+            $sample = Samples::findOne($model->sample_id);
+            $sample->status_id = 5;
+            $sample->save();
+            $dal = Sertificates::findOne($sample->sert_id);
+            $dal->status_id = 5;
+            $dal->save();
+            $cs = CompositeSamples::findOne(['sample_id' => $sample->id]);
+            $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
+            $reg->status_id = 5;
+            $reg->save();
+            $cs->status_id = 5;
+            $cs->save();
+            $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
+            if (CompositeSamples::find()->where(['sample_id' => $sample->id])->count('sample_id') == CompositeSamples::find()->where(['sample_id' => $sample->id])->andWhere(['status_id' => 4])->count('sample_id')) {
+
+                $reg->status_id = 5;
+                $reg->save();
+            }
+
+
+            $dest->creator_id = $model->executor_id;
+            $dest->consent_id = $model->director_id;
+            $dest->sample_id = $model->sample_id;
+            $num = DestructionSampleAnimal::find()->where(['org_id' => Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+            $num = intval($num) + 1;
+            $dest->code_id = $num;
+            $dest->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
+            $dest->org_id = Yii::$app->user->identity->empPosts->org_id;
+            $dest->save();
+            Yii::$app->session->setFlash('success', Yii::t('leader', 'Namuna tekshiruv natijasi imzolandi. Namunani yo\'q qilish uchun topshiriq yuborildi.'));
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => "Ariza",
+                    'SetHeader' => [' ' . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                $upload_dir = Yii::getAlias('@uploads');
+                $content = $pdf->render();
+                $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
+                $file = fopen($fileName, 'wb+');
+                fwrite($file, $content);
+                fclose($file);
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
+    }
 
     public function actionDest(int $export = null)
     {

@@ -26,6 +26,7 @@ use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -109,8 +110,10 @@ class LabController extends Controller
 
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
 
-        if (Model::loadMultiple($test, Yii::$app->request->post()) and $result->load(Yii::$app->request->post())) {
+        if (Model::loadMultiple($test, Yii::$app->request->post()) and $result->load(Yii::$app->request->post('ResultAnimal'))) {
             $result->created = date('Y-m-d h:i:s');
+//            VarDumper::dump($test) or die();
+
             $result->save();
             foreach ($test as $item) {
                 $item->save();
@@ -118,6 +121,8 @@ class LabController extends Controller
             Yii::$app->session->setFlash('success', Yii::t('lab', 'Natijalar muvoffaqiyatli saqlandi'));
 
             return $this->redirect(['viewanimal', 'id' => $id]);
+        } else {
+//            VarDumper::dump($result) or die();
         }
         $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
             ->innerJoin('tamplate_animal', 'template_animal_regulations.template_id = tamplate_animal.id')

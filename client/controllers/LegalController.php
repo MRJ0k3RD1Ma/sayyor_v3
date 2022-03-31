@@ -635,10 +635,7 @@ class LegalController extends Controller
             'samp'=>$samples
         ]);
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> 60fc18472e12d36188611cd151b1e7549adcbdaf
     public function actionAnimalPdf($id)
     {
         $model = Samples::findOne(['id' => $id]);
@@ -647,7 +644,7 @@ class LegalController extends Controller
         $file = fopen($fileName, 'r+');
         Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
-<<<<<<< HEAD
+
     public function actionFoodPdf($id)
     {
         $model = FoodSamples::findOne(['id' => $id]);
@@ -656,6 +653,4 @@ class LegalController extends Controller
         $file = fopen($fileName, 'r+');
         Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
-=======
->>>>>>> 60fc18472e12d36188611cd151b1e7549adcbdaf
 }

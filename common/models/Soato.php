@@ -64,16 +64,20 @@ class Soato extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function Full($code, $lang = 'lot')
+    public static function Full($code, $lang = null)
     {
-        $lg = Yii::$app->language;
-        if ($lg == 'uz') {
-            $lang = 'lot';
-        } elseif ($lg == 'ru') {
-            $lang = 'ru';
-        } else {
-            $lang = 'cyr';
-        }
+       if($lang){
+           $lg = $lang;
+       }else{
+           $lg = Yii::$app->language;
+           if ($lg == 'uz') {
+               $lang = 'lot';
+           } elseif ($lg == 'ru') {
+               $lang = 'ru';
+           } else {
+               $lang = 'cyr';
+           }
+       }
         $soato = self::findOne($code);
         $region = self::find()->where(['region_id' => $soato->region_id])->one();
         $district = self::find()->where(['region_id' => $soato->region_id])->andWhere(['district_id' => $soato->district_id])->one();

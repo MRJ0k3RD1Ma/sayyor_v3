@@ -20,7 +20,7 @@ use common\models\RouteStatus;
                 <li>
                     <a href="<?= Yii::$app->urlManager->createUrl(['/'])?>">
                         <i data-feather="home"></i>
-                        <span data-key="t-dashboard"><?= Yii::t('app','Bosh sahifa')?></span>
+                        <span data-key="t-dashboard"><?= Yii::t('lab','Bosh sahifa')?></span>
                     </a>
                 </li>
                 <?php if(EmpPosts::isRegister(Yii::$app->user->identity->getId())):?>
@@ -29,13 +29,23 @@ use common\models\RouteStatus;
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="sliders"></i>
-                        <span data-key="t-tables"><?= Yii::t('app','Yangi arizalar')?></span>
+                        <span data-key="t-tables"><?= Yii::t('lab','Yangi arizalar')?></span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/register/regtest'])?>" data-key="t-basic-tables"><?= Yii::t('menu','Hayvon kasalliklari tashhisi')?></a></li>
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/register/regproduct'])?>" data-key="t-data-tables"><?= Yii::t('menu','Oziq-ovqat havfsizligi')?></a></li>
                     </ul>
                 </li>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="sliders"></i>
+                            <span data-key="t-tables"><?= Yii::t('lab','Namunani yo\'q qilish')?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/register/dest'])?>" data-key="t-basic-tables"><?= Yii::t('menu','Hayvon kasalliklari tashhisi')?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/register/destfood'])?>" data-key="t-data-tables"><?= Yii::t('menu','Oziq-ovqat havsizligi')?></a></li>
+                        </ul>
+                    </li>
                 <?php endif;?>
                 <?php if(EmpPosts::isDirector(Yii::$app->user->identity->getId())):?>
                     <li class="menu-title" data-key="t-menu">Rahbar</li>

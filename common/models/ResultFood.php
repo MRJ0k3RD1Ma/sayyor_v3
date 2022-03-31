@@ -61,7 +61,7 @@ class ResultFood extends \yii\db\ActiveRecord
             'id' => Yii::t('model', 'ID'),
             'code' => Yii::t('model', 'Raqami'),
             'code_id' => Yii::t('model', 'Raqami'),
-            'ads' => Yii::t('model', 'Izoh'),
+            'ads' => Yii::t('model', 'Umumlashgan natija'),
             'sample_id' => Yii::t('model', 'Namuna'),
             'require_id' => Yii::t('model', 'Talabga muvofiqligi'),
             'creator_id' => Yii::t('model', 'Kirituvchi'),
@@ -98,7 +98,7 @@ class ResultFood extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getResultFoodTests()
+    public function getTests()
     {
         return $this->hasMany(ResultFoodTests::className(), ['result_id' => 'id']);
     }

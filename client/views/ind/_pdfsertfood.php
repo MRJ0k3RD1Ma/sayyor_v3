@@ -7,7 +7,6 @@ use yii\grid\GridView;
 
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
-use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\SertificatesSearch */
@@ -21,15 +20,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                <?php echo $this->render('_searchsertfood', [
-                    'model' => $searchModel,
-                ]);
-                ?>
                 <div class="card-body">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
-                        'id' => 'sertfood-grid-filters',
+//                        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
@@ -90,7 +84,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]
                         ],
                     ]) ?>
-                    <?php Pjax::end() ?>
                 </div>
             </div>
         </div>

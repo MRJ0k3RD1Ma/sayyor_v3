@@ -20,6 +20,7 @@ use yii\helpers\FileHelper;
 class FoodRegistrationSearch extends FoodRegistration
 {
     public $q;
+
     /**
      * {@inheritdoc}
      */
@@ -27,7 +28,7 @@ class FoodRegistrationSearch extends FoodRegistration
     {
         return [
             [['id', 'organization_id', 'is_research', 'code_id', 'research_category_id', 'results_conformity_id', 'emp_id', 'status_id'], 'integer'],
-            [['inn', 'pnfl', 'code','q', 'reg_date', 'sender_name', 'sender_phone', 'created', 'updated', 'ads'], 'safe'],
+            [['inn', 'pnfl', 'code', 'q', 'reg_date', 'sender_name', 'sender_phone', 'created', 'updated', 'ads'], 'safe'],
         ];
     }
 
@@ -49,10 +50,10 @@ class FoodRegistrationSearch extends FoodRegistration
      */
     public function search($params)
     {
-        if(Yii::$app->session->getFlash('doc_type') == 'inn'){
-            $query = FoodRegistration::find()->where(['inn'=>Yii::$app->session->get('doc_inn')])->orderBy(['created'=>SORT_DESC]);
-        }else{
-            $query = FoodRegistration::find()->where(['pnfl'=>Yii::$app->session->get('doc_pnfl')])->orderBy(['created'=>SORT_DESC]);
+        if (Yii::$app->session->getFlash('doc_type') == 'inn') {
+            $query = FoodRegistration::find()->where(['inn' => Yii::$app->session->get('doc_inn')])->orderBy(['created' => SORT_DESC]);
+        } else {
+            $query = FoodRegistration::find()->where(['pnfl' => Yii::$app->session->get('doc_pnfl')])->orderBy(['created' => SORT_DESC]);
         }
         // add conditions that should always apply here
 
@@ -98,7 +99,6 @@ class FoodRegistrationSearch extends FoodRegistration
         $sheet = $speadsheet->getActiveSheet();
         $title = "Sheet1";
         $sheet->setTitle(substr($title, 0, 31));
-//        $speadsheet->getDefaultStyle()->getAlignment()->setWrapText(true);
         $row = 1;
         $col = 1;
         $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "#", DataType::TYPE_STRING);
@@ -118,15 +118,15 @@ class FoodRegistrationSearch extends FoodRegistration
             $row++;
             $col = 1;
             $key++;
-            $sampleout='';
+            $sampleout = '';
             foreach (Samples::find()->where(['sert_id' => $item->id])->all() as $sample) {
-                $sampleout.=$sample->status->icon." ".$sample->code."<br>";
+                $sampleout .= $sample->status->icon . " " . $sample->code . "<br>";
             }
-            $research=function ($d) {
+            $research = function ($d) {
                 $s = [0 => 'Shoshilinch emas', 1 => 'Shohilinch'];
                 return $s[$d->is_research];
             };
-            $namunalar=function($a){
+            $namunalar = function ($a) {
                 $res = "";
                 foreach ($a->comp as $item) {
                     $res .= $item->sample->samp_code . "; ";
@@ -136,7 +136,7 @@ class FoodRegistrationSearch extends FoodRegistration
 
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_NUMERIC);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->code, DataType::TYPE_STRING);
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $namunalar($item),DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $namunalar($item), DataType::TYPE_STRING);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->organization->NAME_FULL, DataType::TYPE_STRING);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $research($item), DataType::TYPE_STRING);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->researchCategory->name_uz, DataType::TYPE_STRING);

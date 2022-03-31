@@ -7,6 +7,7 @@ use client\models\search\SampleRegistrationSearch;
 use client\models\search\SertificatesSearch;
 use common\models\Animals;
 use common\models\CompositeSamples;
+use common\models\DestructionSampleFood;
 use common\models\Emlash;
 use common\models\FoodCompose;
 use common\models\FoodRegistration;
@@ -358,7 +359,6 @@ class LegalController extends Controller
 
     }
 
-
     public function actionListfood($export=null){
         $searchModel = new FoodSamplingCertificateSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -393,7 +393,6 @@ class LegalController extends Controller
         ]);
     }
 
-
     public function actionSertapp(int $export = null){
         $searchModel = new SampleRegistrationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -427,6 +426,7 @@ class LegalController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
     public function actionSertappview($id){
         $model = SampleRegistration::findOne($id);
         $samples = Samples::find()->select(['samples.*'])
@@ -648,6 +648,15 @@ class LegalController extends Controller
     public function actionFoodPdf($id)
     {
         $model = FoodSamples::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+    }
+
+    public function actionPdfFood($id)
+    {
+        $model = DestructionSampleFood::findOne(['id' => $id]);
         $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
         header('Content-Disposition: attachment; name=' . $fileName);
         $file = fopen($fileName, 'r+');

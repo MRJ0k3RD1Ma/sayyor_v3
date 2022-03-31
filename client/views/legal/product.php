@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\FoodSamplingCertificate */
 /* @var $form yii\widgets\ActiveForm */
-$this->title = Yii::t('client','Oziq-ovqat ekspertizasi uchun ariza');
+$this->title = Yii::t('client','Oziq-ovqat ekspertizasi bo\'yicha dalolatnoma qo\'shish');
 ?>
 
     <div class="food-sampling-certificate-form">
@@ -34,13 +34,14 @@ $this->title = Yii::t('client','Oziq-ovqat ekspertizasi uchun ariza');
             $model->district = $model->samplingSite->soato0->district_id;
 
             ?>
-            <?= $form->field($model, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.vetsites','Viloyatni tanlang')]) ?>
+
+            <?= $form->field($model, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.vetsites','Viloyatni tanlang')])->label(Yii::t('client','Viloyat')) ?>
 
             <?= $form->field($model, 'sampling_soato')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$model->samplingSite->soato0->region_id])->all(),'district_id','name_'.$ads),['prompt'=>Yii::t('cp.vetsites','Tumanni tanlang')]) ?>
             <?= $form->field($model, 'sampling_site')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\VetSites::find()->filterWhere(['like','soato',$model->samplingSite->soato0->region_id.$model->samplingSite->soato0->district_id])->all(),'id','name'),['prompt'=>Yii::t('cp.vetsites','Vet uchstkani tanlang')]) ?>
 
         <?php }else{ ?>
-            <?= $form->field($model, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.vetsites','Viloyatni tanlang')]) ?>
+            <?= $form->field($model, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.vetsites','Viloyatni tanlang')])->label(Yii::t('client','Viloyat')) ?>
 
             <?= $form->field($model, 'sampling_soato')->dropDownList([],['prompt'=>Yii::t('cp.vetsites','Tumanni tanlang')]) ?>
             <?= $form->field($model, 'sampling_site')->dropDownList([],['prompt'=>Yii::t('cp.vetsites','Vet uchstkani tanlang')]) ?>
@@ -50,7 +51,7 @@ $this->title = Yii::t('client','Oziq-ovqat ekspertizasi uchun ariza');
         <?= $form->field($model, 'sampling_adress')->textInput(['maxlength' => true]) ?>
 
 
-        <h3>Namuna qabul qiluvchi</h3>
+        <h3>Namuna oluvchi</h3>
 
 
 

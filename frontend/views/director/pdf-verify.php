@@ -90,7 +90,7 @@ $qr = "<img src='{$result->getDataUri()}'>";
 
 </table>
 <div class="align-content-center" style="text-align: center">
-    <b>TEKSHIRISH BAYONNOMASI № <?= $regmodel->code ?></b>
+    <b>TEKSHIRISH BAYONNOMASI № <?= $resultanimal->code ?></b>
 </div>
 <br>
 <div>
@@ -103,7 +103,7 @@ $qr = "<img src='{$result->getDataUri()}'>";
             . " "
             . Tshx::findOne(['id' => $legal->tshx_id])->name_uz
             . " "
-            . Soato::Full($legal->soato_id);
+            . Soato::Full($legal->soato_id,'lot');
 
     } else {
         $ind = Individuals::findOne(['pnfl' => $regmodel->pnfl]);
@@ -111,7 +111,7 @@ $qr = "<img src='{$result->getDataUri()}'>";
             . $ind->surname . " "
             . $ind->name . " "
             . $ind->middlename . " "
-            . Soato::Full($ind->soato_id);
+            . Soato::Full($ind->soato_id,'lot');
     }
     ?>
 </div>
@@ -120,16 +120,17 @@ $qr = "<img src='{$result->getDataUri()}'>";
     <?php
     $res = "";
     $d = $samples;
-    $res .= $d->animal->type->{'name_' . $lg} . '<br>';
-    $res .= Yii::t('lab', 'Holati:') . ' ' . $d->animal->cat->{'name_' . $lg} . '<br>';
-    $res .= Yii::t('lab', 'Jinsi:') . ' ' . Yii::$app->params['gender'][$d->animal->gender] . '<br>';
+    $res .= $d->animal->type->{'name_' . $lg} . ' ';
+    $res .= Yii::t('lab', 'Holati:') . ' ' . $d->animal->cat->{'name_' . $lg} . ' ';
+    $res .= Yii::t('lab', 'Jinsi:') . ' ' . Yii::$app->params['gender'][$d->animal->gender] . ' ';
     $d1 = new DateTime($d->animal->birthday);
     $d2 = new DateTime(date('Y-m-d'));
     $interval = $d1->diff($d2);
     $diff = $interval->m + ($interval->y * 12);
     $res .= Yii::t('lab', 'Tug\'ilgan sanasi:') . ' ' . $d->animal->birthday . '(' . $diff . ' oy)';
     ?>
-    Tekshiruv obyekti: Namuna nomi: <?= $samples->sampleTypeIs->name_uz ?>,:<?= $res?>, Namuna kodi: <?= $samples->kod ?>
+    Tekshiruv obyekti: Namuna nomi: <?= $samples->sampleTypeIs->name_uz ?> <br>
+    Hayvon ma'lumotlari: <?= $res?>
 </div>
 <br>
 <div>
@@ -141,7 +142,11 @@ $qr = "<img src='{$result->getDataUri()}'>";
 </div>
 <br>
 <div>
-    Tekshirish o'tkazilgan shartoit: Tempratura:<?= $resultanimal->temprature?>, Namlik: <?= $resultanimal->humidity?>, Regantlar: <?= $resultanimal->reagent_series.' '.$resultanimal->reagent_name?>, Boshqa sharoitlar:<?= $resultanimal->conditions?>, Izoh:<?= $resultanimal->ads?>
+    Tekshirish maqsadi va vazifasi: Kasallikga tashhisi: <?= $samples->suspectedDisease->name_uz?>
+</div>
+<br>
+<div>
+    Tekshirish o'tkazilgan shartoit: Tempratura:<?= $resultanimal->temprature?>, Namlik: <?= $resultanimal->humidity?>, Reaktivlar: <?= $resultanimal->reagent_series.' '.$resultanimal->reagent_name?>, Boshqa sharoitlar:<?= $resultanimal->conditions?>
 </div>
 <br>
 <div style="text-align: center">
@@ -157,16 +162,19 @@ $qr = "<img src='{$result->getDataUri()}'>";
         <th colspan="3">
             Parametr qiymatlari
         </th>
-
+        <th rowspan="2">
+            Talabga mosligi
+        </th>
     </tr>
     <tr>
+        <th>Birlik</th>
         <th>
             NH bo'yicha
         </th>
         <th>
             Haqiqatda
         </th>
-        <th>Birlik</th>
+
     </tr>
     </thead>
     <tbody>
@@ -177,6 +185,7 @@ $qr = "<img src='{$result->getDataUri()}'>";
     <?php foreach ($resultanimal->tests as $item): ?>
         <tr>
             <td><?= $item->template->name_uz?></td>
+            <td><?= $item->template->unit->name_uz ?></td>
             <?php if ($item->type_id == 1) { ?>
                 <td><?= $item->template->min . '-' . $item->template->max ?></td>
             <?php } elseif ($item->type_id == 2) { ?>
@@ -187,16 +196,38 @@ $qr = "<img src='{$result->getDataUri()}'>";
                 <td><?= $item->template->min . '-' . $item->template->max ?>
                     <br> <?= $item->template->min_1 . '-' . $item->template->max_1 ?></td>
             <?php } ?>
-            <td><?= $item->result ?></td>
-            <td><?= $item->template->unit->{'name_' . $lg} ?></td>
+
+
+            <?php if ($item->type_id == 1) { ?>
+                <td><?= $item->result ?></td>
+            <?php } elseif ($item->type_id == 2) { ?>
+                <td><?= Yii::$app->params['result'][$item->result] ?></td>
+            <?php } elseif ($item->type_id == 3) { ?>
+                <td><?= $item->template->min . '-' . $item->template->max ?></td>
+            <?php } elseif ($item->type_id == 4) { ?>
+                <td><?= $item->result.'-'.$item->result_2?></td>
+            <?php } ?>
+
+
+            <?php if ($item->type_id == 1) { ?>
+                <td><?php if(intval($item->template->min) <= intval($item->result) and intval($item->result)<= intval($item->template->max)){echo 'Ha';}else{echo 'Yo\'q';} ?></td>
+            <?php } elseif ($item->type_id == 2) { ?>
+                <td><?= Yii::$app->params['result'][$item->result] ?></td>
+            <?php } elseif ($item->type_id == 3) { ?>
+                <td><?= $item->template->min . '-' . $item->template->max ?></td>
+            <?php } elseif ($item->type_id == 4) { ?>
+                <td><?= $item->result.'-'.$item->result_2?></td>
+            <?php } ?>
+
+
         </tr>
     <?php endforeach;?>
     </tbody>
 </table>
 
 <br>
+<p>Umumlashgan natija: <?= $resultanimal->ads ?></p>
 <p>Tekshirish sanasi: <?= $route->updated ?></p>
-<p>Qo'shimcha ma'lumot: <?= $resultanimal->ads ?></p>
 <p>
     Tekshirish o'tkazdi: <?= $route->executor->name ?>
 </p>

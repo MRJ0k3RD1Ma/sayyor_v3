@@ -489,7 +489,7 @@ class DirectorController extends Controller
                 'options' => [
                 ],
                 'methods' => [
-                    'SetTitle' => "Tekshiruv dalolatnomas",
+                    'SetTitle' => "Tekshiruv dalolatnomasi",
                     'SetHeader' => [' ' . '|| ' . date("r")],
                     'SetFooter' => ['| {PAGENO} |'],
                     'SetAuthor' => '@QalandarDev',

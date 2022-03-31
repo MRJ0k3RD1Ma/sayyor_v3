@@ -208,9 +208,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         <?= $form->field($result, 'end_date')->textInput(['type' => 'date']) ?>
 
-                        <?= $form->field($result, 'ads')->textInput() ?>
-                    </div>
+
                 </div>
+            </div>
 
                 <div class="table-responsive">
                     <table class="table table-bordered">
@@ -269,11 +269,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                     ?></td>
 
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?= $form->field($result,'ads')->textInput()?>
+            </div>
 
                 <button type="submit" class="btn btn-success"><?= Yii::t('lab', 'Saqlash') ?></button>
 
@@ -364,18 +365,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                     ?></td>
 
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?= $form->field($result,'ads')->textInput()?>
+        </div>
 
-                <?php ActiveForm::end() ?>
-            </div>
-
-        <?php } ?>
-
+        <?php ActiveForm::end()?>
     </div>
+
+    <?php }?>
+
+</div>
 
 
 <?php

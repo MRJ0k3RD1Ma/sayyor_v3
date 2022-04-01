@@ -110,9 +110,7 @@ class LabController extends Controller
 
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
 
-        if (Model::loadMultiple($test, Yii::$app->request->post()) and $result->load(Yii::$app->request->post('ResultAnimal'))) {
-            $result->created = date('Y-m-d h:i:s');
-//            VarDumper::dump($test) or die();
+        if (Model::loadMultiple($test, Yii::$app->request->post()) and $result->load(Yii::$app->request->post())) {
 
             $result->save();
             foreach ($test as $item) {
@@ -121,13 +119,12 @@ class LabController extends Controller
             Yii::$app->session->setFlash('success', Yii::t('lab', 'Natijalar muvoffaqiyatli saqlandi'));
 
             return $this->redirect(['viewanimal', 'id' => $id]);
-        } else {
-//            VarDumper::dump($result) or die();
         }
-        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
-            ->innerJoin('tamplate_animal', 'template_animal_regulations.template_id = tamplate_animal.id')
-            ->orderBy('template_animal_regulations.regulation_id')
-            ->where('tamplate_animal.id IN (SELECT result_animal_tests.id from result_animal_tests inner join tamplate_animal on result_animal_tests.template_id=tamplate_animal.id where result_animal_tests.result_id=' . $result->id . ')')->all();;
+
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
+            ->innerJoin('tamplate_animal','tamplate_animal.id=template_animal_regulations.template_id')
+            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_id='.$result->id.')')
+            ->groupBy('regulations.id')->all();
 
         return $this->render('viewanimal', [
             'model' => $model,

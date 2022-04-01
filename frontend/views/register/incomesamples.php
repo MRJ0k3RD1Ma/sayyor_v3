@@ -27,13 +27,22 @@ $this->params['breadcrumbs'][] = $this->title
     if (Yii::$app->language == 'ru') {
         $lg = 'ru';
     }
+    $data = [];
+    foreach (SampleTypes::find()->all() as $item){
+        $data[$item->id] = $item->vet4.' - '.$item->{'name_'.$lg};
+    }
     ?>
+
+    <?= $form->field($route, 'vet4')->textInput(['disabled'=>true]) ?>
+
+    <?= $form->field($route, 'sample_type_id')->dropDownList($data,['prompt'=>Yii::t('lab','Namuna turini tanlang')]) ?>
+
     <?= $form->field($cs, 'sample_status_id')->dropDownList(ArrayHelper::map(SampleStatus::find()->all(), 'id', 'name_' . $lg)) ?>
+
 
     <?= $form->field($cs, 'ads')->textInput() ?>
 
     <?= $form->field($route, 'director_id')->dropDownList(ArrayHelper::map($director, 'id', 'name'), ['prompt' => Yii::t('test', 'Direktorni tanlang')]) ?>
-    <?= $form->field($route, 'sample_type_id')->dropDownList(ArrayHelper::map(SampleTypes::find()->all(), 'id', 'name_uz'), ['prompt' => Yii::t('test', 'Namuna turini tanlang')]) ?>
 
     <?= $form->field($route, 'leader_id')->dropDownList(ArrayHelper::map($lider, 'id', 'name'), ['prompt' => Yii::t('test', 'Labaratoriya mudirini tanlang')]) ?>
 
@@ -45,3 +54,15 @@ $this->params['breadcrumbs'][] = $this->title
 
 
 </div>
+
+
+<?php
+$val = json_encode(ArrayHelper::map(SampleTypes::find()->all(),'id','vet4'));
+$this->registerJs("
+    $('#routesert-sample_type_id').change(function(){
+        var val = '{$route->vet4}';
+        var vet4 = JSON.parse('{$val}');
+        $('#routesert-vet4').val(val+vet4[$('#routesert-sample_type_id').val()]);
+    })
+")
+?>

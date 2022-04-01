@@ -318,6 +318,8 @@ class RegisterController extends Controller
         $reg = SampleRegistration::findOne($regid);
         $model = Samples::findOne($id);
         $route = new RouteSert();
+        $route->vet4 = $model->suspectedDisease->vet4.$model->animal->type->vet4;
+
         if($reg->status_id < 2){
             $reg->emp_id = Yii::$app->user->id;
             $cs = CompositeSamples::find()->where(['registration_id'=>$regid])->all();
@@ -337,7 +339,8 @@ class RegisterController extends Controller
         $cs = CompositeSamples::findOne(['registration_id'=>$regid,'sample_id'=>$id]);
 
         if(Yii::$app->request->isPost){
-           if($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())){
+           if($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post()))
+           {
                if($cs->status_id == 2){
                    $model->status_id = 6;
                    $reg->status_id = 6;
@@ -360,6 +363,7 @@ class RegisterController extends Controller
                    $cs->save();
                    return $this->redirect(['/register/regview', 'id' => $regid]);
                }
+
                $route->status_id = 1;
                $model->status_id = 3;
                $route->sample_id = $id;
@@ -379,11 +383,13 @@ class RegisterController extends Controller
                $d2 = new \DateTime(date('Y-m-d'));
                $interval = $d1->diff($d2);
                $diff = $interval->m+($interval->y*12);
-               $template = TamplateAnimal::find()
+               /*$template = TamplateAnimal::find()
                    ->where(['type_id'=>$cs->sample->animal->type_id])
                    ->andWhere(['<=','age',$diff])
                    ->andWhere(['diseases_id'=>$cs->sample->suspected_disease_id])
-                   ->andWhere(['test_method_id'=>$cs->sample->test_mehod_id])->all();
+                   ->andWhere(['test_method_id'=>$cs->sample->test_mehod_id])->all();*/
+
+               $template = TamplateAnimal::find()->where(['vet4'=>$route->vet4])->all();
                $result = new ResultAnimal();
 
                $num = ResultAnimal::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
@@ -400,8 +406,8 @@ class RegisterController extends Controller
                     $test->result_id = $result->id;
                     $test->template_id = $item->id;
                     $test->type_id = $item->type_id;
-                   $test->result = '';
-                   $test->result_2 = '';
+                    $test->result = '';
+                    $test->result_2 = '';
                     $test->save();
                     $test = null;
                }
@@ -416,7 +422,6 @@ class RegisterController extends Controller
         $directos = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>4])->andWhere(['emp_posts.org_id'=>$org_id])->all();
         $lider    = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>3])->andWhere(['emp_posts.org_id'=>$org_id])->all();
 
-        $cs = CompositeSamples::findOne(['registration_id'=>$regid,'sample_id'=>$id]);
         return $this->render('incomesamples',[
             'model'=>$model,
             'reg'=>$reg,

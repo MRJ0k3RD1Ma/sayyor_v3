@@ -72,23 +72,16 @@ YiiAsset::register($this);
                 ],
             ]) ?>
 
-            <?php if ($model->status_id == 1) { ?>
-                <?php $form = ActiveForm::begin() ?>
-
-                <?php
-                $data = [];
-                foreach ($emp as $item) {
-                    $data[$item->id] = RouteSert::find()->where(['executor_id' => $item->id])
-                            ->andWhere(['<>', 'status_id', 2])->count('id')
-                        . ' - ' . $item->name;
-                }
-                ?>
-                <?= $form->field($model, 'executor_id')->dropDownList($data, ['prompt' => Yii::t('leader', 'Labarantni tanlang')]) ?>
-                <?= $form->field($model, 'deadline')->textInput(['type' => 'date']) ?>
-                <?= $form->field($model, 'ads')->textInput() ?>
-                <button class="btn btn-success" type="submit">Jo'natish</button>
-                <?php ActiveForm::end() ?>
-            <?php } ?>
+            <h3><?= Yii::t('leader', 'Normativ hujjatlar') ?></h3>
+            <ul>
+                <?php $lg = 'uz';
+                if (Yii::$app->language == 'ru') $lg = 'ru' ?>
+                <?php foreach ($docs as $item): ?>
+                    <?php $url = '#';
+                    if ($item->file) $url = '/uploads/' . $item->file; ?>
+                    <li><a href="<?= $url ?>"><?= $item->{'name_' . $lg} ?></a></li>
+                <?php endforeach; ?>
+            </ul>
         </div>
         <div class="col-md-6">
             <h3>Namuna ma'lumotlari</h3>
@@ -198,6 +191,7 @@ YiiAsset::register($this);
                     'repeat_code',
                 ],
             ]) ?>
+
         </div>
     </div>
     <div class="row">

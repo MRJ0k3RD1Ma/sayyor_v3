@@ -35,29 +35,6 @@ $routesert = $route->registration_id;
 $lg = 'uz';
 
 
-//errdeb($routesert);
-$docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
-    ->innerJoin('tamplate_animal', 'template_animal_regulations.template_id = tamplate_animal.id')
-    ->orderBy('template_animal_regulations.regulation_id')
-    ->where('tamplate_animal.id IN (SELECT result_animal_tests.id from result_animal_tests inner join tamplate_animal on result_animal_tests.template_id=tamplate_animal.id where result_animal_tests.result_id=' . $routesert . ')')->all();
-//errdeb($routesert);
-//$qr = function () use ($sertificate) {
-$result = Builder::create()
-    ->writer(new PngWriter())
-    ->writerOptions([])
-    ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/get-myresult', 'id' => $sertificate->id]))
-    ->encoding(new Encoding('UTF-8'))
-    ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
-    ->size(150)
-    ->margin(1)
-    ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
-//                        ->logoPath(Yii::$app->basePath.'/web/favicon.ico')
-    ->labelText('')
-    ->labelFont(new NotoSans(20))
-    ->labelAlignment(new LabelAlignmentCenter())
-    ->build();
-$qr = "<img src='{$result->getDataUri()}'>";
-//};
 ?>
 
 <table class="table table-bordered table-hover">

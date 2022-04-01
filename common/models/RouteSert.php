@@ -44,9 +44,11 @@ class RouteSert extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['director_id','leader_id','sample_type_id'],'required'],
             [['director_id', 'leader_id', 'executor_id', 'state_id', 'sample_id', 'registration_id', 'status_id','sample_type_id'], 'integer'],
             [['deadline', 'created', 'updated'], 'safe'],
             [['ads'], 'string', 'max' => 500],
+            ['vet4','string','max'=>8],
             [['executor_id','deadline'],'required','on'=>'exec'],
             [['leader_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['leader_id' => 'id']],
             [['registration_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleRegistration::className(), 'targetAttribute' => ['registration_id' => 'id']],
@@ -76,6 +78,8 @@ class RouteSert extends \yii\db\ActiveRecord
             'sample_id' => Yii::t('food', 'Namuna'),
             'registration_id' => Yii::t('food', 'Ariza'),
             'status_id' => Yii::t('food', 'Status'),
+            'vet4' => Yii::t('food', '4vet'),
+            'sample_type_id' => Yii::t('food', 'Namuna turi'),
         ];
     }
 

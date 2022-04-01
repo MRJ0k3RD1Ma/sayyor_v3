@@ -121,12 +121,18 @@ class DirectorController extends Controller
         $model->scenario = 'exec';
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
+            ->innerJoin('tamplate_animal','tamplate_animal.id=template_animal_regulations.template_id')
+            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_id='.$result->id.')')
+            ->groupBy('regulations.id')->all();
+
         return $this->render('viewanimal', [
             'model' => $model,
             'sample' => $sample,
             'result' => $result,
             'emp' => $emp,
-            'test' => $test
+            'test' => $test,
+            'docs'=>$docs
         ]);
     }
 
@@ -135,6 +141,7 @@ class DirectorController extends Controller
         $model = RouteSert::findOne(['id' => $id]);
         $model->status_id = 5;
         if ($model->save()) {
+
             $dest = new DestructionSampleAnimal();
             $dest->state_id = 3;
             $sample = Samples::findOne($model->sample_id);
@@ -149,12 +156,6 @@ class DirectorController extends Controller
             $reg->save();
             $cs->status_id = 5;
             $cs->save();
-            $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
-            if (CompositeSamples::find()->where(['sample_id' => $sample->id])->count('sample_id') == CompositeSamples::find()->where(['sample_id' => $sample->id])->andWhere(['status_id' => 4])->count('sample_id')) {
-
-                $reg->status_id = 5;
-                $reg->save();
-            }
 
 
             $dest->creator_id = $model->executor_id;
@@ -166,6 +167,7 @@ class DirectorController extends Controller
             $dest->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
             $dest->org_id = Yii::$app->user->identity->empPosts->org_id;
             $dest->save();
+
             Yii::$app->session->setFlash('success', Yii::t('leader', 'Namuna tekshiruv natijasi imzolandi. Namunani yo\'q qilish uchun topshiriq yuborildi.'));
 
             $result = ResultAnimal::findOne(['sample_id'=>$dest->sample_id]);
@@ -190,14 +192,20 @@ class DirectorController extends Controller
                     'SetCreator' => '@QalandarDev',
                 ]
             ]);
+
             try {
+
                 $upload_dir = Yii::getAlias('@uploads');
                 $content = $pdf->render();
                 $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
                 $file = fopen($fileName, 'wb+');
+
                 fwrite($file, $content);
+
                 fclose($file);
-                return $pdf->render();
+
+                return $this->redirect(['indexanimal']);
+
             } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
                 return $e;
             }
@@ -217,12 +225,18 @@ class DirectorController extends Controller
 
     }
 
+
     public function actionRenderPdf($id){
         $model = RouteSert::findOne(['id' => $id]);
         $sample = Samples::findOne($model->sample_id);
         $cs = CompositeSamples::findOne(['sample_id' => $sample->id]);
         $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
-        return $this->render('pdf-verify',['model' => $sample, 'regmodel' => $reg]);
+        $result = ResultAnimal::findOne(['sample_id'=>$model->sample_id]);
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
+            ->innerJoin('tamplate_animal','tamplate_animal.id=template_animal_regulations.template_id')
+            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_animal_tests.checked = 1 and result_id='.$result->id.')')
+            ->groupBy('regulations.id')->all();
+        //return $this->render('pdf-verify',['model' => $sample, 'regmodel' => $reg,'docs'=>$docs]);
         $model->status_id = 5;
         if ($model->save()) {
             $dest = new DestructionSampleAnimal();
@@ -260,7 +274,7 @@ class DirectorController extends Controller
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg]),
+                'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg,'docs'=>$docs]),
                 'options' => [
                 ],
                 'methods' => [

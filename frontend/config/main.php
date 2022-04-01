@@ -19,7 +19,7 @@ return [
             'class' => 'app\modules\komitet\Module',
         ]
     ],
-//    'language'=>'uz',
+
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -60,14 +60,15 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-
+        'sourceLanguage'=>'uz',
+        'language'=>'uz',
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'class' => 'codemix\localeurls\UrlManager',
-            'languages' => ['uz', 'oz','ru'],
-            'enableDefaultLanguageUrlCode' => true,
-            'enableLanguagePersistence' => false,
+//            'class' => 'codemix\localeurls\UrlManager',
+//            'languages' => ['uz', 'oz','ru'],
+//            'enableDefaultLanguageUrlCode' => true,
+//            'enableLanguagePersistence' => false,
             'rules' => [
                 'komitet/<action>' => 'komitet/default/<action>',
             ],

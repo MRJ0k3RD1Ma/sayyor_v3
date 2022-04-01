@@ -124,10 +124,10 @@ class LeaderController extends Controller
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked' => 1])->all();
 
-        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
-            ->innerJoin('tamplate_animal', 'template_animal_regulations.template_id = tamplate_animal.id')
-            ->orderBy('template_animal_regulations.regulation_id')
-            ->where('tamplate_animal.id IN (SELECT result_animal_tests.id from result_animal_tests inner join tamplate_animal on result_animal_tests.template_id=tamplate_animal.id where result_animal_tests.result_id=' . $result->id . ')')->all();;
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
+            ->innerJoin('tamplate_animal','tamplate_animal.id=template_animal_regulations.template_id')
+            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_id='.$result->id.')')
+            ->groupBy('regulations.id')->all();
 
         return $this->render('viewanimal', [
             'model' => $model,

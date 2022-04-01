@@ -18,15 +18,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-
+                <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+                <?php echo $this->render('_searchdest', [
+                    'model' => $searchModel,
+                ]);
+                ?>
 
                 <div class="card-body">
 
-                    <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                    <?php echo $this->render('_searchdest', [
-                        'model' => $searchModel,
-                    ]);
-                    ?>
+
                     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 
@@ -85,6 +85,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         ],
                     ]) ?>
-                    <?php Pjax::end(); ?>
 
                 </div>
+                <?php Pjax::end(); ?>
+            </div>
+        </div>
+    </div>
+</div>

@@ -67,23 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php endforeach;?>
                 </ul>
 
-                <?php if ($model->status_id == 1) { ?>
-                    <?php $form = ActiveForm::begin() ?>
 
-                    <?php
-                    $data = [];
-                    foreach ($emp as $item) {
-                        $data[$item->id] = \common\models\FoodRoute::find()->where(['executor_id' => $item->id])
-                                ->andWhere(['<>', 'status_id', 3])->count('id')
-                            . ' - ' . $item->name;
-                    }
-                    ?>
-                    <?= $form->field($model, 'executor_id')->dropDownList($data, ['prompt' => Yii::t('leader', 'Labarantni tanlang')]) ?>
-                    <?= $form->field($model, 'deadline')->textInput(['type' => 'date']) ?>
-                    <?= $form->field($model, 'ads')->textInput() ?>
-                    <button class="btn btn-success" type="submit">Jo'natish</button>
-                    <?php ActiveForm::end() ?>
-                <?php } ?>
             </div>
 
             <div class="col-md-6">
@@ -174,10 +158,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($result,'require_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Requirements::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('lab','Talabga muvoffiqligini tanlang')])?>
 
                 </div>
-                <div class="col-md-6">
-                    <?= $form->field($result,'ads')->textInput()?>
 
-                </div>
             </div>
 
             <div class="table-responsive">
@@ -226,6 +207,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php endforeach; ?>
                     </tbody>
                 </table>
+
+                <?= $form->field($result,'ads')->textInput()?>
+
             </div>
 
             <button type="submit" class="btn btn-success"><?= Yii::t('lab','Saqlash')?></button>
@@ -251,10 +235,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
             </div>
-            <div class="col-md-6">
-                <?= $form->field($result,'ads')->textInput(['disabled'=>true])?>
 
-            </div>
         </div>
 
         <div class="table-responsive">
@@ -303,6 +284,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endforeach; ?>
                 </tbody>
             </table>
+            <?= $form->field($result,'ads')->textInput(['disabled'=>true])?>
+
         </div>
 
         <?php ActiveForm::end()?>

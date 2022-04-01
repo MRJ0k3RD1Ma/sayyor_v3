@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use app\models\search\director\DestructionSampleAnimalSearch;
+use app\models\search\director\DestructionSampleFoodSearch;
 use common\models\Animals;
 use common\models\CompositeSamples;
 use common\models\DestructionSampleAnimal;
@@ -34,8 +36,14 @@ use common\models\VetSites;
 use frontend\models\search\lab\SertificatesRegSearch;
 use frontend\models\search\lab\SertificatesSearch;
 use frontend\models\search\SampleRegistrationSearch;
+use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
 use PhpOffice\PhpSpreadsheet\Helper\Sample;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use yii\base\BaseObject;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -70,6 +78,7 @@ class RegisterController extends Controller
             ],
         ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -97,13 +106,14 @@ class RegisterController extends Controller
     }
 
 
-    public function actionIncometest($id){
+    public function actionIncometest($id)
+    {
         $model = $this->findModel($id);
         $model->operator = Yii::$app->user->id;
         $model->status_id = 2;
 
         $model->save();
-        return $this->redirect(['viewtest','id'=>$model->id]);
+        return $this->redirect(['viewtest', 'id' => $model->id]);
     }
 
     protected function findModel($id)
@@ -116,8 +126,9 @@ class RegisterController extends Controller
     }
 
 
-    public function actionGetInd($pnfl,$doc){
-        if($model = Individuals::find()->where(['pnfl'=>$pnfl])->andWhere(['passport'=>$doc])->one()){
+    public function actionGetInd($pnfl, $doc)
+    {
+        if ($model = Individuals::find()->where(['pnfl' => $pnfl])->andWhere(['passport' => $doc])->one()) {
             $res = "{
                 \"code\":200,
                 \"value\":{\"pnfl\":\"{$pnfl}\",
@@ -131,11 +142,11 @@ class RegisterController extends Controller
                     \"adress\":\"{$model->adress}\"
                 }
             }";
-        }else{
-            $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'].'?pinfl='.$pnfl.'&document='.$doc,'hamsa');
+        } else {
+            $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'] . '?pinfl=' . $pnfl . '&document=' . $doc, 'hamsa');
             $model = new Individuals();
-            $res = json_decode($res,true);
-            if($res['code']['result']!=2200 or (isset($res['data']['result']) and $res['data']['result']==0)){
+            $res = json_decode($res, true);
+            if ($res['code']['result'] != 2200 or (isset($res['data']['result']) and $res['data']['result'] == 0)) {
                 return -1;
             }
 
@@ -163,17 +174,18 @@ class RegisterController extends Controller
     }
 
 
-    public function actionGetDistrict($id){
-        $model = DistrictView::find()->where(['region_id'=>$id])->all();
-        $text = Yii::t('cp.vetsites','- Tumanni tanlang -');
+    public function actionGetDistrict($id)
+    {
+        $model = DistrictView::find()->where(['region_id' => $id])->all();
+        $text = Yii::t('cp.vetsites', '- Tumanni tanlang -');
         $res = "<option value=''>{$text}</option>";
         $lang = Yii::$app->language;
-        foreach ($model as $item){
-            if($lang == 'ru'){
+        foreach ($model as $item) {
+            if ($lang == 'ru') {
                 $name = $item->name_ru;
-            }elseif($lang == 'oz'){
+            } elseif ($lang == 'oz') {
                 $name = $item->name_cyr;
-            }else{
+            } else {
                 $name = $item->name_lot;
             }
             $res .= "<option value='{$item->district_id}'>{$name}</option>";
@@ -181,17 +193,19 @@ class RegisterController extends Controller
         echo $res;
         exit;
     }
-    public function actionGetQfi($id,$regid){
-        $model = QfiView::find()->where(['district_id'=>$id])->andWhere(['region_id'=>$regid])->all();
-        $text = Yii::t('cp.vetsites','- QFYni tanlang -');
+
+    public function actionGetQfi($id, $regid)
+    {
+        $model = QfiView::find()->where(['district_id' => $id])->andWhere(['region_id' => $regid])->all();
+        $text = Yii::t('cp.vetsites', '- QFYni tanlang -');
         $res = "<option value=''>{$text}</option>";
         $lang = Yii::$app->language;
-        foreach ($model as $item){
-            if($lang == 'ru'){
+        foreach ($model as $item) {
+            if ($lang == 'ru') {
                 $name = $item->name_ru;
-            }elseif($lang == 'oz'){
+            } elseif ($lang == 'oz') {
                 $name = $item->name_cyr;
-            }else{
+            } else {
                 $name = $item->name_lot;
             }
             $res .= "<option value='{$item->MHOBT_cod}'>{$name}</option>";
@@ -200,8 +214,9 @@ class RegisterController extends Controller
         exit;
     }
 
-    public function actionGetinn($inn){
-        if($model = LegalEntities::findOne(['inn'=>$inn])){
+    public function actionGetinn($inn)
+    {
+        if ($model = LegalEntities::findOne(['inn' => $inn])) {
             $res = "{
                 \"code\":200,
                 \"value\":{\"inn\":\"{$inn}\",
@@ -214,12 +229,13 @@ class RegisterController extends Controller
                 }
             }";
             return $res;
-        }else{
+        } else {
             return -1;
         }
     }
 
-    public function actionGetvetsites($id){
+    public function actionGetvetsites($id)
+    {
         $model = VetSites::find()->where(['soato' => $id])->all();
         $text = Yii::t('cp.vetsites', '- Vet uchstkani tanlang -');
         $res = "<option value=''>{$text}</option>";
@@ -232,10 +248,8 @@ class RegisterController extends Controller
     }
 
 
-
-
-
-    public function actionRegtest(){
+    public function actionRegtest()
+    {
         $searchModel = new SampleRegistrationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         return $this->render('regtest', [
@@ -244,11 +258,12 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function actionIncome($id){
+    public function actionIncome($id)
+    {
         $model = SampleRegistration::findOne($id);
         $model->emp_id = Yii::$app->user->id;
-        $cs = CompositeSamples::find()->where(['registration_id'=>$id])->all();
-        foreach ($cs as $item){
+        $cs = CompositeSamples::find()->where(['registration_id' => $id])->all();
+        foreach ($cs as $item) {
             $samp = Samples::findOne($item->sample_id);
             $samp->status_id = 2;
             $samp->save();
@@ -260,39 +275,43 @@ class RegisterController extends Controller
         $model->status_id = 2;
         $sert->save();
         $model->save();
-        return $this->redirect(['regview','id'=>$id]);
+        return $this->redirect(['regview', 'id' => $id]);
     }
 
 
-    public function actionRegview($id){
+    public function actionRegview($id)
+    {
         $model = SampleRegistration::findOne($id);
         $samples = Samples::find()->select(['samples.*'])
-            ->innerJoin('composite_samples','composite_samples.sample_id = samples.id')
-            ->where(['composite_samples.registration_id'=>$id])->all();
+            ->innerJoin('composite_samples', 'composite_samples.sample_id = samples.id')
+            ->where(['composite_samples.registration_id' => $id])->all();
 
-        return $this->render('regview',[
-            'model'=>$model,
-            'samples'=>$samples
+        return $this->render('regview', [
+            'model' => $model,
+            'samples' => $samples
         ]);
     }
 
 
-    public function actionSend($id){
+    public function actionSend($id)
+    {
         $model = Samples::findOne($id);
-        return $this->renderAjax('send',[
-            'model'=>$model
+        return $this->renderAjax('send', [
+            'model' => $model
         ]);
     }
 
-    public function actionViewtestreg($id){
+    public function actionViewtestreg($id)
+    {
         $model = Sertificates::findOne($id);
 
-        return $this->render('viewtestreg',[
-            'model'=>$model
+        return $this->render('viewtestreg', [
+            'model' => $model
         ]);
     }
 
-    public function actionRegproduct(){
+    public function actionRegproduct()
+    {
         $searchModel = new FoodRegistrationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -302,28 +321,30 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function actionRegproductview($id){
+    public function actionRegproductview($id)
+    {
         $model = FoodRegistration::findOne($id);
         $samples = FoodSamples::find()->select(['food_samples.*'])
-            ->innerJoin('food_compose','food_compose.sample_id = food_samples.id')
-            ->where(['food_compose.registration_id'=>$id])->all();
-        return $this->render('regproductview',[
-            'model'=>$model,
-            'samp'=>$samples
+            ->innerJoin('food_compose', 'food_compose.sample_id = food_samples.id')
+            ->where(['food_compose.registration_id' => $id])->all();
+        return $this->render('regproductview', [
+            'model' => $model,
+            'samp' => $samples
         ]);
     }
 
 
-    public function actionIncomesamples($id,$regid){
+    public function actionIncomesamples($id, $regid)
+    {
         $reg = SampleRegistration::findOne($regid);
         $model = Samples::findOne($id);
         $route = new RouteSert();
-        $route->vet4 = $model->suspectedDisease->vet4.$model->animal->type->vet4;
+        $route->vet4 = $model->suspectedDisease->vet4 . $model->animal->type->vet4;
 
-        if($reg->status_id < 2){
+        if ($reg->status_id < 2) {
             $reg->emp_id = Yii::$app->user->id;
-            $cs = CompositeSamples::find()->where(['registration_id'=>$regid])->all();
-            foreach ($cs as $item){
+            $cs = CompositeSamples::find()->where(['registration_id' => $regid])->all();
+            foreach ($cs as $item) {
                 $samp = Samples::findOne($item->sample_id);
                 $samp->status_id = 2;
                 $samp->save();
@@ -336,72 +357,71 @@ class RegisterController extends Controller
             $sert->save();
             $reg->save();
         }
-        $cs = CompositeSamples::findOne(['registration_id'=>$regid,'sample_id'=>$id]);
+        $cs = CompositeSamples::findOne(['registration_id' => $regid, 'sample_id' => $id]);
 
-        if(Yii::$app->request->isPost){
-           if($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post()))
-           {
-               if($cs->status_id == 2){
-                   $model->status_id = 6;
-                   $reg->status_id = 6;
-                   $dal = Sertificates::findOne($model->sert_id);
-                   $dal->status_id = 6;
-                   $dal->save();
-                   $des = new DestructionSampleAnimal();
-                   $des->sample_id = $cs->sample_id;
-                   $des->creator_id = Yii::$app->user->id;
-                   $num = DestructionSampleAnimal::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
-                   $num = (int)$num +1;
-                   $des->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
-                   $des->destruction_date = date('Y-m-d h:i:s');
-                   $des->state_id = 2;
-                   $des->ads = $cs->ads;
-                   $des->consent_id = $route->director_id;
-                   $des->save();
-                   $model->save();
-                   $reg->save();
-                   $cs->save();
-                   return $this->redirect(['/register/regview', 'id' => $regid]);
-               }
+        if (Yii::$app->request->isPost) {
+            if ($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())) {
+                if ($cs->status_id == 2) {
+                    $model->status_id = 6;
+                    $reg->status_id = 6;
+                    $dal = Sertificates::findOne($model->sert_id);
+                    $dal->status_id = 6;
+                    $dal->save();
+                    $des = new DestructionSampleAnimal();
+                    $des->sample_id = $cs->sample_id;
+                    $des->creator_id = Yii::$app->user->id;
+                    $num = DestructionSampleAnimal::find()->where(['org_id' => Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+                    $num = (int)$num + 1;
+                    $des->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
+                    $des->destruction_date = date('Y-m-d h:i:s');
+                    $des->state_id = 2;
+                    $des->ads = $cs->ads;
+                    $des->consent_id = $route->director_id;
+                    $des->save();
+                    $model->save();
+                    $reg->save();
+                    $cs->save();
+                    return $this->redirect(['/register/regview', 'id' => $regid]);
+                }
 
-               $route->status_id = 1;
-               $model->status_id = 3;
-               $route->sample_id = $id;
-               $dal = Sertificates::findOne($model->sert_id);
-               $dal->status_id = 3;
-               $dal->save();
-               $reg->status_id = 3;
-               $reg->save();
-               $model->emp_id = Yii::$app->user->id;
-               $route->vet4=$model->suspectedDisease->vet4.$model->animal->type->vet4.$route->sampleType->vet4;
-               $route->registration_id = $regid;
-               $model->save();
-               $cs->save();
-               $route->save();
+                $route->status_id = 1;
+                $model->status_id = 3;
+                $route->sample_id = $id;
+                $dal = Sertificates::findOne($model->sert_id);
+                $dal->status_id = 3;
+                $dal->save();
+                $reg->status_id = 3;
+                $reg->save();
+                $model->emp_id = Yii::$app->user->id;
+                $route->vet4 = $model->suspectedDisease->vet4 . $model->animal->type->vet4 . $route->sampleType->vet4;
+                $route->registration_id = $regid;
+                $model->save();
+                $cs->save();
+                $route->save();
 
-               $d1 = new \DateTime($cs->sample->animal->birthday);
-               $d2 = new \DateTime(date('Y-m-d'));
-               $interval = $d1->diff($d2);
-               $diff = $interval->m+($interval->y*12);
-               /*$template = TamplateAnimal::find()
-                   ->where(['type_id'=>$cs->sample->animal->type_id])
-                   ->andWhere(['<=','age',$diff])
-                   ->andWhere(['diseases_id'=>$cs->sample->suspected_disease_id])
-                   ->andWhere(['test_method_id'=>$cs->sample->test_mehod_id])->all();*/
+                $d1 = new \DateTime($cs->sample->animal->birthday);
+                $d2 = new \DateTime(date('Y-m-d'));
+                $interval = $d1->diff($d2);
+                $diff = $interval->m + ($interval->y * 12);
+                /*$template = TamplateAnimal::find()
+                    ->where(['type_id'=>$cs->sample->animal->type_id])
+                    ->andWhere(['<=','age',$diff])
+                    ->andWhere(['diseases_id'=>$cs->sample->suspected_disease_id])
+                    ->andWhere(['test_method_id'=>$cs->sample->test_mehod_id])->all();*/
 
-               $template = TamplateAnimal::find()->where(['vet4'=>$route->vet4])->all();
-               $result = new ResultAnimal();
+                $template = TamplateAnimal::find()->where(['vet4' => $route->vet4])->all();
+                $result = new ResultAnimal();
 
-               $num = ResultAnimal::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
-               $num = intval($num)+1;
-               $result->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
-               $result->code_id = $num;
+                $num = ResultAnimal::find()->where(['org_id' => Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+                $num = intval($num) + 1;
+                $result->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
+                $result->code_id = $num;
 
-               $result->sample_id = $cs->sample_id;
-               $result->state_id = 1;
-               $result->creator_id = $route->executor_id;
-               $result->save();
-               foreach ($template as $item){
+                $result->sample_id = $cs->sample_id;
+                $result->state_id = 1;
+                $result->creator_id = $route->executor_id;
+                $result->save();
+                foreach ($template as $item) {
                     $test = new ResultAnimalTests();
                     $test->result_id = $result->id;
                     $test->template_id = $item->id;
@@ -410,35 +430,36 @@ class RegisterController extends Controller
                     $test->result_2 = '';
                     $test->save();
                     $test = null;
-               }
+                }
 
-               Yii::$app->session->setFlash('success',Yii::t('test','Namuna muvoffaqiyatli yuborildi'));
-               return $this->redirect(['/register/regview','id'=>$regid]);
-           }
-       }
+                Yii::$app->session->setFlash('success', Yii::t('test', 'Namuna muvoffaqiyatli yuborildi'));
+                return $this->redirect(['/register/regview', 'id' => $regid]);
+            }
+        }
 
         $org_id = Yii::$app->user->identity->empPosts->org_id;
 
-        $directos = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>4])->andWhere(['emp_posts.org_id'=>$org_id])->all();
-        $lider    = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>3])->andWhere(['emp_posts.org_id'=>$org_id])->all();
+        $directos = Employees::find()->select(['employees.*'])->innerJoin('emp_posts', 'emp_posts.emp_id = employees.id')->where(['emp_posts.post_id' => 4])->andWhere(['emp_posts.org_id' => $org_id])->all();
+        $lider = Employees::find()->select(['employees.*'])->innerJoin('emp_posts', 'emp_posts.emp_id = employees.id')->where(['emp_posts.post_id' => 3])->andWhere(['emp_posts.org_id' => $org_id])->all();
 
-        return $this->render('incomesamples',[
-            'model'=>$model,
-            'reg'=>$reg,
-            'cs'=>$cs,
-            'route'=>$route,
-            'director'=>$directos,
-            'lider'=>$lider
+        return $this->render('incomesamples', [
+            'model' => $model,
+            'reg' => $reg,
+            'cs' => $cs,
+            'route' => $route,
+            'director' => $directos,
+            'lider' => $lider
         ]);
     }
 
-    public function actionIncomeproduct($id){
+    public function actionIncomeproduct($id)
+    {
         // income qilish yoziladi food_samplesni
 
         $model = FoodRegistration::findOne($id);
         $model->emp_id = Yii::$app->user->id;
-        $cs = FoodCompose::find()->where(['registration_id'=>$id])->all();
-        foreach ($cs as $item){
+        $cs = FoodCompose::find()->where(['registration_id' => $id])->all();
+        foreach ($cs as $item) {
             $samp = FoodSamples::findOne($item->sample_id);
             $samp->status_id = 2;
             $samp->save();
@@ -450,12 +471,12 @@ class RegisterController extends Controller
         $model->status_id = 2;
         $sert->save();
         $model->save();
-        return $this->redirect(['regproductview','id'=>$id]);
+        return $this->redirect(['regproductview', 'id' => $id]);
 
     }
 
 
-    public function actionIncomefood($id,$regid)
+    public function actionIncomefood($id, $regid)
     {
         $reg = FoodRegistration::findOne($regid);
         $model = FoodSamples::findOne($id);
@@ -481,7 +502,7 @@ class RegisterController extends Controller
         if (Yii::$app->request->isPost) {
             if ($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())) {
 
-                if($cs->status_id == 2){
+                if ($cs->status_id == 2) {
                     $model->status_id = 6;
                     $reg->status_id = 6;
                     $dal = FoodSamplingCertificate::findOne($model->sert_id);
@@ -490,9 +511,9 @@ class RegisterController extends Controller
                     $des = new DestructionSampleFood();
                     $des->sample_id = $cs->sample_id;
                     $des->creator_id = Yii::$app->user->id;
-                    $num = DestructionSampleFood::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
-                    $num = intval($num)+1;
-                    $des->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
+                    $num = DestructionSampleFood::find()->where(['org_id' => Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+                    $num = intval($num) + 1;
+                    $des->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
                     $des->code_id = $num;
                     $des->destruction_date = date('Y-m-d h:i:s');
                     $des->state_id = 2;
@@ -528,9 +549,9 @@ class RegisterController extends Controller
                     ->andWhere(['tasnif_code' => $cs->sample->tasnif_code])->all();
                 $result = new ResultFood();
 
-                $num = ResultFood::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
-                $num = intval($num)+1;
-                $result->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
+                $num = ResultFood::find()->where(['org_id' => Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+                $num = intval($num) + 1;
+                $result->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
                 $result->code_id = $num;
                 $result->org_id = Yii::$app->user->identity->empPosts->org_id;
 
@@ -549,26 +570,132 @@ class RegisterController extends Controller
                     $test = null;
                 }
 
-                Yii::$app->session->setFlash('success', Yii::t('test', 'Namuna {number} raqami bilan saqlandi',['number'=>$result->code]));
+                Yii::$app->session->setFlash('success', Yii::t('test', 'Namuna {number} raqami bilan saqlandi', ['number' => $result->code]));
                 return $this->redirect(['/register/regproductview', 'id' => $regid]);
             }
         }
 
         $org_id = Yii::$app->user->identity->empPosts->org_id;
 
-        $directos = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>4])->andWhere(['emp_posts.org_id'=>$org_id])->all();
-        $lider    = Employees::find()->select(['employees.*'])->innerJoin('emp_posts','emp_posts.emp_id = employees.id')->where(['emp_posts.post_id'=>3])->andWhere(['emp_posts.org_id'=>$org_id])->all();
+        $directos = Employees::find()->select(['employees.*'])->innerJoin('emp_posts', 'emp_posts.emp_id = employees.id')->where(['emp_posts.post_id' => 4])->andWhere(['emp_posts.org_id' => $org_id])->all();
+        $lider = Employees::find()->select(['employees.*'])->innerJoin('emp_posts', 'emp_posts.emp_id = employees.id')->where(['emp_posts.post_id' => 3])->andWhere(['emp_posts.org_id' => $org_id])->all();
 
-        return $this->render('incomefood',[
-            'model'=>$model,
-            'reg'=>$reg,
-            'cs'=>$cs,
-            'route'=>$route,
-            'director'=>$directos,
-            'lider'=>$lider
+        return $this->render('incomefood', [
+            'model' => $model,
+            'reg' => $reg,
+            'cs' => $cs,
+            'route' => $route,
+            'director' => $directos,
+            'lider' => $lider
         ]);
 
 
+    }
+
+    public function actionDest(int $export = null)
+    {
+        $searchModel = new DestructionSampleAnimalSearch();
+        $dataProvider = $searchModel->searchRegister($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfdest', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
+
+        return $this->render('dest', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionDestview($id)
+    {
+        $model = DestructionSampleAnimal::findOne($id);
+
+        return $this->render('destview', [
+            'model' => $model
+        ]);
+    }
+
+    public function actionDestfood($export = null)
+    {
+        $searchModel = new DestructionSampleFoodSearch();
+        $dataProvider = $searchModel->searchRegister($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfdest', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
+        return $this->render('destfood', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionDestfoodview($id)
+    {
+        $model = DestructionSampleFood::findOne($id);
+
+        return $this->render('destfoodview', [
+            'model' => $model
+        ]);
+    }
+
+    public function actionDestPdf($id)
+    {
+        $model = DestructionSampleAnimal::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+    }
+    public function actionDestPdffood($id)
+    {
+        $model = DestructionSampleFood::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
 
 

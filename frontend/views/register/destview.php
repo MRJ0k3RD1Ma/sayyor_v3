@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 
@@ -10,20 +9,20 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\DestructionSampleAnimal */
 
 $this->title = $model->code;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunani yo\'q qilish dalolatnomalarii'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunani yo\'q qilish dalolatnomalarii'), 'url' => ['register/dest']];
 $this->params['breadcrumbs'][] = $this->title;
-YiiAsset::register($this);
+\yii\web\YiiAsset::register($this);
 ?>
 <div class="destruction-sample-animal-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <?php if ($model->state_id == 1): ?>
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="<?= Url::to(['lab/dest-pdffood', 'id' => $model->id]) ?>" class="btn btn-warning">Arizani
+                        <a href="<?= Url::to(['register/dest-pdf', 'id' => $model->id]) ?>" class="btn btn-warning">Arizani
                             PDF
                             ko'rinishda yuklab olish</a>
                     </div>
@@ -39,19 +38,25 @@ YiiAsset::register($this);
                     [
                         'attribute' => 'sample_id',
                         'value' => function ($d) {
-                            return $d->sample->samp_code;
+                            return $d->sample->kod;
                         },
                         'format' => 'raw'
                     ],
                     [
-                        'label' => Yii::t('lab', 'Namuna ma\'lumotlari'),
-                        'value' => function ($d) {
-                            $samp = $d->sample;
-                            $res = "";
+                        'label' => Yii::t('lab', 'Hayvon haqida ma\'lumot'),
+                        'value' => function ($model) {
+                            $d = $model->sample;
                             $lg = 'uz';
                             if (Yii::$app->language == 'ru') $lg = 'ru';
-                            $res .= Yii::t('model', 'Namuna nomi') . ': ' . $samp->tasnif->{'name'} . '<br>';
-                            $res .= Yii::t('model', 'Soni') . ': ' . $samp->count;
+                            $res = "";
+                            $res .= $d->animal->type->{'name_' . $lg} . '<br>';
+                            $res .= Yii::t('lab', 'Holati:') . ' ' . $d->animal->cat->{'name_' . $lg} . '<br>';
+                            $res .= Yii::t('lab', 'Jinsi:') . ' ' . Yii::$app->params['gender'][$d->animal->gender] . '<br>';
+                            $d1 = new DateTime($d->animal->birthday);
+                            $d2 = new DateTime(date('Y-m-d'));
+                            $interval = $d1->diff($d2);
+                            $diff = $interval->m + ($interval->y * 12);
+                            $res .= Yii::t('lab', 'Tug\'ilgan sanasi:') . ' ' . $d->animal->birthday . '(' . $diff . ' oy)';
 
                             return $res;
                         },
@@ -65,7 +70,8 @@ YiiAsset::register($this);
                         }
                     ],
                     'destruction_date',
-
+                    //'approved_date',
+//            'state_id',
 
                     [
                         'attribute' => 'creator_id',
@@ -73,7 +79,7 @@ YiiAsset::register($this);
                             return $d->creator->name;
                         }
                     ],
-
+                    //'org_id',
                     'approved_date',
                     [
                         'attribute' => 'state_id',
@@ -91,18 +97,7 @@ YiiAsset::register($this);
                 ],
             ]) ?>
         </div>
-        <div class="col-md-6">
-            <?php if ($model->state_id == 3) { ?>
-                <?php $form = ActiveForm::begin() ?>
 
-                <?= $form->field($model, 'ads')->textInput() ?>
-
-                <?= $form->field($model, 'destruction_date')->textInput(['type' => 'date']) ?>
-
-                <button class="btn btn-success">Saqlash</button>
-                <?php ActiveForm::end() ?>
-            <?php } ?>
-        </div>
     </div>
 
 

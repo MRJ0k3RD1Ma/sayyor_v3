@@ -383,6 +383,7 @@ class RegisterController extends Controller
                $d2 = new \DateTime(date('Y-m-d'));
                $interval = $d1->diff($d2);
                $diff = $interval->m+($interval->y*12);
+
                /*$template = TamplateAnimal::find()
                    ->where(['type_id'=>$cs->sample->animal->type_id])
                    ->andWhere(['<=','age',$diff])

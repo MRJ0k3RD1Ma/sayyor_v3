@@ -497,6 +497,9 @@ class RegisterController extends Controller
                     $des->destruction_date = date('Y-m-d h:i:s');
                     $des->state_id = 2;
                     $des->ads = $cs->ads;
+
+                    $des->org_id = Yii::$app->user->identity->empPosts->org_id;
+
                     $des->consent_id = $route->director_id;
                     $des->save();
                     $model->save();

@@ -1,6 +1,9 @@
 <?php
 
+use common\models\Emlash;
+use common\models\Vaccination;
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -9,51 +12,52 @@ use yii\widgets\DetailView;
 $this->title = $model->code;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Arizalar ro\'yhati'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
     <div class="sertificates-view">
 
 
-        <?php if($model->status_id > 1){?>
+        <?php if ($model->status_id > 1) { ?>
             <p style="font-weight: bold">
-                <a href="#" class="btn btn-primary"><?= $model->status->icon?> <?= $model->status->name_uz ?></a>
+                <a href="#" class="btn btn-primary"><?= $model->status->icon ?> <?= $model->status->name_uz ?></a>
             </p>
 
-        <?php }else{?>
+        <?php } else { ?>
             <p>
-                <a class="btn btn-success" href="<?= Yii::$app->urlManager->createUrl(['/register/income','id'=>$model->id])?>"><?= Yii::t('register','Arzani qabul qilish')?></a>
+                <a class="btn btn-success"
+                   href="<?= Yii::$app->urlManager->createUrl(['/register/income', 'id' => $model->id]) ?>"><?= Yii::t('register', 'Arzani qabul qilish') ?></a>
             </p>
-        <?php }?>
+        <?php } ?>
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
                 [
-                    'attribute'=>'code',
-                    'value'=>function($d){
-                        $url = Yii::$app->urlManager->createUrl(['/register/regview','id'=>$d->id]);
+                    'attribute' => 'code',
+                    'value' => function ($d) {
+                        $url = Yii::$app->urlManager->createUrl(['/register/regview', 'id' => $d->id]);
                         return "<a href='{$url}'>{$d->code}</a>";
                     },
-                    'filter'=>false,
-                    'format'=>'raw'
+                    'filter' => false,
+                    'format' => 'raw'
                 ],
                 [
-                    'label'=>Yii::t('register','Yuboruvchi'),
-                    'value'=>function($d){
-                        if($d->inn){
-                            return $d->inn.'<br>'.$d->inn0->name;
-                        }elseif($d->pnfl){
-                            return $d->pnfl.'<br>'.$d->pnfl0->name.' '.$d->pnfl0->surname.' '.$d->pnfl0->middlename;
-                        }else{
+                    'label' => Yii::t('register', 'Yuboruvchi'),
+                    'value' => function ($d) {
+                        if ($d->inn) {
+                            return $d->inn . '<br>' . $d->inn0->name;
+                        } elseif ($d->pnfl) {
+                            return $d->pnfl . '<br>' . $d->pnfl0->name . ' ' . $d->pnfl0->surname . ' ' . $d->pnfl0->middlename;
+                        } else {
                             return null;
                         }
                     },
-                    'format'=>'raw'
+                    'format' => 'raw'
                 ],
 //                            'is_research',
                 [
-                    'attribute'=>'is_research',
-                    'value'=>function($d){
-                        $s = [0=>'Shoshilinch emas',1=>'Shohilinch'];
+                    'attribute' => 'is_research',
+                    'value' => function ($d) {
+                        $s = [0 => 'Shoshilinch emas', 1 => 'Shohilinch'];
                         return $s[$d->is_research];
                     }
                 ],
@@ -61,8 +65,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'code',
                 //'research_category_id',
                 [
-                    'attribute'=>'research_category_id',
-                    'value'=>function($d){
+                    'attribute' => 'research_category_id',
+                    'value' => function ($d) {
                         return $d->researchCategory->name_uz;
                     }
                 ],
@@ -71,10 +75,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'sender_phone',
                 'created',
                 [
-                    'attribute'=>'status_id',
-                    'value'=>function($d){
-                        $lg = 'uz'; if(Yii::$app->language == 'ru')$lg='ru';
-                        return $d->status->{'name_'.$lg};
+                    'attribute' => 'status_id',
+                    'value' => function ($d) {
+                        $lg = 'uz';
+                        if (Yii::$app->language == 'ru') $lg = 'ru';
+                        return $d->status->{'name_' . $lg};
                     }
                 ],
                 //'updated',
@@ -113,50 +118,51 @@ $this->params['breadcrumbs'][] = $this->title;
                 </tr>
                 </thead>
                 <tbody>
-                <?php $n=0; foreach ($samples as $item): $n++;
-                    $cnt_vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->count('*');
-                    $cnt_eml = \common\models\Emlash::find()->where(['animal_id'=>$item->animal_id])->count('*');
-                    if($cnt_vac > $cnt_eml){
+                <?php $n = 0;
+                foreach ($samples as $item): $n++;
+                    $cnt_vac = Vaccination::find()->where(['animal_id' => $item->animal_id])->count('*');
+                    $cnt_eml = Emlash::find()->where(['animal_id' => $item->animal_id])->count('*');
+                    if ($cnt_vac > $cnt_eml) {
                         $cnt = $cnt_vac;
-                    }else{
+                    } else {
                         $cnt = $cnt_eml;
                     }
                     ?>
                     <tr>
-                        <td rowspan="<?= $cnt + 1?>">
-                            <?php if($item->status_id < 3){?>
-                                <a href="<?= Yii::$app->urlManager->createUrl(['/register/incomesamples','id'=>$item->id,'regid'=>$model->id])?>"><?= $item->status->icon?> <?= $item->kod?></a>
-                            <?php }else{?>
-                                <?= $item->status->icon?> <?= $item->kod?>
-                            <?php }?>
+                        <td rowspan="<?= $cnt + 1 ?>">
+                            <?php if ($item->status_id = 3) { ?>
+                                <a href="<?= Yii::$app->urlManager->createUrl(['/register/incomesamples', 'id' => $item->id, 'regid' => $model->id]) ?>"><?= $item->status->icon ?> <?= $item->kod ?></a>
+                            <?php } else { ?>
+                                <?= $item->status->icon ?> <?= $item->kod ?>
+                            <?php } ?>
                         </td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->animal_id ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->animal->type->name_uz ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= Yii::$app->params['gender'][$item->animal->gender] ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->animal->birthday ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->label ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->sampleTypeIs->name_uz ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->sampleBox->name_uz ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->animal_id ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->animal->type->name_uz ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= Yii::$app->params['gender'][$item->animal->gender] ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->animal->birthday ?></td>
                         <td colspan="2"></td>
                         <td colspan="2"></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->suspectedDisease->name_uz?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->testMehod->name_uz?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->repeat_code?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->suspectedDisease->name_uz ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->testMehod->name_uz ?></td>
+                        <td rowspan="<?= $cnt + 1 ?>"><?= $item->repeat_code ?></td>
 
                     </tr>
                     <?php
-                    $vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->orderBy(['disease_date'=>SORT_DESC])->all();
-                    $eml = \common\models\Emlash::find()->where(['animal_id'=>$item->animal_id])->orderBy(['emlash_date'=>SORT_DESC])->all();
-                    for ($i=0;$i<$cnt; $i++):?>
+                    $vac = Vaccination::find()->where(['animal_id' => $item->animal_id])->orderBy(['disease_date' => SORT_DESC])->all();
+                    $eml = Emlash::find()->where(['animal_id' => $item->animal_id])->orderBy(['emlash_date' => SORT_DESC])->all();
+                    for ($i = 0; $i < $cnt; $i++):?>
                         <tr>
                             <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>
-                            <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' '?></td>
+                            <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' ' ?></td>
                             <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
-                            <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
+                            <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' ' ?></td>
                         </tr>
 
                     <?php endfor; ?>
-                <?php endforeach;?>
+                <?php endforeach; ?>
 
                 </tbody>
             </table>
@@ -164,7 +170,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 
-    <div class="modal fade bs-example-modal-lg" id="sendmodal" tabindex="-1"  style="display: none;" aria-hidden="true">
+    <div class="modal fade bs-example-modal-lg" id="sendmodal" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">

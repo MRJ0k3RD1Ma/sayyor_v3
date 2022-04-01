@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\search\DiseasesSearch */
+/* @var $searchModel common\models\search\DiseasesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('cp.diseases', 'Kasalliklar ro`yhati');
@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //                            'id',
                             'name_uz',
                             'name_ru',
+                            'vet4',
 //                            'category_id',
 //                            'group_id',
                             [

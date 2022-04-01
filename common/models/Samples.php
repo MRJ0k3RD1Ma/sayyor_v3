@@ -143,4 +143,7 @@ class Samples extends \yii\db\ActiveRecord
     public function getEmp(){
         return $this->hasOne(Employees::className(),['id'=>'emp_id']);
     }
+    public function getRoute(){
+        return $this->hasOne(RouteSert::className(),['sample_id'=>'id']);
+    }
 }

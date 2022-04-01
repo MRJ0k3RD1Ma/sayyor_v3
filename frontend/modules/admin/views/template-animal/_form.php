@@ -10,7 +10,7 @@ use common\models\TestMethod;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\TamplateAnimal */
@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
     <div class="tamplate-animal-form">
         <div class="row">
             <?php $form = ActiveForm::begin(); ?>
-
+            <?= $form->field($model, 'vet4')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'type_id')->dropDownList(
                 ArrayHelper::map(Animaltype::find()->asArray()->all(), 'id', 'name_uz')
             ) ?>
@@ -67,36 +67,36 @@ use yii\widgets\ActiveForm;
 
             <div class="isfalse">
 
-            <?= $form->field($model, 'min')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'min')->textInput(['maxlength' => true]) ?>
 
-            <div class="oraliq" style="display: none">
+                <div class="oraliq" style="display: none">
 
-                <?= $form->field($model, 'min_1')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'min_1')->textInput(['maxlength' => true]) ?>
 
-            </div>
+                </div>
 
-            <?= $form->field($model, 'max')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'max')->textInput(['maxlength' => true]) ?>
 
-            <div class="oraliq" style="display: none">
+                <div class="oraliq" style="display: none">
 
-                <?= $form->field($model, 'max_1')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'max_1')->textInput(['maxlength' => true]) ?>
 
-            </div>
+                </div>
 
             </div>
 
             <div class="istrue" style="display: none">
 
-                <?= $form->field($model, 'true')->dropDownList([0=>'Yo\'q',1=>'Ha']) ?>
-                <?= $form->field($model, 'true1')->dropDownList([0=>'Yo\'q',1=>'Ha']) ?>
+                <?= $form->field($model, 'true')->dropDownList([0 => 'Yo\'q', 1 => 'Ha']) ?>
+                <?= $form->field($model, 'true1')->dropDownList([0 => 'Yo\'q', 1 => 'Ha']) ?>
             </div>
             <?= $form->field($model, 'is_vaccination')->dropDownList([0 => 'Yo\'q', 1 => 'Ha', 2 => 'Baribir']) ?>
 
             <?= $form->field($model, 'dead_days')->textInput(['type' => 'number']) ?>
 
             <?= $form->field($model, 'creator_id')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false) ?>
-            
-            <?= $form->field($model, 'consent_id')->dropDownList(ArrayHelper::map(\common\models\Employees::find()->all(),'id','name'),['prompt'=>Yii::t('cp','Tasdiqlovchini tanlang')]) ?>
+
+            <?= $form->field($model, 'consent_id')->dropDownList(ArrayHelper::map(\common\models\Employees::find()->all(), 'id', 'name'), ['prompt' => Yii::t('cp', 'Tasdiqlovchini tanlang')]) ?>
 
             <!--Tasdiqlovchi kiritish keyinroq Abduraxmon aytgan roldagi odamga beriladi-->
 

@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $name_uz
  * @property string $name_ru
+ * @property string $vet4
  * @property int|null $code
  *
  * @property Animals[] $animals
@@ -30,10 +31,11 @@ class Animaltype extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name_uz', 'name_ru'], 'required'],
+            [['id','name_uz', 'name_ru','vet4'], 'required'],
             [['id', 'code'], 'integer'],
             [['name_uz'], 'string', 'max' => 100],
             [['name_ru'], 'string', 'max' => 255],
+            [['vet4'], 'string', 'max' => 2],
             [['id'], 'unique'],
         ];
     }
@@ -48,6 +50,7 @@ class Animaltype extends \yii\db\ActiveRecord
             'name_uz' => Yii::t('model.animaltype', 'Nomi(O\'zbek)'),
             'name_ru' => Yii::t('model.animaltype', 'Nomi(Rus)'),
             'code' => Yii::t('model.animaltype', 'Kod'),
+            'vet4' => Yii::t('model.animaltype', 'Vet4'),
         ];
     }
 

@@ -70,6 +70,8 @@ class TamplateAnimal extends \yii\db\ActiveRecord
             [['type_id', 'gender','true','true1', 'age', 'diseases_id', 'test_method_id', 'unit_id', 'is_vaccination', 'dead_days', 'creator_id', 'consent_id', 'state_id'], 'integer'],
             [['created', 'updated'], 'safe'],
             [['name_uz', 'name_ru', 'min', 'min_1', 'max', 'max_1'], 'string', 'max' => 255],
+            [['vet4'],'string','max'=>8],
+            [['vet4'],'required'],
             [['diseases_id'], 'exist', 'skipOnError' => true, 'targetClass' => Diseases::className(), 'targetAttribute' => ['diseases_id' => 'id']],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => StateList::className(), 'targetAttribute' => ['state_id' => 'id']],
             [['test_method_id'], 'exist', 'skipOnError' => true, 'targetClass' => TestMethod::className(), 'targetAttribute' => ['test_method_id' => 'id']],

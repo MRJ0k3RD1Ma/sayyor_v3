@@ -348,7 +348,7 @@ class RegisterController extends Controller
                    $des->sample_id = $cs->sample_id;
                    $des->creator_id = Yii::$app->user->id;
                    $num = DestructionSampleAnimal::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
-                   $num = intval($num)+1;
+                   $num = (int)$num +1;
                    $des->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
                    $des->destruction_date = date('Y-m-d h:i:s');
                    $des->state_id = 2;
@@ -369,6 +369,7 @@ class RegisterController extends Controller
                $reg->status_id = 3;
                $reg->save();
                $model->emp_id = Yii::$app->user->id;
+               $route->vet4=$model->suspectedDisease->vet4.$model->animal->type->vet4.$route->sampleType->vet4;
                $route->registration_id = $regid;
                $model->save();
                $cs->save();

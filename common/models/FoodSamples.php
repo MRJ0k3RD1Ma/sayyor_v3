@@ -170,5 +170,8 @@ class FoodSamples extends \yii\db\ActiveRecord
     {
         return $this->hasOne(SampleTypes::className(), ['id' => 'sample_type_is']);
     }
+    public function getRoute(){
+        return $this->hasOne(FoodRoute::className(), ['sample_id'=>'id']);
+    }
 
 }

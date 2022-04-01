@@ -32,6 +32,7 @@ YiiAsset::register($this);
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+            'vet4',
             [
                 'attribute' => 'type_id',
                 'value' => function (TamplateAnimal $model) {

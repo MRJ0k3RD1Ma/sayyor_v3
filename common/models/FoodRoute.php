@@ -43,7 +43,7 @@ class FoodRoute extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['director_id', 'leader_id', 'executor_id', 'state_id', 'sample_id', 'registration_id', 'status_id'], 'integer'],
+            [['director_id', 'leader_id', 'executor_id', 'state_id', 'sample_id', 'registration_id', 'status_id', 'sample_type_id'], 'integer'],
             [['deadline', 'created', 'updated'], 'safe'],
             [['ads'], 'string', 'max' => 255],
             [['director_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['director_id' => 'id']],
@@ -52,6 +52,7 @@ class FoodRoute extends \yii\db\ActiveRecord
             [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => FoodSamples::className(), 'targetAttribute' => ['sample_id' => 'id']],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => StateList::className(), 'targetAttribute' => ['state_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => SertStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
+            [['sample_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleTypes::className(), 'targetAttribute' => ['sample_type_id' => 'id']],
         ];
     }
 
@@ -85,9 +86,12 @@ class FoodRoute extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Employees::className(), ['id' => 'director_id']);
     }
-    public function getExecutor(){
-        return $this->hasOne(Employees::className(),['id'=>'executor_id']);
+
+    public function getExecutor()
+    {
+        return $this->hasOne(Employees::className(), ['id' => 'executor_id']);
     }
+
     /**
      * Gets query for [[Leader]].
      *
@@ -136,5 +140,9 @@ class FoodRoute extends \yii\db\ActiveRecord
     public function getStatus()
     {
         return $this->hasOne(RouteStatus::className(), ['id' => 'status_id']);
+    }
+    public function getSampleType()
+    {
+        return $this->hasOne(SampleTypes::className(), ['id' => 'sample_type_id']);
     }
 }

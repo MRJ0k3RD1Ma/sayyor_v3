@@ -50,7 +50,9 @@ class DiseasesController extends Controller
         if ($export == 1) {
             try {
                 $searchModel->exportToExcel($dataProvider->query);
-            } catch (Exception|\yii\base\Exception $e) {
+            } catch (Exception $e) {
+                return $e->getMessage();
+            } catch (\yii\base\Exception $e) {
                 return $e->getMessage();
             }
         } elseif ($export == 2) {

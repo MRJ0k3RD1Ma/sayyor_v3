@@ -163,36 +163,38 @@ $qr =function() use ($samples) {
         <tr>
             <td><?= $item->template->name_uz?></td>
             <td><?= $item->template->unit->name_uz ?></td>
-            <?php if ($item->type_id == 1) { ?>
+            <?php if ($item->template->unit->type_id == 1) { ?>
                 <td><?= $item->template->min . '-' . $item->template->max ?></td>
-            <?php } elseif ($item->type_id == 2) { ?>
+            <?php } elseif ($item->template->unit->type_id == 2) { ?>
                 <td><?= Yii::$app->params['result'][$item->template->min] ?></td>
-            <?php } elseif ($item->type_id == 3) { ?>
+            <?php } elseif ($item->template->unit->type_id == 3) { ?>
                 <td><?= $item->template->min . '-' . $item->template->max . ' %' ?></td>
-            <?php } elseif ($item->type_id == 4) { ?>
+            <?php } elseif ($item->template->unit->type_id == 4) { ?>
                 <td><?= $item->template->min . '-' . $item->template->max ?>
                     <br> <?= $item->template->min_1 . '-' . $item->template->max_1 ?></td>
             <?php } ?>
 
 
-            <?php if ($item->type_id == 1) { ?>
+            <?php if ($item->template->unit->type_id == 1) { ?>
                 <td><?= $item->result ?></td>
-            <?php } elseif ($item->type_id == 2) { ?>
+            <?php } elseif ($item->template->unit->type_id == 2) { ?>
                 <td><?= Yii::$app->params['result'][$item->result] ?></td>
-            <?php } elseif ($item->type_id == 3) { ?>
+            <?php } elseif ($item->template->unit->type_id == 3) { ?>
                 <td><?= $item->template->min . '-' . $item->template->max ?></td>
-            <?php } elseif ($item->type_id == 4) { ?>
+            <?php } elseif ($item->template->unit->type_id == 4) { ?>
                 <td><?= $item->result.'-'.$item->result_2?></td>
             <?php } ?>
 
 
-            <?php if ($item->type_id == 1) { ?>
+            <?php if ($item->template->unit->type_id == 1) { ?>
                 <td><?php if(intval($item->template->min) <= intval($item->result) and intval($item->result)<= intval($item->template->max)){echo 'Ha';}else{echo 'Yo\'q';} ?></td>
-            <?php } elseif ($item->type_id == 2) { ?>
-                <td><?= Yii::$app->params['result'][$item->result] ?></td>
-            <?php } elseif ($item->type_id == 3) { ?>
+            <?php } elseif ($item->template->unit->type_id == 2) { ?>
+                <td>
+                    <?php if($item->result==$item->template->min){?><?= Yii::$app->params['result'][1] ?><?php }else{?><?= Yii::$app->params['result'][0]?><?php }?>
+                </td>
+            <?php } elseif ($item->template->unit->type_id == 3) { ?>
                 <td><?= $item->template->min . '-' . $item->template->max ?></td>
-            <?php } elseif ($item->type_id == 4) { ?>
+            <?php } elseif ($item->template->unit->type_id == 4) { ?>
                 <td><?= $item->result.'-'.$item->result_2?></td>
             <?php } ?>
 

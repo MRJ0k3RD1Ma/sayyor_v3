@@ -236,26 +236,31 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <td><?= $n ?></td>
                                 <td><?= $item->template->{'name_' . $lg} ?></td>
                                 <td><?= $item->template->unit->{'name_' . $lg} ?></td>
-                                <?php if ($item->type_id == 1) { ?>
+                                <?php if ($item->template->unit->type_id == 1) { ?>
                                     <td><?= $item->template->min . '-' . $item->template->max ?></td>
-                                <?php } elseif ($item->type_id == 2) { ?>
+                                <?php } elseif ($item->template->unit->type_id == 2) { ?>
                                     <td><?= Yii::$app->params['result'][$item->template->min] ?></td>
-                                <?php } elseif ($item->type_id == 3) { ?>
+                                <?php } elseif ($item->template->unit->type_id == 3) { ?>
                                     <td><?= $item->template->min . '-' . $item->template->max . ' %' ?></td>
-                                <?php } elseif ($item->type_id == 4) { ?>
+                                <?php } elseif ($item->template->unit->type_id == 4) { ?>
                                     <td><?= $item->template->min . '-' . $item->template->max ?>
                                         <br> <?= $item->template->min_1 . '-' . $item->template->max_1 ?></td>
                                 <?php } ?>
 
-                                <?php if ($item->type_id == 1) { ?>
+                                <?php if ($item->template->unit->type_id == 1) { ?>
                                     <td colspan="2"><?= $form->field($item, '[' . $item->id . ']result')->textInput(['placeholder' => Yii::t('lab', 'Natijani kiriting'), 'disabled' => $item->checked == 1 ? false : true])->label(false) ?></td>
-                                <?php } elseif ($item->type_id == 2) { ?>
+                                <?php } elseif ($item->template->unit->type_id == 2) { ?>
                                     <td colspan="2"><?= $form->field($item, '[' . $item->id . ']result')->dropDownList([0 => Yii::$app->params['result'][0], 1 => Yii::$app->params['result'][1]], ['prompt' => Yii::t('lab', 'Natijani tanlang'), 'disabled' => $item->checked == 1 ? false : true])->label(false) ?></td>
-                                <?php } elseif ($item->type_id == 3) { ?>
+                                <?php } elseif ($item->template->unit->type_id == 3) { ?>
                                     <td colspan="2"><?= $form->field($item, '[' . $item->id . ']result')->textInput(['placeholder' => Yii::t('lab', 'Natijani kiriting'), 'disabled' => $item->checked == 1 ? false : true])->label(false) ?></td>
-                                <?php } elseif ($item->type_id == 4) { ?>
-                                    <td><?= $form->field($item, '[' . $item->id . ']result')->textInput(['placeholder' => Yii::t('lab', 'Natijani kiriting'), 'disabled' => $item->checked == 1 ? false : true])->label(false) ?></td>
-                                    <td><?= $form->field($item, '[' . $item->id . ']result_2')->textInput(['placeholder' => Yii::t('lab', 'Natijani kiriting'), 'disabled' => $item->checked == 1 ? false : true])->label(false) ?></td>
+                                <?php } elseif ($item->template->unit->type_id == 4) { ?>
+                                    <td>
+                                        <?= $form->field($item, '[' . $item->id . ']result')->textInput(['placeholder' => Yii::t('lab', 'Natijani kiriting'), 'disabled' => $item->checked == 1 ? false : true])->label(false) ?>
+                                    </td>
+                                    <td>
+                                        <?= $form->field($item, '[' . $item->id . ']result_2')->textInput(['placeholder' => Yii::t('lab', 'Natijani kiriting'), 'disabled' => $item->checked == 1 ? false : true])->label(false) ?>
+                                    </td>
+
                                 <?php } ?>
 
                                 <td><?php
@@ -388,9 +393,11 @@ $this->registerJs("
         if(this.checked){
             $('#tr-'+id).css('background','#fff');
             $('#resultanimaltests-'+id+'-result').prop('disabled',false);
+            $('#resultanimaltests-'+id+'-result_2').prop('disabled',false);
         }else{
             $('#tr-'+id).css('background','#e9e9ef');
             $('#resultanimaltests-'+id+'-result').prop('disabled',true);
+            $('#resultanimaltests-'+id+'-result_2').prop('disabled',true);
         }
     })
 ")

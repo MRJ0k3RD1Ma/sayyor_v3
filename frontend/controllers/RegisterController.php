@@ -365,12 +365,12 @@ class RegisterController extends Controller
                }
 
                $route->status_id = 1;
-               $model->status_id = 3;
+               $model->status_id = 4;
                $route->sample_id = $id;
                $dal = Sertificates::findOne($model->sert_id);
-               $dal->status_id = 3;
+               $dal->status_id = 4;
                $dal->save();
-               $reg->status_id = 3;
+               $reg->status_id = 4;
                $reg->save();
                $model->emp_id = Yii::$app->user->id;
                $route->vet4=$model->suspectedDisease->vet4.$model->animal->type->vet4.$route->sampleType->vet4;

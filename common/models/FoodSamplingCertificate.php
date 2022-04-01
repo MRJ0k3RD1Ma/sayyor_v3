@@ -48,6 +48,7 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['ownertype','sampling_site','sampling_date','sampling_soato','sampling_adress','verification_pupose_id'],'required','on'=>'insert'],
             [['food_id','ownertype', 'sampling_site','sampling_soato', 'verification_pupose_id','status_id','state_id', 'based_public_information', 'message_number'], 'integer'],
             [['sampling_date', 'send_sample_date', 'created', 'updated'], 'safe'],
             [['code', 'inn', 'pnfl', 'sampling_adress', 'sampler_person_pnfl', 'sampler_person_inn','explanations'], 'string', 'max' => 255],

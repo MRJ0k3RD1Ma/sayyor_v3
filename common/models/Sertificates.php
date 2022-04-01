@@ -43,6 +43,7 @@ class Sertificates extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['sert_date','ownertype','vet_site_id','qfi','sampler_name','sampler_position'],'required','on'=>'insert'],
 //            [['sert_id'], 'required'],
             [['sert_date','created'], 'safe'],
             [['sert_id','ownertype', 'vet_site_id', 'district','region','qfi','status_id'], 'integer'],

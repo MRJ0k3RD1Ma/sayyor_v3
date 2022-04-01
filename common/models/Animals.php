@@ -43,7 +43,7 @@ class Animals extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','type_id'], 'required'],
+            [['name','type_id','cat_id','birthday','vet_site_id','adress',], 'required'],
             [['cat_id', 'gender','ownertype', 'vet_site_id', 'type_id'], 'integer'],
             [['birthday'], 'safe'],
             [['name'], 'string', 'max' => 50],

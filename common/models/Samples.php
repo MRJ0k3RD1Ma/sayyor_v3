@@ -45,6 +45,7 @@ class Samples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['sample_type_is','sample_box_id','suspected_disease_id', 'test_mehod_id'],'required','on'=>'insert'],
             [['sample_type_is', 'sample_box_id', 'emp_id','animal_id', 'sert_id','samp_id', 'suspected_disease_id','status_id', 'test_mehod_id'], 'integer'],
             [['kod', 'label','repeat_code'], 'string', 'max' => 255],
             [['animal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animals::className(), 'targetAttribute' => ['animal_id' => 'id']],

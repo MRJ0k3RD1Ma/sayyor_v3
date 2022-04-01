@@ -233,7 +233,7 @@ class LabController extends Controller
     }
 
     public
-    function actionIndexfood($status = -1)
+    function actionIndexfood($status = -1,$export=null)
     {
         $searchModel = new FoodRouteSearch();
         if ($status != -1) {
@@ -241,6 +241,39 @@ class LabController extends Controller
         }
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfindexfood', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
+                return $e;
+            }
+        }
         return $this->render('indexfood', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

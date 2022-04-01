@@ -20,13 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <?php Pjax::begin(['enablePushState' => 0, 'timeout' => false]); ?>
-                <?php
-                echo $this->render('_searchregproduct', [
-                    'model' => $searchModel,
-                ]);
-
-                ?>
                 <div class="card-body">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -94,7 +87,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'updated',
                         ],
                     ]) ?>
-                    <?php Pjax::end()?>
                 </div>
             </div>
         </div>

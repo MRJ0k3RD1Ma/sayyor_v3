@@ -344,11 +344,43 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function actionRegproduct()
+    public function actionRegproduct(int $export = null)
     {
         $searchModel = new FoodRegistrationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            return $searchModel->exportToExcel($dataProvider->query);
+        } else if ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfregproduct', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
+                return $e;
+            }
+        }
         return $this->render('regproduct', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 
@@ -10,9 +9,9 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\DestructionSampleAnimal */
 
 $this->title = $model->code;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunani yo\'q qilish dalolatnomalarii'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunani yo\'q qilish dalolatnomalarii'), 'url' => ['register/destfood']];
 $this->params['breadcrumbs'][] = $this->title;
-YiiAsset::register($this);
+\yii\web\YiiAsset::register($this);
 ?>
 <div class="destruction-sample-animal-view">
 
@@ -23,7 +22,7 @@ YiiAsset::register($this);
             <?php if ($model->state_id == 1): ?>
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="<?= Url::to(['lab/dest-pdffood', 'id' => $model->id]) ?>" class="btn btn-warning">Arizani
+                        <a href="<?= Url::to(['register/dest-pdffood', 'id' => $model->id]) ?>" class="btn btn-warning">Arizani
                             PDF
                             ko'rinishda yuklab olish</a>
                     </div>
@@ -90,18 +89,6 @@ YiiAsset::register($this);
 //            'org_id',
                 ],
             ]) ?>
-        </div>
-        <div class="col-md-6">
-            <?php if ($model->state_id == 3) { ?>
-                <?php $form = ActiveForm::begin() ?>
-
-                <?= $form->field($model, 'ads')->textInput() ?>
-
-                <?= $form->field($model, 'destruction_date')->textInput(['type' => 'date']) ?>
-
-                <button class="btn btn-success">Saqlash</button>
-                <?php ActiveForm::end() ?>
-            <?php } ?>
         </div>
     </div>
 

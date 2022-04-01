@@ -141,7 +141,6 @@ class DirectorController extends Controller
         $model = RouteSert::findOne(['id' => $id]);
         $model->status_id = 5;
         if ($model->save()) {
-
             $dest = new DestructionSampleAnimal();
             $dest->state_id = 3;
             $sample = Samples::findOne($model->sample_id);
@@ -204,7 +203,7 @@ class DirectorController extends Controller
 
                 fclose($file);
 
-                return $this->redirect(['indexanimal']);
+                return $pdf->render();
 
             } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
                 return $e;
@@ -236,7 +235,7 @@ class DirectorController extends Controller
             ->innerJoin('tamplate_animal','tamplate_animal.id=template_animal_regulations.template_id')
             ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_animal_tests.checked = 1 and result_id='.$result->id.')')
             ->groupBy('regulations.id')->all();
-        //return $this->render('pdf-verify',['model' => $sample, 'regmodel' => $reg,'docs'=>$docs]);
+        return $this->render('pdf-verify',['model' => $sample, 'regmodel' => $reg,'docs'=>$docs]);
         $model->status_id = 5;
         if ($model->save()) {
             $dest = new DestructionSampleAnimal();

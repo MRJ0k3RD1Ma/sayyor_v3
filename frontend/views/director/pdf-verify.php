@@ -6,10 +6,8 @@
 
 /* @var $sertificate common\models\Sertificates */
 
-use common\models\Employees;
 use common\models\Individuals;
 use common\models\LegalEntities;
-use common\models\Regulations;
 use common\models\ResultAnimal;
 use common\models\RouteSert;
 use common\models\Soato;
@@ -21,7 +19,6 @@ use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
 use Endroid\QrCode\Label\Font\NotoSans;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
-use yii\helpers\VarDumper;
 
 $composite = $regmodel->comp;
 $samples = $model;
@@ -33,7 +30,23 @@ $route = RouteSert::findOne(['sample_id' => $samples->id]);
 $routesert = $route->registration_id;
 
 $lg = 'uz';
-
+$qr =function() {
+    $data=Builder::create()
+        ->writer(new PngWriter())
+        ->writerOptions([])
+        ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsert']))
+        ->encoding(new Encoding('UTF-8'))
+        ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+        ->size(100)
+        ->margin(3)
+        ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+//                        ->logoPath(Yii::$app->basePath.'/web/favicon.ico')
+        ->labelText('')
+        ->labelFont(new NotoSans(20))
+        ->labelAlignment(new LabelAlignmentCenter())
+        ->build();
+    return $data->getDataUri();
+};
 
 ?>
 
@@ -46,21 +59,8 @@ $lg = 'uz';
             ?>
         </th>
         <th style="width: 50%;height: 100px;text-align: center;vertical-align: middle">
-            <?php  $result = Builder::create()
-                ->writer(new PngWriter())
-                ->writerOptions([])
-                ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsert', 'id' => $sertificate->id]))
-                ->encoding(new Encoding('UTF-8'))
-                ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
-                ->size(100)
-                ->margin(3)
-                ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
-//                        ->logoPath(Yii::$app->basePath.'/web/favicon.ico')
-                ->labelText('')
-                ->labelFont(new NotoSans(20))
-                ->labelAlignment(new LabelAlignmentCenter())
-                ->build();
-            echo "<img src='{$result->getDataUri()}'>";?>
+
+            <?= "<img src='{$qr()}'>";?>
         </th>
     </tr>
     </thead>

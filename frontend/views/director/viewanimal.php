@@ -8,7 +8,13 @@ use yii\helpers\Url;
 use yii\web\YiiAsset;
 use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
-
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
 /* @var $this yii\web\View */
 /* @var $model common\models\RouteSert */
 /* @var $result ResultAnimal */
@@ -82,6 +88,8 @@ YiiAsset::register($this);
                     <li><a href="<?= $url ?>"><?= $item->{'name_' . $lg} ?></a></li>
                 <?php endforeach; ?>
             </ul>
+
+
         </div>
         <div class="col-md-6">
             <h3>Namuna ma'lumotlari</h3>

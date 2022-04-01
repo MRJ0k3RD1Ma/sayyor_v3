@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $data=file_get_contents('js/main.js');
 $this->registerJs($data);
-$this->title = Yii::t('cp.sertificates', 'Dalolatnomalar');
+$this->title = Yii::t('cp.sertificates', 'Hayvon kasalliklari arizalar ro\'yxati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sertificates-index">

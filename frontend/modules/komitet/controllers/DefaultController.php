@@ -2,11 +2,14 @@
 
 namespace app\modules\komitet\controllers;
 
+use client\models\search\FoodRegistrationSearch;
 use client\models\search\SampleRegistrationSearch;
 use client\models\search\SertificatesSearch;
 use common\models\Animals;
 use common\models\CompositeSamples;
 use common\models\Emlash;
+use common\models\FoodRegistration;
+use common\models\FoodSamples;
 use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
 use common\models\LegalEntities;
@@ -23,17 +26,26 @@ use common\models\search\ReportDrugsSearch;
 use common\models\search\ReportFoodSearch;
 use common\models\search\SoatoSearch;
 use common\models\Sertificates;
+use common\models\SertStatus;
 use common\models\Soato;
 use common\models\Vaccination;
 use common\models\VetSites;
 use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
 use PhpOffice\PhpSpreadsheet\Helper\Sample;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -148,8 +160,7 @@ class DefaultController extends Controller
         return $this->render('index');
     }
 
-    public
-    function actionCreate($type = null)
+    public function actionCreate($type = null)
     {
         if ($type) {
             return $this->redirect(['/default/' . $type]);
@@ -157,8 +168,7 @@ class DefaultController extends Controller
         return $this->render('create');
     }
 
-    public
-    function actionAnimal()
+    public function actionAnimal()
     {
         $model = new Sertificates();
         $legal = Individuals::findOne(['pnfl' => Yii::$app->session->get('doc_pnfl')]);
@@ -688,18 +698,185 @@ class DefaultController extends Controller
         ]);
     }
 
+    public function actionStat($id = null)
+    {
+        $SoatoModel = new SoatoSearch();
+        $SoatoDataProvider = $SoatoModel->ListRegions($id);
+
+        $AnimalDataModel = new SertificatesSearch(); //Hayvon kasalliklari Dalolatnoma
+        $AnimalDataProvider = $AnimalDataModel->searchKomitet($this->request->queryParams);
+        $AnimalRegModel = new SampleRegistrationSearch(); //Hayvon Kasalliklari Ariza
+        $AnimalRegProvider = $AnimalRegModel->searchKomitet($this->request->queryParams);
+        $FoodDataModel = new FoodSamplingCertificateSearch(); //Oziq-ovqat ekspertizasi Dalolatnoma
+        $FoodDataProvider = $FoodDataModel->search($this->request->queryParams);
+        $FoodRegModel = new FoodRegistrationSearch(); //Oziq-ovqat arizalari
+        $FoodRegProvider = $FoodRegModel->search($this->request->queryParams);
+        return $this->render('stat', [
+            'AnimalDataModel' => $AnimalDataModel,
+            'AnimalDataProvider' => $AnimalDataProvider,
+            'AnimalRegModel' => $AnimalRegModel,
+            'AnimalRegProvider' => $AnimalRegProvider,
+            'FoodDataModel' => $FoodDataModel,
+            'FoodDataProvider' => $FoodDataProvider,
+            'FoodRegModel' => $FoodRegModel,
+            'FoodRegProvider' => $FoodRegProvider,
+            'SoatoModel' => $SoatoModel,
+            'SoatoDataProvider' => $SoatoDataProvider,
+        ]);
+    }
+
+    public function actionStatRegfood($id = null)
+    {
+        $title="Oziq-ovqat ekspertizalari bo'yicha Arizalar statistikasi";
+        $SoatoModel = new SoatoSearch();
+        $SoatoDataProvider = $SoatoModel->ListRegions($id);
+        $FoodRegModel = new FoodRegistrationSearch(); //Oziq-ovqat arizalari
+        $FoodRegProvider = $FoodRegModel->search($this->request->queryParams);
+        $status = ArrayHelper::map(SertStatus::find()->asArray()->all(), 'id', 'name_uz');
+        $counter = array_fill(0, 14, array_fill(0, 7, 0));
+        foreach ($SoatoDataProvider->getModels() as $key => $SoatoModel) {
+            foreach ($FoodRegProvider->getModels() as $model) {
+                if ($model->inn) {
+                    $counter[$key][$model->status_id] += Yii::$app->request->get('id') ? ($model->inn0->soato->district_id == $SoatoModel->district_id) : ($model->inn0->soato->region_id == $SoatoModel->region_id);
+                } elseif ($model->pnfl) {
+                    $counter[$key][$model->status_id] += Yii::$app->request->get('id') ? ($model->pnfl0->soato->district_id == $SoatoModel->district_id) : ($model->pnfl0->soato->region_id == $SoatoModel->region_id);
+                }
+            }
+        }
+        return $this->render('stat-all', [
+            'title'=>$title,
+            'FoodRegProvider' => $FoodRegProvider,
+            'SoatoDataProvider' => $SoatoDataProvider,
+            'status' => $status,
+            'counter' => $counter,
+
+        ]);
+    }
+
     public function actionStatAnimal($id = null)
     {
-        $searchmodel2 = new SoatoSearch();
-        $dataProvider2 = $searchmodel2->ListRegions($this->request->queryParams);
-        $searchModel = new SertificatesSearch();
-        $dataProvider = $searchModel->searchKomitet($this->request->queryParams);
-        return $this->render('statanimal', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-            'model' => $searchmodel2,
-            'dataProvider2' => $dataProvider2
+        $title="Hayvon kasalliklari bo'yicha Dalolatnomalar statistikasi";
+        $SoatoModel = new SoatoSearch();
+        $SoatoDataProvider = $SoatoModel->ListRegions($id);
+        $AnimalDataModel = new SertificatesSearch(); //Hayvon kasalliklari Dalolatnoma
+        $AnimalDataProvider = $AnimalDataModel->searchKomitet($this->request->queryParams);
+        $status = ArrayHelper::map(SertStatus::find()->asArray()->all(), 'id', 'name_uz');
+        $counter = array_fill(0, 14, array_fill(0, 7, 0));
+        foreach ($SoatoDataProvider->getModels() as $key => $SoatoModel) {
+            foreach ($AnimalDataProvider->getModels() as $model) {
+                if ($model->inn) {
+                    $counter[$key][$model->status_id] += Yii::$app->request->get('id') ? ($model->inn0->soato->district_id == $SoatoModel->district_id) : ($model->inn0->soato->region_id == $SoatoModel->region_id);
+                } elseif ($model->pnfl) {
+                    $counter[$key][$model->status_id] += Yii::$app->request->get('id') ? ($model->pnfl0->soato->district_id == $SoatoModel->district_id) : ($model->pnfl0->soato->region_id == $SoatoModel->region_id);
+                }
+            }
+        }
+        return $this->render('stat-all', [
+            'title'=>$title,
+            'SoatoDataProvider' => $SoatoDataProvider,
+            'status' => $status,
+            'counter' => $counter,
 
+        ]);
+    }
+
+    public function actionStatFood($id = null)
+    {
+        $title="Oziq-ovqat ekspertizalari bo'yicha Dalolatnomalar statistikasi";
+        $SoatoModel = new SoatoSearch();
+        $SoatoDataProvider = $SoatoModel->ListRegions($id);
+        $FoodDataModel = new FoodSamplingCertificateSearch(); //Oziq-ovqat ekspertizasi Dalolatnoma
+        $FoodDataProvider = $FoodDataModel->search($this->request->queryParams);
+        $status = ArrayHelper::map(SertStatus::find()->asArray()->all(), 'id', 'name_uz');
+        $counter = array_fill(0, 14, array_fill(0, 7, 0));
+        foreach ($SoatoDataProvider->getModels() as $key => $SoatoModel) {
+            foreach ($FoodDataProvider->getModels() as $model) {
+                if ($model->inn) {
+                    $counter[$key][$model->status_id] += Yii::$app->request->get('id') ? ($model->inn0->soato->district_id == $SoatoModel->district_id) : ($model->inn0->soato->region_id == $SoatoModel->region_id);
+                } elseif ($model->pnfl) {
+                    $counter[$key][$model->status_id] += Yii::$app->request->get('id') ? ($model->pnfl0->soato->district_id == $SoatoModel->district_id) : ($model->pnfl0->soato->region_id == $SoatoModel->region_id);
+                }
+            }
+        }
+        return $this->render('stat-all', [
+            'title'=>$title,
+            'SoatoDataProvider' => $SoatoDataProvider,
+            'status' => $status,
+            'counter' => $counter,
+
+        ]);
+    }
+    public function actionStatReganimal($id = null)
+    {
+        $title="Hayvon kasalliklari bo'yicha Arizalar statistikasi";
+        $SoatoModel = new SoatoSearch();
+        $SoatoDataProvider = $SoatoModel->ListRegions($id);
+        $AnimalRegModel = new SampleRegistrationSearch(); //Hayvon Kasalliklari Ariza
+        $AnimalRegProvider = $AnimalRegModel->searchKomitet($this->request->queryParams);
+        $status = ArrayHelper::map(SertStatus::find()->asArray()->all(), 'id', 'name_uz');
+        $counter = array_fill(0, 14, array_fill(0, 7, 0));
+        foreach ($SoatoDataProvider->getModels() as $key => $SoatoModel) {
+            foreach ($AnimalRegProvider->getModels() as $model) {
+                if ($model->inn) {
+                    $counter[$key][$model->status_id] += Yii::$app->request->get('id') ? ($model->inn0->soato->district_id == $SoatoModel->district_id) : ($model->inn0->soato->region_id == $SoatoModel->region_id);
+                } elseif ($model->pnfl) {
+                    $counter[$key][$model->status_id] += Yii::$app->request->get('id') ? ($model->pnfl0->soato->district_id == $SoatoModel->district_id) : ($model->pnfl0->soato->region_id == $SoatoModel->region_id);
+                }
+            }
+        }
+        return $this->render('stat-all', [
+            'title'=>$title,
+            'SoatoDataProvider' => $SoatoDataProvider,
+            'status' => $status,
+            'counter' => $counter,
+
+        ]);
+    }
+
+    public function actionSertfood(int $export = null)
+    {
+        $searchModel = new FoodRegistrationSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfsertfood', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
+        return $this->render('sertfood', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionSertfoodview($id)
+    {
+        $model = FoodRegistration::findOne($id);
+        $samples = FoodSamples::find()->select(['food_samples.*'])
+            ->innerJoin('food_compose', 'food_compose.sample_id = food_samples.id')
+            ->where(['food_compose.registration_id' => $id])->all();
+        return $this->render('sertfoodview', [
+            'model' => $model,
+            'samp' => $samples
         ]);
     }
 }

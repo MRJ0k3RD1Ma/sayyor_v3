@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel common\models\search\SertificatesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('cp.sertificates', 'Dalolatnomalar');
+$this->title = Yii::t('cp.sertificates', 'Arizalar ro\'yhati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sertificates-index">
@@ -20,42 +20,38 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <?php Pjax::begin(['enablePushState' => 0, 'timeout' => false]); ?>
-                <?php
-                echo $this->render('_searchregtest', [
-                    'model' => $searchModel,
-                ]);
-
-                ?>
                 <div class="card-body">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
-                        'id' => 'regtest-grid',
+                        'id' => 'regproduct-grid',
 //                        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
-//                            'id',
-//                            'code',
                             [
                                 'attribute' => 'code',
                                 'value' => function ($d) {
-                                    $url = Yii::$app->urlManager->createUrl(['/register/regview', 'id' => $d->id]);
+                                    $url = Yii::$app->urlManager->createUrl(['/register/regproductview', 'id' => $d->id]);
                                     return "<a href='{$url}'>{$d->code}</a>";
                                 },
                                 'filter' => false,
                                 'format' => 'raw'
                             ],
                             [
-                                'label' => Yii::t('register', 'Yuboruvchi'),
+                                'label' => Yii::t('client', 'Namuna raqamlari'),
                                 'value' => function ($d) {
-                                    if ($d->inn) {
-                                        return $d->inn . '<br>' . $d->inn0->name;
-                                    } elseif ($d->pnfl) {
-                                        return $d->pnfl . '<br>' . $d->pnfl0->name . ' ' . $d->pnfl0->surname . ' ' . $d->pnfl0->middlename;
-                                    } else {
-                                        return null;
+                                    $res = "";
+                                    foreach ($d->comp as $item) {
+                                        $res .= $d->status->icon . $item->sample->samp_code . '<br>';
                                     }
+                                    return $res;
+                                },
+                                'format' => 'raw',
+                            ],
+                            [
+                                'label' => Yii::t('register', 'Labaratoriya'),
+                                'value' => function ($d) {
+                                    return $d->organization->NAME_FULL;
                                 },
                                 'format' => 'raw'
                             ],
@@ -76,28 +72,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return $d->researchCategory->name_uz;
                                 }
                             ],
-                            //'results_conformity_id',
-                            //'organization_id',
-                            //'emp_id',
-//                            'reg_date',
-                            //'reg_id',
+
                             'sender_name',
                             'sender_phone',
                             'created',
                             [
                                 'attribute' => 'status_id',
-                                'format' => 'html',
                                 'value' => function ($d) {
                                     $lg = 'uz';
                                     if (Yii::$app->language == 'ru') $lg = 'ru';
-                                    return "<span class='" . $d->status->class . "'>" . @$d->status->icon . ' ' . $d->status->{'name_' . $lg} . "</span>";
                                     return $d->status->{'name_' . $lg};
                                 }
                             ],
                             //'updated',
                         ],
                     ]) ?>
-                    <?php Pjax::end() ?>
                 </div>
             </div>
         </div>

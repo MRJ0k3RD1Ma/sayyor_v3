@@ -3,7 +3,7 @@
 namespace frontend\controllers;
 
 use app\models\search\director\DestructionSampleAnimalSearch;
-use app\models\search\director\DestructionSampleFoodSearch;
+use app\models\search\registr\DestructionSampleFoodSearch;
 use common\models\Animals;
 use common\models\CompositeSamples;
 use common\models\DestructionSampleAnimal;
@@ -28,14 +28,14 @@ use common\models\SampleRegistration;
 use common\models\Samples;
 use common\models\TamplateAnimal;
 use common\models\TemplateFood;
+use DateTime;
 use frontend\models\search\registr\FoodRegistrationSearch;
-use frontend\models\search\lab\FoodSamplingCertificateSearch;
 use common\models\Sertificates;
 use common\models\Vaccination;
 use common\models\VetSites;
 use frontend\models\search\lab\SertificatesRegSearch;
 use frontend\models\search\lab\SertificatesSearch;
-use frontend\models\search\SampleRegistrationSearch;
+use frontend\models\search\registr\SampleRegistrationSearch;
 use kartik\mpdf\Pdf;
 use Mpdf\MpdfException;
 use PhpOffice\PhpSpreadsheet\Helper\Sample;
@@ -49,6 +49,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use Yii;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -248,10 +249,43 @@ class RegisterController extends Controller
     }
 
 
-    public function actionRegtest()
+    public function actionRegtest(int $export = null)
     {
         $searchModel = new SampleRegistrationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfregtest', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
+                return $e;
+            }
+        }
         return $this->render('regtest', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -310,11 +344,43 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function actionRegproduct()
+    public function actionRegproduct(int $export = null)
     {
         $searchModel = new FoodRegistrationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            return $searchModel->exportToExcel($dataProvider->query);
+        } else if ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfregproduct', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
+                return $e;
+            }
+        }
         return $this->render('regproduct', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -358,73 +424,72 @@ class RegisterController extends Controller
             $reg->save();
         }
 
-        $cs = CompositeSamples::findOne(['registration_id'=>$regid,'sample_id'=>$id]);
+        $cs = CompositeSamples::findOne(['registration_id' => $regid, 'sample_id' => $id]);
 
-        if(Yii::$app->request->isPost){
-           if($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post()))
-           {
-               if($cs->status_id == 2){
-                   $model->status_id = 6;
-                   $reg->status_id = 6;
-                   $dal = Sertificates::findOne($model->sert_id);
-                   $dal->status_id = 6;
-                   $dal->save();
-                   $des = new DestructionSampleAnimal();
-                   $des->sample_id = $cs->sample_id;
-                   $des->creator_id = Yii::$app->user->id;
-                   $num = DestructionSampleAnimal::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
-                   $num = (int)$num +1;
-                   $des->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
-                   $des->destruction_date = date('Y-m-d h:i:s');
-                   $des->state_id = 2;
-                   $des->ads = $cs->ads;
-                   $des->consent_id = $route->director_id;
-                   $des->save();
-                   $model->save();
-                   $reg->save();
-                   $cs->save();
-                   return $this->redirect(['/register/regview', 'id' => $regid]);
-               }
+        if (Yii::$app->request->isPost) {
+            if ($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())) {
+                if ($cs->status_id == 2) {
+                    $model->status_id = 6;
+                    $reg->status_id = 6;
+                    $dal = Sertificates::findOne($model->sert_id);
+                    $dal->status_id = 6;
+                    $dal->save();
+                    $des = new DestructionSampleAnimal();
+                    $des->sample_id = $cs->sample_id;
+                    $des->creator_id = Yii::$app->user->id;
+                    $num = DestructionSampleAnimal::find()->where(['org_id' => Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+                    $num = (int)$num + 1;
+                    $des->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
+                    $des->destruction_date = date('Y-m-d h:i:s');
+                    $des->state_id = 2;
+                    $des->ads = $cs->ads;
+                    $des->consent_id = $route->director_id;
+                    $des->save();
+                    $model->save();
+                    $reg->save();
+                    $cs->save();
+                    return $this->redirect(['/register/regview', 'id' => $regid]);
+                }
 
-               $route->status_id = 1;
-               $model->status_id = 3;
-               $route->sample_id = $id;
-               $dal = Sertificates::findOne($model->sert_id);
-               $dal->status_id = 3;
-               $dal->save();
-               $reg->status_id = 3;
-               $reg->save();
-               $model->emp_id = Yii::$app->user->id;
-               $route->vet4=$model->suspectedDisease->vet4.$model->animal->type->vet4.$route->sampleType->vet4;
-               $route->registration_id = $regid;
-               $model->save();
-               $cs->save();
-               $route->save();
+                $route->status_id = 1;
+                $model->status_id = 3;
+                $route->sample_id = $id;
+                $dal = Sertificates::findOne($model->sert_id);
+                $dal->status_id = 3;
+                $dal->save();
+                $reg->status_id = 3;
+                $reg->save();
+                $model->emp_id = Yii::$app->user->id;
+                $route->vet4 = $model->suspectedDisease->vet4 . $model->animal->type->vet4 . $route->sampleType->vet4;
+                $route->registration_id = $regid;
+                $model->save();
+                $cs->save();
+                $route->save();
 
-               $d1 = new \DateTime($cs->sample->animal->birthday);
-               $d2 = new \DateTime(date('Y-m-d'));
-               $interval = $d1->diff($d2);
-               $diff = $interval->m+($interval->y*12);
+                $d1 = new DateTime($cs->sample->animal->birthday);
+                $d2 = new DateTime(date('Y-m-d'));
+                $interval = $d1->diff($d2);
+                $diff = $interval->m + ($interval->y * 12);
 
-               /*$template = TamplateAnimal::find()
-                   ->where(['type_id'=>$cs->sample->animal->type_id])
-                   ->andWhere(['<=','age',$diff])
-                   ->andWhere(['diseases_id'=>$cs->sample->suspected_disease_id])
-                   ->andWhere(['test_method_id'=>$cs->sample->test_mehod_id])->all();*/
+                /*$template = TamplateAnimal::find()
+                    ->where(['type_id'=>$cs->sample->animal->type_id])
+                    ->andWhere(['<=','age',$diff])
+                    ->andWhere(['diseases_id'=>$cs->sample->suspected_disease_id])
+                    ->andWhere(['test_method_id'=>$cs->sample->test_mehod_id])->all();*/
 
-               $template = TamplateAnimal::find()->where(['vet4'=>$route->vet4])->all();
-               $result = new ResultAnimal();
+                $template = TamplateAnimal::find()->where(['vet4' => $route->vet4])->all();
+                $result = new ResultAnimal();
 
-               $num = ResultAnimal::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
-               $num = intval($num)+1;
-               $result->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
-               $result->code_id = $num;
+                $num = ResultAnimal::find()->where(['org_id' => Yii::$app->user->identity->empPosts->org_id])->max('code_id');
+                $num = intval($num) + 1;
+                $result->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;
+                $result->code_id = $num;
 
-               $result->sample_id = $cs->sample_id;
-               $result->state_id = 1;
-               $result->creator_id = $route->executor_id;
-               $result->save();
-               foreach ($template as $item){
+                $result->sample_id = $cs->sample_id;
+                $result->state_id = 1;
+                $result->creator_id = $route->executor_id;
+                $result->save();
+                foreach ($template as $item) {
 
                     $test = new ResultAnimalTests();
                     $test->result_id = $result->id;
@@ -603,7 +668,7 @@ class RegisterController extends Controller
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
         } elseif ($export == 2) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
@@ -656,7 +721,7 @@ class RegisterController extends Controller
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
         } elseif ($export == 2) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
@@ -709,6 +774,7 @@ class RegisterController extends Controller
         $file = fopen($fileName, 'r+');
         Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
+
     public function actionDestPdffood($id)
     {
         $model = DestructionSampleFood::findOne(['id' => $id]);

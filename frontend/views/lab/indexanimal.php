@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\search\RouteSertSearch */
@@ -14,21 +15,19 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="route-sert-index">
 
-
+    <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+    <?php echo $this->render('_searchindexanimal', [
+        'model' => $searchModel,
+    ]);
+    ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
-//        'summary' => 'Showing <b>{begin}-{end}</b> of <b>{totalCount}</b> Books',
-
+        'id' => 'indexanimal-grid',
         'summaryOptions' => ['class' => 'summary'],
-
         'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-//            'id',
-//            'director_id',
             [
                 'attribute' => 'sample_id',
                 'value' => function ($d) {
@@ -37,8 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw'
             ],
-//            'leader_id',
-//            'executor_id',
             [
                 'attribute' => 'executor_id',
                 'value' => function ($d) {
@@ -50,12 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'deadline',
             'ads',
-            //'state_id',
             'created',
-            //'updated',
-            //'sample_id',
-            //'registration_id',
-//            'status_id',
             [
                 'attribute' => 'status_id',
                 'format' => 'html',
@@ -68,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
         ],
-    ]); ?>
-
+    ]) ?>
+    <?php Pjax::end() ?>
 
 </div>

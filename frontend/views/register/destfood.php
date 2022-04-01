@@ -8,7 +8,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel DestructionSampleAnimalSearch */
+/* @var $searchModel \app\models\search\DestructionSampleFoodSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('food', 'Namunani yo\'q qilish dalolatnomalari ro\'yhati');
@@ -21,10 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                 <?php Pjax::begin(['enablePushState' => 0, 'timeout' => false]); ?>
-                <?php /*echo $this->render('_searchdest', [
+                <?php
+                echo $this->render('_searchdest', [
                     'model' => $searchModel,
                 ]);
-                */?>
+
+                ?>
                 <div class="card-body">
 
                     <?= GridView::widget([

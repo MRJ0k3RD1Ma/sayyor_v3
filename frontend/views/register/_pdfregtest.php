@@ -20,13 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <?php Pjax::begin(['enablePushState' => 0, 'timeout' => false]); ?>
-                <?php
-                echo $this->render('_searchregtest', [
-                    'model' => $searchModel,
-                ]);
-
-                ?>
                 <div class="card-body">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -90,14 +83,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'value' => function ($d) {
                                     $lg = 'uz';
                                     if (Yii::$app->language == 'ru') $lg = 'ru';
-                                    return "<span class='" . $d->status->class . "'>" . @$d->status->icon . ' ' . $d->status->{'name_' . $lg} . "</span>";
                                     return $d->status->{'name_' . $lg};
                                 }
                             ],
                             //'updated',
                         ],
                     ]) ?>
-                    <?php Pjax::end() ?>
                 </div>
             </div>
         </div>

@@ -7,56 +7,41 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel \app\models\search\laboratory\FoodRouteSearch */
+/* @var $searchModel frontend\models\search\RouteSertSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('food', 'Oziq-ovqat havfsizligi namunalar ro\'yhati');
+$this->title = Yii::t('food', 'Hayvon kasalliklari namunalar ro\'yhati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="route-sert-index">
 
-
-    <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-    <?php echo $this->render('_searchindexfood', [
-        'model' => $searchModel,
-    ]);
-    ?>
-
     <?= GridView::widget([
+        'id' => 'indexanimal-grid',
+        'summaryOptions' => ['class' => 'summary'],
+        'summary' => '',
         'dataProvider' => $dataProvider,
-        'id' => 'indexfood-grid',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-//            'id',
-//            'director_id',
             [
                 'attribute' => 'sample_id',
                 'value' => function ($d) {
-                    $url = Yii::$app->urlManager->createUrl(['/lab/viewfood', 'id' => $d->id]);
-                    return "<a href='{$url}'>{$d->sample->samp_code}</a>";
+                    $url = Yii::$app->urlManager->createUrl(['/lab/viewanimal', 'id' => $d->id]);
+                    return "<a href='{$url}'>{$d->sample->kod}</a>";
                 },
                 'format' => 'raw'
             ],
-//            'leader_id',
-//            'executor_id',
             [
-                'attribute' => 'leader_id',
+                'attribute' => 'executor_id',
                 'value' => function ($d) {
-                    if ($d->leader_id) {
-                        return $d->leader->name;
+                    if ($d->executor_id) {
+                        return $d->executor->name;
                     }
                     return null;
                 }
             ],
             'deadline',
             'ads',
-            //'state_id',
             'created',
-            //'updated',
-            //'sample_id',
-            //'registration_id',
-//            'status_id',
             [
                 'attribute' => 'status_id',
                 'format' => 'html',
@@ -65,12 +50,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     if (Yii::$app->language == 'ru') {
                         $lg = 'ru';
                     }
-                    return "<span class='" . $d->status->icon . "'>" . @$d->status->class . ' ' . $d->status->{'name_' . $lg} . "</span>";
+                    return $d->status->{'name_' . $lg};
                 }
             ],
         ],
     ]) ?>
-    <?php Pjax::end() ?>
-
 
 </div>

@@ -84,10 +84,10 @@ class LabController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->redirect(['/']);
     }
 
-    public function actionIndexanimal($status = -1)
+    public function actionIndexanimal($status = -1, int $export = null)
     {
         $searchModel = new RouteSertSearch();
         if ($status != -1) {
@@ -95,13 +95,47 @@ class LabController extends Controller
         }
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('indexanimal', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        if ($export == 1) {
+            return $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfindexanimal', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
+                return $e;
+            }
+        }
+
+
+        return $this->render('indexanimal', ['searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,]);
     }
 
-    public function actionViewanimal($id)
+    public
+    function actionViewanimal($id)
     {
         $model = RouteSert::findOne($id);
         $sample = $model->sample;
@@ -135,7 +169,8 @@ class LabController extends Controller
         ]);
     }
 
-    public function actionSendanimal($id)
+    public
+    function actionSendanimal($id)
     {
         $model = RouteSert::findOne($id);
         $model->status_id = 4;
@@ -144,7 +179,8 @@ class LabController extends Controller
         return $this->redirect(['viewanimal', 'id' => $id]);
     }
 
-    public function actionDest(int $export = null)
+    public
+    function actionDest(int $export = null)
     {
         $searchModel = new DestructionSampleAnimalSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -179,7 +215,8 @@ class LabController extends Controller
         ]);
     }
 
-    public function actionDestview($id)
+    public
+    function actionDestview($id)
     {
         $model = DestructionSampleAnimal::findOne($id);
         if ($model->load(Yii::$app->request->post())) {
@@ -195,7 +232,8 @@ class LabController extends Controller
         ]);
     }
 
-    public function actionIndexfood($status = -1)
+    public
+    function actionIndexfood($status = -1)
     {
         $searchModel = new FoodRouteSearch();
         if ($status != -1) {
@@ -209,7 +247,8 @@ class LabController extends Controller
         ]);
     }
 
-    public function actionViewfood($id)
+    public
+    function actionViewfood($id)
     {
         $model = FoodRoute::findOne($id);
         $sample = $model->sample;
@@ -241,7 +280,8 @@ class LabController extends Controller
         ]);
     }
 
-    public function actionSendfood($id)
+    public
+    function actionSendfood($id)
     {
         $model = FoodRoute::findOne($id);
         $model->status_id = 4;
@@ -251,7 +291,8 @@ class LabController extends Controller
     }
 
 
-    public function actionDestfood($export = null)
+    public
+    function actionDestfood($export = null)
     {
         $searchModel = new DestructionSampleFoodSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -286,7 +327,8 @@ class LabController extends Controller
         ]);
     }
 
-    public function actionDestfoodview($id)
+    public
+    function actionDestfoodview($id)
     {
         $model = DestructionSampleFood::findOne($id);
         if ($model->load(Yii::$app->request->post())) {
@@ -301,7 +343,8 @@ class LabController extends Controller
         ]);
     }
 
-    public function actionDestPdf($id)
+    public
+    function actionDestPdf($id)
     {
         $model = DestructionSampleAnimal::findOne(['id' => $id]);
         $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
@@ -310,7 +353,8 @@ class LabController extends Controller
         Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
 
-    public function actionDestPdffood($id)
+    public
+    function actionDestPdffood($id)
     {
         $model = DestructionSampleFood::findOne(['id' => $id]);
         $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";

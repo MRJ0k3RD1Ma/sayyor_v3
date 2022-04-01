@@ -594,7 +594,7 @@ class RegisterController extends Controller
         ]);
 
 
-    }
+    }*
 
     public function actionDest(int $export = null)
     {

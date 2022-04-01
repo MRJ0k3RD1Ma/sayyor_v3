@@ -11,6 +11,7 @@ use common\models\RouteSert;
  */
 class RouteSertSearch extends RouteSert
 {
+    public string $q;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class RouteSertSearch extends RouteSert
     {
         return [
             [['id', 'director_id', 'leader_id', 'executor_id', 'state_id', 'sample_id', 'registration_id', 'status_id'], 'integer'],
-            [['deadline', 'ads', 'created', 'updated'], 'safe'],
+            [['q','deadline', 'ads', 'created', 'updated'], 'safe'],
         ];
     }
 

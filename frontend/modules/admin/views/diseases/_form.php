@@ -1,10 +1,13 @@
 <?php
 
+use common\models\DiseaseCategory;
+use common\models\DiseaseGroups;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Diseases */
+/* @var $model common\models\Diseases */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -15,10 +18,15 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name_uz')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'name_ru')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'vet4')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'category_id')->textInput() ?>
+    <?= $form->field($model, 'category_id')->dropDownList(
+            ArrayHelper::map(DiseaseCategory::find()->asArray()->all(),'id','name_uz')
+    ) ?>
 
-    <?= $form->field($model, 'group_id')->textInput() ?>
+    <?= $form->field($model, 'group_id')->dropDownList(
+            ArrayHelper::map(DiseaseGroups::find()->asArray()->all(), 'id', 'name_uz')
+    ) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('cp.diseases', 'Saqlash'), ['class' => 'btn btn-success']) ?>

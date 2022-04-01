@@ -19,6 +19,7 @@ use Yii;
  * @property int|null $sample_id
  * @property int|null $registration_id
  * @property int|null $status_id
+ * @property int $sample_type_id
  *
  * @property Employees $director
  * @property Employees $leader
@@ -43,7 +44,7 @@ class RouteSert extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['director_id', 'leader_id', 'executor_id', 'state_id', 'sample_id', 'registration_id', 'status_id'], 'integer'],
+            [['director_id', 'leader_id', 'executor_id', 'state_id', 'sample_id', 'registration_id', 'status_id','sample_type_id'], 'integer'],
             [['deadline', 'created', 'updated'], 'safe'],
             [['ads'], 'string', 'max' => 500],
             [['executor_id','deadline'],'required','on'=>'exec'],
@@ -53,6 +54,7 @@ class RouteSert extends \yii\db\ActiveRecord
             [['director_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['director_id' => 'id']],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => StateList::className(), 'targetAttribute' => ['state_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => RouteStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
+            [['sample_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleTypes::className(), 'targetAttribute' => ['sample_type_id' => 'id']],
         ];
     }
 
@@ -138,5 +140,8 @@ class RouteSert extends \yii\db\ActiveRecord
     public function getStatus()
     {
         return $this->hasOne(RouteStatus::className(), ['id' => 'status_id']);
+    }
+    public function getSampleType(){
+        return $this->hasOne(SampleTypes::className(),['id'=>'sample_type_id']);
     }
 }

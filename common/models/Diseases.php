@@ -35,6 +35,8 @@ class Diseases extends \yii\db\ActiveRecord
         return [
             [['category_id', 'group_id'], 'integer'],
             [['name_uz', 'name_ru'], 'string', 'max' => 255],
+            [['vet4'],'string','max'=>3],
+            [['vet4','name_uz','name_ru','category_id','group_id'],'required'],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => DiseaseGroups::className(), 'targetAttribute' => ['group_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => DiseaseCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
@@ -51,6 +53,7 @@ class Diseases extends \yii\db\ActiveRecord
             'name_ru' => Yii::t('model.diseases', 'Nomi(Rus)'),
             'category_id' => Yii::t('model.diseases', 'Toifasi'),
             'group_id' => Yii::t('model.diseases', 'Turi'),
+            'vet4' => Yii::t('model.diseases', 'Vet4'),
         ];
     }
 

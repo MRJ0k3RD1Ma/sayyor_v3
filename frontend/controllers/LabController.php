@@ -121,9 +121,9 @@ class LabController extends Controller
             return $this->redirect(['viewanimal', 'id' => $id]);
         }
 
-        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
-            ->innerJoin('tamplate_animal','tamplate_animal.id=template_animal_regulations.template_id')
-            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_id='.$result->id.')')
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
+            ->innerJoin('tamplate_animal', 'tamplate_animal.id=template_animal_regulations.template_id')
+            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_id=' . $result->id . ')')
             ->groupBy('regulations.id')->all();
 
         return $this->render('viewanimal', [
@@ -304,6 +304,15 @@ class LabController extends Controller
     public function actionDestPdf($id)
     {
         $model = DestructionSampleAnimal::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+    }
+
+    public function actionDestPdffood($id)
+    {
+        $model = DestructionSampleFood::findOne(['id' => $id]);
         $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
         header('Content-Disposition: attachment; name=' . $fileName);
         $file = fopen($fileName, 'r+');

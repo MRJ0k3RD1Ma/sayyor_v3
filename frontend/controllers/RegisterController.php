@@ -3,7 +3,7 @@
 namespace frontend\controllers;
 
 use app\models\search\director\DestructionSampleAnimalSearch;
-use app\models\search\director\DestructionSampleFoodSearch;
+use app\models\search\registr\DestructionSampleFoodSearch;
 use common\models\Animals;
 use common\models\CompositeSamples;
 use common\models\DestructionSampleAnimal;
@@ -594,7 +594,7 @@ class RegisterController extends Controller
         ]);
 
 
-    }*
+    }
 
     public function actionDest(int $export = null)
     {

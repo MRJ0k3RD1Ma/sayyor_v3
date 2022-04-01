@@ -164,6 +164,7 @@ class LegalController extends Controller
         $owner_leg = new LegalEntities();
         $owner_ind = new Individuals();
         $model->status_id = 0;
+        $model->scenario = 'insert';
         if($model->load(Yii::$app->request->post())){
 
             $num = Sertificates::find()->filterWhere(['like','sert_date',date('Y')])->max('sert_id');
@@ -294,7 +295,7 @@ class LegalController extends Controller
         $sample->animal_id = -1;
 
         $sample->sert_id = intval($id);
-
+        $sample->scenario = 'insert';
         if(Yii::$app->request->isPost){
 
             if($animal->load(Yii::$app->request->post())){
@@ -447,6 +448,7 @@ class LegalController extends Controller
         $model->ownertype = 1;
         $model->status_id = 0;
         $model->state_id = 1;
+        $model->scenario = 'insert';
         if($model->load(Yii::$app->request->post())){
             $vet = VetSites::findOne($model->sampling_site);
             $soato = $vet->soato0->region_id.$vet->soato0->district_id;
@@ -516,6 +518,7 @@ class LegalController extends Controller
         $food = FoodSamplingCertificate::findOne($id);
         $model->sert_id = $food->id;
         $model->_country = 192;
+        $model->scenario = 'insert';
         if($model->load(Yii::$app->request->post())){
             $num = FoodSamples::find()->where(['sert_id'=>$model->sert_id])->max('samp_id');
             $num = intval($num) + 1;

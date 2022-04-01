@@ -82,9 +82,9 @@ class Soato extends \yii\db\ActiveRecord
         $region = self::find()->where(['region_id' => $soato->region_id])->one();
         $district = self::find()->where(['region_id' => $soato->region_id])->andWhere(['district_id' => $soato->district_id])->one();
         if ($soato->qfi_id) {
-            return "UZ " . $region->{'name_' . $lang} . " " . $district->{'name_' . $lang} . ' ' . $soato->{'name_' . $lang};
+            return  $region->{'name_' . $lang} . " " . $district->{'name_' . $lang} . ' ' . $soato->{'name_' . $lang};
         }
-        return "UZ " . $region->{'name_' . $lang} . " " . $district->{'name_' . $lang};
+        return $region->{'name_' . $lang} . " " . $district->{'name_' . $lang};
     }
 
     public static function getRegion(int $MHOBT_cod = null)

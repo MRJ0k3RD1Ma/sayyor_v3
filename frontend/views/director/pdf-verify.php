@@ -49,7 +49,6 @@ $qr =function() use ($samples) {
 };
 
 ?>
-
 <table class="table table-bordered table-hover">
     <thead>
     <tr>
@@ -57,6 +56,7 @@ $qr =function() use ($samples) {
             <?php
             echo $regmodel->organization->NAME_FULL;
             ?>
+            <p style="font-size: 12px; font-weight: normal">STIR(INN): <?= $regmodel->organization->TIN?> Manzil: <?= Soato::Full($regmodel->organization->soato).' '. $regmodel->organization->ADDRESS ?> Telefon: <?= $regmodel->organization->TELEFON?></p>
         </th>
         <th style="width: 50%;height: 100px;text-align: center;vertical-align: middle">
 
@@ -69,9 +69,8 @@ $qr =function() use ($samples) {
 <div class="align-content-center" style="text-align: center">
     <b>TEKSHIRISH BAYONNOMASI № <?= $resultanimal->code ?></b>
 </div>
-<br>
 <div>
-    Buyurtmachi nomi va manzili: <?php
+    <b>Buyurtmachi nomi va manzili:</b> <?php
     if ($regmodel->inn) {
         $legal = LegalEntities::findOne(['inn' => $regmodel->inn]);
         echo $legal->inn
@@ -92,7 +91,6 @@ $qr =function() use ($samples) {
     }
     ?>
 </div>
-<br>
 <div>
     <?php
     $res = "";
@@ -106,30 +104,31 @@ $qr =function() use ($samples) {
     $diff = $interval->m + ($interval->y * 12);
     $res .= Yii::t('lab', 'Tug\'ilgan sanasi:') . ' ' . $d->animal->birthday . '(' . $diff . ' oy)';
     ?>
-    Tekshiruv obyekti: Namuna nomi: <?= $samples->sampleTypeIs->name_uz ?> <br>
-    Hayvon ma'lumotlari: <?= $res?>
+    <b>Tekshiruv obyekti: Namuna nomi:</b> <?= $samples->sampleTypeIs->name_uz ?> <br>
+    <b>Hayvon ma'lumotlari:</b> <?= $res?>
 </div>
-<br>
+
 <div>
-    Namuna olingan joy: <?= $sertificate->vetSite->name ?>, manzili: <?= Soato::Full($sertificate->vetSite->soato) ?>
+    <b>Namuna olingan joy:</b> <?= $sertificate->vetSite->name ?>, <b>manzili:</b> <?= Soato::Full($sertificate->vetSite->soato) ?>
 </div>
-<br>
+
 <div>
-    Tekshirish usuli bo'yicha NH: <?php $n=0; foreach ($docs as $item){$n++; echo '<br>'.$n.'.'.$item->{'name_'.$lg}.' ';} ?>
+    <b>Tekshirish usuli bo'yicha NH:</b> <?php $n=0; foreach ($docs as $item){$n++; echo '<br>'.$n.'.'.$item->{'name_'.$lg}.' ';} ?>
 </div>
-<br>
+
 <div>
-    Tekshirish maqsadi va vazifasi: Kasallikga tashhisi: <?= $samples->suspectedDisease->name_uz?>
+    <b>Tekshirish maqsadi va vazifasi: Kasallikga tashhisi:</b> <?= $samples->suspectedDisease->name_uz?>
 </div>
-<br>
+
 <div>
-    Tekshirish o'tkazilgan shartoit: Tempratura:<?= $resultanimal->temprature?>, Namlik: <?= $resultanimal->humidity?>, Reaktivlar: <?= $resultanimal->reagent_series.' '.$resultanimal->reagent_name?>, Boshqa sharoitlar:<?= $resultanimal->conditions?>
+    <b>Tekshirish o'tkazilgan shartoit: Tempratura:</b><?= $resultanimal->temprature?>, <b>Namlik:</b> <?= $resultanimal->humidity?>, <b>Reaktivlar:</b> <?= $resultanimal->reagent_series.' '.$resultanimal->reagent_name?>, <b>Boshqa sharoitlar:</b><?= $resultanimal->conditions?>
 </div>
-<br>
+
 <div style="text-align: center">
-    <b>Tekshiruv natijalari:</b>
+    <b>TEKSHIRUV NATIJALARI</b>
 </div>
-<br>
+
+<p><b>Namuna raqami:</b> <?= $samples->kod?></p>
 <table class="table table-bordered table-hover" style="text-align: center">
     <thead>
     <tr>
@@ -156,8 +155,8 @@ $qr =function() use ($samples) {
     </thead>
     <tbody>
     <tr>
-        <td>Namuna raqami</td>
-        <td colspan="3"><?= $samples->kod?></td>
+        <td>4Vet</td>
+        <td colspan="4"><?= $route->vet4?></td>
     </tr>
     <?php foreach ($resultanimal->tests as $item): ?>
         <tr>
@@ -187,15 +186,38 @@ $qr =function() use ($samples) {
 
 
             <?php if ($item->template->unit->type_id == 1) { ?>
-                <td><?php if(intval($item->template->min) <= intval($item->result) and intval($item->result)<= intval($item->template->max)){echo 'Ha';}else{echo 'Yo\'q';} ?></td>
+                <td><?php if(((!$item->template->min) or intval($item->template->min) <= intval($item->result)) and (intval($item->result)<= intval($item->template->max) or (!$item->template->max))){echo 'Ha';}else{echo 'Yo\'q';} ?></td>
             <?php } elseif ($item->template->unit->type_id == 2) { ?>
                 <td>
                     <?php if($item->result==$item->template->min){?><?= Yii::$app->params['result'][1] ?><?php }else{?><?= Yii::$app->params['result'][0]?><?php }?>
                 </td>
             <?php } elseif ($item->template->unit->type_id == 3) { ?>
-                <td><?= $item->template->min . '-' . $item->template->max ?></td>
+                <td><?= $item->result?></td>
             <?php } elseif ($item->template->unit->type_id == 4) { ?>
-                <td><?= $item->result.'-'.$item->result_2?></td>
+                <td><?php
+                    $one = true;
+                    if (((!$item->template->min) or intval($item->template->min) <= intval($item->result))
+                        and
+                        (intval($item->result) <= intval($item->template->max) or (!$item->template->max))
+                    ) {
+                        $one = true;
+                    } else {
+                        $one = false;
+                    }
+                    $two = true;
+                    if (((!$item->template->min_1) or intval($item->template->min_1) <= intval($item->result_2))
+                        and
+                        (intval($item->result_2) <= intval($item->template->max_1) or (!$item->template->max_1))
+                    ) {
+                        $two = true;
+                    } else {
+                        $two = false;
+                    }
+
+                    if($one and $two){echo "Ha";}else{echo "Yo'q";}
+
+
+                    ?></td>
             <?php } ?>
 
 
@@ -204,7 +226,7 @@ $qr =function() use ($samples) {
     </tbody>
 </table>
 
-<br>
+
 <p>Umumlashgan natija: <?= $resultanimal->ads ?></p>
 <p>Tekshirish sanasi: <?= $route->updated ?></p>
 <p>

@@ -207,7 +207,7 @@ YiiAsset::register($this);
                 <?= DetailView::widget([
                     'model' => $result,
                     'attributes' => [
-                        'temperature',
+                        'temprature',
                         'humidity',
                         'reagent_series',
                         'reagent_name',

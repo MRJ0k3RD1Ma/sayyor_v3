@@ -130,7 +130,7 @@ YiiAsset::register($this);
                     ?>
                     <tr>
                         <td rowspan="<?= $cnt + 1 ?>">
-                            <?php if ($item->status_id = 3) { ?>
+                            <?php if ($item->status_id < 3) { ?>
                                 <a href="<?= Yii::$app->urlManager->createUrl(['/register/incomesamples', 'id' => $item->id, 'regid' => $model->id]) ?>"><?= $item->status->icon ?> <?= $item->kod ?></a>
                             <?php } else { ?>
                                 <?= $item->status->icon ?> <?= $item->kod ?>

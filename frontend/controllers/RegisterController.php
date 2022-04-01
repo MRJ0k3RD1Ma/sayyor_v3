@@ -493,6 +493,7 @@ class RegisterController extends Controller
                     $num = DestructionSampleFood::find()->where(['org_id'=>Yii::$app->user->identity->empPosts->org_id])->max('code_id');
                     $num = intval($num)+1;
                     $des->code = get3num(Yii::$app->user->identity->empPosts->org_id).'-'.$num;
+                    $des->code_id = $num;
                     $des->destruction_date = date('Y-m-d h:i:s');
                     $des->state_id = 2;
                     $des->ads = $cs->ads;

@@ -111,7 +111,7 @@ $lg = 'uz';
 </div>
 <br>
 <div>
-    Tekshiruv maqsadi va vazifasi: <?= $sertificate->verificationPupose->name_uz?>
+    Tekshiruv maqsadi va vazifasi: <?= @$sertificate->verificationPupose->name_uz?>
 </div>
 <br>
 <div>

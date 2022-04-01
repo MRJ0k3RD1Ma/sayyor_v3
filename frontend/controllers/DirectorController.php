@@ -139,7 +139,7 @@ class DirectorController extends Controller
     public function actionVerifyanimal($id)
     {
         $model = RouteSert::findOne(['id' => $id]);
-        $model->status_id = 5;
+        $model->status_id = 3;
         if ($model->save()) {
             $dest = new DestructionSampleAnimal();
             $dest->state_id = 3;
@@ -197,19 +197,29 @@ class DirectorController extends Controller
                 $upload_dir = Yii::getAlias('@uploads');
                 $content = $pdf->render();
                 $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
+                if(file_exists($fileName)){
+                    unlink($fileName);
+                }
                 $file = fopen($fileName, 'wb+');
 
                 fwrite($file, $content);
 
                 fclose($file);
 
-                return $pdf->render();
-
-            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
                 return $e;
             }
         }
-        return $this->redirect(['indexanimal']);
+        Yii::$app->session->setFlash('url',Yii::$app->urlManager->createUrl(['/director/pdf-animal','id'=>$model->sample_id]));
+        return $this->redirect(['viewanimal','id'=>$id]);
 
     }
 
@@ -368,6 +378,9 @@ class DirectorController extends Controller
                 $upload_dir = Yii::getAlias('@uploads');
                 $content = $pdf->render();
                 $fileName = $upload_dir . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+                if(file_exists($fileName)){
+                    unlink($fileName);
+                }
                 $file = fopen($fileName, 'wb+');
                 fwrite($file, $content);
                 fclose($file);
@@ -459,7 +472,9 @@ class DirectorController extends Controller
     {
         $model = FoodRoute::findOne($id);
         $model->status_id = 3;
+
         if ($model->save()) {
+
             $dest = new DestructionSampleFood();
             $dest->state_id = 3;
             $sample = FoodSamples::findOne($model->sample_id);
@@ -493,8 +508,8 @@ class DirectorController extends Controller
             ->innerJoin('template_food','template_food.id=template_food_regulations.template_id')
             ->where('template_food.id in (select result_food_tests.template_id from result_food_tests where result_food_tests.checked = 1 and result_id='.$result->id.')')
                 ->groupBy('regulations.id')->all();
-                //->innerJoin('result_food_tests','template_food.id = result_food_tests.template_id and result_food_tests.checked=1')
             ;
+            //return $this->render('pdf-verify2', ['model' => $sample, 'regmodel' => $reg,'docs'=>$docs,'result'=>$result]);
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
@@ -513,15 +528,26 @@ class DirectorController extends Controller
                 $upload_dir = Yii::getAlias('@uploads');
                 $content = $pdf->render();
                 $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
+                if(file_exists($fileName)){
+                    unlink($fileName);
+                }
                 $file = fopen($fileName, 'wb+');
                 fwrite($file, $content);
                 fclose($file);
-            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
                 return $e;
             }
 
         }
-
+        Yii::$app->session->setFlash('url',Yii::$app->urlManager->createUrl(['/director/pdf-food','id'=>$model->sample_id]));
         return $this->redirect(['viewfood', 'id' => $id]);
     }
 
@@ -605,6 +631,9 @@ class DirectorController extends Controller
                 $upload_dir = Yii::getAlias('@uploads');
                 $content = $pdf->render();
                 $fileName = $upload_dir . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+                if(file_exists($fileName)){
+                    unlink($fileName);
+                }
                 $file = fopen($fileName, 'wb+');
                 fwrite($file, $content);
                 fclose($file);

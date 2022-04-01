@@ -134,6 +134,23 @@ if(Yii::$app->session->hasFlash('success')){
     ");
 
 }
+
+if(Yii::$app->session->hasFlash('url')){
+    $txt = Yii::$app->session->getFlash('url');
+   /* $this->registerJs("
+       $.ajax({
+          url: '{$txt}',
+          context: document.body
+        }).done(function() {
+          var a = true;
+        });
+    ");*/
+    $this->registerJs("
+        $(document).ready(function(){
+            window.location = '{$txt}';
+        })
+    ");
+}
 ?>
 
 

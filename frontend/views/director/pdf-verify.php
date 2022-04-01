@@ -30,11 +30,11 @@ $route = RouteSert::findOne(['sample_id' => $samples->id]);
 $routesert = $route->registration_id;
 
 $lg = 'uz';
-$qr =function() {
+$qr =function() use ($samples) {
     $data=Builder::create()
         ->writer(new PngWriter())
         ->writerOptions([])
-        ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsert']))
+        ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsert','id'=>$samples->id]))
         ->encoding(new Encoding('UTF-8'))
         ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
         ->size(100)

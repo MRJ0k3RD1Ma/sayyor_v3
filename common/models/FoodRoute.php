@@ -52,7 +52,7 @@ class FoodRoute extends \yii\db\ActiveRecord
             [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => FoodSamples::className(), 'targetAttribute' => ['sample_id' => 'id']],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => StateList::className(), 'targetAttribute' => ['state_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => SertStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
-            [['sample_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleTypes::className(), 'targetAttribute' => ['sample_type_id' => 'id']],
+
         ];
     }
 

@@ -33,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title
         <?= $form->field($cs,'ads')->textInput()?>
 
         <?= $form->field($route,'director_id')->dropDownList(ArrayHelper::map($director,'id','name'),['prompt'=>Yii::t('test','Direktorni tanlang')])?>
-        <?= $form->field($route,'sample_type_id')->dropDownList(ArrayHelper::map(SampleTypes::find()->all(),'id','name_uz'),['prompt'=>Yii::t('test','Namuna turini tanlang')])?>
 
         <?= $form->field($route,'leader_id')->dropDownList(ArrayHelper::map($lider,'id','name'),['prompt'=>Yii::t('test','Labaratoriya mudirini tanlang')])?>
 

@@ -187,7 +187,7 @@ $lg = 'uz';
                     <?php if($item->result==$item->template->min){?><?= Yii::$app->params['result'][1] ?><?php }else{?><?= Yii::$app->params['result'][0]?><?php }?>
                 </td>
             <?php } elseif ($item->template->type_id == 3) { ?>
-                <td><?= $item->result?></td>
+                <td><?php if(((!$item->template->min) or intval($item->template->min) <= intval($item->result)) and (intval($item->result)<= intval($item->template->max) or (!$item->template->max))){echo 'Ha';}else{echo 'Yo\'q';} ?></td>
             <?php } elseif ($item->template->type_id == 4) { ?>
                 <td><?php
                     $one = true;

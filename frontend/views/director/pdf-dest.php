@@ -49,7 +49,7 @@ $qr =function() use ($model) {
 
 </table>
 <div class="align-content-center" style="text-align: center">
-    <b>NAMUNANI YO'Q QILISH BAYONNOMASI № № <?= $model->code ?></b>
+    <b>NAMUNANI YO'Q QILISH DALOLATNOMASI № № <?= $model->code ?></b>
 </div>
 <br>
 

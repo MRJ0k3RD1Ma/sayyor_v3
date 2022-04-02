@@ -623,7 +623,7 @@ class DirectorController extends Controller
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('_pdfdest', ['dataProvider' => $dataProvider]),
+                'content' => $this->renderPartial('_pdfdestfood', ['dataProvider' => $dataProvider]),
                 'options' => [
                 ],
                 'methods' => [

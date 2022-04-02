@@ -428,7 +428,7 @@ class RegisterController extends Controller
 
         if (Yii::$app->request->isPost) {
             if ($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())) {
-                if ($cs->status_id == 2) {
+                if ($cs->sample_status_id == 2) {
                     $model->status_id = 6;
                     $reg->status_id = 6;
                     $dal = Sertificates::findOne($model->sert_id);
@@ -444,6 +444,7 @@ class RegisterController extends Controller
                     $des->state_id = 2;
                     $des->ads = $cs->ads;
                     $des->consent_id = $route->director_id;
+                    $des->org_id = Yii::$app->user->identity->empPosts->org_id;
                     $des->save();
                     $model->save();
                     $reg->save();

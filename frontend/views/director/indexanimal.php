@@ -15,10 +15,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="route-sert-index">
 
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+    <?php echo $this->render('_searchindexanimal', [
+        'model' => $searchModel,
+    ]);
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'id' => 'indexanimal-grid',
 //        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -26,21 +31,22 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'id',
 //            'director_id',
             [
-                'attribute'=>'sample_id',
-                'value'=>function($d){
-                    $url = Yii::$app->urlManager->createUrl(['/director/viewanimal','id'=>$d->id]);
+                'attribute' => 'sample_id',
+                'value' => function ($d) {
+                    $url = Yii::$app->urlManager->createUrl(['/director/viewanimal', 'id' => $d->id]);
                     return "<a href='{$url}'>{$d->sample->kod}</a>";
                 },
-                'format'=>'raw'
+                'format' => 'raw'
             ],
 //            'leader_id',
 //            'executor_id',
             [
-                'attribute'=>'executor_id',
-                'value'=>function($d){
-                    if($d->executor_id){
+                'attribute' => 'executor_id',
+                'value' => function ($d) {
+                    if ($d->executor_id) {
                         return $d->executor->name;
-                    }return null;
+                    }
+                    return null;
                 }
             ],
             'deadline',
@@ -52,16 +58,19 @@ $this->params['breadcrumbs'][] = $this->title;
             //'registration_id',
 //            'status_id',
             [
-                'attribute'=>'status_id',
-                'format'=>'html',
-                'value'=>function($d){
+                'attribute' => 'status_id',
+                'format' => 'html',
+                'value' => function ($d) {
                     $lg = 'uz';
-                    if(Yii::$app->language == 'ru'){$lg = 'ru';}
-                    return "<span class='".$d->status->icon."'>".@$d->status->class.' '.$d->status->{'name_'.$lg}."</span>";
+                    if (Yii::$app->language == 'ru') {
+                        $lg = 'ru';
+                    }
+                    return "<span class='" . $d->status->icon . "'>" . @$d->status->class . ' ' . $d->status->{'name_' . $lg} . "</span>";
                 }
             ],
         ],
-    ]); ?>
+    ]) ?>
+    <?php \yii\widgets\Pjax::end()?>
 
 
 </div>

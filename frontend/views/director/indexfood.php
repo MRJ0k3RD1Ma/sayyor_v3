@@ -15,11 +15,16 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="route-sert-index">
 
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+    <?php echo $this->render('_searchindexfood', [
+        'model' => $searchModel,
+    ]);
+    ?>
 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'id' => 'indexfood-grid',
 //        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -66,6 +71,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-
+<?php \yii\widgets\Pjax::end()?>
 
 </div>

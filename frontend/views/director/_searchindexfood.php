@@ -2,22 +2,25 @@
 
 use app\models\search\director\DestructionSampleAnimalSearch;
 use common\models\DestructionSampleAnimal;
+use common\models\RouteStatus;
 use common\models\StateList;
+use frontend\models\search\director\RouteSertSearch;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model \app\models\search\director\DestructionSampleFoodSearch */
+/* @var $model \app\models\search\director\FoodRouteSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="animals-search">
 
+
     <?php $form = ActiveForm::begin([
-        'action' => ['dest'],
+        'action' => ['director/indexanimal'],
         'method' => 'get',
-        'id' => 'dest-grid-filters',
+        'id' => 'indexfood-grid-filters',
         'fieldConfig' => [
         ],
     ]); ?>
@@ -29,8 +32,8 @@ use yii\widgets\ActiveForm;
                     <div class="btns flex">
                         <div class="col" style="margin-bottom: -1rem!important;">
                             <?=
-                            $form->field($model, 'state_id')->dropDownList(
-                                DestructionSampleAnimal::ListStatus()
+                            $form->field($model, 'status_id')->dropDownList(
+                                ArrayHelper::map(RouteStatus::find()->asArray()->all(),'id','name_uz')
                             )->label(false)
                             ?>
                         </div>

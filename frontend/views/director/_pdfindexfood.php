@@ -15,12 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="route-sert-index">
 
 
-    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-    <?php echo $this->render('_searchindexfood', [
-        'model' => $searchModel,
-    ]);
-    ?>
-
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -66,11 +60,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     if (Yii::$app->language == 'ru') {
                         $lg = 'ru';
                     }
-                    return "<span class='" . $d->status->icon . "'>" . @$d->status->class . ' ' . $d->status->{'name_' . $lg} . "</span>";
+                    return $d->status->{'name_' . $lg};
                 }
             ],
         ],
     ]); ?>
-<?php \yii\widgets\Pjax::end()?>
 
 </div>

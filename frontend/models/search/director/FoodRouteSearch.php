@@ -11,6 +11,7 @@ use common\models\FoodRoute;
  */
 class FoodRouteSearch extends FoodRoute
 {
+    public $q;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class FoodRouteSearch extends FoodRoute
     {
         return [
             [['id', 'director_id', 'leader_id', 'executor_id', 'state_id', 'sample_id', 'registration_id', 'status_id'], 'integer'],
-            [['deadline', 'ads', 'created', 'updated'], 'safe'],
+            [['q','deadline', 'ads', 'created', 'updated'], 'safe'],
         ];
     }
 

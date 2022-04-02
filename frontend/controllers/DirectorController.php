@@ -95,13 +95,38 @@ class DirectorController extends Controller
         return $this->render('index');
     }
 
-    public function actionIndexanimal($status = -1)
+    public function actionIndexanimal($status = -1, int $export = null)
     {
         $searchModel = new RouteSertSearch();
         if ($status != -1) {
             $searchModel->status_id = $status;
         }
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfindexanimal', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
 
         return $this->render('indexanimal', [
             'searchModel' => $searchModel,
@@ -121,9 +146,9 @@ class DirectorController extends Controller
         $model->scenario = 'exec';
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
-        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
-            ->innerJoin('tamplate_animal','tamplate_animal.id=template_animal_regulations.template_id')
-            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_id='.$result->id.')')
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
+            ->innerJoin('tamplate_animal', 'tamplate_animal.id=template_animal_regulations.template_id')
+            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_id=' . $result->id . ')')
             ->groupBy('regulations.id')->all();
 
         return $this->render('viewanimal', [
@@ -132,7 +157,7 @@ class DirectorController extends Controller
             'result' => $result,
             'emp' => $emp,
             'test' => $test,
-            'docs'=>$docs
+            'docs' => $docs
         ]);
     }
 
@@ -169,18 +194,17 @@ class DirectorController extends Controller
 
             Yii::$app->session->setFlash('success', Yii::t('leader', 'Namuna tekshiruv natijasi imzolandi. Namunani yo\'q qilish uchun topshiriq yuborildi.'));
 
-            $result = ResultAnimal::findOne(['sample_id'=>$dest->sample_id]);
-            $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
-                ->innerJoin('tamplate_animal','tamplate_animal.id=template_animal_regulations.template_id')
-                ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_animal_tests.checked = 1 and result_id='.$result->id.')')
-                ->groupBy('regulations.id')->all();
-            //->innerJoin('result_food_tests','template_food.id = result_food_tests.template_id and result_food_tests.checked=1')
+            $result = ResultAnimal::findOne(['sample_id' => $dest->sample_id]);
+            $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
+                ->innerJoin('tamplate_animal', 'tamplate_animal.id=template_animal_regulations.template_id')
+                ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_animal_tests.checked = 1 and result_id=' . $result->id . ')')
+                ->groupBy('regulations.id')->all();//->innerJoin('result_food_tests','template_food.id = result_food_tests.template_id and result_food_tests.checked=1')
             ;
 
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg,'docs'=>$docs]),
+                'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg, 'docs' => $docs]),
                 'options' => [
                 ],
                 'methods' => [
@@ -197,7 +221,7 @@ class DirectorController extends Controller
                 $upload_dir = Yii::getAlias('@uploads');
                 $content = $pdf->render();
                 $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
-                if(file_exists($fileName)){
+                if (file_exists($fileName)) {
                     unlink($fileName);
                 }
                 $file = fopen($fileName, 'wb+');
@@ -218,8 +242,8 @@ class DirectorController extends Controller
                 return $e;
             }
         }
-        Yii::$app->session->setFlash('url',Yii::$app->urlManager->createUrl(['/director/pdf-animal','id'=>$model->sample_id]));
-        return $this->redirect(['viewanimal','id'=>$id]);
+        Yii::$app->session->setFlash('url', Yii::$app->urlManager->createUrl(['/director/pdf-animal', 'id' => $model->sample_id]));
+        return $this->redirect(['viewanimal', 'id' => $id]);
 
     }
 
@@ -235,17 +259,18 @@ class DirectorController extends Controller
     }
 
 
-    public function actionRenderPdf($id){
+    public function actionRenderPdf($id)
+    {
         $model = RouteSert::findOne(['id' => $id]);
         $sample = Samples::findOne($model->sample_id);
         $cs = CompositeSamples::findOne(['sample_id' => $sample->id]);
         $reg = SampleRegistration::findOne(['id' => $cs->registration_id]);
-        $result = ResultAnimal::findOne(['sample_id'=>$model->sample_id]);
-        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
-            ->innerJoin('tamplate_animal','tamplate_animal.id=template_animal_regulations.template_id')
-            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_animal_tests.checked = 1 and result_id='.$result->id.')')
+        $result = ResultAnimal::findOne(['sample_id' => $model->sample_id]);
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
+            ->innerJoin('tamplate_animal', 'tamplate_animal.id=template_animal_regulations.template_id')
+            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_animal_tests.checked = 1 and result_id=' . $result->id . ')')
             ->groupBy('regulations.id')->all();
-        return $this->render('pdf-verify',['model' => $sample, 'regmodel' => $reg,'docs'=>$docs]);
+        return $this->render('pdf-verify', ['model' => $sample, 'regmodel' => $reg, 'docs' => $docs]);
         $model->status_id = 5;
         if ($model->save()) {
             $dest = new DestructionSampleAnimal();
@@ -283,7 +308,7 @@ class DirectorController extends Controller
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg,'docs'=>$docs]),
+                'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg, 'docs' => $docs]),
                 'options' => [
                 ],
                 'methods' => [
@@ -378,7 +403,7 @@ class DirectorController extends Controller
                 $upload_dir = Yii::getAlias('@uploads');
                 $content = $pdf->render();
                 $fileName = $upload_dir . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
-                if(file_exists($fileName)){
+                if (file_exists($fileName)) {
                     unlink($fileName);
                 }
                 $file = fopen($fileName, 'wb+');
@@ -391,7 +416,7 @@ class DirectorController extends Controller
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
-        Yii::$app->session->setFlash('url',Yii::$app->urlManager->createUrl(['/director/dest-pdf','id'=>$id]));
+        Yii::$app->session->setFlash('url', Yii::$app->urlManager->createUrl(['/director/dest-pdf', 'id' => $id]));
         return $this->redirect(['dest']);
     }
 
@@ -401,14 +426,14 @@ class DirectorController extends Controller
         $model->state_id = 3;
         $model->approved_date = date('Y-m-d h:i:s');
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi rad etildi',['code'=>$model->code]);
+            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi rad etildi', ['code' => $model->code]);
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
         return $this->redirect(['dest']);
     }
 
-    public function actionIndexfood($status = -1)
+    public function actionIndexfood($status = -1, $export = null)
     {
 
         $searchModel = new FoodRouteSearch();
@@ -416,6 +441,31 @@ class DirectorController extends Controller
             $searchModel->status_id = $status;
         }
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfindexfood', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
 
         return $this->render('indexfood', [
             'searchModel' => $searchModel,
@@ -503,17 +553,16 @@ class DirectorController extends Controller
 
             Yii::$app->session->setFlash('success', Yii::t('lab', 'Topshiriq imzolandi. Namunani yo\'q qilish uchun {code} raqamli dalolatnoma labarantga yuborildi', ['code' => $dest->code]));
 
-            $result = ResultFood::findOne(['sample_id'=>$dest->sample_id]);
-            $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations','template_food_regulations.regulation_id = regulations.id')
-            ->innerJoin('template_food','template_food.id=template_food_regulations.template_id')
-            ->where('template_food.id in (select result_food_tests.template_id from result_food_tests where result_food_tests.checked = 1 and result_id='.$result->id.')')
-                ->groupBy('regulations.id')->all();
-            ;
+            $result = ResultFood::findOne(['sample_id' => $dest->sample_id]);
+            $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations', 'template_food_regulations.regulation_id = regulations.id')
+                ->innerJoin('template_food', 'template_food.id=template_food_regulations.template_id')
+                ->where('template_food.id in (select result_food_tests.template_id from result_food_tests where result_food_tests.checked = 1 and result_id=' . $result->id . ')')
+                ->groupBy('regulations.id')->all();;
             //return $this->render('pdf-verify2', ['model' => $sample, 'regmodel' => $reg,'docs'=>$docs,'result'=>$result]);
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('pdf-verify2', ['model' => $sample, 'regmodel' => $reg,'docs'=>$docs,'result'=>$result]),
+                'content' => $this->renderPartial('pdf-verify2', ['model' => $sample, 'regmodel' => $reg, 'docs' => $docs, 'result' => $result]),
                 'options' => [
                 ],
                 'methods' => [
@@ -528,7 +577,7 @@ class DirectorController extends Controller
                 $upload_dir = Yii::getAlias('@uploads');
                 $content = $pdf->render();
                 $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
-                if(file_exists($fileName)){
+                if (file_exists($fileName)) {
                     unlink($fileName);
                 }
                 $file = fopen($fileName, 'wb+');
@@ -547,7 +596,7 @@ class DirectorController extends Controller
             }
 
         }
-        Yii::$app->session->setFlash('url',Yii::$app->urlManager->createUrl(['/director/pdf-food','id'=>$model->sample_id]));
+        Yii::$app->session->setFlash('url', Yii::$app->urlManager->createUrl(['/director/pdf-food', 'id' => $model->sample_id]));
         return $this->redirect(['viewfood', 'id' => $id]);
     }
 
@@ -631,7 +680,7 @@ class DirectorController extends Controller
                 $upload_dir = Yii::getAlias('@uploads');
                 $content = $pdf->render();
                 $fileName = $upload_dir . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
-                if(file_exists($fileName)){
+                if (file_exists($fileName)) {
                     unlink($fileName);
                 }
                 $file = fopen($fileName, 'wb+');
@@ -644,8 +693,8 @@ class DirectorController extends Controller
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
-        Yii::$app->session->setFlash('url',Yii::$app->urlManager->createUrl(['/director/dest-pdffood','id'=>$id]));
-        return $this->redirect(['destfoodview','id'=>$id]);
+        Yii::$app->session->setFlash('url', Yii::$app->urlManager->createUrl(['/director/dest-pdffood', 'id' => $id]));
+        return $this->redirect(['destfoodview', 'id' => $id]);
     }
 
     public function actionDestfoodno($id)
@@ -654,7 +703,7 @@ class DirectorController extends Controller
         $model->state_id = 3;
         $model->approved_date = date('Y-m-d h:i:s');
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi rad qilindi',['code'=>$model->code]);
+            Yii::$app->session->setFlash('success', '{code} raqamli namunani yo\'q qilish dalolatnomasi rad qilindi', ['code' => $model->code]);
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }

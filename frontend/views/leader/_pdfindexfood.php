@@ -4,29 +4,21 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
-use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\search\RouteSertSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('food', 'Hayvon kasalliklari namunalar ro\'yhati');
+$this->title = Yii::t('food', 'Oziq ovqat havfsizligi namunalar ro\'yhati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="route-sert-index">
 
 
-    <?php Pjax::begin(['enablePushState' => 0, 'timeout' => false]); ?>
-    <?php
-    echo $this->render('_searchregproduct', [
-        'model' => $searchModel,
-    ]);
-
-    ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'id' => 'regproduct-grid',
+        'summary' => '',
+        'id' => 'indexfood-grid',
 //        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -36,8 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'sample_id',
                 'value' => function ($d) {
-                    $url = Yii::$app->urlManager->createUrl(['/leader/viewanimal', 'id' => $d->id]);
-                    return "<a href='{$url}'>{$d->sample->kod}</a>";
+                    $url = Yii::$app->urlManager->createUrl(['/leader/viewfood', 'id' => $d->id]);
+                    return "<a href='{$url}'>{$d->sample->samp_code}</a>";
                 },
                 'format' => 'raw'
             ],
@@ -68,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if (Yii::$app->language == 'ru') {
                         $lg = 'ru';
                     }
-                    return "<span class='" . $d->status->icon . "'>" . @$d->status->class . ' ' . $d->status->{'name_' . $lg} . "</span>";
+                    return $d->status->{'name_' . $lg};
                 }
             ],
         ],

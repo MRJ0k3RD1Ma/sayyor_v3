@@ -22,10 +22,17 @@ use common\models\SampleRegistration;
 use common\models\Samples;
 use common\models\TemplateAnimalRegulations;
 use frontend\models\search\leader\RouteSertSearch;
+use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use Yii;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -82,13 +89,47 @@ class LeaderController extends Controller
         return $this->render('index');
     }
 
-    public function actionIndexanimal($status = -1)
+    public function actionIndexanimal($status = -1, int $export = null)
     {
         $searchModel = new RouteSertSearch();
         if ($status != -1) {
             $searchModel->status_id = $status;
         }
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            return $searchModel->exportToExcel($dataProvider->query);
+        } else if ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfindexanimal', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
+                return $e;
+            }
+        }
+
 
         return $this->render('indexanimal', [
             'searchModel' => $searchModel,
@@ -124,9 +165,9 @@ class LeaderController extends Controller
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked' => 1])->all();
 
-        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations','template_animal_regulations.regulation_id = regulations.id')
-            ->innerJoin('tamplate_animal','tamplate_animal.id=template_animal_regulations.template_id')
-            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_id='.$result->id.')')
+        $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
+            ->innerJoin('tamplate_animal', 'tamplate_animal.id=template_animal_regulations.template_id')
+            ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_id=' . $result->id . ')')
             ->groupBy('regulations.id')->all();
 
         return $this->render('viewanimal', [
@@ -163,7 +204,7 @@ class LeaderController extends Controller
     }
 
 
-    public function actionIndexfood($status = -1)
+    public function actionIndexfood($status = -1, int $export = null)
     {
 
         $searchModel = new FoodRouteSearch();
@@ -171,6 +212,39 @@ class LeaderController extends Controller
             $searchModel->status_id = $status;
         }
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            return $searchModel->exportToExcel($dataProvider->query);
+        } else if ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdfindexfood', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
+                return $e;
+            }
+        }
 
         return $this->render('indexfood', [
             'searchModel' => $searchModel,

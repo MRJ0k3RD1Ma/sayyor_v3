@@ -16,16 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="route-sert-index">
 
 
-    <?php Pjax::begin(['enablePushState' => 0, 'timeout' => false]); ?>
-    <?php
-    echo $this->render('_searchregproduct', [
-        'model' => $searchModel,
-    ]);
-
-    ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'summary' => '',
         'id' => 'regproduct-grid',
 //        'filterModel' => $searchModel,
         'columns' => [
@@ -68,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if (Yii::$app->language == 'ru') {
                         $lg = 'ru';
                     }
-                    return "<span class='" . $d->status->icon . "'>" . @$d->status->class . ' ' . $d->status->{'name_' . $lg} . "</span>";
+                    return  $d->status->{'name_' . $lg};
                 }
             ],
         ],

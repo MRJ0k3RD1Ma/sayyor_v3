@@ -17,16 +17,7 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i data-feather="bar-chart-2"></i>
-                        <span data-key="t-tables"><?= Yii::t('cp.menu','Arizalar ro\'yhati')?></span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/ind/sertapp'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Hayvon kasalliklari tashhilari')?></a></li>
-                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/ind/sertfood'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Oziq-ovqat ekspertizalari')?></a></li>
-                    </ul>
-                </li>
+
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
@@ -38,7 +29,16 @@
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/ind/listfood'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Oziq-ovqat ekspertizalari')?></a></li>
                     </ul>
                 </li>
-
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="bar-chart-2"></i>
+                        <span data-key="t-tables"><?= Yii::t('cp.menu','Arizalar')?></span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/ind/sertapp'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Hayvon kasalliklari tashhilari')?></a></li>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/ind/sertfood'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Oziq-ovqat ekspertizalari')?></a></li>
+                    </ul>
+                </li>
 
             </ul>
 

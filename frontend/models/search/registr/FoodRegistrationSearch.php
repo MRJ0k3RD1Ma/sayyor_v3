@@ -48,7 +48,7 @@ class FoodRegistrationSearch extends FoodRegistration
      */
     public function search($params)
     {
-        $query = FoodRegistration::find()->where(['organization_id'=>Yii::$app->user->identity->empPosts->org_id]);
+        $query = FoodRegistration::find()->where(['organization_id'=>Yii::$app->user->identity->empPosts->org_id])->orderBy(['id'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

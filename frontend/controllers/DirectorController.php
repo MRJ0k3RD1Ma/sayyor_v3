@@ -391,7 +391,7 @@ class DirectorController extends Controller
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
-
+        Yii::$app->session->setFlash('url',Yii::$app->urlManager->createUrl(['/director/dest-pdf','id'=>$id]));
         return $this->redirect(['dest']);
     }
 
@@ -644,7 +644,8 @@ class DirectorController extends Controller
         } else {
             Yii::$app->session->setFlash('error', 'Tasdiqlashda xatolik');
         }
-        return $this->redirect(['destfood']);
+        Yii::$app->session->setFlash('url',Yii::$app->urlManager->createUrl(['/director/dest-pdffood','id'=>$id]));
+        return $this->redirect(['destfoodview','id'=>$id]);
     }
 
     public function actionDestfoodno($id)

@@ -54,6 +54,7 @@ class FoodSamples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['unit_id','count','sample_box_id','sample_condition_id', 'verification_sample', 'laboratory_test_type_id','manufacture_date', 'sell_by','tasnif_code', 'total_amount', 'producer', 'serial_num',],'required','on'=>'insert'],
             [['samp_id', 'sert_id', 'unit_id','emp_id', 'count', '_country', 'sample_box_id', 'sample_condition_id', 'verification_sample', 'laboratory_test_type_id', 'status_id', 'state_id'], 'integer'],
             [['_country'], 'required'],
             [['manufacture_date', 'sell_by', 'created', 'updated'], 'safe'],

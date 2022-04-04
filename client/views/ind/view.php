@@ -157,7 +157,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td rowspan="<?= $cnt + 1?>"><?= $item->animal_id ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->animal->type->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= Yii::$app->params['gender'][$item->animal->gender] ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->animal->birthday ?></td>
+                        <td rowspan="<?= $cnt + 1?>"><?php
+                            $d1 = new \DateTime($item->animal->birthday);
+                            $d2 = new \DateTime(date('Y-m-d'));
+                            $interval = $d1->diff($d2);
+                            $diff = $interval->m+($interval->y*12);
+                             echo $diff ?> oy</td>
                         <td colspan="2"><?php if($model->status_id == 0){?><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/ind/vaccination','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Emlash</a><?php }?></td>
                         <td colspan="2"><?php if($model->status_id == 0){?><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/ind/emlash','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Davolash</a><?php }?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->suspectedDisease->name_uz?></td>

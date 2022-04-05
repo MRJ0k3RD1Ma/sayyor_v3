@@ -1,5 +1,7 @@
 <?php
 
+use common\models\DestructionSampleFood;
+use common\models\FoodRoute;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -112,14 +114,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php if ($item->status_id < 3) { ?>
                                 <a href="<?= Yii::$app->urlManager->createUrl(['/register/incomefood', 'id' => $item->id, 'regid' => $model->id]) ?>"><?= $item->status->icon . ' ' . $item->samp_code ?></a>
                             <?php } else { ?>
-                                <?= $item->status->icon . ' ' . $item->samp_code ?>
+                                <?php $cnt = 0;
+                                $destruction_id = @DestructionSampleFood::findOne(['state_id' => 1, 'sample_id' => $item->id])->id;
+                                $RouteSert = @FoodRoute::findOne(['sample_id' => $item->id, 'status_id' => 3]);
+                                ?>
+                                <?= ($RouteSert) ? Html::a($item->status->icon . ' ' . $item->samp_code, ['/ind/food-pdf', 'id' => $item->id], ['class' => 'btn btn-warning']) : $item->status->icon . ' ' . $item->samp_code ?>
+                                <?= ($destruction_id) ? Html::a("Yo'q qilish dalolatnomasi", ['/ind/pdfdestfood', 'id' => $destruction_id], ['class' => 'btn btn-danger']) : '' ?>
                             <?php } ?>
                         </td>
                         <td><?= $item->tasnif->name ?></td>
                         <td><?= $item->count . ' ' . $item->unit->{'name_' . $lg} ?></td>
                         <td><?= $item->sampleBox->{'name_' . $lg} ?></td>
                         <td><?= $item->sampleCondition->{'name_' . $lg} ?></td>
-                        <td><?= @$item->route->sampleType->name_uz?></td>
+                        <td><?= @$item->route->sampleType->name_uz ?></td>
                         <td><?= $item->total_amount ?></td>
                         <td><?= $item->producer ?></td>
                         <td><?= $item->serial_num ?></td>

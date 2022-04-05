@@ -17,7 +17,14 @@ return [
         ],
         'komitet'=>[
             'class' => 'app\modules\komitet\Module',
+        ],
+        'region'=>[
+            'class' => 'app\modules\region\Module',
+        ],
+        'district'=>[
+            'class' => 'app\modules\district\Module',
         ]
+
     ],
 //    'language'=>'uz',
     'components' => [
@@ -71,6 +78,8 @@ return [
 //            'enableLanguagePersistence' => false,
             'rules' => [
                 'komitet/<action>' => 'komitet/default/<action>',
+                'region/<action>' => 'region/default/<action>',
+                'district/<action>' => 'district/default/<action>',
             ],
         ],
 

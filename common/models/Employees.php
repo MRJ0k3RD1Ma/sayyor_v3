@@ -16,7 +16,7 @@ use yii\base\NotSupportedException;
  *
  * @property EmpPosts $empPosts
  */
-class Employees extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterface
+class Employees extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -32,11 +32,11 @@ class Employees extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterf
     public function rules()
     {
         return [
-            [['name', 'email', 'phone', ], 'required'],
-            ['password','required','on'=>'insert'],
+            [['name', 'email', 'phone',], 'required'],
+            ['password', 'required', 'on' => 'insert'],
             [['name', 'email'], 'string', 'max' => 100],
             [['phone'], 'string', 'max' => 20],
-            [['password'], 'string', 'min'=>8,'max' => 500],
+            [['password'], 'string', 'min' => 8, 'max' => 500],
         ];
     }
 
@@ -65,19 +65,19 @@ class Employees extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterf
     }
 
     public static function findIdentity($id)
-{
-    /*$sql = '(
-     (`active_to` IS NOT NULL and `active_each`IS NOT NULL) and (CURDATE() BETWEEN `active_to` and `active_each`)
-     ) OR (
-     (`active_to` IS NOT NULL and `active_each` IS NULL) and (CURDATE()>=`active_to`)
-     ) OR (
-     (`active_to` IS NULL and `active_each` IS NOT NULL) and (CURDATE()<=`active_each`)
-     ) OR (`active_to` IS NULL and `active_each` IS NULL)
-     ';*/
-    return static::find()->where(['id'=>$id])->one();
+    {
+        /*$sql = '(
+         (`active_to` IS NOT NULL and `active_each`IS NOT NULL) and (CURDATE() BETWEEN `active_to` and `active_each`)
+         ) OR (
+         (`active_to` IS NOT NULL and `active_each` IS NULL) and (CURDATE()>=`active_to`)
+         ) OR (
+         (`active_to` IS NULL and `active_each` IS NOT NULL) and (CURDATE()<=`active_each`)
+         ) OR (`active_to` IS NULL and `active_each` IS NULL)
+         ';*/
+        return static::find()->where(['id' => $id])->one();
 //    return static::findOne($id);
 
-}
+    }
 
     /**
      * @inheritdoc
@@ -107,7 +107,7 @@ class Employees extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterf
          ) OR (`active_to` IS NULL and `active_each` IS NULL)
          ';
         return static::find()->where(['email'=>$username])->andWhere(['status'=>1])->andWhere($sql)->one();*/
-        return static::findOne(['email'=>$username]);
+        return static::findOne(['email' => $username]);
     }
 
     /**
@@ -142,11 +142,18 @@ class Employees extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterf
      */
     public function validatePassword($password)
     {
-        return Yii::$app->getSecurity()->validatePassword($password,$this->password);
+        return Yii::$app->getSecurity()->validatePassword($password, $this->password);
     }
-    public function encrypt(){
+
+    public function encrypt()
+    {
         $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
         return true;
+    }
+
+    public function getPosts()
+    {
+        return $this->hasOne(EmpPosts::class, ['emp_id' => 'id']);
     }
 
 }

@@ -105,10 +105,7 @@ class SiteController extends Controller
             return $this->goBack();
         }
         if ($model->errors) {
-
             Yii::$app->session->setFlash('error', Yii::t('client', 'Login yoki parol xato'));
-//            VarDumper::dump($model->errors, 10, true) or die();
-
             return $this->redirect(['/site/']);
         }
         $model->password = '';

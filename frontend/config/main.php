@@ -17,6 +17,9 @@ return [
         ],
         'komitet'=>[
             'class' => 'app\modules\komitet\Module',
+        ],
+        'region'=>[
+            'class' => 'app\modules\region\Module',
         ]
     ],
 //    'language'=>'uz',
@@ -71,6 +74,7 @@ return [
 //            'enableLanguagePersistence' => false,
             'rules' => [
                 'komitet/<action>' => 'komitet/default/<action>',
+                'region/<action>' => 'region/default/<action>',
             ],
         ],
 

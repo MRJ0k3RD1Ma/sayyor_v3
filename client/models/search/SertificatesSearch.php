@@ -2,6 +2,7 @@
 
 namespace client\models\search;
 
+use common\models\Organizations;
 use common\models\Samples;
 use common\models\Sertificates;
 use common\models\VetSites;
@@ -22,6 +23,7 @@ use yii\helpers\FileHelper;
 class SertificatesSearch extends Sertificates
 {
     public $q;
+
     /**
      * {@inheritdoc}
      */
@@ -51,9 +53,9 @@ class SertificatesSearch extends Sertificates
      */
     public function search($params)
     {
-        if(Yii::$app->session->get('doc_type') == 'inn'){
-            $query = Sertificates::find()->where(['inn'=>Yii::$app->session->get('doc_inn')])->orWhere(['owner_inn'=>Yii::$app->session->get('doc_inn')])->orderBy(['id'=>SORT_DESC]);
-        }else {
+        if (Yii::$app->session->get('doc_type') == 'inn') {
+            $query = Sertificates::find()->where(['inn' => Yii::$app->session->get('doc_inn')])->orWhere(['owner_inn' => Yii::$app->session->get('doc_inn')])->orderBy(['id' => SORT_DESC]);
+        } else {
             $query = Sertificates::find()->where(['pnfl' => Yii::$app->session->get('doc_pnfl')])->orWhere(['owner_pnfl' => Yii::$app->session->get('doc_pnfl')])->orderBy(['id' => SORT_DESC]);
         }
 
@@ -85,6 +87,7 @@ class SertificatesSearch extends Sertificates
 
         return $dataProvider;
     }
+
     /**
      * Creates data provider instance with search query applied
      *
@@ -94,7 +97,7 @@ class SertificatesSearch extends Sertificates
      */
     public function searchKomitet($params)
     {
-        $query=Sertificates::find();
+        $query = Sertificates::find();
 
         // add conditions that should always apply here
 
@@ -123,6 +126,7 @@ class SertificatesSearch extends Sertificates
 
         return $dataProvider;
     }
+
     /**
      * @throws \yii\base\Exception
      * @throws Exception
@@ -191,5 +195,42 @@ class SertificatesSearch extends Sertificates
         $fileName = $dir . DIRECTORY_SEPARATOR . $name;
         $writer->save($fileName);
         return Yii::$app->response->sendFile($fileName);
+    }
+
+    public function searchRegion($params)
+    {
+        $query = Sertificates::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        $MHOBT_cod = Yii::$app->user->identity->posts->org->soato0->res_id . Yii::$app->user->identity->posts->org->soato0->region_id;
+        $vetSites = VetSites::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
+        $query->andFilterWhere([
+            'like', 'vet_site_id', $vetSites
+        ]);
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'sert_date' => $this->sert_date,
+            'vet_site_id' => $this->vet_site_id,
+            'status_id' => $this->status_id,
+        ]);
+
+        $query->orFilterWhere(['like', 'sert_id', $this->q])
+            ->orFilterWhere(['like', 'sert_num', $this->q])
+            ->orFilterWhere(['like', 'pnfl', $this->q]);
+
+        return $dataProvider;
     }
 }

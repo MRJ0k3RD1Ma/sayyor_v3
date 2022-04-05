@@ -3,6 +3,7 @@
 namespace common\models\search;
 
 use common\models\FoodSamplingCertificate;
+use common\models\VetSites;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
@@ -131,38 +132,38 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
                     return $d->inn . "\n" . $d->inn0->name;
                 } else return null;
             };
-            $manzil=static function ($d){
+            $manzil = static function ($d) {
                 $lang = Yii::$app->language;
                 $ads = 'lot';
-                if($lang == 'ru'){
+                if ($lang == 'ru') {
                     $ads = 'ru';
-                }elseif($lang=='uz'){
+                } elseif ($lang == 'uz') {
                     $ads = 'lot';
-                }else{
+                } else {
                     $ads = 'cyr';
                 }
-                return \common\models\Soato::Full($d->samplingSite->soato) .' '. $d->sampling_adress;
+                return \common\models\Soato::Full($d->samplingSite->soato) . ' ' . $d->sampling_adress;
             };
-            $namuna_oluvchi=static function ($d){
-                if($d->sampler_person_pnfl){
-                    return $d->sampler_person_pnfl."\n".@$d->personPnfl->name.' '.@$d->personPnfl->surname.' '.@$d->personPnfl->middlename;
-                }elseif($d->sampler_person_inn){
-                    return $d->sampler_person_inn."\n".$d->personInn->name;
-                }else return null;
+            $namuna_oluvchi = static function ($d) {
+                if ($d->sampler_person_pnfl) {
+                    return $d->sampler_person_pnfl . "\n" . @$d->personPnfl->name . ' ' . @$d->personPnfl->surname . ' ' . @$d->personPnfl->middlename;
+                } elseif ($d->sampler_person_inn) {
+                    return $d->sampler_person_inn . "\n" . $d->personInn->name;
+                } else return null;
             };
-            $information=static function($d){
-                if($d->based_public_information == 0){
-                    return Yii::t('client','Yo\'q');
-                }else{
-                    return Yii::t('client','Ha')."\n".'№'.$d->message_number;
+            $information = static function ($d) {
+                if ($d->based_public_information == 0) {
+                    return Yii::t('client', 'Yo\'q');
+                } else {
+                    return Yii::t('client', 'Ha') . "\n" . '№' . $d->message_number;
                 }
             };
-            $status=function($d){
+            $status = function ($d) {
                 $lg = 'uz';
-                if(Yii::$app->language == 'ru'){
+                if (Yii::$app->language == 'ru') {
                     $lg = 'ru';
                 }
-                return @$d->status->{'name_'.$lg};
+                return @$d->status->{'name_' . $lg};
             };
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_NUMERIC);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->code, DataType::TYPE_STRING);
@@ -170,10 +171,10 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->samplingSite->name, DataType::TYPE_STRING);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $manzil($item), DataType::TYPE_STRING);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $namuna_oluvchi($item), DataType::TYPE_STRING);
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row,$item->sampling_date, DataType::TYPE_STRING);
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row,$item->send_sample_date, DataType::TYPE_STRING);
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row,$information($item), DataType::TYPE_STRING);
-            $sheet->setCellValueExplicitByColumnAndRow($col++, $row,$status($item), DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->sampling_date, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->send_sample_date, DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $information($item), DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $status($item), DataType::TYPE_STRING);
         }
         $name = 'ExcelReport-' . \Yii::$app->formatter->asDatetime(time(), 'php:d_m_Y_h_i_s') . '.xlsx';
         $writer = new Xlsx($speadsheet);
@@ -184,5 +185,52 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
         $fileName = $dir . DIRECTORY_SEPARATOR . $name;
         $writer->save($fileName);
         return \Yii::$app->response->sendFile($fileName);
+    }
+
+    public function searchRegion($params)
+    {
+        $query = FoodSamplingCertificate::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $MHOBT_cod = Yii::$app->user->identity->posts->org->soato0->res_id . Yii::$app->user->identity->posts->org->soato0->region_id;
+        $vetSites = VetSites::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
+        $query->andFilterWhere([
+            'like', 'vet_site_id', $vetSites
+        ]);
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'food_id' => $this->food_id,
+            'sampling_site' => $this->sampling_site,
+            'verification_pupose_id' => $this->verification_pupose_id,
+            'sampling_date' => $this->sampling_date,
+            'send_sample_date' => $this->send_sample_date,
+            'based_public_information' => $this->based_public_information,
+            'message_number' => $this->message_number,
+            'created' => $this->created,
+            'updated' => $this->updated,
+        ]);
+
+        $query->orFilterWhere(['like', 'code', $this->q])
+            ->orFilterWhere(['like', 'inn', $this->q])
+            ->orFilterWhere(['like', 'pnfl', $this->q])
+            ->orFilterWhere(['like', 'sampling_adress', $this->q])
+            ->orFilterWhere(['like', 'sampler_person_pnfl', $this->q])
+            ->orFilterWhere(['like', 'sampler_person_inn', $this->q]);
+
+        return $dataProvider;
     }
 }

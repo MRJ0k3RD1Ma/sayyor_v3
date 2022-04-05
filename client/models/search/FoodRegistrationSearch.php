@@ -2,6 +2,7 @@
 
 namespace client\models\search;
 
+use common\models\Organizations;
 use common\models\SampleRegistration;
 use common\models\Samples;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
@@ -153,5 +154,50 @@ class FoodRegistrationSearch extends FoodRegistration
         $fileName = $dir . DIRECTORY_SEPARATOR . $name;
         $writer->save($fileName);
         return Yii::$app->response->sendFile($fileName);
+    }
+
+    public function searchRegion($params)
+    {
+        $query = FoodRegistration::find();
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $MHOBT_cod = Yii::$app->user->identity->posts->org->soato0->res_id . Yii::$app->user->identity->posts->org->soato0->region_id;
+        $Organizations = Organizations::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
+        $query->andFilterWhere([
+            'organization_id' => $Organizations
+        ]);
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'is_research' => $this->is_research,
+            'code_id' => $this->code_id,
+            'research_category_id' => $this->research_category_id,
+            'results_conformity_id' => $this->results_conformity_id,
+            'emp_id' => $this->emp_id,
+            'created' => $this->created,
+            'updated' => $this->updated,
+            'status_id' => $this->status_id,
+        ]);
+
+        $query
+            ->orFilterWhere(['like', 'code', $this->q])
+            ->orFilterWhere(['like', 'reg_date', $this->q])
+            ->orFilterWhere(['like', 'sender_name', $this->q])
+            ->orFilterWhere(['like', 'sender_phone', $this->q])
+            ->orFilterWhere(['like', 'ads', $this->q]);
+
+        return $dataProvider;
     }
 }

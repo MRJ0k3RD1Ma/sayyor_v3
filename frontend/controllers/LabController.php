@@ -149,10 +149,11 @@ class LabController extends Controller
             $recom->save();
             return $this->refresh();
         }
-
-        if (Model::loadMultiple($test, Yii::$app->request->post()) or $result->load(Yii::$app->request->post())) {
-
+        if($result->load(Yii::$app->request->post())){
             $result->save();
+        }
+        if (Model::loadMultiple($test, Yii::$app->request->post()) ) {
+
             foreach ($test as $item) {
                 $item->save();
             }
@@ -212,7 +213,15 @@ class LabController extends Controller
             ]);
             try {
                 return $pdf->render();
-            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
                 return $e;
             }
         }

@@ -405,6 +405,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="row">
                     <div class="col-md-12">
+                        <h3  style="margin-top:20px;">Tavfsiyalar ro'yhati:</h3>
+
                         <ul>
                             <?php $rec = \common\models\SampleRecomendation::find()->where(['sample_id'=>$sample->id])->all();
                             foreach ($rec as $item):

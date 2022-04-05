@@ -152,7 +152,7 @@ class LabController extends Controller
         if($result->load(Yii::$app->request->post())){
             $result->save();
         }
-        if (Model::loadMultiple($test, Yii::$app->request->post()) ) {
+        if (Model::loadMultiple($test, Yii::$app->request->post())) {
 
             foreach ($test as $item) {
                 $item->save();

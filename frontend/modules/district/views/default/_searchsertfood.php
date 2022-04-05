@@ -4,16 +4,16 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model \client\models\search\SertificatesSearch */
+/* @var $model common\models\search\SertificatesSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="animals-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['listanimal'],
+        'action' => ['ind/sertfood'],
         'method' => 'get',
-        'id' => 'listanimal-grid-filters',
+        'id'=>'sertfood-grid-filters',
         'fieldConfig' => [
         ],
     ]); ?>

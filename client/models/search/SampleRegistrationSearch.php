@@ -260,4 +260,52 @@ class SampleRegistrationSearch extends SampleRegistration
 
         return $dataProvider;
     }
+
+    public function searchdistrict($params)
+    {
+        $query = SampleRegistration::find();
+
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'is_research' => $this->is_research,
+            'code_id' => $this->code_id,
+            'research_category_id' => $this->research_category_id,
+            'results_conformity_id' => $this->results_conformity_id,
+            'organization_id' => $this->organization_id,
+            'emp_id' => $this->emp_id,
+            'reg_date' => $this->reg_date,
+            'reg_id' => $this->reg_id,
+            'created' => $this->created,
+            'updated' => $this->updated,
+        ]);
+
+        $MHOBT_cod = Yii::$app->user->identity->posts->org->soato0->res_id . Yii::$app->user->identity->posts->org->soato0->region_id . Yii::$app->user->identity->posts->org->soato0->district_id;
+        $Organizations = Organizations::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
+        $query->andFilterWhere([
+            'organization_id' => $Organizations
+        ]);
+        $query->orFilterWhere(['like', 'pnfl', $this->q])
+            ->orFilterWhere(['like', 'inn', $this->q])
+            ->orFilterWhere(['like', 'code', $this->q])
+            ->orFilterWhere(['like', 'sender_name', $this->q])
+            ->orFilterWhere(['like', 'sender_phone', $this->q]);
+
+        return $dataProvider;
+    }
 }

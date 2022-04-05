@@ -233,4 +233,50 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
 
         return $dataProvider;
     }
+    public function searchDistrict($params)
+    {
+        $query = FoodSamplingCertificate::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $MHOBT_cod = Yii::$app->user->identity->posts->org->soato0->res_id . Yii::$app->user->identity->posts->org->soato0->region_id.Yii::$app->user->identity->posts->org->soato0->district_id;
+        $vetSites = VetSites::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
+        $query->andFilterWhere([
+            'like', 'vet_site_id', $vetSites
+        ]);
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'food_id' => $this->food_id,
+            'sampling_site' => $this->sampling_site,
+            'verification_pupose_id' => $this->verification_pupose_id,
+            'sampling_date' => $this->sampling_date,
+            'send_sample_date' => $this->send_sample_date,
+            'based_public_information' => $this->based_public_information,
+            'message_number' => $this->message_number,
+            'created' => $this->created,
+            'updated' => $this->updated,
+        ]);
+
+        $query->orFilterWhere(['like', 'code', $this->q])
+            ->orFilterWhere(['like', 'inn', $this->q])
+            ->orFilterWhere(['like', 'pnfl', $this->q])
+            ->orFilterWhere(['like', 'sampling_adress', $this->q])
+            ->orFilterWhere(['like', 'sampler_person_pnfl', $this->q])
+            ->orFilterWhere(['like', 'sampler_person_inn', $this->q]);
+
+        return $dataProvider;
+    }
 }

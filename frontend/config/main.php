@@ -20,7 +20,11 @@ return [
         ],
         'region'=>[
             'class' => 'app\modules\region\Module',
+        ],
+        'district'=>[
+            'class' => 'app\modules\district\Module',
         ]
+
     ],
 //    'language'=>'uz',
     'components' => [
@@ -75,6 +79,7 @@ return [
             'rules' => [
                 'komitet/<action>' => 'komitet/default/<action>',
                 'region/<action>' => 'region/default/<action>',
+                'district/<action>' => 'district/default/<action>',
             ],
         ],
 

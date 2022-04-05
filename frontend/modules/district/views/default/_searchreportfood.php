@@ -11,9 +11,9 @@ use yii\widgets\ActiveForm;
 <div class="animals-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['listanimal'],
+        'action' => ['reportfood'],
         'method' => 'get',
-        'id' => 'listanimal-grid-filters',
+        'id' => 'reportfood-grid-filters',
         'fieldConfig' => [
         ],
     ]); ?>

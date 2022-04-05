@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\region\controllers;
+namespace app\modules\district\controllers;
 
 use client\models\search\FoodRegistrationSearch;
 use client\models\search\SampleRegistrationSearch;
@@ -104,7 +104,7 @@ class DefaultController extends Controller
 
 //        var_dump($action->id) or die();
         if ($action->id != 'login' and Yii::$app->user->isGuest) {
-            header('Location: /region/login');
+            header('Location: /district/login');
             exit;
         }
 
@@ -115,7 +115,7 @@ class DefaultController extends Controller
     {
 
         $searchModel = new SertificatesSearch();
-        $dataProvider = $searchModel->searchRegion($this->request->queryParams);
+        $dataProvider = $searchModel->searchdistrict($this->request->queryParams);
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
         } elseif ($export == 2) {
@@ -435,7 +435,7 @@ class DefaultController extends Controller
     public function actionListfood(int $export = null)
     {
         $searchModel = new FoodSamplingCertificateSearch();
-        $dataProvider = $searchModel->searchRegion($this->request->queryParams);
+        $dataProvider = $searchModel->searchDistrict($this->request->queryParams);
 
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
@@ -472,7 +472,7 @@ class DefaultController extends Controller
     function actionSertapp(int $export = null)
     {
         $searchModel = new SampleRegistrationSearch();
-        $dataProvider = $searchModel->searchregion($this->request->queryParams);
+        $dataProvider = $searchModel->searchdistrict($this->request->queryParams);
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
         } elseif ($export == 2) {
@@ -545,7 +545,7 @@ class DefaultController extends Controller
     {
         Yii::$app->user->logout();
 
-        header('Location: /region/login');
+        header('Location: /district/login');
         exit;
     }
 
@@ -836,7 +836,7 @@ class DefaultController extends Controller
     public function actionSertfood(int $export = null)
     {
         $searchModel = new FoodRegistrationSearch();
-        $dataProvider = $searchModel->searchRegion($this->request->queryParams);
+        $dataProvider = $searchModel->searchDistrict($this->request->queryParams);
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
         } elseif ($export == 2) {

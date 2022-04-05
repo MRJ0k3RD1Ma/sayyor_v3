@@ -233,4 +233,40 @@ class SertificatesSearch extends Sertificates
 
         return $dataProvider;
     }
+    public function searchDistrict($params)
+    {
+        $query = Sertificates::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        $MHOBT_cod = Yii::$app->user->identity->posts->org->soato0->res_id . Yii::$app->user->identity->posts->org->soato0->region_id.Yii::$app->user->identity->posts->org->soato0->district_id;
+        $vetSites = VetSites::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
+        $query->andFilterWhere([
+            'like', 'vet_site_id', $vetSites
+        ]);
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'sert_date' => $this->sert_date,
+            'vet_site_id' => $this->vet_site_id,
+            'status_id' => $this->status_id,
+        ]);
+
+        $query->orFilterWhere(['like', 'sert_id', $this->q])
+            ->orFilterWhere(['like', 'sert_num', $this->q])
+            ->orFilterWhere(['like', 'pnfl', $this->q]);
+
+        return $dataProvider;
+    }
 }

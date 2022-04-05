@@ -18,6 +18,7 @@ use Yii;
  */
 class FoodCompose extends \yii\db\ActiveRecord
 {
+    public $is_group;
     /**
      * {@inheritdoc}
      */
@@ -33,7 +34,7 @@ class FoodCompose extends \yii\db\ActiveRecord
     {
         return [
             [['sample_id', 'registration_id'], 'required'],
-            [['sample_id', 'registration_id', 'status_id'], 'integer'],
+            [['sample_id', 'registration_id', 'is_group','status_id'], 'integer'],
             [['ads'], 'string', 'max' => 255],
             [['registration_id'], 'exist', 'skipOnError' => true, 'targetClass' => FoodRegistration::className(), 'targetAttribute' => ['registration_id' => 'id']],
             [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => FoodSamples::className(), 'targetAttribute' => ['sample_id' => 'id']],
@@ -51,6 +52,7 @@ class FoodCompose extends \yii\db\ActiveRecord
             'registration_id' => Yii::t('food', 'Ariza raqami'),
             'status_id' => Yii::t('food', 'Namuna holati'),
             'ads' => Yii::t('food', 'Izoh'),
+            'is_group' => Yii::t('food', 'Birlashgan namunalardan'),
         ];
     }
 

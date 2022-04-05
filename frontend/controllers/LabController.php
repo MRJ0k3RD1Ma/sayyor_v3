@@ -16,6 +16,7 @@ use common\models\ResultAnimalTests;
 use common\models\ResultFood;
 use common\models\ResultFoodTests;
 use common\models\RouteSert;
+use common\models\SampleRecomendation;
 use common\models\TamplateAnimal;
 use frontend\models\search\laboratory\RouteSertSearch;
 use kartik\mpdf\Pdf;
@@ -141,10 +142,15 @@ class LabController extends Controller
         $sample = $model->sample;
 
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
-
+        $recom = new SampleRecomendation();
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
+        if($recom->load(Yii::$app->request->post())){
+            $recom->sample_id = $sample->id;
+            $recom->save();
+            return $this->refresh();
+        }
 
-        if (Model::loadMultiple($test, Yii::$app->request->post()) and $result->load(Yii::$app->request->post())) {
+        if (Model::loadMultiple($test, Yii::$app->request->post()) or $result->load(Yii::$app->request->post())) {
 
             $result->save();
             foreach ($test as $item) {
@@ -165,7 +171,8 @@ class LabController extends Controller
             'sample' => $sample,
             'result' => $result,
             'test' => $test,
-            'docs' => $docs
+            'docs' => $docs,
+            'recom'=>$recom
         ]);
     }
 

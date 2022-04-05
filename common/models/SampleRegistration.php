@@ -48,6 +48,7 @@ class SampleRegistration extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['organization_id','is_research','research_category_id','sender_name', 'sender_phone',],'required'],
             [['is_research','reg_id','code_id', 'research_category_id', 'results_conformity_id', 'organization_id', 'emp_id','status_id', ], 'integer'],
             [['reg_date','created','updated'], 'safe'],
             ['composite','each','rule'=>['integer']],

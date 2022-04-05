@@ -47,6 +47,7 @@ class FoodRegistration extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['organization_id','is_research','research_category_id','sender_name', 'sender_phone',],'required'],
             [['organization_id', 'is_research', 'code_id', 'research_category_id', 'results_conformity_id', 'emp_id', 'status_id'], 'integer'],
             [['created', 'updated'], 'safe'],
             ['composite','each','rule'=>['string']],

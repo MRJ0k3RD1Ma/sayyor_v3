@@ -164,7 +164,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             $d2 = new \DateTime(date('Y-m-d'));
                             $interval = $d1->diff($d2);
                             $diff = $interval->m+($interval->y*12);
-                            echo $diff ?></td>
+                            echo $diff ?> oy</td>
                         <td colspan="2"><?php if($model->status_id == 0){?><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/vaccination','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Emlash</a><?php }?></td>
                         <td colspan="2"><?php if($model->status_id == 0){?><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/emlash','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Davolash</a><?php }?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->suspectedDisease->name_uz?></td>

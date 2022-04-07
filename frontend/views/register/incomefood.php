@@ -30,6 +30,8 @@ $this->params['breadcrumbs'][] = $this->title
         ?>
         <?= $form->field($cs,'status_id')->dropDownList(ArrayHelper::map(SampleStatus::find()->all(),'id','name_'.$lg))?>
 
+        <?= $form->field($cs,'is_group')->checkbox()?>
+
         <?= $form->field($cs,'ads')->textInput()?>
 
         <?= $form->field($route,'director_id')->dropDownList(ArrayHelper::map($director,'id','name'),['prompt'=>Yii::t('test','Direktorni tanlang')])?>

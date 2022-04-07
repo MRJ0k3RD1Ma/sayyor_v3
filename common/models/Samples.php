@@ -46,7 +46,7 @@ class Samples extends \yii\db\ActiveRecord
     {
         return [
             [['sample_type_is','sample_box_id','suspected_disease_id', 'test_mehod_id'],'required','on'=>'insert'],
-            [['sample_type_is', 'sample_box_id', 'emp_id','animal_id', 'sert_id','samp_id', 'suspected_disease_id','status_id', 'test_mehod_id'], 'integer'],
+            [['sample_type_is', 'sample_box_id', 'emp_id','animal_id', 'is_group','sert_id','samp_id', 'suspected_disease_id','status_id', 'test_mehod_id'], 'integer'],
             [['kod', 'label','repeat_code'], 'string', 'max' => 255],
             [['animal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animals::className(), 'targetAttribute' => ['animal_id' => 'id']],
             [['sample_box_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleBoxes::className(), 'targetAttribute' => ['sample_box_id' => 'id']],
@@ -75,7 +75,7 @@ class Samples extends \yii\db\ActiveRecord
             'emp_id' => Yii::t('model.samples', 'Mas\'ul shaxs'),
             'repeat_code' => Yii::t('model.samples', 'Takroriy tahlil'),
             'status_id' => Yii::t('model.samples', 'Status'),
-
+            'is_group' => Yii::t('model.samples', 'Birlashgan namunalardan'),
         ];
     }
 

@@ -24,10 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
-//                    'id',
-//                    'director_id',
-//                    'leader_id',
-//                    'executor_id',
+
                         [
                             'attribute' => 'executor_id',
                             'value' => function ($d) {
@@ -39,10 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'deadline',
                         'ads',
-//                    'state_id',
-//                    'sample_id',
-//                    'registration_id',
-//                    'status_id',
+
                         [
                             'attribute' => 'status_id',
                             'value' => function ($d) {
@@ -215,6 +209,28 @@ $this->params['breadcrumbs'][] = $this->title;
             <button type="submit" class="btn btn-success"><?= Yii::t('lab','Saqlash')?></button>
 
             <?php ActiveForm::end()?>
+
+            <h3  style="margin-top:20px;">Tavfsiya qo'shish:</h3>
+            <?php $f = ActiveForm::begin()?>
+
+            <?= $f->field($recom,'name')->textInput()?>
+
+            <button class="btn btn-primary">Tavfsiyani saqlash</button>
+            <?php ActiveForm::end()?>
+            <h3  style="margin-top:20px;">Tavfsiyalar ro'yhati:</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <?php $rec = \common\models\SampleRecomendation::find()->where(['sample_id'=>$sample->id])->all();
+                        foreach ($rec as $item):
+                            ?>
+                            <li><?= $item->name?></li>
+                        <?php endforeach;?>
+                    </ul>
+                </div>
+            </div>
+
+
         </div>
     <?php } else{?>
 

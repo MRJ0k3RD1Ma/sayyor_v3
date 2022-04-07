@@ -16,6 +16,7 @@ use common\models\ResultAnimalTests;
 use common\models\ResultFood;
 use common\models\ResultFoodTests;
 use common\models\RouteSert;
+use common\models\SampleRecomendation;
 use common\models\TamplateAnimal;
 use frontend\models\search\laboratory\RouteSertSearch;
 use kartik\mpdf\Pdf;
@@ -141,12 +142,18 @@ class LabController extends Controller
         $sample = $model->sample;
 
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
-
+        $recom = new SampleRecomendation();
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
-
-        if (Model::loadMultiple($test, Yii::$app->request->post()) and $result->load(Yii::$app->request->post())) {
-
+        if($recom->load(Yii::$app->request->post())){
+            $recom->sample_id = $sample->id;
+            $recom->save();
+            return $this->refresh();
+        }
+        if($result->load(Yii::$app->request->post())){
             $result->save();
+        }
+        if (Model::loadMultiple($test, Yii::$app->request->post())) {
+
             foreach ($test as $item) {
                 $item->save();
             }
@@ -165,7 +172,8 @@ class LabController extends Controller
             'sample' => $sample,
             'result' => $result,
             'test' => $test,
-            'docs' => $docs
+            'docs' => $docs,
+            'recom'=>$recom
         ]);
     }
 
@@ -205,7 +213,15 @@ class LabController extends Controller
             ]);
             try {
                 return $pdf->render();
-            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
                 return $e;
             }
         }

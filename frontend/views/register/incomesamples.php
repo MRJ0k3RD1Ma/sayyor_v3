@@ -39,6 +39,7 @@ $this->params['breadcrumbs'][] = $this->title
 
     <?= $form->field($cs, 'sample_status_id')->dropDownList(ArrayHelper::map(SampleStatus::find()->all(), 'id', 'name_' . $lg)) ?>
 
+    <?= $form->field($cs,'is_group')->checkbox()?>
 
     <?= $form->field($cs, 'ads')->textInput() ?>
 

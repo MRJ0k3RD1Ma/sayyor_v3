@@ -18,6 +18,7 @@ use Yii;
  */
 class CompositeSamples extends \yii\db\ActiveRecord
 {
+    public $is_group;
     /**
      * {@inheritdoc}
      */
@@ -32,7 +33,7 @@ class CompositeSamples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sample_id', 'status_id','sample_status_id'], 'integer'],
+            [['sample_id','is_group', 'status_id','sample_status_id'], 'integer'],
             ['ads','string','max'=>500],
             [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => Samples::className(), 'targetAttribute' => ['sample_id' => 'id']],
         ];
@@ -49,6 +50,7 @@ class CompositeSamples extends \yii\db\ActiveRecord
             'status_id' => 'Status',
             'sample_status_id' => 'Namuna holati',
             'ads' => 'Izoh',
+            'is_group' => 'Birlashgan namunalardan',
         ];
     }
 

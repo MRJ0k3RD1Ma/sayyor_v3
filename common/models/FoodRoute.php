@@ -43,6 +43,7 @@ class FoodRoute extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['director_id', 'leader_id',],'required'],
             [['director_id', 'leader_id', 'executor_id', 'state_id', 'sample_id', 'registration_id', 'status_id', 'sample_type_id'], 'integer'],
             [['deadline', 'created', 'updated'], 'safe'],
             [['ads'], 'string', 'max' => 255],

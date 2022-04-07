@@ -278,12 +278,34 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php endforeach; ?>
                     </tbody>
                 </table>
-                <?= $form->field($result,'ads')->textInput()?>
+                    <?= $form->field($result,'ads')->dropDownList(['0'=>Yii::t('lab','Tasdiqlanmadi'),1=>Yii::t('lab','Tasdiqlandi')],['prompt'=>Yii::t('lab','Umumiy tekshiruv natijasi')])?>
             </div>
 
                 <button type="submit" class="btn btn-success"><?= Yii::t('lab', 'Saqlash') ?></button>
 
                 <?php ActiveForm::end() ?>
+                <h3  style="margin-top:20px;">Tavfsiya qo'shish:</h3>
+                <?php $f = ActiveForm::begin()?>
+
+                    <?= $f->field($recom,'name')->textInput()?>
+
+                    <button class="btn btn-primary">Tavfsiyani saqlash</button>
+                <?php ActiveForm::end()?>
+                <h3  style="margin-top:20px;">Tavfsiyalar ro'yhati:</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul>
+                            <?php $rec = \common\models\SampleRecomendation::find()->where(['sample_id'=>$sample->id])->all();
+                            foreach ($rec as $item):
+                                ?>
+                                <li><?= $item->name?></li>
+                            <?php endforeach;?>
+                        </ul>
+                    </div>
+                </div>
+
+
+
             </div>
         <?php } else { ?>
 
@@ -374,11 +396,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endforeach; ?>
                 </tbody>
             </table>
-            <?= $form->field($result,'ads')->textInput()?>
+            <?= $form->field($result,'ads')->dropDownList(['0'=>Yii::t('lab','Tasdiqlanmadi'),1=>Yii::t('lab','Tasdiqlandi')],['prompt'=>Yii::t('lab','Umumiy tekshiruv natijasi'),'disabled'=>true])?>
+
         </div>
 
         <?php ActiveForm::end()?>
-    </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3  style="margin-top:20px;">Tavfsiyalar ro'yhati:</h3>
+
+                        <ul>
+                            <?php $rec = \common\models\SampleRecomendation::find()->where(['sample_id'=>$sample->id])->all();
+                            foreach ($rec as $item):
+                                ?>
+                                <li><?= $item->name?></li>
+                            <?php endforeach;?>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
 
     <?php }?>
 

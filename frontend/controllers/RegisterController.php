@@ -430,7 +430,8 @@ class RegisterController extends Controller
             if ($cs->load(Yii::$app->request->post()) and $route->load(Yii::$app->request->post())) {
                 if ($cs->sample_status_id == 2) {
                     $model->status_id = 6;
-                    $reg->status_id = 6;
+                    $model->is_group = $cs->is_group;
+
                     $dal = Sertificates::findOne($model->sert_id);
                     $dal->status_id = 6;
                     $dal->save();
@@ -447,13 +448,18 @@ class RegisterController extends Controller
                     $des->org_id = Yii::$app->user->identity->empPosts->org_id;
                     $des->save();
                     $model->save();
-                    $reg->save();
                     $cs->save();
+                    if(CompositeSamples::find()->where(['sample_status_id'=>2])->andWhere(['registration_id '=>$reg->id])->count('registration_id') ==
+                        CompositeSamples::find()->where(['registration_id'=>$reg->id])->count('registration_id')){
+                        $reg->status_id = 6;
+                    }
+                    $reg->save();
                     return $this->redirect(['/register/regview', 'id' => $regid]);
                 }
 
                 $route->status_id = 1;
                 $model->status_id = 3;
+                $model->is_group = $cs->is_group;
                 $route->sample_id = $id;
                 $dal = Sertificates::findOne($model->sert_id);
                 $dal->status_id = 3;
@@ -574,7 +580,8 @@ class RegisterController extends Controller
 
                 if ($cs->status_id == 2) {
                     $model->status_id = 6;
-                    $reg->status_id = 6;
+                    $model->is_group = $cs->is_group;
+
                     $dal = FoodSamplingCertificate::findOne($model->sert_id);
                     $dal->status_id = 6;
                     $dal->save();
@@ -594,13 +601,18 @@ class RegisterController extends Controller
                     $des->consent_id = $route->director_id;
                     $des->save();
                     $model->save();
-                    $reg->save();
                     $cs->save();
+                    if(FoodCompose::find()->where(['status_id'=>2])->andWhere(['registration_id'=>$reg->id])->count('registration_id') ==
+                        FoodCompose::find()->where(['registration_id'=>$reg->id])->count('registration_id')){
+                        $reg->status_id = 6;
+                    }
+                    $reg->save();
                     return $this->redirect(['/register/regproductview', 'id' => $regid]);
                 }
 
                 $route->status_id = 1;
                 $model->status_id = 3;
+                $model->is_group = $cs->is_group;
                 $route->sample_id = $id;
                 $reg->status_id = 3;
                 $dal = FoodSamplingCertificate::findOne($model->sert_id);

@@ -57,6 +57,7 @@ class AppAsset extends AssetBundle
 //        'eimzo/e-imzo-client.js',
 
 //        'eimzo/services/eimzo/eimzo_old.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

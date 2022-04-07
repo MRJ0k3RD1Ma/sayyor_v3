@@ -132,7 +132,7 @@ YiiAsset::register($this);
                             $d2 = new \DateTime(date('Y-m-d'));
                             $interval = $d1->diff($d2);
                             $diff = $interval->m+($interval->y*12);
-                            echo $diff ?></td>
+                            echo $diff ?> oy</td>
                         <td colspan="2"></td>
                         <td colspan="2"></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->suspectedDisease->name_uz?></td>

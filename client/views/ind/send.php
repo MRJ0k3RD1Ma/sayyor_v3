@@ -45,3 +45,12 @@ use yii\widgets\ActiveForm;
 </div>
 
 
+
+
+<?php
+$this->registerJs("
+    $(document).ready(function(){
+        $('#sampleregistration-sender_phone').inputmask('(99)-999-9999'); 
+    })
+")
+?>

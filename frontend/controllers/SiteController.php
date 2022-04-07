@@ -2,11 +2,18 @@
 
 namespace frontend\controllers;
 
+use common\models\DistrictView;
 use common\models\EmpPosts;
+use common\models\Individuals;
+use common\models\LegalEntities;
+use common\models\QfiView;
+use common\models\VetSites;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
+use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
+use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -36,9 +43,9 @@ class SiteController extends Controller
                         'roles' => ['@'],
                     ],
                     [
-                        'allow'=>true,
-                        'actions'=>['login'],
-                        'roles'=> ['?']
+                        'allow' => true,
+                        'actions' => ['login'],
+                        'roles' => ['?']
                     ],
                 ],
             ],
@@ -50,6 +57,7 @@ class SiteController extends Controller
             ],
         ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -89,14 +97,17 @@ class SiteController extends Controller
         $this->layout = 'login';
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            foreach (EmpPosts::find()->where(['emp_id'=>Yii::$app->user->getId()])->andWhere(['state_id'=>1])->all() as $item){
-                if($item->post_id == 5){
+            foreach (EmpPosts::find()->where(['emp_id' => Yii::$app->user->getId()])->andWhere(['state_id' => 1])->all() as $item) {
+                if ($item->post_id == 5) {
                     return $this->redirect(['/cp/default/index']);
                 }
             }
             return $this->goBack();
         }
-
+        if ($model->errors) {
+            Yii::$app->session->setFlash('error', Yii::t('client', 'Login yoki parol xato'));
+            return $this->redirect(['/site/']);
+        }
         $model->password = '';
 
         return $this->render('login', [
@@ -220,8 +231,8 @@ class SiteController extends Controller
      * Verify email address
      *
      * @param string $token
-     * @throws BadRequestHttpException
      * @return yii\web\Response
+     * @throws BadRequestHttpException
      */
     public function actionVerifyEmail($token)
     {
@@ -258,5 +269,182 @@ class SiteController extends Controller
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
+    }
+
+    // send funksiya
+
+    public function actionSend($phone, $text)
+    {
+        if ($phone[0] == '+') {
+            $phone = substr($phone, 1, strlen($phone) - 1);
+        }
+        $token = json_decode($this->getToken(), true);
+        $token = $token['data']['token'];
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'notify.eskiz.uz/api/message/sms/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('mobile_phone' => $phone, 'message' => $text, 'from' => '4546', 'callback_url' => Yii::$app->urlManager->createAbsoluteUrl(['/site/message'])),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $token
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response;
+        exit;
+    }
+
+    public function getToken()
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'notify.eskiz.uz/api/auth/login',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('email' => Yii::$app->params['eskiz']['email'], 'password' => Yii::$app->params['eskiz']['password']),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+    }
+
+
+    public function actionGetInd($pnfl, $doc)
+    {
+        if ($model = Individuals::find()->where(['pnfl' => $pnfl])->andWhere(['passport' => $doc])->one()) {
+            $res = "{
+                \"code\":200,
+                \"value\":{\"pnfl\":\"{$pnfl}\",
+                    \"name\":\"{$model->name}\",
+                    \"surname\":\"{$model->surname}\",
+                    \"middlename\":\"{$model->middlename}\",
+                    \"region_id\":\"{$model->soato->region_id}\",
+                    \"district_id\":\"{$model->soato->district_id}\",
+                    \"soato_id\":\"{$model->soato_id}\",
+                    \"passport\":\"{$model->passport}\",
+                    \"adress\":\"{$model->adress}\"
+                }
+            }";
+        } else {
+            $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'] . '?pinfl=' . $pnfl . '&document=' . $doc, 'hamsa');
+            $model = new Individuals();
+            $res = json_decode($res, true);
+            if ($res['code']['result'] != 2200 or (isset($res['data']['result']) and $res['data']['result'] == 0)) {
+                return -1;
+            }
+
+            $model->passport = $res['data']['inf']['document'];
+            $model->surname = $res['data']['inf']['surname_latin'];
+            $model->name = $res['data']['inf']['name_latin'];
+            $model->middlename = $res['data']['inf']['patronym_latin'];
+            $model->pnfl = $pnfl;
+            $res = "{
+                \"code\":200,
+                \"value\":{\"pnfl\":\"{$pnfl}\",
+                    \"name\":\"{$model->name}\",
+                    \"surname\":\"{$model->surname}\",
+                    \"middlename\":\"{$model->middlename}\",
+                    \"region_id\":\"-1\",
+                    \"district_id\":\"-1\",
+                    \"soato_id\":\"-1\",
+                    \"passport\":\"{$model->passport}\",
+                    \"adress\":\"{$model->adress}\"
+                }
+            }";
+        }
+        echo $res;
+        exit;
+    }
+
+
+    public function actionGetDistrict($id)
+    {
+        $model = DistrictView::find()->where(['region_id' => $id])->all();
+        $text = Yii::t('cp.vetsites', '- Tumanni tanlang -');
+        $res = "<option value=''>{$text}</option>";
+        $lang = Yii::$app->language;
+        foreach ($model as $item) {
+            if ($lang == 'ru') {
+                $name = $item->name_ru;
+            } elseif ($lang == 'oz') {
+                $name = $item->name_cyr;
+            } else {
+                $name = $item->name_lot;
+            }
+            $res .= "<option value='{$item->district_id}'>{$name}</option>";
+        }
+        echo $res;
+        exit;
+    }
+
+    public function actionGetQfi($id, $regid)
+    {
+        $model = QfiView::find()->where(['district_id' => $id])->andWhere(['region_id' => $regid])->all();
+        $text = Yii::t('cp.vetsites', '- QFYni tanlang -');
+        $res = "<option value=''>{$text}</option>";
+        $lang = Yii::$app->language;
+        foreach ($model as $item) {
+            if ($lang == 'ru') {
+                $name = $item->name_ru;
+            } elseif ($lang == 'oz') {
+                $name = $item->name_cyr;
+            } else {
+                $name = $item->name_lot;
+            }
+            $res .= "<option value='{$item->MHOBT_cod}'>{$name}</option>";
+        }
+        echo $res;
+        exit;
+    }
+
+    public function actionGetinn($inn)
+    {
+        if ($model = LegalEntities::findOne(['inn' => $inn])) {
+            $res = "{
+                \"code\":200,
+                \"value\":{\"inn\":\"{$inn}\",
+                    \"name\":\"{$model->name}\",
+                    \"region\":\"{$model->soato->region_id}\",
+                    \"district\":\"{$model->soato->district_id}\",
+                    \"soato_id\":\"{$model->soato_id}\",
+                    \"tshx_id\":\"{$model->tshx_id}\",
+                    \"soogu\":\"{$model->soogu}\"
+                }
+            }";
+            return $res;
+        } else {
+            return -1;
+        }
+    }
+
+    public function actionGetvetsites($id)
+    {
+        $model = VetSites::find()->where(['soato' => $id])->all();
+        $text = Yii::t('cp.vetsites', '- Vet uchstkani tanlang -');
+        $res = "<option value=''>{$text}</option>";
+        foreach ($model as $item) {
+
+            $res .= "<option value='{$item->id}'>{$item->name}</option>";
+        }
+        echo $res;
+        exit;
     }
 }

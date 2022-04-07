@@ -4,17 +4,24 @@ namespace app\modules\admin\controllers;
 
 use common\models\Organizations;
 use common\models\search\OrganizationsSearch;
+use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use yii\web\Response;
 
 /**
  * OrganizationsController implements the CRUD actions for Organizations model.
  */
 class OrganizationsController extends Controller
 {
-    /**
+    /**-
      * @inheritDoc
      */
     public function behaviors()
@@ -36,11 +43,36 @@ class OrganizationsController extends Controller
      * Lists all Organizations models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(int $export = null)
     {
         $searchModel = new OrganizationsSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        if ($export == 1) {
+            $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdf', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -132,11 +164,12 @@ class OrganizationsController extends Controller
         throw new NotFoundHttpException(Yii::t('cp', 'The requested page does not exist.'));
     }
 
-    public function actionGetyur($inn){
-        if($model = Organizations::findOne(['TIN'=>$inn])){
-            return $this->redirect(['update'=>$model->id]);
-        }else{
-            return get_web_page(Yii::$app->params['hamsa']['url']['getjurinfo'].'?inn='.$inn,'hamsa');
+    public function actionGetyur($inn)
+    {
+        if ($model = Organizations::findOne(['TIN' => $inn])) {
+            return $this->redirect(['update' => $model->id]);
+        } else {
+            return get_web_page(Yii::$app->params['hamsa']['url']['getjurinfo'] . '?inn=' . $inn, 'hamsa');
         }
     }
 }

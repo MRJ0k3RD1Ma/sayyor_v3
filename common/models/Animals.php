@@ -18,6 +18,8 @@ use Yii;
  * @property int|null $vet_site_id
  * @property string|null $bsual_tag
  * @property int|null $type_id
+ * @property int|null $region
+ * @property int|null $district
  *
  * @property AnimalCategory $cat
  * @property Animaltype $type
@@ -26,6 +28,7 @@ use Yii;
  */
 class Animals extends \yii\db\ActiveRecord
 {
+    public $region,$district,$ownertype;
     /**
      * {@inheritdoc}
      */
@@ -40,8 +43,8 @@ class Animals extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','type_id'], 'required'],
-            [['cat_id', 'gender', 'vet_site_id', 'type_id'], 'integer'],
+            [['name','type_id','cat_id','birthday','vet_site_id','adress',], 'required'],
+            [['cat_id', 'gender','ownertype', 'vet_site_id', 'type_id'], 'integer'],
             [['birthday'], 'safe'],
             [['name'], 'string', 'max' => 50],
             [['inn', 'pnfl', 'adress', 'bsual_tag'], 'string', 'max' => 255],
@@ -58,8 +61,8 @@ class Animals extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('model.animals', 'ID'),
-            'name' => Yii::t('model.animals', 'Nomi'),
-            'cat_id' => Yii::t('model.animals', 'Hayvon toifasi'),
+            'name' => Yii::t('model.animals', 'Egasi'),
+            'cat_id' => Yii::t('model.animals', 'Hayvon holati'),
             'gender' => Yii::t('model.animals', 'Jinsi'),
             'birthday' => Yii::t('model.animals', 'Tug\'ilgan kuni'),
             'inn' => Yii::t('model.animals', 'INN(STIR)'),
@@ -68,6 +71,9 @@ class Animals extends \yii\db\ActiveRecord
             'vet_site_id' => Yii::t('model.animals', 'Vet uchastka'),
             'bsual_tag' => Yii::t('model.animals', 'Visual birka'),
             'type_id' => Yii::t('model.animals', 'Hayvon turi'),
+            'region' => Yii::t('model.animals', 'Viloyat'),
+            'district' => Yii::t('model.animals', 'Tuman'),
+            'ownertype' => Yii::t('model.animals', 'Hayvon egasi'),
         ];
     }
 
@@ -101,6 +107,9 @@ class Animals extends \yii\db\ActiveRecord
         return $this->hasMany(Vaccination::className(), ['animal_id' => 'id']);
     }
 
+    public function getEmlash(){
+        return $this->hasMany(Emlash::className(),['animal_id'=>'id']);
+    }
     /**
      * Gets query for [[VetSite]].
      *

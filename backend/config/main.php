@@ -15,15 +15,17 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
+            'baseUrl' => '/api',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\models\User',
             'enableAutoLogin' => true,
+            'enableSession'=>false,
+            'loginUrl'=>null,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
-        ],
-        'session' => [
-            // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced-backend',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -34,17 +36,61 @@ return [
                 ],
             ],
         ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
+        'response' => [
+            'class' => 'yii\web\Response',
+            'on beforeSend' => function ($event) {
+                $response = $event->sender;
+                if ($response->data !== null && Yii::$app->request->get('suppress_response_code')) {
+                    $response->data = [
+                        'success' => $response->isSuccessful,
+                        'data' => $response->data,
+                    ];
+                    $response->statusCode = 200;
+                }
+            },
         ],
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => 'yii\i18n\DbMessageSource',
+                    //'basePath' => '@app/messages',
+                    'sourceLanguage' => 'uz',
+                    'enableCaching' => true,
+                    'cachingDuration' => 10,
+                    'forceTranslation'=>true,
+                    'on missingTranslation' => ['common\components\TranslationEventHandler', 'handleMissingTranslation']
+
+                ],
             ],
         ],
-        */
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
+            'showScriptName' => false,
+            'rules' => [
+                'auth'=>'site/login',
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'report',
+                    'extraPatterns' => [
+                        'GET getregion' => 'getregion',
+                        'GET getdistrict'=>'getdistrict',
+                        'GET get-vet'=>'get-vet',
+                        'GET getcategory'=>'getcategory',
+                        'GET gettype'=>'gettype',
+                        'POST create'=>'create',
+                        'POST setimage'=>'setimage',
+                        'POST createfood'=>'createfood',
+                        'GET getqfi'=>'getqfi',
+                        'GET getfoodtype'=>'getfoodtype',
+                        'GET getfoodcategory'=>'getfoodcategory',
+                        'GET getdrugtype'=>'getdrugtype',
+                        'POST createdrug'=>'createdrug',
+                    ],
+                ],
+            ],
+        ]
+
     ],
     'params' => $params,
 ];

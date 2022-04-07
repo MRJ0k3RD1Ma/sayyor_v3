@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 /* @var $sample common\models\Samples */
 /* @var $reg common\models\SampleRegistration */
 
-$this->title = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
+$this->title = Yii::t('cp.sertificates', 'Dalolatnoma qo\'shish');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Dalolatnomalar'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->sert_id, 'url' => ['view', 'sert_id' => $model->sert_id]];
 $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
@@ -40,7 +40,22 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
         }
         ?>
 
+        <?php
+        $lang = Yii::$app->language;
+        if($lang == 'ru'){
+            $ads = 'ru';
+            $lg = 'ru';
+        }elseif($lang=='oz'){
+            $ads = 'cyr';
+            $lg = 'uz';
+        }else{
+            $lg = 'uz';
+            $ads = 'lot';
+        }
+        ?>
+
         <?= $form->field($animal, 'type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Animaltype::find()->all(),'id','name_'.$res),['prompt'=>Yii::t('cp.animals','Hayvon turini tanlang')]) ?>
+        <?= $form->field($animal, 'cat_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AnimalCategory::find()->all(),'id','name_'.$res),['prompt'=>Yii::t('cp.animals','Hayvon holati tanlang')]) ?>
 
         <?= $form->field($animal, 'gender')->dropDownList([
             1=>Yii::t('cp.animals','Erkak'),
@@ -51,18 +66,17 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
 
         <?= $form->field($animal, 'adress')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($animal, 'vet_site_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\VetSites::find()->all(),'id','name'),['prompt'=>Yii::t('cp.animals','Vet uchastkani tanlang')]) ?>
+
+        <?= $form->field($animal, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('client','Viloyatni tanlang')]) ?>
+        <?= $form->field($animal, 'district')->dropDownList([]) ?>
+
+        <?= $form->field($animal, 'vet_site_id')->dropDownList([]) ?>
 
         <?= $form->field($sample, 'test_mehod_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\TestMethod::find()->all(),'id','name_uz'),['prompt'=>'Tahlil usulini tanlang']) ?>
 
         <?= $form->field($sample, 'suspected_disease_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Diseases::find()->all(),'id','name_uz'),['prompt'=>'Kasallik turini tanlang','class'=>'form-control select2list']) ?>
 
-        <?= $form->field($reg,'is_research')->radioList([1=>Yii::t('client','Tekshiriladi'),0=>Yii::t('client','Tekshirilmaydi')])?>
-
-        <?= $form->field($reg,'research_category_id')->radioList(\yii\helpers\ArrayHelper::map(\common\models\ResearchCategory::find()->all(),'id','name_'.$res))?>
-
-        <?= $form->field($reg,'disease_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Diseases::find()->all(),'id','name_'.$res))?>
-
+        <?= $form->field($sample,'repeat_code')->textInput()?>
         <div class="form-group">
             <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>
         </div>
@@ -72,7 +86,7 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
 
     </div>
 <?php
-$url = Yii::$app->urlManager->createUrl(['/legal/getbirka']);
+$url = Yii::$app->urlManager->createUrl(['/site/getbirka']);
 $this->registerJs("
     $('#animals-bsual_tag').keyup(function(){
         if($('#animals-bsual_tag').val().length == 12){
@@ -94,3 +108,29 @@ $this->registerJs("
     })
 ")
 ?>
+
+
+<?php
+$url_district = Yii::$app->urlManager->createUrl(['/site/get-district']);
+$url_vet = Yii::$app->urlManager->createUrl(['/site/get-vet']);
+$this->registerJs("
+        $('#animals-region').change(function(){
+            $.get('{$url_district}?id='+$('#animals-region').val()).done(function(data){
+                $('#animals-district').empty();
+                $('#animals-district').append(data);
+            })        
+        })
+       
+        
+        $('#animals-district').change(function(){
+            $.get('{$url_vet}?id='+$('#animals-district').val()+'&regid='+$('#animals-region').val()).done(function(data){
+                $('#animals-vet_site_id').empty();
+                $('#animals-vet_site_id').append(data);
+            })        
+        })
+        
+      
+    ")
+?>
+
+

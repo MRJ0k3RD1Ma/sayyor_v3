@@ -36,7 +36,7 @@ class Individuals extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-//            [['pnfl'], 'required'],
+//            [['pnfl','soato_id'], 'required'],
             [['soato_id','region','district'], 'integer'],
             [['pnfl', 'name', 'surname', 'middlename', 'adress', 'passport'], 'string', 'max' => 255],
             [['pnfl'], 'unique'],

@@ -10,12 +10,15 @@ use Yii;
  * @property int $id
  * @property int|null $sample_id
  * @property int|null $status_id
+ * @property int|null $sample_status_id
+ * @property string|null $ads
  *
  * @property Samples $sample
  * @property SampleRegistration[] $sampleRegistrations
  */
 class CompositeSamples extends \yii\db\ActiveRecord
 {
+    public $is_group;
     /**
      * {@inheritdoc}
      */
@@ -30,7 +33,8 @@ class CompositeSamples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sample_id', 'status_id'], 'integer'],
+            [['sample_id','is_group', 'status_id','sample_status_id'], 'integer'],
+            ['ads','string','max'=>500],
             [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => Samples::className(), 'targetAttribute' => ['sample_id' => 'id']],
         ];
     }
@@ -42,11 +46,17 @@ class CompositeSamples extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'sample_id' => 'Sample ID',
-            'status_id' => 'Status ID',
+            'sample_id' => 'Namuna',
+            'status_id' => 'Status',
+            'sample_status_id' => 'Namuna holati',
+            'ads' => 'Izoh',
+            'is_group' => 'Birlashgan namunalardan',
         ];
     }
 
+    public function getSampleStatus(){
+        return $this->hasOne(SampleStatus::className(),['id'=>'sample_status_id']);
+    }
     /**
      * Gets query for [[Sample]].
      *

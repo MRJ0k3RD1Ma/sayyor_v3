@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $name_uz
  * @property string $name_ru
+ * @property string $icon
  *
  * @property Sertificates[] $sertificates
  */
@@ -29,7 +30,7 @@ class SertStatus extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name_uz', 'name_ru'], 'string', 'max' => 255],
+            [['name_uz', 'name_ru','icon'], 'string', 'max' => 255],
         ];
     }
 

@@ -135,4 +135,7 @@ class Organizations extends \yii\db\ActiveRecord
     {
         return $this->hasMany(EmpPostsHistory::className(), ['org_id' => 'id']);
     }
+    public function getSoato0(){
+        return $this->hasOne(Soato::className(),['MHOBT_cod'=>'soato']);
+    }
 }

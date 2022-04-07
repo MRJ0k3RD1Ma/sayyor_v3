@@ -17,7 +17,9 @@ BackAsset::register($this);
 <html lang="<?= Yii::$app->language ?>" class="h-100">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1, shrink-to-fit=no">
+    <meta name="google-site-verification" content="I2QFiqr4CkG-cgQ-5_yYpIGmLOpv7TJzR0mh6tloLtU" />
+
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -131,6 +133,23 @@ if(Yii::$app->session->hasFlash('success')){
         })
     ");
 
+}
+
+if(Yii::$app->session->hasFlash('url')){
+    $txt = Yii::$app->session->getFlash('url');
+   /* $this->registerJs("
+       $.ajax({
+          url: '{$txt}',
+          context: document.body
+        }).done(function() {
+          var a = true;
+        });
+    ");*/
+    $this->registerJs("
+        $(document).ready(function(){
+            window.location = '{$txt}';
+        })
+    ");
 }
 ?>
 

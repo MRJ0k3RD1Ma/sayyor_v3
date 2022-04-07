@@ -16,15 +16,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card">
 
-                <div class="card-body">
-                    <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
-                    <?php echo $this->render('_search', [
-                        'model' => $searchModel,
-                    ]);
-                    ?>
+
                     <div class="card-body">
 
-
+                        <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+                        <?php echo $this->render('_search', [
+                            'model' => $searchModel,
+                        ]);
+                        ?>
                         <?= GridView::widget([
                             'dataProvider' => $dataProvider,
                             'id' => 'animals-grid',

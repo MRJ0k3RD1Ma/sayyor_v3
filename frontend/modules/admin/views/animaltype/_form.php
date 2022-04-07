@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Animaltype */
@@ -17,6 +17,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name_uz')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'name_ru')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'vet4')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'code')->textInput() ?>
 

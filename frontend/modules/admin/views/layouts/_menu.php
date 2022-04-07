@@ -34,13 +34,13 @@ if($u){
 
                     </a>
                 </li>
-                <li>
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/application/'])?>">
+            <!--    <li>
+                    <a href="<?php /*= Yii::$app->urlManager->createUrl(['/cp/default/application/'])*/?>">
                         <i data-feather="sliders"></i>
-                        <span data-key="t-table"><?= Yii::t('cp.menu','Arizalar')?></span>
+                        <span data-key="t-table"><?php /*= Yii::t('cp.menu','Arizalar')*/?></span>
 
                     </a>
-                </li>
+                </li>-->
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="users"></i>
@@ -49,6 +49,7 @@ if($u){
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/inside'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Ichki')?></a></li>
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/outside'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Tashqi')?></a></li>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/templates'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Shablonlar')?></a></li>
                     </ul>
                 </li>
                 <li>

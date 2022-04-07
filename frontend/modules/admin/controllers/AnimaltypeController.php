@@ -4,10 +4,18 @@ namespace app\modules\admin\controllers;
 
 use common\models\Animaltype;
 use common\models\search\AnimaltypeSearch;
+use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
+use yii\base\InvalidConfigException;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+
 /**
  * AnimaltypeController implements the CRUD actions for Animaltype model.
  */
@@ -35,12 +43,34 @@ class AnimaltypeController extends Controller
      * Lists all Animaltype models.
      * @return mixed
      */
-    public function actionIndex(int $export=null)
+    public function actionIndex(int $export = null)
     {
         $searchModel = new AnimaltypeSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        if ($export !== null) {
+        if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
+        } elseif ($export == 2) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdf', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e;
+            }
         }
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -77,6 +107,7 @@ class AnimaltypeController extends Controller
         } else {
             $model->loadDefaultValues();
         }
+//        VarDumper::dump($model) or die();
 
         return $this->render('create', [
             'model' => $model,

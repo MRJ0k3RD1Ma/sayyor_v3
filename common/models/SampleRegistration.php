@@ -12,21 +12,28 @@ use Yii;
  * @property string|null $inn
  * @property int|null $is_research Текшириладими, йўқми?
  * @property string|null $code
+ * @property string|null $sender_name
+ * @property string|null $sender_phone
  * @property int|null $research_category_id Пуллк, текин
  * @property int|null $results_conformity_id НД соответствия результатов требованиям
  * @property int|null $organization_id
  * @property int|null $emp_id
  * @property string|null $reg_date
+ * @property string|null $created
+ * @property string|null $updated
  * @property int|null $disease_id
- * @property int|null $composite_sample_id
  * @property int|null $reg_id
+ * @property int|null $code_id
+ * @property int|null $composite
+ * @property string|null $ads
  *
- * @property CompositeSamples $compositeSample
  * @property Organizations $organization
  * @property ResearchCategory $researchCategory
+ * @property CompositeSamples $comp
  */
 class SampleRegistration extends \yii\db\ActiveRecord
 {
+    public $composite;
     /**
      * {@inheritdoc}
      */
@@ -41,10 +48,12 @@ class SampleRegistration extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['is_research','reg_id', 'research_category_id', 'results_conformity_id', 'organization_id', 'emp_id', 'disease_id', 'composite_sample_id'], 'integer'],
-            [['reg_date'], 'safe'],
-            [['pnfl', 'inn', 'code'], 'string', 'max' => 255],
-            [['composite_sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => CompositeSamples::className(), 'targetAttribute' => ['composite_sample_id' => 'id']],
+            [['organization_id','is_research','research_category_id','sender_name', 'sender_phone',],'required'],
+            [['is_research','reg_id','code_id', 'research_category_id', 'results_conformity_id', 'organization_id', 'emp_id','status_id', ], 'integer'],
+            [['reg_date','created','updated'], 'safe'],
+            ['composite','each','rule'=>['integer']],
+            ['ads','string','max'=>500],
+            [['pnfl', 'inn', 'code','sender_name','sender_phone'], 'string', 'max' => 255],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['organization_id' => 'id']],
             [['research_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => ResearchCategory::className(), 'targetAttribute' => ['research_category_id' => 'id']],
         ];
@@ -59,7 +68,7 @@ class SampleRegistration extends \yii\db\ActiveRecord
             'id' => Yii::t('model', 'ID'),
             'pnfl' => Yii::t('model', 'JSHSHIR(PNFL)'),
             'inn' => Yii::t('model', 'STIR(INN)'),
-            'is_research' => Yii::t('model', 'Tekshiradimi?'),
+            'is_research' => Yii::t('model', 'Shoshilinch tekshiruv'),
             'code' => Yii::t('model', 'Kod'),
             'research_category_id' => Yii::t('model', 'Tekshiruv turi'),
             'results_conformity_id' => Yii::t('model', 'Talablarning natijaga muvofiqligi'),
@@ -67,18 +76,17 @@ class SampleRegistration extends \yii\db\ActiveRecord
             'emp_id' => Yii::t('model', 'Registrator'),
             'reg_date' => Yii::t('model', 'Ro\'yhatga olingan sana'),
             'disease_id' => Yii::t('model', 'Kasallik turi'),
-            'composite_sample_id' => Yii::t('model', 'Composite Sample ID'),
+            'composite' => Yii::t('model', 'Namunalar'),
+            'sender_name' => Yii::t('model', 'Ariza yuboruvchi FIO'),
+            'sender_phone' => Yii::t('model', 'Ariza yuboruvchi telefoni'),
+            'reg_id' => Yii::t('model', 'Namuna qabul qiluvchi'),
+            'created' => Yii::t('model', 'Yuborilgan vaqti'),
+            'ads' => Yii::t('model', 'Izoh'),
         ];
     }
 
-    /**
-     * Gets query for [[CompositeSample]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCompositeSample()
-    {
-        return $this->hasOne(CompositeSamples::className(), ['id' => 'composite_sample_id']);
+    public function getStatus(){
+        return $this->hasOne(SertStatus::className(),['id'=>'status_id']);
     }
 
     /**
@@ -91,6 +99,9 @@ class SampleRegistration extends \yii\db\ActiveRecord
         return $this->hasOne(Organizations::className(), ['id' => 'organization_id']);
     }
 
+    public function getReg(){
+        return $this->hasOne(Employees::className(),['id'=>'reg_id']);
+    }
     /**
      * Gets query for [[ResearchCategory]].
      *
@@ -99,5 +110,15 @@ class SampleRegistration extends \yii\db\ActiveRecord
     public function getResearchCategory()
     {
         return $this->hasOne(ResearchCategory::className(), ['id' => 'research_category_id']);
+    }
+    public function getInn0(){
+        return $this->hasOne(LegalEntities::className(),['inn'=>'inn']);
+    }
+    public function getPnfl0(){
+        return $this->hasOne(Individuals::className(),['pnfl'=>'pnfl']);
+    }
+
+    public function getComp(){
+        return $this->hasMany(CompositeSamples::className(),['registration_id'=>'id']);
     }
 }

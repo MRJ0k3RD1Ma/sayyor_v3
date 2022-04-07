@@ -20,6 +20,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-12">
 
                 <?php $form = ActiveForm::begin(); ?>
+                <?php
+                    $lg = 'uz';
+                    if(Yii::$app->language == 'ru'){
+                        $lg = 'ru';
+                    }
+                ?>
+                <?= $form->field($model,'gov_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Goverments::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('cp','Lavozimni tanlang')])?>
 
                 <?= $form->field($model,'post_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\PostList::find()->all(),'id','name'),['prompt'=>Yii::t('cp','Lavozimni tanlang')])?>
 
@@ -29,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model,'status_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\StatusList::find()->all(),'id','name'),['prompt'=>Yii::t('cp','Status')])?>
 
-                <?php if($model->org_id){?>
+                <?php if(!$model->isNewRecord){?>
                     <?= $form->field($model,'org_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->all(),'id','NAME_FULL'),['disabled'=>true,'prompt'=>Yii::t('cp','Tashkilot nomi')])?>
                 <?php }else{?>
                     <?= $form->field($model,'org_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->all(),'id','NAME_FULL'),['prompt'=>Yii::t('cp','Tashkilot nomi')])?>

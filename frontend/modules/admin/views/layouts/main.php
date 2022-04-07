@@ -23,6 +23,12 @@ BackAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
 
     <?php $this->head() ?>
+
+    <style>
+        .pagination li a{
+            padding:5px;
+        }
+    </style>
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
@@ -123,4 +129,19 @@ $this->registerJs("
 <?php $this->endBody() ?>
 </body>
 </html>
-<?php $this->endPage() ?>
+<?php $this->endPage();
+if(Yii::$app->session->hasFlash('success')){
+    $txt = Yii::$app->session->getFlash('success');
+    $xato = Yii::t('reg','Muvvofaqiyatli');
+    $this->registerJs("
+        $(document).ready(function(){
+            Swal.fire({
+              icon: 'success',
+              title: \"{$xato}\",
+              text: \"{$txt}\"
+            })
+        })
+    ");
+
+}
+?>

@@ -23,11 +23,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <p>
-        <?= Html::a(Yii::t('cp.sertificates', 'O\'zgartirish'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php if($model->status_id == 1){?>
+        <?php if($model->status_id == 0){?>
+            <?= Html::a(Yii::t('cp.sertificates', 'O\'zgartirish'), ['updateanimal', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php }?>
+        <?php if($model->status_id == 0 or \common\models\Samples::find()->where(['sert_id'=>$model->id])->andWhere(['status_id'=>0])->count('id') > 0){?>
             <?= Html::a(Yii::t('cp.sertificates', 'Arizani yuborish'), ['send', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?php }?>
     </p>
+    <p><?= Yii::t('client','Umumiy {n} ta namuna. Shundan {m} tasiga ariza berilmagan',['n'=>count($model->samples),'m'=>\common\models\Samples::find()->where(['sert_id'=>$model->id])->andWhere(['status_id'=>0])->count('id')])?></p>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -36,15 +39,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'sert_num',
             'sert_date',
 //            'organization_id',
-            [
-                'attribute'=>'organization_id',
-                'value'=>function($d){
-                    return $d->organization->NAME_FULL;
-                }
-            ],
+
 //            'pnfl',
-            'owner_name',
+            'sampler_name',
+            'sampler_position',
+
 //            'vet_site_id',
+            [
+                'label'=>'Hayvon egasi',
+                'value'=>function($d){
+                    if($d->owner_pnfl){
+                        return $d->owner_pnfl.'<br>'.$d->ownerPnfl->name.' '.$d->ownerPnfl->surname.' '.$d->ownerPnfl->middlename;
+                    }elseif($d->owner_inn){
+                        return $d->owner_inn.'<br>'.$d->ownerInn->name;
+                    }else{
+                        return "Hayvon egasi haqida ma'lumot kiritilmagan";
+                    }
+                },
+                'format'=>'raw'
+            ],
             [
                 'attribute'=>'vet_site_id',
                 'value'=>function($d){
@@ -60,7 +73,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $d->status->name_uz;
                 }
             ],
-            [
+
+           /* [
                 'label'=>Yii::t('client','Arizani kuzatish'),
                 'value'=>function($d){
                     $result = Builder::create()
@@ -81,17 +95,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 },
                 'format'=>'raw'
-            ],
+            ],*/
 //            'operator',
         ],
     ]) ?>
 
 </div>
-
-
 <div class="row">
+<div class="col-md-12">
+    <h4 style="float: left">Namunalar ro'yhati</h4>
+    <?php if($model->status_id==0){ ?>
+        <span style="float: right"><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/ind/add','id'=>$model->id])?>">
+                    <span class="fa fa-plus"></span> Namuna qo'shish
+                </a>
+            </span>
+    <?php } ?>
+
+</div>
+
     <div class="col-md-12 table-responsive">
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover" >
             <thead>
                 <tr>
                     <th rowspan="2">№</th>
@@ -126,20 +149,25 @@ $this->params['breadcrumbs'][] = $this->title;
                     $cnt = $cnt_eml;
                 }
                 ?>
-                    <tr>
-                        <td rowspan="<?= $cnt + 1?>"><?= $n?></td>
+                    <tr >
+                        <td rowspan="<?= $cnt + 1?>" ><?= $item->status->icon?> <?= $item->kod?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleBox->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->animal_id ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->animal->type->name_uz ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= Yii::$app->params['gender'][$item->animal->gender] ?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->animal->birthday ?></td>
-                        <td colspan="2"><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/vaccination','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Emlash</a></td>
-                        <td colspan="2"><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/legal/emlash','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Davolash</a></td>
+                        <td rowspan="<?= $cnt + 1?>"><?php
+                            $d1 = new \DateTime($item->animal->birthday);
+                            $d2 = new \DateTime(date('Y-m-d'));
+                            $interval = $d1->diff($d2);
+                            $diff = $interval->m+($interval->y*12);
+                             echo $diff ?> oy</td>
+                        <td colspan="2"><?php if($model->status_id == 0){?><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/ind/vaccination','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Emlash</a><?php }?></td>
+                        <td colspan="2"><?php if($model->status_id == 0){?><a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/ind/emlash','id'=>$item->animal_id,'sert_id'=>$model->id])?>">Davolash</a><?php }?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->suspectedDisease->name_uz?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->testMehod->name_uz?></td>
-                        <td rowspan="<?= $cnt + 1?>"><?= $item->kod?></td>
+                        <td rowspan="<?= $cnt + 1?>"><?= $item->repeat_code?></td>
                     </tr>
                     <?php
                     $vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->orderBy(['disease_date'=>SORT_DESC])->all();
@@ -153,9 +181,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </tr>
                     <?php endfor; ?>
                 <?php endforeach;?>
-                <tr>
-                    <td colspan="15"><a href="<?= Yii::$app->urlManager->createUrl(['/legal/add','id'=>$model->id])?>" class="btn btn-primary">Yana qo'shish</a></td>
-                </tr>
+
             </tbody>
         </table>
     </div>

@@ -10,6 +10,7 @@ use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
+
 BackAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -36,7 +37,8 @@ BackAsset::register($this);
             align-items: center;
             flex-direction: column;
             font-family: "Montserrat", sans-serif;
-            height: 100%;
+            height: 100vh;
+            width: 100vw;
             background: url(/fon.jpg) !important;
             background-size: cover;
         }
@@ -315,7 +317,37 @@ BackAsset::register($this);
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
 
-<?= $content?>
+<?= $content ?>
+<?php
+if (Yii::$app->session->hasFlash('error')) {
+    $txt = Yii::$app->session->getFlash('error');
+    $xato = Yii::t('reg', 'Xatolik');
+    $this->registerJs("
+        $(document).ready(function(){
+            Swal.fire({
+              icon: 'warning',
+              title: \"{$xato}\",
+              text: \"{$txt}\"
+            })
+        })
+    ");
+
+}
+if (Yii::$app->session->hasFlash('success')) {
+    $txt = Yii::$app->session->getFlash('success');
+    $xato = Yii::t('reg', 'Muvvofaqiyatli');
+    $this->registerJs("
+        $(document).ready(function(){
+            Swal.fire({
+              icon: 'success',
+              title: \"{$xato}\",
+              text: \"{$txt}\"
+            })
+        })
+    ");
+
+}
+?>
 
 <?php $this->endBody() ?>
 </body>

@@ -273,12 +273,85 @@
                 </a>
             </div>
 
+            <div class="col-md-4">
+                <a href="<?= Yii::$app->urlManager->createUrl(['/cp/food-type'])?>">
+                    <div class="card">
+                        <!-- card body -->
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-10">
+                                    <h5 class="text-muted mb-3 lh-1 d-block text-truncate"><?= Yii::t('cp','Mahsulotlar turlari')?></h5>
+                                </div>
+                                <div class="col-2">
+                                    <i class="fa fa-syringe"></i>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="<?= Yii::$app->urlManager->createUrl(['/cp/food-type'])?>">
+                    <div class="card">
+                        <!-- card body -->
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-10">
+                                    <h5 class="text-muted mb-3 lh-1 d-block text-truncate"><?= Yii::t('cp','Mahsulotlar turlari')?></h5>
+                                </div>
+                                <div class="col-2">
+                                    <i class="fa fa-syringe"></i>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="<?= Yii::$app->urlManager->createUrl(['/cp/drug-types']) ?>">
+                    <div class="card">
+                        <!-- card body -->
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-10">
+
+                                    <h5 class="text-muted mb-3 lh-1 d-block text-truncate"><?= Yii::t('cp', 'Dori turlari haqida hisobot') ?></h5>
+                                </div>
+                                <div class="col-2">
+                                    <i class="fa fa-list"></i>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="<?= Yii::$app->urlManager->createUrl(['/cp/report-food']) ?>">
+                    <div class="card">
+                        <!-- card body -->
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-10">
+
+                                    <h5 class="text-muted mb-3 lh-1 d-block text-truncate"><?= Yii::t('cp', 'Oziq-ovqat toifalari haqida ') ?></h5>
+                                </div>
+                                <div class="col-2">
+                                    <i class="fa fa-list"></i>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 </div>
 
 <style>
-    i{
-        font-size:35px;
+    .page-content i {
+        font-size: 35px;
     }
 </style>

@@ -4,9 +4,17 @@ namespace app\modules\admin\controllers;
 
 use common\models\Units;
 use common\models\search\UnitsSearch;
+use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * UnitsController implements the CRUD actions for Units model.
@@ -40,8 +48,34 @@ class UnitsController extends Controller
         $searchModel = new UnitsSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        if ($export !== null) {
-            $searchModel->exportToExcel($dataProvider->query);
+        if ($export == 1) {
+            try {
+                $searchModel->exportToExcel($dataProvider->query);
+            } catch (\Exception|Exception $e) {
+                return $e->getMessage();
+            }
+        } elseif ($export == 2) {
+            \Yii::$app->response->format = Response::FORMAT_RAW;
+            $dataProvider->pagination->pageSize = -1;
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('_pdf', ['dataProvider' => $dataProvider]),
+                'options' => [
+                ],
+                'methods' => [
+                    'SetTitle' => $searchModel::tableName(),
+                    'SetHeader' => [$searchModel::tableName() . '|| ' . date("r")],
+                    'SetFooter' => ['| {PAGENO} |'],
+                    'SetAuthor' => '@QalandarDev',
+                    'SetCreator' => '@QalandarDev',
+                ]
+            ]);
+            try {
+                return $pdf->render();
+            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+                return $e->getMessage();
+            }
         }
         return $this->render('index', [
             'searchModel' => $searchModel,

@@ -1,23 +1,26 @@
 <?php
+
 use yii\widgets\ActiveForm;
-$this->title = Yii::t('login',"Tizimga kirish");
-/* @var $model \common\models\LoginForm*/
+
+$this->title = Yii::t('login', "Tizimga kirish");
+/* @var $model \common\models\LoginForm */
 ?>
 
 <div class="login-page">
     <div class="login">
         <div class="logos">
             <div class="img">
-                <img src="/design/assets/images/vet.png" alt="img" style="float: right; width: 50px;" class="img-responsive">
+                <img src="/design/assets/images/vet.png" alt="img" style="float: right; width: 50px;"
+                     class="img-responsive">
             </div>
             <div class="text">
-                <?= Yii::t('login','Hayvon kasalliklari tashhisi va oziq-ovqat xavfsizligiga oid laboratoriya tekshiruvlari Yagona elektron ma\'lumotlar bazasini yurishish tizimi (VIS-Sayyor)')?>
+                <?= Yii::t('login', 'Hayvon kasalliklari tashhisi va oziq-ovqat xavfsizligiga oid laboratoriya tekshiruvlari Yagona elektron ma\'lumotlar bazasini yurishish tizimi (VIS-Sayyor)') ?>
             </div>
 
         </div>
         <div class="login-form">
-            <h3><?= Yii::t('login','Tizimga kirish')?></h3>
-            <p><?= Yii::t('login','Boshqaruv tizimiga xush kelibsiz!')?></p>
+            <h3><?= Yii::t('login', 'Tizimga kirish') ?></h3>
+            <p><?= Yii::t('login', 'Boshqaruv tizimiga xush kelibsiz!') ?></p>
             <?php $form = ActiveForm::begin([
                 'fieldConfig' => [
                     'template' => "{input}",
@@ -26,34 +29,37 @@ $this->title = Yii::t('login',"Tizimga kirish");
             <div class="form">
                 <div class="input">
                     <span class="far fa-user"></span>
-                    <?= $form->field($model, 'email')->textInput(['autofocus' => true,'class'=>'','placeholder'=>Yii::t('login','Email')]) ?>
+                    <?= $form->field($model, 'email')->textInput(['autofocus' => true, 'class' => '', 'placeholder' => Yii::t('login', 'Email')]) ?>
 
                 </div>
                 <div class="input">
                     <span class="fas fa-lock"></span>
-                    <?= $form->field($model, 'password')->passwordInput(['class'=>'','placeholder'=>Yii::t('login','Parol')]) ?>
+                    <?= $form->field($model, 'password')->passwordInput(['class' => '', 'placeholder' => Yii::t('login', 'Parol')]) ?>
                 </div>
 
-                <a href="/client">ERI kalit yordamida kirish</a>
 
-                <div class="sign">
-                    <div>
-
-                        <button class="btn btn-primary"><?= Yii::t('login','Kirish')?> </button>
+                <div class="sign row">
+                    <div class="col-md-6">
+                        <button class="btn btn-success btn-block"><?= Yii::t('login', 'Kirish') ?> </button>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-primary btn-block mt-2"
+                           href="/client"><?= Yii::t('login', 'ERI kalit yordamida kirish') ?></a>
                     </div>
                 </div>
 
+
             </div>
-            <?php ActiveForm::end()?>
+            <?php ActiveForm::end() ?>
         </div>
         <div class="logos">
             <div class="img">
-                <img src="/design/assets/images/bank.jpg" alt="img" style="float: right; width: 50px;" class="img-responsive">
+                <img src="/design/assets/images/bank.jpg" alt="img" style="float: right; width: 50px;"
+                     class="img-responsive">
             </div>
-            <div class="text"><?= Yii::t('login','Axborot tizimini yaratish Yevropa Ittifoqi tomonidan moliyalashtirilgan')?></div>
+            <div class="text"><?= Yii::t('login', 'Axborot tizimini yaratish Yevropa Ittifoqi tomonidan moliyalashtirilgan') ?></div>
 
         </div>
-
 
 
     </div>
@@ -63,43 +69,51 @@ $this->title = Yii::t('login',"Tizimga kirish");
 
 
 <style>
-    .sign{
+    .sign {
         display: flex;
         justify-content: flex-end;
     }
-    .sign button{
+
+    .sign button {
         text-transform: capitalize;
     }
-    .sign div{
+
+    .sign div {
         display: inline-block;
     }
-    .login-form .form{
+
+    .login-form .form {
         width: 100%;
     }
-    .login-form .form .input{
+
+    .login-form .form .input {
         width: 100%;
         position: relative;
 
     }
-    .logos .text{
+
+    .logos .text {
         font-size: 18px;
         color: black;
     }
-    .login-form .form .input input{
+
+    .login-form .form .input input {
         padding-left: 50px;
         font-size: .96rem;
         font-weight: 400;
         line-height: 1.25;
         color: #4e5154;
         background-color: transparent !important;
-        border: 1px solid rgba(0,0,0,.2);
+        border: 1px solid rgba(0, 0, 0, .2);
         border-radius: 5px
 
     }
-    .login-form .form .input input:focus{
+
+    .login-form .form .input input:focus {
         outline: none;
     }
-    .login-form .form .input span{
+
+    .login-form .form .input span {
         top: 50%;
         transform: translate(-50%, -50%);
         left: 30px;
@@ -107,7 +121,8 @@ $this->title = Yii::t('login',"Tizimga kirish");
         font-size: 20px;
 
     }
-    .login-page{
+
+    .login-page {
         position: absolute;
         top: 0;
         left: 0;
@@ -116,29 +131,34 @@ $this->title = Yii::t('login',"Tizimga kirish");
         height: 100vh;
         background: #cfd2e1;
         justify-content: center;
-        background: url("/design/assets/images/background.jpg") no-repeat;
+        /*background: url("/design/assets/images/background.jpg") no-repeat;*/
         background-size: cover;
     }
-    .login{
+
+    .login {
         margin-top: 100px;
         width: 700px;
 
     }
-    .logos{
+
+    .logos {
         display: flex;
         align-items: center;
         margin-bottom: 50px;
 
     }
-    .logos .img{
+
+    .logos .img {
         width: 100px;
         margin-right: 20px;
     }
-    .logos .img img{
+
+    .logos .img img {
         width: 100px !important;
         object-fit: cover;
     }
-    .login-form{
+
+    .login-form {
         margin-bottom: 50px;
         padding: 20px;
         background: #fff;

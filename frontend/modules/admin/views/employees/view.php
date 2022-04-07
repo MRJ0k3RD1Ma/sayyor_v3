@@ -46,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        <thead>
                        <tr>
                            <th>№</th>
+                           <th><?= Yii::t('cp','Bo\'lim nomi')?></th>
                            <th><?= Yii::t('cp','Lavozim nomi')?></th>
                            <th><?= Yii::t('cp','Status')?></th>
                            <th><?= Yii::t('cp','Ruhsati')?></th>
@@ -57,6 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        <?php $n=0; foreach (\common\models\EmpPosts::find()->where(['emp_id'=>$model->id])->all() as $item): $n++?>
                             <tr>
                                 <td><?= $n?></td>
+                                <td><?= Yii::$app->language == 'ru' ? $item->gov->name_uz : $item->gov->name_ru ?></td>
                                 <td><?= $item->post->name?></td>
                                 <td><?= $item->status->name?></td>
                                 <td><?= $item->post->defRole->name?></td>

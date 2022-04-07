@@ -3,26 +3,25 @@
 namespace client\controllers;
 
 use client\models\InnForm;
+use common\models\Animals;
 use common\models\DistrictView;
 use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\QfiView;
 use common\models\Sertificates;
 use common\models\VetSites;
-use frontend\models\ResendVerificationEmailForm;
-use frontend\models\VerifyEmailForm;
-use Yii;
-use yii\base\BaseObject;
-use yii\base\InvalidArgumentException;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
+use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
+use frontend\models\ResendVerificationEmailForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use frontend\models\ContactForm;
+use frontend\models\VerifyEmailForm;
+use Yii;
+use yii\base\InvalidArgumentException;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
+use yii\web\Controller;
 
 /**
  * Site controller
@@ -207,7 +206,6 @@ class SiteController extends Controller
                     $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'].'?pinfl='.$model->pnfl.'&document='.$model->passport,'hamsa');
 
                     $res = json_decode($res,true);
-
                     if($res['code']['result']!=2200 or (isset($res['data']['result']) and $res['data']['result']==0)){
 
                         Yii::$app->session->setFlash('error',Yii::t('client','Pasport ma\'lumotlari topilmadi'));
@@ -391,7 +389,6 @@ class SiteController extends Controller
     }
 
 
-
     public function actionGetDistrict($id){
         $model = DistrictView::find()->where(['region_id'=>$id])->all();
         $text = Yii::t('cp.vetsites','- Tumanni tanlang -');
@@ -429,8 +426,9 @@ class SiteController extends Controller
         exit;
     }
 
-    public function actionGetVet($id){
-        $model = VetSites::find()->where(['soato'=>$id])->all();
+    public function actionGetVet($id,$regid=null){
+//        $model = VetSites::find()->filterWhere(['like','soato','17'.$regid.$id])->all();
+        $model = VetSites::find()->filterWhere(['like','soato',$id])->all();
         $text = Yii::t('cp.vetsites','- Vet uchastkani tanlang -');
         $res = "<option value=''>{$text}</option>";
         $lang = Yii::$app->language;
@@ -440,4 +438,97 @@ class SiteController extends Controller
         echo $res;
         exit;
     }
-}
+
+    public function actionGetbirka($id){
+        if($model = Animals::findOne(['bsual_tag'=>$id])){
+            return json_encode([
+                'code'=>['result'=>'2200'],
+                'data'=>[
+                    'id'=>$model->id,
+                    'birth'=>$model->birthday,
+                    'tin'=>$model->inn,
+                    'type'=>$model->type_id,
+                    'sex'=>$model->gender,
+                    'address'=>$model->adress,
+                    'owner'=>$model->name,
+                ]
+            ]);
+        }else{
+            $data = json_decode( get_web_page(Yii::$app->params['hamsa']['url']['getanimalinfo'].'?birka='.$id,'hamsa'),true);
+            $name = $data['data']['owner'];
+            $inn = $data['data']['tin'];
+            $res = $this->actionGetInn($inn);
+            if($res != -1){
+                $res = json_decode($res,true);
+                $name = $res['value']['name'];
+            }
+            $data['data']['owner'] = $name;
+            return json_encode($data);
+        }
+    }
+
+    public function actionGetInd($pnfl,$doc){
+        if($model = Individuals::find()->where(['pnfl'=>$pnfl])->andWhere(['passport'=>$doc])->one()){
+            $res = "{
+                \"code\":200,
+                \"value\":{\"pnfl\":\"{$pnfl}\",
+                    \"name\":\"{$model->name}\",
+                    \"surname\":\"{$model->surname}\",
+                    \"middlename\":\"{$model->middlename}\",
+                    \"region_id\":\"{$model->soato->region_id}\",
+                    \"district_id\":\"{$model->soato->district_id}\",
+                    \"soato_id\":\"{$model->soato_id}\",
+                    \"passport\":\"{$model->passport}\",
+                    \"adress\":\"{$model->adress}\"
+                }
+            }";
+        }else{
+            $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'].'?pinfl='.$pnfl.'&document='.$doc,'hamsa');
+            $model = new Individuals();
+            $res = json_decode($res,true);
+            if($res['code']['result']!=2200 or (isset($res['data']['result']) and $res['data']['result']==0)){
+                return -1;
+            }
+
+            $model->passport = $res['data']['inf']['document'];
+            $model->surname = $res['data']['inf']['surname_latin'];
+            $model->name = $res['data']['inf']['name_latin'];
+            $model->middlename = $res['data']['inf']['patronym_latin'];
+            $model->pnfl = $pnfl;
+            $res = "{
+                \"code\":200,
+                \"value\":{\"pnfl\":\"{$pnfl}\",
+                    \"name\":\"{$model->name}\",
+                    \"surname\":\"{$model->surname}\",
+                    \"middlename\":\"{$model->middlename}\",
+                    \"region_id\":\"-1\",
+                    \"district_id\":\"-1\",
+                    \"soato_id\":\"-1\",
+                    \"passport\":\"{$model->passport}\",
+                    \"adress\":\"{$model->adress}\"
+                }
+            }";
+        }
+        echo $res;
+        exit;
+    }
+
+    public function actionGetInn($inn){
+        if($model = LegalEntities::findOne(['inn'=>$inn])){
+            $res = "{
+                \"code\":200,
+                \"value\":{\"inn\":\"{$inn}\",
+                    \"name\":\"{$model->name}\",
+                    \"region\":\"{$model->soato->region_id}\",
+                    \"district\":\"{$model->soato->district_id}\",
+                    \"soato_id\":\"{$model->soato_id}\",
+                    \"tshx_id\":\"{$model->tshx_id}\",
+                    \"soogu\":\"{$model->soogu}\"
+                }
+            }";
+            return $res;
+        }else{
+            return -1;
+        }
+    }
+    }

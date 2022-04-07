@@ -13,21 +13,39 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'id' => 'vet-sites-grid-filters',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="card-header flex">
+        <div></div>
+        <div class="btns flex">
+            <div class="search" style="margin-bottom: -1rem!important;">
+                <?= $form->field($model, 'q', [
+                    'template' => '<div class="input-group">{input}<span class="btn btn-primary fa fa-search margi"></span></div>'
+                ])->textInput()->label(false) ?>
+            </div>
+            <div class="export">
+                <?php
+                $char = (count(Yii::$app->request->queryParams) > 0) ? "&" : "?";
+                ?>
+                <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export
+                </button>
+                <div class="export-btn">
+                    <button>
+                        <?= Html::a('<span class="fa fa-file-excel"></span> Excel ', Yii::$app->request->url . $char . 'export=1', ['data-pjax' => 0, 'export' => 1]) ?>
+                    </button>
+                    <button>
 
-    <?= $form->field($model, 'code') ?>
+                        <?=
 
-    <?= $form->field($model, 'name') ?>
+                        Html::a('<span class="fa fa-file-pdf"></span> PDF ', Yii::$app->request->url . $char . 'export=2', ['data-pjax' => 0]) ?>
+                    </button>
+                </div>
 
-    <?= $form->field($model, 'soato') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('cp.vetsites', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('cp.vetsites', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+            </div>
+            <?= Html::a(Yii::t('cp.vetsites', 'Veterinariya uchastka qo`shish'), ['create'], ['class' => 'btn btn-success']) ?>
+        </div>
     </div>
-
     <?php ActiveForm::end(); ?>
 
 </div>

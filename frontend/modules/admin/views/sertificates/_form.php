@@ -1,5 +1,10 @@
 <?php
 
+use common\models\Employees;
+use common\models\Individuals;
+use common\models\Organizations;
+use common\models\VetSites;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -18,15 +23,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'sert_date')->textInput(['type'=>'date']) ?>
 
-    <?= $form->field($model, 'organization_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->all(),'id','NAME_FULL')) ?>
+    <?= $form->field($model, 'organization_id')->dropDownList(ArrayHelper::map(Organizations::find()->all(),'id','NAME_FULL')) ?>
 
-    <?= $form->field($model, 'pnfl')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Individuals::find()->all(),'pnfl','name'),['prompt'=>'PNFLni tanlang']) ?>
+    <?= $form->field($model, 'pnfl')->dropDownList(ArrayHelper::map(Individuals::find()->all(),'pnfl','name'),['prompt'=>'PNFLni tanlang']) ?>
 
     <?= $form->field($model, 'owner_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'vet_site_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\VetSites::find()->all(),'id','name')) ?>
+    <?= $form->field($model, 'vet_site_id')->dropDownList(ArrayHelper::map(VetSites::find()->all(),'id','name')) ?>
 
-    <?= $form->field($model, 'operator')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Employees::find()->all(),'id','name')) ?>
+    <?= $form->field($model, 'operator')->dropDownList(ArrayHelper::map(Employees::find()->all(),'id','name')) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>

@@ -8,43 +8,32 @@ use Yii;
  * This is the model class for table "food_sampling_certificate".
  *
  * @property int $id
- * @property string|null $kod
+ * @property string|null $code
+ * @property int|null $food_id
+ * @property string|null $inn
  * @property string|null $pnfl
- * @property int|null $organization_id
  * @property int|null $sampling_site
  * @property string|null $sampling_adress
- * @property int|null $sampler_organization_code
- * @property int|null $sampler_person_pnfl
- * @property int|null $unit_id
- * @property float|null $count
- * @property int|null $food_id
- * @property int|null $verification_sample
- * @property string|null $producer
- * @property string|null $serial_num
- * @property string|null $manufacture_date
- * @property string|null $sell_by
- * @property string|null $coments
+ * @property string|null $sampler_person_pnfl
+ * @property string|null $sampler_person_inn
  * @property int|null $verification_pupose_id
- * @property int|null $sample_box_id
- * @property int|null $sample_condition_id
  * @property string|null $sampling_date
  * @property string|null $send_sample_date
- * @property string|null $explanations
  * @property int|null $based_public_information
  * @property int|null $message_number
- * @property int|null $laboratory_test_type_id
+ * @property int|null $sampling_soato
+ * @property int|null $status_id
+ * @property string|null $created
+ * @property string|null $updated
+ * @property string|null $explanations
  *
- * @property LaboratoryTestType $laboratoryTestType
- * @property Organizations $organization
- * @property Individuals $pnfl0
- * @property SampleBoxes $sampleBox
- * @property SampleConditions $sampleCondition
- * @property Units $unit
+ * @property FoodSamples[] $foodSamples
+ * @property ProductExpertise[] $productExpertises
  * @property VerificationPurposes $verificationPupose
  */
 class FoodSamplingCertificate extends \yii\db\ActiveRecord
 {
-    public $region,$district,$soato;
+    public $region,$ownertype,$district;
     /**
      * {@inheritdoc}
      */
@@ -59,16 +48,11 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['organization_id', 'food_id','sampling_site', 'sampler_organization_code', 'sampler_person_pnfl', 'unit_id', 'verification_sample', 'verification_pupose_id', 'sample_box_id', 'sample_condition_id', 'based_public_information', 'message_number', 'laboratory_test_type_id'], 'integer'],
-            [['count'], 'number'],
-            [['manufacture_date', 'sell_by', 'sampling_date', 'send_sample_date'], 'safe'],
-            [['kod', 'pnfl', 'sampling_adress', 'producer', 'serial_num', 'coments', 'explanations'], 'string', 'max' => 255],
-            [['laboratory_test_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => LaboratoryTestType::className(), 'targetAttribute' => ['laboratory_test_type_id' => 'id']],
+            [['ownertype','sampling_site','sampling_date','sampling_soato','sampling_adress','verification_pupose_id'],'required','on'=>'insert'],
+            [['food_id','ownertype', 'sampling_site','sampling_soato', 'verification_pupose_id','status_id','state_id', 'based_public_information', 'message_number'], 'integer'],
+            [['sampling_date', 'send_sample_date', 'created', 'updated'], 'safe'],
+            [['code', 'inn', 'pnfl', 'sampling_adress', 'sampler_person_pnfl', 'sampler_person_inn','explanations'], 'string', 'max' => 255],
             [['verification_pupose_id'], 'exist', 'skipOnError' => true, 'targetClass' => VerificationPurposes::className(), 'targetAttribute' => ['verification_pupose_id' => 'id']],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['organization_id' => 'id']],
-            [['sample_box_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleBoxes::className(), 'targetAttribute' => ['sample_box_id' => 'id']],
-            [['unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => Units::className(), 'targetAttribute' => ['unit_id' => 'id']],
-            [['sample_condition_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleConditions::className(), 'targetAttribute' => ['sample_condition_id' => 'id']],
         ];
     }
 
@@ -79,91 +63,51 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('model.food_sampling_certificate', 'ID'),
-            'kod' => Yii::t('model.food_sampling_certificate', 'Kod'),
-            'pnfl' => Yii::t('model.food_sampling_certificate', 'PMFL'),
-            'organization_id' => Yii::t('model.food_sampling_certificate', 'Tashkilot'),
-            'sampling_site' => Yii::t('model.food_sampling_certificate', 'Namuna olish joyi'),
-            'sampling_adress' => Yii::t('model.food_sampling_certificate', 'Namuna olish joyi manzili'),
-            'sampler_organization_code' => Yii::t('model.food_sampling_certificate', 'Namuna oluvchi tashkilot kodi'),
-            'sampler_person_pnfl' => Yii::t('model.food_sampling_certificate', 'Namuna oluvchining PNFL raqami'),
-            'unit_id' => Yii::t('model.food_sampling_certificate', 'Birlik'),
-            'count' => Yii::t('model.food_sampling_certificate', 'Soni'),
-            'verification_sample' => Yii::t('model.food_sampling_certificate', 'Tasdiqlash namunasi'),
-            'producer' => Yii::t('model.food_sampling_certificate', 'Ishlab chiqaruvchi'),
-            'serial_num' => Yii::t('model.food_sampling_certificate', 'Mahsulot seriya raqami'),
-            'manufacture_date' => Yii::t('model.food_sampling_certificate', 'Ishlab chiqarilgan sana'),
-            'sell_by' => Yii::t('model.food_sampling_certificate', 'Yaroqlilik muddati'),
-            'coments' => Yii::t('model.food_sampling_certificate', 'Qo\'shimcha ma\'lumot'),
-            'verification_pupose_id' => Yii::t('model.food_sampling_certificate', 'Tekshirishdan maqsad'),
-            'sample_box_id' => Yii::t('model.food_sampling_certificate', 'Namuna o\'rami'),
-            'sample_condition_id' => Yii::t('model.food_sampling_certificate', 'Namuna holati'),
-            'sampling_date' => Yii::t('model.food_sampling_certificate', 'Namuna olish kuni'),
+            'code' => Yii::t('model.food_sampling_certificate', 'Raqami'),
+            'food_id' => Yii::t('model.food_sampling_certificate', 'Food ID'),
+            'inn' => Yii::t('model.food_sampling_certificate', 'STIR(INN)'),
+            'pnfl' => Yii::t('model.food_sampling_certificate', 'JSHSHIR(PNFL)'),
+            'sampling_site' => Yii::t('model.food_sampling_certificate', 'Vet uchaska'),
+            'sampling_soato' => Yii::t('model.food_sampling_certificate', 'Tuman'),
+            'sampling_adress' => Yii::t('model.food_sampling_certificate', 'Namuna olish manzil'),
+            'sampler_person_pnfl' => Yii::t('model.food_sampling_certificate', 'JSHSHIR(PNFL)'),
+            'sampler_person_inn' => Yii::t('model.food_sampling_certificate', 'STIR(PNFL)'),
+            'verification_pupose_id' => Yii::t('model.food_sampling_certificate', 'Namunani tekshirtirishdan maqsad'),
+            'sampling_date' => Yii::t('model.food_sampling_certificate', 'Namuna olish sanasi'),
             'send_sample_date' => Yii::t('model.food_sampling_certificate', 'Namuna yuborilgan sana'),
-            'explanations' => Yii::t('model.food_sampling_certificate', 'Mahsulotni saqlash va yuborish shartoiti'),
-            'based_public_information' => Yii::t('model.food_sampling_certificate', 'Dalolatnoma aholi xabari asosida tuzilganligi'),
+            'based_public_information' => Yii::t('model.food_sampling_certificate', 'Xabar asosida tuzilgan'),
+            'explanations' => Yii::t('model.food_sampling_certificate', 'Namunani yuborish sharoiti'),
             'message_number' => Yii::t('model.food_sampling_certificate', 'Xabar raqami'),
-            'laboratory_test_type_id' => Yii::t('model.food_sampling_certificate', 'Laboratoriya test turi'),
+            'created' => Yii::t('model.food_sampling_certificate', 'Yaratildi'),
+            'updated' => Yii::t('model.food_sampling_certificate', 'O\'zgartirildi'),
+            'status_id' => Yii::t('model.food_sampling_certificate', 'Status'),
         ];
     }
 
+    public function getSamplingSite(){
+        return $this->hasOne(VetSites::className(),['id'=>'sampling_site']);
+    }
     /**
-     * Gets query for [[LaboratoryTestType]].
+     * Gets query for [[FoodSamples]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getLaboratoryTestType()
+    public function getFoodSamples()
     {
-        return $this->hasOne(LaboratoryTestType::className(), ['id' => 'laboratory_test_type_id']);
+        return $this->hasMany(FoodSamples::className(), ['sert_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[Organization]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOrganization()
-    {
-        return $this->hasOne(Organizations::className(), ['id' => 'organization_id']);
+    public function getStatus(){
+        return $this->hasOne(SertStatus::className(),['id'=>'status_id']);
     }
-
     /**
-     * Gets query for [[Pnfl0]].
+     * Gets query for [[ProductExpertises]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getPnfl0()
+    public function getProductExpertises()
     {
-        return $this->hasOne(Individuals::className(), ['pnfl' => 'pnfl']);
-    }
-
-    /**
-     * Gets query for [[SampleBox]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSampleBox()
-    {
-        return $this->hasOne(SampleBoxes::className(), ['id' => 'sample_box_id']);
-    }
-
-    /**
-     * Gets query for [[SampleCondition]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSampleCondition()
-    {
-        return $this->hasOne(SampleConditions::className(), ['id' => 'sample_condition_id']);
-    }
-
-    /**
-     * Gets query for [[Unit]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUnit()
-    {
-        return $this->hasOne(Units::className(), ['id' => 'unit_id']);
+        return $this->hasMany(ProductExpertise::className(), ['food_sampling_certificate' => 'id']);
     }
 
     /**
@@ -175,8 +119,20 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     {
         return $this->hasOne(VerificationPurposes::className(), ['id' => 'verification_pupose_id']);
     }
+    public function getSoato0(){
+        return $this->hasOne(Soato::className(),['MHOBT_cod'=>'sampling_soato']);
+    }
+    public function getInn0(){
+        return $this->hasOne(LegalEntities::className(),['inn'=>'inn']);
+    }
+    public function getPnfl0(){
+        return $this->hasOne(Individuals::className(),['pnfl'=>'pnfl']);
+    }
 
-    public function getSamplingSite(){
-        return $this->hasOne(VetSites::className(),['id'=>'sampling_site']);
+    public function getPersonInn(){
+        return $this->hasOne(LegalEntities::className(),['inn'=>'sampler_person_inn']);
+    }
+    public function getPersonPnfl(){
+        return $this->hasOne(Individuals::className(),['pnfl'=>'sampler_person_pnfl']);
     }
 }

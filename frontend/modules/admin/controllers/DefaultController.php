@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
+use common\models\Employees;
 use Yii;
 use common\models\LoginForm;
 use yii\filters\AccessControl;
@@ -72,6 +73,9 @@ class DefaultController extends Controller
     public function actionInside(){
         return $this->render('inside');
     }
+    public function actionTemplates(){
+        return $this->render('templates');
+    }
 
     public function actionOutside(){
         return $this->render('outside');
@@ -95,6 +99,21 @@ class DefaultController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+    public function actionProfile(){
+        $model=Employees::find()->where(['id'=>Yii::$app->user->identity->id])->one();
+        if(Yii::$app->request->isPost && $model->load(Yii::$app->request->post())){
+            if($model->validate()){
+                $model->password=Yii::$app->security->generatePasswordHash($model->password);
+                $model->save();
+                Yii::$app->session->setFlash('success','Parol muvaffaqiyatli yangilandi');
+                return $this->redirect('/cp/');
+            }
+        }
+        $model->password='';
+        return $this->render('/employees/profile',[
+            'model'=>$model
+        ]);
     }
 
 }

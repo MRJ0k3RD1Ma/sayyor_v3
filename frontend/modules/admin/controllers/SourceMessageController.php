@@ -133,7 +133,9 @@ class SourceMessageController extends Controller
     }
 
     public function actionUpdateone($id,$lang,$val){
-        $model = Message::find()->where(['id'=>$id,'language'=>$lang])->one();
+
+        $model = Message::find()->where(['id'=>$id])->andWhere(['language'=>$lang])->one();
+
         $model->translation = $val;
         if($model->save()){
             echo 1;

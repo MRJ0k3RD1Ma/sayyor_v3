@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Soato;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -15,51 +16,44 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
 
             <div class="card">
-                <div class="card-header flex">
-                    <div></div>
-                    <div class="btns flex">
-                        <div class="search">
-
-                            <input type="search">
-                            <button class="btn"><span class="fa fa-search"></span></button>
-
-                        </div>
-                        <div class="export">
-                            <button class="btn btn-primary"><span class="fa fa-cloud-download-alt"></span> Export</button>
-                            <div class="export-btn">
-                                <button class=""><span class="fa fa-file-excel"></span> Excel</button>
-                                <button class=""><span class="fa fa-file-pdf"></span> PDF</button>
-                            </div>
-
-                        </div>
-                <?= Html::a(Yii::t('cp.individuals', 'Jismoniy shaxs qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
-
-                    </div>
-                </div>
                 <div class="card-body">
+                    <?php \yii\widgets\Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+                    <?php echo $this->render('_search', [
+                        'model' => $searchModel,
+                    ]);
+                    ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
+                        'id' => 'ind-grid',
 //                        'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
-                            'pnfl',
+//                            'pnfl',
                             'name',
                             'surname',
                             'middlename',
-                            'soato_id',
-                            //'adress',
-                            //'passport',
+                            [
+                                'attribute' => 'soato_id',
+                                'label' => 'Hudud nomi',
+                                'value' => function ($model) {
+
+                                    return Soato::Full($model->soato_id);
+
+                                }
+                            ],
+                            'adress',
+//                            'passport',
 
                             ['class' => 'yii\grid\ActionColumn'],
                         ],
                     ]); ?>
+                    <?php \yii\widgets\Pjax::end();?>
 
                 </div>
             </div>
         </div>
     </div>
-
 
 
 </div>

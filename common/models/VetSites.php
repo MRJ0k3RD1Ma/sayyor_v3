@@ -74,6 +74,8 @@ class VetSites extends \yii\db\ActiveRecord
      */
     public function getSoato0()
     {
-        return $this->hasOne(Soato::className(), ['MHOBT_cod' => 'soato']);
+        return $this->hasOne(Soato::class, ['MHOBT_cod' => 'soato']);
     }
+
+
 }

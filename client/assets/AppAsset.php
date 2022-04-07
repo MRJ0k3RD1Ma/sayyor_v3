@@ -29,7 +29,9 @@ class AppAsset extends AssetBundle
         'design/assets/plugins/datatables/jquery.dataTables.min.css',
         'design/assets/plugins/datatables-buttons/css/buttons.dataTables.min.css',
         'design/assets/css/custom.css',
+        'design/assets/font/css/all.min.css',
         'design/assets/plugins/sweetalert2/sweetalert2.min.css',
+//        'design/multiselect/css/multi-select.css',
         'eimzo/services/css.css',
     ];
     public $js = [
@@ -47,6 +49,7 @@ class AppAsset extends AssetBundle
         'design/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js',
         'design/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js',
         'design/assets/plugins/sweetalert2/sweetalert2.min.js',
+//        'design/multiselect/js/jquery.multi-select.js',
         'design/assets/js/app.js',
         'eimzo/services/jquery.reject.js',
         'eimzo/services/micro-ajax.js',
@@ -54,6 +57,7 @@ class AppAsset extends AssetBundle
 //        'eimzo/e-imzo-client.js',
 
 //        'eimzo/services/eimzo/eimzo_old.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

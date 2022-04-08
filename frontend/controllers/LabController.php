@@ -9,6 +9,7 @@ use app\models\search\laboratory\FoodRouteSearch;
 use common\models\DestructionSampleAnimal;
 use common\models\DestructionSampleFood;
 use common\models\Employees;
+use common\models\FoodRecomendation;
 use common\models\FoodRoute;
 use common\models\Regulations;
 use common\models\ResultAnimal;
@@ -301,7 +302,12 @@ class LabController extends Controller
     {
         $model = FoodRoute::findOne($id);
         $sample = $model->sample;
-
+        $recom = new FoodRecomendation();
+        if($recom->load(Yii::$app->request->post())){
+            $recom->sample_id = $sample->id;
+            $recom->save();
+            return $this->refresh();
+        }
         $result = ResultFood::findOne(['sample_id' => $sample->id]);
 
         $test = ResultFoodTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();

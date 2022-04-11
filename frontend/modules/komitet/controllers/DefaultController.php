@@ -729,13 +729,13 @@ class DefaultController extends Controller
 
     public function actionStatRegfood($id = null)
     {
-        $title="Oziq-ovqat ekspertizalari bo'yicha Arizalar statistikasi";
+        $title = "Oziq-ovqat ekspertizalari bo'yicha Arizalar statistikasi";
         $SoatoModel = new SoatoSearch();
         $SoatoDataProvider = $SoatoModel->ListRegions($id);
         $FoodRegModel = new FoodRegistrationSearch(); //Oziq-ovqat arizalari
         $FoodRegProvider = $FoodRegModel->search($this->request->queryParams);
         $status = ArrayHelper::map(SertStatus::find()->asArray()->all(), 'id', 'name_uz');
-        $counter = array_fill(0, 14, array_fill(0, 7, 0));
+        $counter = array_fill(0, count($SoatoDataProvider->getModels()), array_fill(0, 7, 0));
         foreach ($SoatoDataProvider->getModels() as $key => $SoatoModel) {
             foreach ($FoodRegProvider->getModels() as $model) {
                 if ($model->inn) {
@@ -746,7 +746,7 @@ class DefaultController extends Controller
             }
         }
         return $this->render('stat-all', [
-            'title'=>$title,
+            'title' => $title,
             'FoodRegProvider' => $FoodRegProvider,
             'SoatoDataProvider' => $SoatoDataProvider,
             'status' => $status,
@@ -757,13 +757,13 @@ class DefaultController extends Controller
 
     public function actionStatAnimal($id = null)
     {
-        $title="Hayvon kasalliklari bo'yicha Dalolatnomalar statistikasi";
+        $title = "Hayvon kasalliklari bo'yicha Dalolatnomalar statistikasi";
         $SoatoModel = new SoatoSearch();
         $SoatoDataProvider = $SoatoModel->ListRegions($id);
         $AnimalDataModel = new SertificatesSearch(); //Hayvon kasalliklari Dalolatnoma
         $AnimalDataProvider = $AnimalDataModel->searchKomitet($this->request->queryParams);
         $status = ArrayHelper::map(SertStatus::find()->asArray()->all(), 'id', 'name_uz');
-        $counter = array_fill(0, 14, array_fill(0, 7, 0));
+        $counter = array_fill(0, count($SoatoDataProvider->getModels()), array_fill(0, 7, 0));
         foreach ($SoatoDataProvider->getModels() as $key => $SoatoModel) {
             foreach ($AnimalDataProvider->getModels() as $model) {
                 if ($model->inn) {
@@ -774,7 +774,7 @@ class DefaultController extends Controller
             }
         }
         return $this->render('stat-all', [
-            'title'=>$title,
+            'title' => $title,
             'SoatoDataProvider' => $SoatoDataProvider,
             'status' => $status,
             'counter' => $counter,
@@ -784,13 +784,13 @@ class DefaultController extends Controller
 
     public function actionStatFood($id = null)
     {
-        $title="Oziq-ovqat ekspertizalari bo'yicha Dalolatnomalar statistikasi";
+        $title = "Oziq-ovqat ekspertizalari bo'yicha Dalolatnomalar statistikasi";
         $SoatoModel = new SoatoSearch();
         $SoatoDataProvider = $SoatoModel->ListRegions($id);
         $FoodDataModel = new FoodSamplingCertificateSearch(); //Oziq-ovqat ekspertizasi Dalolatnoma
         $FoodDataProvider = $FoodDataModel->search($this->request->queryParams);
         $status = ArrayHelper::map(SertStatus::find()->asArray()->all(), 'id', 'name_uz');
-        $counter = array_fill(0, 14, array_fill(0, 7, 0));
+        $counter = array_fill(0, count($SoatoDataProvider->getModels()), array_fill(0, 7, 0));
         foreach ($SoatoDataProvider->getModels() as $key => $SoatoModel) {
             foreach ($FoodDataProvider->getModels() as $model) {
                 if ($model->inn) {
@@ -801,22 +801,24 @@ class DefaultController extends Controller
             }
         }
         return $this->render('stat-all', [
-            'title'=>$title,
+            'title' => $title,
             'SoatoDataProvider' => $SoatoDataProvider,
             'status' => $status,
             'counter' => $counter,
 
         ]);
     }
+
     public function actionStatReganimal($id = null)
     {
-        $title="Hayvon kasalliklari bo'yicha Arizalar statistikasi";
+        $title = "Hayvon kasalliklari bo'yicha Arizalar statistikasi";
         $SoatoModel = new SoatoSearch();
         $SoatoDataProvider = $SoatoModel->ListRegions($id);
         $AnimalRegModel = new SampleRegistrationSearch(); //Hayvon Kasalliklari Ariza
         $AnimalRegProvider = $AnimalRegModel->searchKomitet($this->request->queryParams);
         $status = ArrayHelper::map(SertStatus::find()->asArray()->all(), 'id', 'name_uz');
-        $counter = array_fill(0, 14, array_fill(0, 7, 0));
+
+        $counter = array_fill(0, count($SoatoDataProvider->getModels()), array_fill(0, 7, 0));
         foreach ($SoatoDataProvider->getModels() as $key => $SoatoModel) {
             foreach ($AnimalRegProvider->getModels() as $model) {
                 if ($model->inn) {
@@ -827,7 +829,7 @@ class DefaultController extends Controller
             }
         }
         return $this->render('stat-all', [
-            'title'=>$title,
+            'title' => $title,
             'SoatoDataProvider' => $SoatoDataProvider,
             'status' => $status,
             'counter' => $counter,
@@ -881,6 +883,7 @@ class DefaultController extends Controller
             'samp' => $samples
         ]);
     }
+
     public function actionPdfdest($id)
     {
         $model = DestructionSampleAnimal::findOne(['id' => $id]);

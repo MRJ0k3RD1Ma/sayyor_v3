@@ -9,10 +9,7 @@ use app\models\search\laboratory\FoodRouteSearch;
 use common\models\DestructionSampleAnimal;
 use common\models\DestructionSampleFood;
 use common\models\Employees;
-<<<<<<< HEAD
 use common\models\FoodRecomendation;
-=======
->>>>>>> 571ae740fd137186a9761cc76793de45536d0f25
 use common\models\FoodRoute;
 use common\models\Regulations;
 use common\models\ResultAnimal;
@@ -305,31 +302,25 @@ class LabController extends Controller
     {
         $model = FoodRoute::findOne($id);
         $sample = $model->sample;
-<<<<<<< HEAD
+
         $recom = new FoodRecomendation();
         if($recom->load(Yii::$app->request->post())){
             $recom->sample_id = $sample->id;
             $recom->save();
             return $this->refresh();
         }
-=======
 
->>>>>>> 571ae740fd137186a9761cc76793de45536d0f25
         $result = ResultFood::findOne(['sample_id' => $sample->id]);
 
         $test = ResultFoodTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
         $result->creator_id = Yii::$app->user->id;
-<<<<<<< HEAD
+
         if($result->load(Yii::$app->request->post())){
             $result->created = date('Y-m-d h:i:s');
             $result->save();
         }
         if (Model::loadMultiple($test, Yii::$app->request->post())) {
-=======
-        if (Model::loadMultiple($test, Yii::$app->request->post()) and $result->load(Yii::$app->request->post())) {
-            $result->created = date('Y-m-d h:i:s');
-            $result->save();
->>>>>>> 571ae740fd137186a9761cc76793de45536d0f25
+
             foreach ($test as $item) {
                 $item->save();
             }
@@ -346,12 +337,10 @@ class LabController extends Controller
             'sample' => $sample,
             'result' => $result,
             'test' => $test,
-<<<<<<< HEAD
+
             'docs' => $docs,
             'recom'=>$recom
-=======
-            'docs' => $docs
->>>>>>> 571ae740fd137186a9761cc76793de45536d0f25
+
         ]);
     }
 

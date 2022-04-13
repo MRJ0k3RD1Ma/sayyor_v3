@@ -69,15 +69,12 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
 
         <?= $form->field($animal, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('client','Viloyatni tanlang')]) ?>
         <?= $form->field($animal, 'district')->dropDownList([]) ?>
-<<<<<<< HEAD
+
 
         <?= $form->field($animal, 'vet_site_id')->dropDownList([]) ?>
 
         <?= $form->field($sample, 'cnt')->textInput(['maxlength' => true]) ?>
-=======
 
-        <?= $form->field($animal, 'vet_site_id')->dropDownList([]) ?>
->>>>>>> 571ae740fd137186a9761cc76793de45536d0f25
 
         <?= $form->field($sample, 'test_mehod_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\TestMethod::find()->all(),'id','name_uz'),['prompt'=>'Tahlil usulini tanlang']) ?>
 

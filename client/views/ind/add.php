@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
     <?= $form->field($animal, 'inn')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($animal, 'pnfl')->textInput(['maxlength' => true]) ?>
-<<<<<<< HEAD
+
 
     <?= $form->field($animal, 'name')->textInput(['maxlength' => true]) ?>
 
@@ -77,44 +77,7 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
     <?= $form->field($sample, 'cnt')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($sample, 'test_mehod_id')->dropDownList(ArrayHelper::map(TestMethod::find()->all(), 'id', 'name_uz'), ['prompt' => 'Tahlil usulini tanlang']) ?>
-=======
 
-    <?= $form->field($animal, 'name')->textInput(['maxlength' => true]) ?>
-
-
-    <?php
-    $lang = Yii::$app->language;
-    if ($lang == 'ru') {
-        $ads = 'ru';
-        $lg = 'ru';
-    } elseif ($lang == 'oz') {
-        $ads = 'cyr';
-        $lg = 'uz';
-    } else {
-        $lg = 'uz';
-        $ads = 'lot';
-    }
-    ?>
-
-    <?= $form->field($animal, 'type_id')->dropDownList(ArrayHelper::map(Animaltype::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('cp.animals', 'Hayvon turini tanlang')]) ?>
-    <?= $form->field($animal, 'cat_id')->dropDownList(ArrayHelper::map(AnimalCategory::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('cp.animals', 'Hayvon holatini tanlang')]) ?>
-
-    <?= $form->field($animal, 'gender')->dropDownList([
-        1 => Yii::t('cp.animals', 'Erkak'),
-        0 => Yii::t('cp.animals', 'Urg\'ochi')
-    ]) ?>
-
-    <?= $form->field($animal, 'birthday')->textInput(['type' => 'date']) ?>
-
-    <?= $form->field($animal, 'adress')->textInput(['maxlength' => true]) ?>
-
-
-    <?= $form->field($animal, 'region')->dropDownList(ArrayHelper::map(RegionsView::find()->all(), 'region_id', 'name_' . $ads), ['prompt' => Yii::t('client', 'Viloyatni tanlang')]) ?>
-    <?= $form->field($animal, 'district')->dropDownList([]) ?>
-
-    <?= $form->field($animal, 'vet_site_id')->dropDownList([]) ?>
-
-    <?= $form->field($sample, 'test_mehod_id')->dropDownList(ArrayHelper::map(TestMethod::find()->all(), 'id', 'name_uz'), ['prompt' => 'Tahlil usulini tanlang']) ?>
 
     <?= $form->field($sample, 'suspected_disease_id')->dropDownList(ArrayHelper::map(Diseases::find()->all(), 'id', 'name_uz'), ['prompt' => 'Kasallik turini tanlang', 'class' => 'form-control select2list']) ?>
 
@@ -124,21 +87,9 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
     </div>
 
     <?php ActiveForm::end(); ?>
->>>>>>> 571ae740fd137186a9761cc76793de45536d0f25
-
-    <?= $form->field($sample, 'suspected_disease_id')->dropDownList(ArrayHelper::map(Diseases::find()->all(), 'id', 'name_uz'), ['prompt' => 'Kasallik turini tanlang', 'class' => 'form-control select2list']) ?>
-
-<<<<<<< HEAD
-    <?= $form->field($sample, 'repeat_code')->textInput() ?>
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
 
 
-=======
->>>>>>> 571ae740fd137186a9761cc76793de45536d0f25
+
 </div>
 <?php
 $url = Yii::$app->urlManager->createUrl(['/site/getbirka']);

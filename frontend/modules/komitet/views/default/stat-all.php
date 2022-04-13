@@ -28,7 +28,7 @@ use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\web\View;
 
-$this->title=$title;
+$this->title = $title;
 ?>
 <table class="table table-bordered">
     <thead>
@@ -57,7 +57,14 @@ $this->title=$title;
                 <?= $key + 1 ?>
             </td>
             <td>
+                <?php if(Yii::$app->request->get('id')):?>
                 <?= $model->name_lot ?>
+                <?php else:?>
+
+                <a href="<?= \yii\helpers\Url::to([Yii::$app->request->url, 'id' => $model->region_id]) ?>">
+                    <?= $model->name_lot ?>
+                </a>
+                <?php endif;?>
             </td>
             <td>
                 <?= array_sum($counter[$key]) ?>

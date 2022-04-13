@@ -24,6 +24,32 @@ use Yii;
  * @property int|null $state_id
  * @property int|null $sample_id
  * @property int|null $org_id
+ * * @property int $patonomiya
+ * @property int $organoleptika
+ * @property int $mikroskopiya_nurli
+ * @property int $mikroskopiya_lyuminesent
+ * @property int $bakterilogik
+ * @property int $virusologik_TE_KE
+ * @property int $virusologik_XM_KK
+ * @property int $biologik
+ * @property int $RA_KR
+ * @property int $RSK
+ * @property int $RDSK
+ * @property int $RBP
+ * @property int $RMA
+ * @property int $RP_RDP
+ * @property int $RH
+ * @property int $RNGA
+ * @property int $RGA
+ * @property int $IFA
+ * @property int $IXLA
+ * @property int $boshqa_serologiya
+ * @property int $PSR
+ * @property int $gistologiya
+ * @property int $gemotologiya
+ * @property int $koprologiya
+ * @property int $kimyoviy
+ * @property int $biokimyoviy
  */
 class ResultAnimal extends \yii\db\ActiveRecord
 {
@@ -42,7 +68,11 @@ class ResultAnimal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code_id', 'temprature','org_id','sample_id','humidity', 'creator_id', 'consent_id', 'state_id'], 'integer'],
+            [['code_id', 'temprature','org_id','sample_id','humidity', 'creator_id', 'consent_id',
+                'state_id','patonomiya', 'organoleptika', 'mikroskopiya_nurli', 'mikroskopiya_lyuminesent',
+                'bakterilogik', 'virusologik_ТE_КE', 'virusologik_XM_KK', 'biologik', 'RA_KR', 'RSK', 'RDSK',
+                'RBP', 'RMA', 'RP_RDP', 'RH', 'RNGA', 'RGA', 'IFA', 'IXLA', 'boshqa_serologiya', 'PSR', 'gistologiya',
+                'gemotologiya', 'koprologiya', 'kimyoviy', 'biokimyoviy'], 'integer'],
             [['conditions'], 'string'],
             [['created', 'updated', 'end_date', ], 'safe'],
             [['code', 'reagent_name', 'reagent_series','ads'], 'string', 'max' => 255],
@@ -71,6 +101,32 @@ class ResultAnimal extends \yii\db\ActiveRecord
             'updated' => Yii::t('model', 'O\'zgartirildi'),
             'state_id' => Yii::t('model', 'Holati'),
             'org_id' => Yii::t('model', 'Tashkilot'),
+            'patonomiya' => Yii::t('model', 'Patonomiya'),
+            'organoleptika' => Yii::t('model', 'Organoleptika'),
+            'mikroskopiya_nurli' => Yii::t('model', 'Mikroskopiya Nurli'),
+            'mikroskopiya_lyuminesent' => Yii::t('model', 'Mikroskopiya Lyuminesent'),
+            'bakterilogik' => Yii::t('model', 'Bakterilogik'),
+            'virusologik_TE_KE' => Yii::t('model', 'Virusologik TE,KE'),
+            'virusologik_XM_KK' => Yii::t('model', 'Virusologik XM,KK'),
+            'biologik' => Yii::t('model', 'Biologik'),
+            'RA_KR' => Yii::t('model', 'RA,KR'),
+            'RSK' => Yii::t('model', 'RSK'),
+            'RDSK' => Yii::t('model', 'RDSK'),
+            'RBP' => Yii::t('model', 'RBP'),
+            'RMA' => Yii::t('model', 'RMA'),
+            'RP_RDP' => Yii::t('model', 'RP,RDP'),
+            'RH' => Yii::t('model', 'RH'),
+            'RNGA' => Yii::t('model', 'RNGA'),
+            'RGA' => Yii::t('model', 'RGA'),
+            'IFA' => Yii::t('model', 'IFA'),
+            'IXLA' => Yii::t('model', 'IXLA'),
+            'boshqa_serologiya' => Yii::t('model', 'Boshqa Serologiya'),
+            'PSR' => Yii::t('model', 'PSR'),
+            'gistologiya' => Yii::t('model', 'Gistologiya'),
+            'gemotologiya' => Yii::t('model', 'Gemotologiya'),
+            'koprologiya' => Yii::t('model', 'Koprologiya'),
+            'kimyoviy' => Yii::t('model', 'Kimyoviy'),
+            'biokimyoviy' => Yii::t('model', 'Biokimyoviy'),
         ];
     }
 

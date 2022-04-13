@@ -20,6 +20,7 @@ use Yii;
  * @property int|null $samp_id
  * @property int|null $emp_id
  * @property int|null $status_id
+ * @property int|null $cnt
  *
  * @property Animals $animal
  * @property SampleBoxes $sampleBox
@@ -45,8 +46,8 @@ class Samples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sample_type_is','sample_box_id','suspected_disease_id', 'test_mehod_id'],'required','on'=>'insert'],
-            [['sample_type_is', 'sample_box_id', 'emp_id','animal_id', 'is_group','sert_id','samp_id', 'suspected_disease_id','status_id', 'test_mehod_id'], 'integer'],
+            [['sample_type_is','sample_box_id','suspected_disease_id', 'test_mehod_id','cnt'],'required','on'=>'insert'],
+            [['sample_type_is', 'sample_box_id', 'emp_id','animal_id', 'is_group','cnt','sert_id','samp_id', 'suspected_disease_id','status_id', 'test_mehod_id'], 'integer'],
             [['kod', 'label','repeat_code'], 'string', 'max' => 255],
             [['animal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animals::className(), 'targetAttribute' => ['animal_id' => 'id']],
             [['sample_box_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleBoxes::className(), 'targetAttribute' => ['sample_box_id' => 'id']],
@@ -76,6 +77,7 @@ class Samples extends \yii\db\ActiveRecord
             'repeat_code' => Yii::t('model.samples', 'Takroriy tahlil'),
             'status_id' => Yii::t('model.samples', 'Status'),
             'is_group' => Yii::t('model.samples', 'Birlashgan namunalardan'),
+            'cnt' => Yii::t('model.samples', 'Materiallar soni'),
         ];
     }
 

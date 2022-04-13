@@ -73,6 +73,8 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
 
     <?= $form->field($animal, 'vet_site_id')->dropDownList([]) ?>
 
+    <?= $form->field($sample, 'cnt')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($sample, 'test_mehod_id')->dropDownList(ArrayHelper::map(TestMethod::find()->all(), 'id', 'name_uz'), ['prompt' => 'Tahlil usulini tanlang']) ?>
 
     <?= $form->field($sample, 'suspected_disease_id')->dropDownList(ArrayHelper::map(Diseases::find()->all(), 'id', 'name_uz'), ['prompt' => 'Kasallik turini tanlang', 'class' => 'form-control select2list']) ?>

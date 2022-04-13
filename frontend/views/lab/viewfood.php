@@ -202,7 +202,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </tbody>
                 </table>
 
-                <?= $form->field($result,'ads')->textInput()?>
+                <?= $form->field($result,'ads')->dropDownList([0=>Yii::t('lab','Tasdiqlandi'),1=>Yii::t('lab','Tasdiqlanmadi')],['prompt'=>'Umumiy natijani tanlang'])?>
 
             </div>
 
@@ -221,7 +221,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <ul>
-                        <?php $rec = \common\models\SampleRecomendation::find()->where(['sample_id'=>$sample->id])->all();
+                        <?php $rec = \common\models\FoodRecomendation::find()->where(['sample_id'=>$sample->id])->all();
                         foreach ($rec as $item):
                             ?>
                             <li><?= $item->name?></li>
@@ -300,12 +300,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endforeach; ?>
                 </tbody>
             </table>
-            <?= $form->field($result,'ads')->textInput(['disabled'=>true])?>
+            <?= $form->field($result,'ads')->dropDownList([0=>Yii::t('lab','Tasdiqlandi'),1=>Yii::t('lab','Tasdiqlanmadi')],['disabled'=>true])?>
 
         </div>
 
         <?php ActiveForm::end()?>
     </div>
+        <h3  style="margin-top:20px;">Tavfsiyalar ro'yhati:</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <ul>
+                    <?php $rec = \common\models\FoodRecomendation::find()->where(['sample_id'=>$sample->id])->all();
+                    foreach ($rec as $item):
+                        ?>
+                        <li><?= $item->name?></li>
+                    <?php endforeach;?>
+                </ul>
+            </div>
+        </div>
 
     <?php }?>
 

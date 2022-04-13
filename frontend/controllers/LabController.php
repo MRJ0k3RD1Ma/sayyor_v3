@@ -312,9 +312,11 @@ class LabController extends Controller
 
         $test = ResultFoodTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
         $result->creator_id = Yii::$app->user->id;
-        if (Model::loadMultiple($test, Yii::$app->request->post()) and $result->load(Yii::$app->request->post())) {
+        if($result->load(Yii::$app->request->post())){
             $result->created = date('Y-m-d h:i:s');
             $result->save();
+        }
+        if (Model::loadMultiple($test, Yii::$app->request->post())) {
             foreach ($test as $item) {
                 $item->save();
             }
@@ -331,7 +333,8 @@ class LabController extends Controller
             'sample' => $sample,
             'result' => $result,
             'test' => $test,
-            'docs' => $docs
+            'docs' => $docs,
+            'recom'=>$recom
         ]);
     }
 

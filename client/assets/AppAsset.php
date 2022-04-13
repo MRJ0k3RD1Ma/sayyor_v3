@@ -48,7 +48,11 @@ class AppAsset extends AssetBundle
         'design/assets/plugins/datatables/jquery.dataTables.min.js',
         'design/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js',
         'design/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js',
+<<<<<<< HEAD
+        'design/assets/plugins/sweetalert2/sweetalert2.min.js',
+=======
         'design/assets/plugins/sweetalert2/*sweetalert2.min.js',
+>>>>>>> 571ae740fd137186a9761cc76793de45536d0f25
 //        'design/multiselect/js/jquery.multi-select.js',
         'design/assets/js/app.js',
         'eimzo/services/jquery.reject.js',

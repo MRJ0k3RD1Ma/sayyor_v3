@@ -14,7 +14,7 @@ BackAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>" class="h-100">
+<html lang="<?= Yii::$app->language ?>"  class="h-100">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width,initial-scale=1, shrink-to-fit=no">
@@ -27,7 +27,11 @@ BackAsset::register($this);
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
 
-
+<style>
+    body[data-sidebar-size=sm] .vertical-menu #sidebar-menu .badge{
+        display: inline !important;
+    }
+</style>
 
 
 <!-- <body data-layout="horizontal"> -->

@@ -921,4 +921,5 @@ class DefaultController extends Controller
         $file = fopen($fileName, 'r+');
         Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
+
 }

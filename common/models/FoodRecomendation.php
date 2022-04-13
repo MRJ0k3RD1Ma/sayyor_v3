@@ -39,7 +39,7 @@ class FoodRecomendation extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('model', 'ID'),
-            'name' => Yii::t('model', 'Name'),
+            'name' => Yii::t('model', 'Tavfsiya matni'),
             'sample_id' => Yii::t('model', 'Sample ID'),
         ];
     }

@@ -178,14 +178,31 @@ class LabController extends Controller
         ]);
     }
 
-    public
-    function actionSendanimal($id)
+    public  function actionSendanimal($id)
     {
+
         $model = RouteSert::findOne($id);
-        $model->status_id = 4;
-        $model->save();
-        Yii::$app->session->setFlash('success', Yii::t('lab', 'Natijalar muvoffaqiyatli yuborildi'));
+        $res = ResultAnimal::findOne(['sample_id'=>$model->sample_id]);
+        $n=0;
+        $true = false;
+        foreach ($res->getAttributes() as $key=>$item){
+            $n++;
+            if($n>17){
+                if($item!=0){
+                    $true = true;
+                }
+            }
+        }
+
+        if($true){
+            $model->status_id = 4;
+            $model->save();
+            Yii::$app->session->setFlash('success', Yii::t('lab', 'Natijalar muvoffaqiyatli yuborildi'));
+        }else{
+            Yii::$app->session->setFlash('error', Yii::t('lab', 'O\'tkazilgan tekshiruv natijalari kiritlmagan'));
+        }
         return $this->redirect(['viewanimal', 'id' => $id]);
+
     }
 
     public

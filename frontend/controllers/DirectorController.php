@@ -145,7 +145,7 @@ class DirectorController extends Controller
             ->andWhere(['emp_posts.gov_id' => Yii::$app->user->identity->empPosts->gov_id])->all();
         $model->scenario = 'exec';
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
-        $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
+        $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked'=>1])->all();
         $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
             ->innerJoin('tamplate_animal', 'tamplate_animal.id=template_animal_regulations.template_id')
             ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_id=' . $result->id . ')')
@@ -181,7 +181,6 @@ class DirectorController extends Controller
             $cs->status_id = 5;
             $cs->save();
 
-
             $dest->creator_id = $model->executor_id;
             $dest->consent_id = $model->director_id;
             $dest->sample_id = $model->sample_id;
@@ -200,49 +199,101 @@ class DirectorController extends Controller
                 ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_animal_tests.checked = 1 and result_id=' . $result->id . ')')
                 ->groupBy('regulations.id')->all();//->innerJoin('result_food_tests','template_food.id = result_food_tests.template_id and result_food_tests.checked=1')
             ;
+            if($model->sample->is_group==0){
+                $pdf = new Pdf([
+                    'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                    'destination' => Pdf::DEST_BROWSER,
+                    'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg, 'docs' => $docs]),
+                    'options' => [
+                    ],
+                    'methods' => [
+                        'SetTitle' => "Ariza",
+                        'SetHeader' => [' ' . '|| ' . date("r")],
+                        'SetFooter' => ['| {PAGENO} |'],
+                        'SetAuthor' => '@QalandarDev',
+                        'SetCreator' => '@QalandarDev',
+                    ]
+                ]);
 
-            $pdf = new Pdf([
-                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
-                'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg, 'docs' => $docs]),
-                'options' => [
-                ],
-                'methods' => [
-                    'SetTitle' => "Ariza",
-                    'SetHeader' => [' ' . '|| ' . date("r")],
-                    'SetFooter' => ['| {PAGENO} |'],
-                    'SetAuthor' => '@QalandarDev',
-                    'SetCreator' => '@QalandarDev',
-                ]
-            ]);
+                try {
 
-            try {
+                    $upload_dir = Yii::getAlias('@uploads');
+                    $content = $pdf->render();
+                    $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
+                    if (file_exists($fileName)) {
+                        unlink($fileName);
+                    }
+                    $file = fopen($fileName, 'wb+');
 
-                $upload_dir = Yii::getAlias('@uploads');
-                $content = $pdf->render();
-                $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
-                if (file_exists($fileName)) {
-                    unlink($fileName);
+                    fwrite($file, $content);
+
+                    fclose($file);
+
+                } catch (MpdfException $e) {
+                    return $e;
+                } catch (CrossReferenceException $e) {
+                    return $e;
+                } catch (PdfTypeException $e) {
+                    return $e;
+                } catch (PdfParserException $e) {
+                    return $e;
+                } catch (InvalidConfigException $e) {
+                    return $e;
                 }
-                $file = fopen($fileName, 'wb+');
+                Yii::$app->session->setFlash('url', Yii::$app->urlManager->createUrl(['/director/pdf-animal', 'id' => $model->sample_id]));
+            }else{
+                $cnt = \common\models\Samples::find()->where(['sert_id'=>$model->sample->sert_id])->andWhere(['<>','status_id',6])->andWhere(['is_group'=>1])->count('id');
+                $cnt_acc = \common\models\Samples::find()->where(['sert_id'=>$model->sample->sert_id])->andWhere(['is_group'=>1])->andWhere(['<>','status_id',6])->andWhere(['status_id'=>5])->count('id');
+                // mutipleni yozish garak
 
-                fwrite($file, $content);
+                if($cnt==$cnt_acc){
 
-                fclose($file);
+                    $pdf = new Pdf([
+                        'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                        'destination' => Pdf::DEST_BROWSER,
+                        'content' => $this->renderPartial('pdf-verify_multi', ['model' => $sample, 'regmodel' => $reg]),
+                        'options' => [
+                        ],
+                        'methods' => [
+                            'SetTitle' => "Ariza",
+                            'SetHeader' => [' ' . '|| ' . date("r")],
+                            'SetFooter' => ['| {PAGENO} |'],
+                            'SetAuthor' => '@QalandarDev',
+                            'SetCreator' => '@QalandarDev',
+                        ]
+                    ]);
 
-            } catch (MpdfException $e) {
-                return $e;
-            } catch (CrossReferenceException $e) {
-                return $e;
-            } catch (PdfTypeException $e) {
-                return $e;
-            } catch (PdfParserException $e) {
-                return $e;
-            } catch (InvalidConfigException $e) {
-                return $e;
+                    try {
+
+                        $upload_dir = Yii::getAlias('@uploads');
+                        $content = $pdf->render();
+                        $fileName = $upload_dir . "/../pdf/" . SampleRegistration::tableName() . "_" . $model->registration_id . ".pdf";
+                        if (file_exists($fileName)) {
+                            unlink($fileName);
+                        }
+                        $file = fopen($fileName, 'wb+');
+
+                        fwrite($file, $content);
+
+                        fclose($file);
+
+                    } catch (MpdfException $e) {
+                        return $e;
+                    } catch (CrossReferenceException $e) {
+                        return $e;
+                    } catch (PdfTypeException $e) {
+                        return $e;
+                    } catch (PdfParserException $e) {
+                        return $e;
+                    } catch (InvalidConfigException $e) {
+                        return $e;
+                    }
+                    Yii::$app->session->setFlash('url', Yii::$app->urlManager->createUrl(['/director/pdf-animal-multi', 'id' => CompositeSamples::findOne($sample->id)->registration_id]));
+                }
             }
+
         }
-        Yii::$app->session->setFlash('url', Yii::$app->urlManager->createUrl(['/director/pdf-animal', 'id' => $model->sample_id]));
+
         return $this->redirect(['viewanimal', 'id' => $id]);
 
     }
@@ -713,6 +764,16 @@ class DirectorController extends Controller
     public function actionPdfAnimal($id)
     {
         $model = Samples::findOne(['id' => $id]);
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+        header('Content-Disposition: attachment; name=' . $fileName);
+        $file = fopen($fileName, 'r+');
+        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+
+    }
+
+    public function actionPdfAnimalMulti($id)
+    {
+        $model = SampleRegistration::findOne(['id' => $id]);
         $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
         header('Content-Disposition: attachment; name=' . $fileName);
         $file = fopen($fileName, 'r+');

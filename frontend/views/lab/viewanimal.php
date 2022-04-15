@@ -281,6 +281,99 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($result,'ads')->dropDownList(['0'=>Yii::t('lab','Tasdiqlanmadi'),1=>Yii::t('lab','Tasdiqlandi')],['prompt'=>Yii::t('lab','Umumiy tekshiruv natijasi')])?>
             </div>
 
+                <h4>O'tkazilgan tekshiruv natijalari:</h4>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <?= $form->field($result,'patonomiya')->textInput()?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'organoleptika')->textInput()?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'mikroskopiya_nurli')->textInput()?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'mikroskopiya_lyuminesent')->textInput()?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'bakterilogik')->textInput()?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'virusologik_TE_KE')->textInput()?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'virusologik_XM_KK')->textInput()?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'biologik')->textInput()?>
+                        </div>
+
+
+                   <h4> Serologik tekshiruvlar:</h4>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <?= $form->field($result,'RA_KR')->textInput()?>
+                            </div>
+                            <div class="col-md-2">
+                                <?= $form->field($result,'RSK')->textInput()?>
+                            </div>
+                            <div class="col-md-2">
+                                <?= $form->field($result,'RDSK')->textInput()?>
+                            </div>
+                            <div class="col-md-2">
+                                <?= $form->field($result,'RBP')->textInput()?>
+                            </div>
+                            <div class="col-md-2">
+                                <?= $form->field($result,'RMA')->textInput()?>
+                            </div>
+                            <div class="col-md-2">
+                                <?= $form->field($result,'RP_RDP')->textInput()?>
+                            </div>
+                            <div class="col-md-2">
+                                <?= $form->field($result,'RH')->textInput()?>
+                            </div>
+                            <div class="col-md-2">
+                                <?= $form->field($result,'RNGA')->textInput()?>
+                            </div>
+                            <div class="col-md-2">
+                                <?= $form->field($result,'RGA')->textInput()?>
+                            </div>
+                            <div class="col-md-2">
+                                <?= $form->field($result,'IFA')->textInput()?>
+                            </div>
+                            <div class="col-md-2">
+                                <?= $form->field($result,'IXLA')->textInput()?>
+                            </div>
+                            <div class="col-md-2">
+                                <?= $form->field($result,'boshqa_serologiya')->textInput()?>
+                            </div>
+                        </div>
+
+
+                   <div class="row">
+                       <div class="col-md-2">
+                           <?= $form->field($result,'PSR')->textInput()?>
+                       </div>
+                       <div class="col-md-2">
+                           <?= $form->field($result,'gistologiya')->textInput()?>
+                       </div>
+                       <div class="col-md-2">
+                           <?= $form->field($result,'gemotologiya')->textInput()?>
+                       </div>
+                       <div class="col-md-2">
+                           <?= $form->field($result,'koprologiya')->textInput()?>
+                       </div>
+                       <div class="col-md-2">
+                           <?= $form->field($result,'kimyoviy')->textInput()?>
+                       </div>
+                       <div class="col-md-2">
+                           <?= $form->field($result,'biokimyoviy')->textInput()?>
+                       </div>
+
+                   </div>
+                    </div>
+
+
                 <button type="submit" class="btn btn-success"><?= Yii::t('lab', 'Saqlash') ?></button>
 
                 <?php ActiveForm::end() ?>
@@ -399,7 +492,97 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($result,'ads')->dropDownList(['0'=>Yii::t('lab','Tasdiqlanmadi'),1=>Yii::t('lab','Tasdiqlandi')],['prompt'=>Yii::t('lab','Umumiy tekshiruv natijasi'),'disabled'=>true])?>
 
         </div>
+                <h4>O'tkazilgan tekshiruv natijalari:</h4>
+                <div class="row">
+                    <div class="col-md-2">
+                        <?= $form->field($result,'patonomiya')->textInput(['disabled'=>true])?>
+                    </div>
+                    <div class="col-md-2">
+                        <?= $form->field($result,'organoleptika')->textInput(['disabled'=>true])?>
+                    </div>
+                    <div class="col-md-2">
+                        <?= $form->field($result,'mikroskopiya_nurli')->textInput(['disabled'=>true])?>
+                    </div>
+                    <div class="col-md-2">
+                        <?= $form->field($result,'mikroskopiya_lyuminesent')->textInput(['disabled'=>true])?>
+                    </div>
+                    <div class="col-md-2">
+                        <?= $form->field($result,'bakterilogik')->textInput(['disabled'=>true])?>
+                    </div>
+                    <div class="col-md-2">
+                        <?= $form->field($result,'virusologik_TE_KE')->textInput(['disabled'=>true])?>
+                    </div>
+                    <div class="col-md-2">
+                        <?= $form->field($result,'virusologik_XM_KK')->textInput(['disabled'=>true])?>
+                    </div>
+                    <div class="col-md-2">
+                        <?= $form->field($result,'biologik')->textInput(['disabled'=>true])?>
+                    </div>
 
+
+                    <h4> Serologik tekshiruvlar:</h4>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <?= $form->field($result,'RA_KR')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'RSK')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'RDSK')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'RBP')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'RMA')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'RP_RDP')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'RH')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'RNGA')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'RGA')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'IFA')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'IXLA')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'boshqa_serologiya')->textInput(['disabled'=>true])?>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <?= $form->field($result,'PSR')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'gistologiya')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'gemotologiya')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'koprologiya')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'kimyoviy')->textInput(['disabled'=>true])?>
+                        </div>
+                        <div class="col-md-2">
+                            <?= $form->field($result,'biokimyoviy')->textInput(['disabled'=>true])?>
+                        </div>
+
+                    </div>
+                </div>
         <?php ActiveForm::end()?>
 
 

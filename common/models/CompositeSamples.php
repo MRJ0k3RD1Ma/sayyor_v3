@@ -11,6 +11,7 @@ use Yii;
  * @property int|null $sample_id
  * @property int|null $status_id
  * @property int|null $sample_status_id
+ * @property int|null $registration_id
  * @property string|null $ads
  *
  * @property Samples $sample
@@ -33,7 +34,7 @@ class CompositeSamples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sample_id','is_group', 'status_id','sample_status_id'], 'integer'],
+            [['sample_id','is_group', 'status_id','sample_status_id','registration_id'], 'integer'],
             ['ads','string','max'=>500],
             [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => Samples::className(), 'targetAttribute' => ['sample_id' => 'id']],
         ];
@@ -74,6 +75,6 @@ class CompositeSamples extends \yii\db\ActiveRecord
      */
     public function getSampleRegistrations()
     {
-        return $this->hasMany(SampleRegistration::className(), ['composite_sample_id' => 'id']);
+        return $this->hasMany(SampleRegistration::className(), ['registration_id' => 'id']);
     }
 }

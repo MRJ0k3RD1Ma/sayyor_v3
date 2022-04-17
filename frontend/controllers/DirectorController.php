@@ -25,6 +25,7 @@ use common\models\RouteSert;
 use common\models\SampleRegistration;
 use common\models\Samples;
 use common\models\Sertificates;
+use common\models\Vet4;
 use Exception;
 use frontend\models\search\director\RouteSertSearch;
 use kartik\mpdf\Pdf;
@@ -245,6 +246,13 @@ class DirectorController extends Controller
                 $cnt = \common\models\Samples::find()->where(['sert_id'=>$model->sample->sert_id])->andWhere(['<>','status_id',6])->andWhere(['is_group'=>1])->count('id');
                 $cnt_acc = \common\models\Samples::find()->where(['sert_id'=>$model->sample->sert_id])->andWhere(['is_group'=>1])->andWhere(['<>','status_id',6])->andWhere(['status_id'=>5])->count('id');
                 // mutipleni yozish garak
+
+                $regis = SampleRegistration::findOne($model->registration_id);
+                $nm = SampleRegistration::find()->where(['organization_id'=>$regis->organization_id])->max('res_id');
+                $nm = intval($nm)+1;
+                $regis->res = "M/".get3num($regis->organization_id).'-'.$nm;
+                $regis->res_id = $nm;
+                $regis->save(false);
 
                 if($cnt==$cnt_acc){
 
@@ -764,10 +772,21 @@ class DirectorController extends Controller
     public function actionPdfAnimal($id)
     {
         $model = Samples::findOne(['id' => $id]);
-        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
-        header('Content-Disposition: attachment; name=' . $fileName);
-        $file = fopen($fileName, 'r+');
-        Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+        if($model->is_group == 1){
+
+            $regid = CompositeSamples::findOne(['sample_id'=>$model->id]);
+
+            $fileName = Yii::getAlias('@uploads') . "/../pdf/" . SampleRegistration::tableName() . "_" . $regid->registration_id . ".pdf";
+            header('Content-Disposition: attachment; name=' . $fileName);
+            $file = fopen($fileName, 'r+');
+            Yii::$app->response->sendFile($fileName, SampleRegistration::tableName() . "_" . $regid->registration_id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+        }else{
+            $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $model::tableName() . "_" . $model->id . ".pdf";
+            header('Content-Disposition: attachment; name=' . $fileName);
+            $file = fopen($fileName, 'r+');
+            Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+
+        }
 
     }
 
@@ -806,5 +825,13 @@ class DirectorController extends Controller
         header('Content-Disposition: attachment; name=' . $fileName);
         $file = fopen($fileName, 'r+');
         Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+    }
+
+    public function actionReportvet4(){
+        $model = new Vet4();
+        if($model->load(Yii::$app->request->post())){
+            errdeb($model);
+        }
+        return $this->render('vet4',['model'=>$model]);
     }
 }

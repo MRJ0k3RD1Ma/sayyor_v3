@@ -67,7 +67,9 @@ $qr =function() use ($samples,$route) {
     </thead>
 
 </table>
-
+    <div class="align-content-center" style="text-align: center">
+        <b>TEKSHIRISH BAYONNOMASI № <?= $route->registration->res ?></b>
+    </div>
     <div>
         <b>Buyurtmachi nomi va manzili:</b> <?php
         if ($regmodel->inn) {
@@ -92,9 +94,7 @@ $qr =function() use ($samples,$route) {
     </div>
 
 <?php foreach ($resultanimal as $anim):?>
-<div class="align-content-center" style="text-align: center">
-    <b>TEKSHIRISH BAYONNOMASI № <?= $anim->code ?></b>
-</div>
+
 
 <div>
     <?php
@@ -239,8 +239,9 @@ $qr =function() use ($samples,$route) {
     </tbody>
 </table>
 
+<?php $ra = [0=>'Tasdiqlanmadi',1=>'Tasdiqlandi'];?>
+<p>Umumlashgan natija: <?= $ra[$anim->ads] ?></p>
 
-<p>Umumlashgan natija: <?= $anim->ads ?></p>
 <p>Tekshirish sanasi: <?= $route->updated ?></p>
 <p>
     Tekshirish o'tkazdi: <?= $route->executor->name ?>

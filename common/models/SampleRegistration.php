@@ -18,6 +18,8 @@ use Yii;
  * @property int|null $results_conformity_id НД соответствия результатов требованиям
  * @property int|null $organization_id
  * @property int|null $emp_id
+ * @property int|null $res_id
+ * @property string|null $res
  * @property string|null $reg_date
  * @property string|null $created
  * @property string|null $updated
@@ -49,11 +51,11 @@ class SampleRegistration extends \yii\db\ActiveRecord
     {
         return [
             [['organization_id','is_research','research_category_id','sender_name', 'sender_phone',],'required'],
-            [['is_research','reg_id','code_id', 'research_category_id', 'results_conformity_id', 'organization_id', 'emp_id','status_id', ], 'integer'],
+            [['is_research','reg_id','code_id', 'research_category_id', 'results_conformity_id','res_id', 'organization_id', 'emp_id','status_id', ], 'integer'],
             [['reg_date','created','updated'], 'safe'],
             ['composite','each','rule'=>['integer']],
             ['ads','string','max'=>500],
-            [['pnfl', 'inn', 'code','sender_name','sender_phone'], 'string', 'max' => 255],
+            [['pnfl', 'inn','res', 'code','sender_name','sender_phone'], 'string', 'max' => 255],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['organization_id' => 'id']],
             [['research_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => ResearchCategory::className(), 'targetAttribute' => ['research_category_id' => 'id']],
         ];
@@ -82,6 +84,8 @@ class SampleRegistration extends \yii\db\ActiveRecord
             'reg_id' => Yii::t('model', 'Namuna qabul qiluvchi'),
             'created' => Yii::t('model', 'Yuborilgan vaqti'),
             'ads' => Yii::t('model', 'Izoh'),
+            'res' => Yii::t('model', 'res'),
+            'res_id' => Yii::t('model', 'resid'),
         ];
     }
 

@@ -389,21 +389,21 @@ YiiAsset::register($this);
                         <td><?= $result->kimyoviy?></td>
                         <td><?= $result->biokimyoviy?></td>
                         <?php
-                            $cnt = 0;
-                            $sum = 0;
-                            $n=0;
-                            foreach ($result->getAttributes() as $key=>$item){
-                                $n++;
-                                if($n>17){
-                                    if($item != 0){
-                                        $cnt++;
-                                        $sum += $item;
-                                    }
+                        $cnt = 0;
+                        $sum = 0;
+                        $n=0;
+                        foreach ($result->getAttributes() as $key=>$item){
+                            $n++;
+                            if($n>17){
+                                if($item != 0){
+                                    $cnt++;
+                                    $sum += $item;
                                 }
                             }
+                        }
                         ?>
+                        <td><?= $result->ads?></td>
                         <td><?= $cnt?></td>
-                        <td><?= $sum?></td>
 
 
                     </tr>

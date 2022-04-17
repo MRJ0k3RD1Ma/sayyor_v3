@@ -185,6 +185,7 @@ class LabController extends Controller
         $res = ResultAnimal::findOne(['sample_id'=>$model->sample_id]);
         $n=0;
         $true = false;
+
         foreach ($res->getAttributes() as $key=>$item){
             $n++;
             if($n>17){
@@ -195,9 +196,13 @@ class LabController extends Controller
         }
 
         if($true){
-            $model->status_id = 4;
-            $model->save();
-            Yii::$app->session->setFlash('success', Yii::t('lab', 'Natijalar muvoffaqiyatli yuborildi'));
+            if($res->ads != null){
+                $model->status_id = 4;
+                $model->save();
+                Yii::$app->session->setFlash('success', Yii::t('lab', 'Natijalar muvoffaqiyatli yuborildi'));
+            }else{
+                Yii::$app->session->setFlash('error', Yii::t('lab', 'Umumlashgan natija kiritlmagan'));
+            }
         }else{
             Yii::$app->session->setFlash('error', Yii::t('lab', 'O\'tkazilgan tekshiruv natijalari kiritlmagan'));
         }

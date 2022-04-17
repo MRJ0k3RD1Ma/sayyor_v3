@@ -38,8 +38,8 @@ YiiAsset::register($this);
                </a>
            </div>
         <?php }}else{
-            $cnt = \common\models\Samples::find()->where(['sert_id'=>$model->sample->sert_id])->andWhere(['is_group'=>1])->count('id');
-            $cnt_acc = \common\models\Samples::find()->where(['sert_id'=>$model->sample->sert_id])->andWhere(['is_group'=>1])->andWhere(['status_id'=>3])->count('id');
+            $cnt = \common\models\Samples::find()->where(['sert_id'=>$model->sample->sert_id])->andWhere(['<>','status_id',6])->andWhere(['is_group'=>1])->count('id');
+            $cnt_acc = \common\models\Samples::find()->where(['sert_id'=>$model->sample->sert_id])->andWhere(['is_group'=>1])->andWhere(['<>','status_id',6])->andWhere(['status_id'=>5])->count('id');
             if($cnt==$cnt_acc){
             ?>
                 <div class="col-md-12">

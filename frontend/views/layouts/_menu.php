@@ -92,6 +92,16 @@ use common\models\RouteStatus;
                                 </a></li>
                         </ul>
                     </li>
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="sliders"></i>
+                            <span data-key="t-tables"><?= Yii::t('app','Hisobotlar')?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/reportvet4'])?>" data-key="t-basic-tables">Vet4</a></li>
+                        </ul>
+                    </li>
                 <?php endif;?>
 
                 <?php if(EmpPosts::isLeader(Yii::$app->user->identity->getId())):?>

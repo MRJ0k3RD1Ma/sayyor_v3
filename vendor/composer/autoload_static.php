@@ -116,6 +116,10 @@ class ComposerStaticInite5e09c870ca6a462bc5afe4e69259112
             'Mpdf\\' => 5,
             'Matrix\\' => 7,
         ),
+        'H' => 
+        array (
+            'Http\\Message\\' => 13,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -364,6 +368,10 @@ class ComposerStaticInite5e09c870ca6a462bc5afe4e69259112
         'Matrix\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
+        ),
+        'Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-http/message-factory/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

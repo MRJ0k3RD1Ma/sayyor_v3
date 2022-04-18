@@ -220,8 +220,9 @@ $lg = 'uz';
     </tbody>
 </table>
 
-<br>
-<p>Umumiy natija: <?= $resultanimal->ads ?></p>
+<br><?php $ra = [0=>'Tasdiqlanmadi',1=>'Tasdiqlandi'];?>
+<p>Umumlashgan natija: <?= $ra[$resultanimal->ads] ?></p>
+
 <p>Tekshirish sanasi: <?= $route->updated ?></p>
 <p>
     Tekshirish o'tkazdi: <?= $route->executor->name ?>

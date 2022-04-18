@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use PhpOffice\PhpSpreadsheet\Helper\Sample;
 use Yii;
 
 /**
@@ -40,6 +41,7 @@ use Yii;
  * @property int $RP_RDP
  * @property int $RH
  * @property int $RNGA
+ * @property int $RGKA
  * @property int $RGA
  * @property int $IFA
  * @property int $IXLA
@@ -70,8 +72,8 @@ class ResultAnimal extends \yii\db\ActiveRecord
         return [
             [['code_id', 'temprature','org_id','sample_id','humidity', 'creator_id', 'consent_id',
                 'state_id','patonomiya', 'organoleptika', 'mikroskopiya_nurli', 'mikroskopiya_lyuminesent',
-                'bakterilogik', 'virusologik_ТE_КE', 'virusologik_XM_KK', 'biologik', 'RA_KR', 'RSK', 'RDSK',
-                'RBP', 'RMA', 'RP_RDP', 'RH', 'RNGA', 'RGA', 'IFA', 'IXLA', 'boshqa_serologiya', 'PSR', 'gistologiya',
+                'bakterilogik', 'virusologik_TE_KE', 'virusologik_XM_KK', 'biologik', 'RA_KR', 'RSK', 'RDSK',
+                'RBP', 'RMA', 'RP_RDP', 'RH', 'RNGA','RGKA', 'RGA', 'IFA', 'IXLA', 'boshqa_serologiya', 'PSR', 'gistologiya',
                 'gemotologiya', 'koprologiya', 'kimyoviy', 'biokimyoviy'], 'integer'],
             [['conditions'], 'string'],
             [['created', 'updated', 'end_date', ], 'safe'],
@@ -117,6 +119,7 @@ class ResultAnimal extends \yii\db\ActiveRecord
             'RP_RDP' => Yii::t('model', 'RP,RDP'),
             'RH' => Yii::t('model', 'RH'),
             'RNGA' => Yii::t('model', 'RNGA'),
+            'RGKA' => Yii::t('model', 'RGKA'),
             'RGA' => Yii::t('model', 'RGA'),
             'IFA' => Yii::t('model', 'IFA'),
             'IXLA' => Yii::t('model', 'IXLA'),
@@ -132,5 +135,9 @@ class ResultAnimal extends \yii\db\ActiveRecord
 
     public function getTests(){
         return $this->hasMany(ResultAnimalTests::className(),['result_id'=>'id']);
+    }
+
+    public function getSample(){
+        return $this->hasOne(Samples::className(),['id'=>'sample_id']);
     }
 }

@@ -486,7 +486,7 @@ class RegisterController extends Controller
 
                 $template = TamplateAnimal::find()->where(['vet4' => $route->vet4])->all();
                 $result = new ResultAnimal();
-
+                $result->org_id = Yii::$app->user->identity->empPosts->org_id;
                 $num = ResultAnimal::find()->where(['org_id' => Yii::$app->user->identity->empPosts->org_id])->max('code_id');
                 $num = intval($num) + 1;
                 $result->code = get3num(Yii::$app->user->identity->empPosts->org_id) . '-' . $num;

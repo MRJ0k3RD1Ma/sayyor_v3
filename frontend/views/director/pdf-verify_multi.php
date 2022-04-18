@@ -8,6 +8,7 @@
 
 use common\models\Individuals;
 use common\models\LegalEntities;
+use common\models\Regulations;
 use common\models\ResultAnimal;
 use common\models\RouteSert;
 use common\models\Soato;
@@ -23,18 +24,18 @@ use Endroid\QrCode\Writer\PngWriter;
 $composite = $regmodel->comp;
 $samples = $model;
 $sertificate = $samples->sert;
-$resultanimal = ResultAnimal::findOne(['sample_id' => $samples->id]);
-
-
 $route = RouteSert::findOne(['sample_id' => $samples->id]);
 $routesert = $route->registration_id;
 
+$resultanimal = ResultAnimal::find()->where('sample_id in (select samples.id from samples inner join composite_samples on composite_samples.registration_id='.$route->registration_id.' where samples.is_group=1 and samples.status_id<>6)')->all();
+
+
 $lg = 'uz';
-$qr =function() use ($samples) {
+$qr =function() use ($samples,$route) {
     $data=Builder::create()
         ->writer(new PngWriter())
         ->writerOptions([])
-        ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsert','id'=>$samples->id]))
+        ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsertmulti','id'=>$route->registration_id]))
         ->encoding(new Encoding('UTF-8'))
         ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
         ->size(100)
@@ -66,33 +67,45 @@ $qr =function() use ($samples) {
     </thead>
 
 </table>
-<div class="align-content-center" style="text-align: center">
-    <b>TEKSHIRISH BAYONNOMASI № <?= $resultanimal->code ?></b>
-</div>
-<div>
-    <b>Buyurtmachi nomi va manzili:</b> <?php
-    if ($regmodel->inn) {
-        $legal = LegalEntities::findOne(['inn' => $regmodel->inn]);
-        echo $legal->inn
-            . " "
-            . $legal->name
-            . " "
-            . Tshx::findOne(['id' => $legal->tshx_id])->name_uz
-            . " "
-            . Soato::Full($legal->soato_id,'lot');
+    <div class="align-content-center" style="text-align: center">
+        <b>TEKSHIRISH BAYONNOMASI № <?= $route->registration->res ?></b>
+    </div>
+    <div>
+        <b>Buyurtmachi nomi va manzili:</b> <?php
+        if ($regmodel->inn) {
+            $legal = LegalEntities::findOne(['inn' => $regmodel->inn]);
+            echo $legal->inn
+                . " "
+                . $legal->name
+                . " "
+                . Tshx::findOne(['id' => $legal->tshx_id])->name_uz
+                . " "
+                . Soato::Full($legal->soato_id,'lot');
 
-    } else {
-        $ind = Individuals::findOne(['pnfl' => $regmodel->pnfl]);
-        echo $regmodel->pnfl . " " . $regmodel->inn . " "
-            . $ind->surname . " "
-            . $ind->name . " "
-            . $ind->middlename . " "
-            . Soato::Full($ind->soato_id,'lot');
-    }
-    ?>
-</div>
+        } else {
+            $ind = Individuals::findOne(['pnfl' => $regmodel->pnfl]);
+            echo $regmodel->pnfl . " " . $regmodel->inn . " "
+                . $ind->surname . " "
+                . $ind->name . " "
+                . $ind->middlename . " "
+                . Soato::Full($ind->soato_id,'lot');
+        }
+        ?>
+    </div>
+
+<?php foreach ($resultanimal as $anim):?>
+
+
 <div>
     <?php
+
+    $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
+        ->innerJoin('tamplate_animal', 'tamplate_animal.id=template_animal_regulations.template_id')
+        ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_animal_tests.checked = 1 and result_id=' . $anim->id . ')')
+        ->groupBy('regulations.id')->all();//->innerJoin('result_food_tests','template_food.id = result_food_tests.template_id and result_food_tests.checked=1')
+    ;
+
+    $samples = $anim->sample;
     $res = "";
     $d = $samples;
     $res .= $d->animal->type->{'name_' . $lg} . ' ';
@@ -121,7 +134,7 @@ $qr =function() use ($samples) {
 </div>
 
 <div>
-    <b>Tekshirish o'tkazilgan shartoit: Tempratura:</b><?= $resultanimal->temprature?>, <b>Namlik:</b> <?= $resultanimal->humidity?>, <b>Reaktivlar:</b> <?= $resultanimal->reagent_series.' '.$resultanimal->reagent_name?>, <b>Boshqa sharoitlar:</b><?= $resultanimal->conditions?>
+    <b>Tekshirish o'tkazilgan shartoit: Tempratura:</b><?= $anim->temprature?>, <b>Namlik:</b> <?= $anim->humidity?>, <b>Reaktivlar:</b> <?= $anim->reagent_series.' '.$anim->reagent_name?>, <b>Boshqa sharoitlar:</b><?= $anim->conditions?>
 </div>
 
 <div style="text-align: center">
@@ -158,7 +171,7 @@ $qr =function() use ($samples) {
         <td>4Vet</td>
         <td colspan="4"><?= $route->vet4?></td>
     </tr>
-    <?php foreach ($resultanimal->tests as $item): ?>
+    <?php foreach ($anim->tests as $item): ?>
         <tr>
             <td><?= $item->template->name_uz?></td>
             <td><?= $item->template->unit->name_uz ?></td>
@@ -227,7 +240,8 @@ $qr =function() use ($samples) {
 </table>
 
 <?php $ra = [0=>'Tasdiqlanmadi',1=>'Tasdiqlandi'];?>
-<p>Umumlashgan natija: <?= $ra[$resultanimal->ads] ?></p>
+<p>Umumlashgan natija: <?= $ra[$anim->ads] ?></p>
+
 <p>Tekshirish sanasi: <?= $route->updated ?></p>
 <p>
     Tekshirish o'tkazdi: <?= $route->executor->name ?>
@@ -235,3 +249,5 @@ $qr =function() use ($samples) {
 <p>
     Tasdiqladi: <?= $route->director->name ?>
 </p>
+
+<?php endforeach;?>

@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'd4befb397657f807110fe4addcce7277f8b8cfc2',
+        'reference' => 'acee69753bc0f6a0876bbef30197f03560df7ffc',
         'name' => 'yiisoft/yii2-app-advanced',
         'dev' => true,
     ),
@@ -363,12 +363,12 @@
             'dev_requirement' => true,
         ),
         'mpdf/mpdf' => array(
-            'pretty_version' => 'v8.0.17',
-            'version' => '8.0.17.0',
+            'pretty_version' => 'v8.1.0',
+            'version' => '8.1.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../mpdf/mpdf',
             'aliases' => array(),
-            'reference' => '5f64118317c8145c0abc606b310aa0a66808398a',
+            'reference' => '84a55688fdc9c86134f71a9ffe96a14bc6d059a7',
             'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
@@ -424,6 +424,15 @@
             'aliases' => array(),
             'reference' => '4f7fd7836c6f332bb2933569e566a0d6c4cbed74',
             'dev_requirement' => true,
+        ),
+        'php-http/message-factory' => array(
+            'pretty_version' => 'v1.0.2',
+            'version' => '1.0.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../php-http/message-factory',
+            'aliases' => array(),
+            'reference' => 'a478cb11f66a6ac48d8954216cfed9aa06a501a1',
+            'dev_requirement' => false,
         ),
         'phpdocumentor/reflection-common' => array(
             'pretty_version' => '2.2.0',
@@ -588,7 +597,7 @@
             'install_path' => __DIR__ . '/../psr/http-message',
             'aliases' => array(),
             'reference' => 'f6561bf28d520154e4b0ec72be95418abe6d9363',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'psr/http-message-implementation' => array(
             'dev_requirement' => true,
@@ -992,7 +1001,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'd4befb397657f807110fe4addcce7277f8b8cfc2',
+            'reference' => 'acee69753bc0f6a0876bbef30197f03560df7ffc',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(

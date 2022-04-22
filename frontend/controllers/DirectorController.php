@@ -16,6 +16,7 @@ use common\models\FoodRegistration;
 use common\models\FoodRoute;
 use common\models\FoodSamples;
 use common\models\FoodSamplingCertificate;
+use common\models\Individuals;
 use common\models\Regulations;
 use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
@@ -25,16 +26,21 @@ use common\models\RouteSert;
 use common\models\SampleRegistration;
 use common\models\Samples;
 use common\models\Sertificates;
+use common\models\Soato;
 use common\models\Vet4;
 use Exception;
 use frontend\models\search\director\RouteSertSearch;
 use kartik\mpdf\Pdf;
 use Mpdf\MpdfException;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
 use setasign\Fpdi\PdfParser\PdfParserException;
 use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
+use yii\helpers\FileHelper;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -830,8 +836,83 @@ class DirectorController extends Controller
     public function actionReportvet4(){
         $model = new Vet4();
         if($model->load(Yii::$app->request->post())){
-            errdeb($model);
+
+            $res = ResultAnimal::find()
+//                ->where('end_date is not null')
+//                ->andWhere(['>=','end_date',$model->date_to])
+//                ->andWhere(['<=','end_date',$model->date_do])
+
+            ->all();
+
+            $speadsheet = new Spreadsheet();
+            $sheet = $speadsheet->getActiveSheet();
+            $title = date('Y-m-d h:i:s');
+//            $sheet->setTitle(substr($title, 0, 31));
+            $row = 1;
+            $col = 1;
+            /*col = 33*/
+            $sheet->mergeCells("A1:L1");
+            $sheet->setCellValue('A1','Hayvon kasalliklari tashxisi bo`yicha o`tkazilgan tekshiruvlar');
+            $sheet->mergeCells("A2:B2");
+            $sheet->setCellValue("A2",$model->date_to);
+            $sheet->mergeCells("C2:D2");
+            $sheet->setCellValue("C2",$model->date_do);
+            $sheet->mergeCells("E2:L2");
+//            $sheet->setCellValue() ko'lami yoziladi
+            $sheet->mergeCells("M1:O1");
+            $sheet->setCellValue('M1','3vet hisoboti');
+            $sheet->mergeCells("M2:O2");
+            $sheet->setCellValue('M2',date('Y-m-d h:i:s'));
+
+            $sheet->mergeCells("A3:A5");
+            $sheet->setCellValue('A3','Kasallik, hayvon nomi');
+
+            $sheet->mergeCells("B3:B5");
+            $sheet->setCellValue('B3','Kod');
+            $sheet->mergeCells("C3:C5");
+            $sheet->setCellValue('C3','Materiallar soni');
+            $sheet->mergeCells("D3:D5");
+            $sheet->setCellValue('A3','');
+            $sheet->mergeCells("E3:AE3");
+            $sheet->setCellValue('E3','4vet hisoboti uchun');
+
+            $sheet->mergeCells("AF3:AF5");
+            $sheet->setCellValue('AF3','Musbat natijalar');
+
+            $sheet->mergeCells("AE3:AE5");
+            $sheet->setCellValue('AE3','Tekshiruvlar soni');
+
+
+
+            /*$key = 0;
+            $models = $res;
+            foreach ($models as $item) {
+
+                $row++;
+                $col = 1;
+                $key++;
+                $soat=function($model){
+                    return Soato::Full($model->soato_id);
+                };
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_NUMERIC);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->name, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->surname, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->middlename, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $soat($item), DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->adress, DataType::TYPE_STRING);
+            }*/
+            $name = 'ExcelReport.xlsx';
+            $writer = new Xlsx($speadsheet);
+            $dir = Yii::getAlias('@tmp/excel');
+            if (!is_dir($dir)) {
+                FileHelper::createDirectory($dir, 0777);
+            }
+            $fileName = $dir . DIRECTORY_SEPARATOR . $name;
+            $writer->save($fileName);
+            return Yii::$app->response->sendFile($fileName);
         }
         return $this->render('vet4',['model'=>$model]);
     }
+
+
 }

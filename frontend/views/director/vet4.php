@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model,'date_do')->textInput(['type'=>'date'])?>
 
+                <?php if(false){?>
                 <?= $form->field($model,'country')->dropDownList([17=>'O\'zbekiston Respublikasi'])?>
 
                 <?= $form->field($model, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Viloyatni tanlang')]) ?>
@@ -42,6 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model,'org')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->where(['type_id'=>1])->all(),'id','NAME_FULL'),['prompt'=>'Tashkilotni tanlang'])?>
 
+        <?php } ?>
                 <button type="submit" class="btn btn-success">Hisbotni shakllantirish</button>
                 <?php \yii\widgets\ActiveForm::end()?>
                 </div>

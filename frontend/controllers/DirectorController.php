@@ -17,6 +17,7 @@ use common\models\FoodRoute;
 use common\models\FoodSamples;
 use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
+use common\models\Organizations;
 use common\models\Regulations;
 use common\models\ResultAnimal;
 use common\models\ResultAnimalTests;
@@ -838,14 +839,49 @@ class DirectorController extends Controller
         if($model->load(Yii::$app->request->post())){
 
             $res = ResultAnimal::find()
-//                ->where('end_date is not null')
-//                ->andWhere(['>=','end_date',$model->date_to])
-//                ->andWhere(['<=','end_date',$model->date_do])
+                ->where('end_date is not null')
+                ->andWhere(['>=','end_date',$model->date_to])
+                ->andWhere(['<=','end_date',$model->date_do])
+                ->andWhere(['org_id'=>Yii::$app->user->identity->empPosts->org_id])
 
             ->all();
 
             $speadsheet = new Spreadsheet();
+
             $sheet = $speadsheet->getActiveSheet();
+            $speadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+            $speadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+            $speadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+            $speadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('O')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('P')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('Q')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('R')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('S')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('T')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('U')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('V')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('W')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('X')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('Y')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('Z')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('AA')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('AB')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('AC')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('AD')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('AE')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('AF')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('AG')->setWidth(12);
             $title = date('Y-m-d h:i:s');
 //            $sheet->setTitle(substr($title, 0, 31));
             $row = 1;
@@ -853,14 +889,14 @@ class DirectorController extends Controller
             /*col = 33*/
             $sheet->mergeCells("A1:L1");
             $sheet->setCellValue('A1','Hayvon kasalliklari tashxisi bo`yicha o`tkazilgan tekshiruvlar');
-            $sheet->mergeCells("A2:B2");
-            $sheet->setCellValue("A2",$model->date_to);
+            $sheet->mergeCells("A2:D2");
             $sheet->mergeCells("C2:D2");
-            $sheet->setCellValue("C2",$model->date_do);
             $sheet->mergeCells("E2:L2");
-//            $sheet->setCellValue() ko'lami yoziladi
+            $sheet->setCellValue("E2",date('d.m.Y',strtotime($model->date_to)).' - '.date('d.m.Y',strtotime($model->date_do)));
+            $sheet->setCellValue('A2',Organizations::findOne(Yii::$app->user->identity->empPosts->org_id)->NAME_FULL);
+
             $sheet->mergeCells("M1:O1");
-            $sheet->setCellValue('M1','3vet hisoboti');
+            $sheet->setCellValue('M1','4vet hisoboti');
             $sheet->mergeCells("M2:O2");
             $sheet->setCellValue('M2',date('Y-m-d h:i:s'));
 
@@ -879,29 +915,156 @@ class DirectorController extends Controller
             $sheet->mergeCells("AF3:AF5");
             $sheet->setCellValue('AF3','Musbat natijalar');
 
-            $sheet->mergeCells("AE3:AE5");
-            $sheet->setCellValue('AE3','Tekshiruvlar soni');
+            $sheet->mergeCells("AG3:AG5");
+            $sheet->setCellValue('AG3','Tekshiruvlar soni');
 
+            $sheet->mergeCells("E4:E5");
+            $sheet->setCellValue('E4','Patonomiya');
 
+            $sheet->mergeCells("F4:F5");
+            $sheet->setCellValue('F4','Orgonalepika');
 
-            /*$key = 0;
+            $sheet->mergeCells("G4:H4");
+            $sheet->setCellValue('G4','Mikroskopiya');
+            $sheet->setCellValue('G5','Nur');
+            $sheet->setCellValue('H5','Lyuminesent');
+
+            $sheet->mergeCells("I4:I5");
+            $sheet->setCellValue('I4','Bakteriologik');
+
+            $sheet->mergeCells("J4:K5");
+            $sheet->setCellValue('J4','Virusologik');
+            $sheet->setCellValue('J5','TE KE');
+            $sheet->setCellValue('K5','XM KK');
+
+            $sheet->mergeCells("L4:L5");
+            $sheet->setCellValue('L4','Biologik');
+
+            $sheet->mergeCells("M4:Z4");
+            $sheet->setCellValue('M4','Serologik');
+            $sheet->setCellValue('M5','RA KR');
+            $sheet->setCellValue('N5','RSK');
+            $sheet->setCellValue('O5','RDSK');
+            $sheet->setCellValue('P5','RBP');
+            $sheet->setCellValue('Q5','RMA');
+            $sheet->setCellValue('R5','RP,RDP');
+            $sheet->setCellValue('S5','RN');
+            $sheet->setCellValue('T5','RNGA');
+            $sheet->setCellValue('U5','RKGA');
+            $sheet->setCellValue('V5','RGA');
+            $sheet->setCellValue('X5','IFA');
+            $sheet->setCellValue('Y5','IXLA');
+            $sheet->setCellValue('Z5','Boshqa');
+
+            $sheet->mergeCells("AA4:AA5");
+            $sheet->mergeCells("AB4:AB5");
+            $sheet->mergeCells("AC4:AC5");
+            $sheet->mergeCells("AD4:AD5");
+            $sheet->mergeCells("AE4:AE5");
+            $sheet->mergeCells("AF4:AF5");
+            $sheet->setCellValue('AA4','PSR');
+            $sheet->setCellValue('AB4','Gistologiya');
+            $sheet->setCellValue('AC4','Gemotologiya');
+            $sheet->setCellValue('AD4','Koprologik');
+            $sheet->setCellValue('AE4','Kimyoviy');
+            $sheet->setCellValue('AF4','Biokimyoviy');
+
+            $sheet->setCellValue('A6','');
+            $sheet->setCellValue('B6','A');
+            $sheet->setCellValue('C6','B');
+            $sheet->setCellValue('D6','1');
+            $sheet->setCellValue('E6','2');
+            $sheet->setCellValue('F6','3');
+            $sheet->setCellValue('G6','4');
+            $sheet->setCellValue('H6','5');
+            $sheet->setCellValue('I6','6');
+            $sheet->setCellValue('J6','7');
+            $sheet->setCellValue('K6','8');
+            $sheet->setCellValue('L6','9');
+            $sheet->setCellValue('M6','10');
+            $sheet->setCellValue('N6','11');
+            $sheet->setCellValue('O6','12');
+            $sheet->setCellValue('P6','13');
+            $sheet->setCellValue('Q6','14');
+            $sheet->setCellValue('R6','15');
+            $sheet->setCellValue('S6','16');
+            $sheet->setCellValue('T6','17');
+            $sheet->setCellValue('U6','18');
+            $sheet->setCellValue('V6','19');
+            $sheet->setCellValue('W6','20');
+            $sheet->setCellValue('X6','21');
+            $sheet->setCellValue('Y6','22');
+            $sheet->setCellValue('Z6','23');
+            $sheet->setCellValue('AA6','24');
+            $sheet->setCellValue('AB6','25');
+            $sheet->setCellValue('AC6','26');
+            $sheet->setCellValue('AD6','27');
+            $sheet->setCellValue('AE6','28');
+            $sheet->setCellValue('AF6','29');
+            $sheet->setCellValue('AG6','30');
+
+            $lg = 'uz';
+            $key = 0;
             $models = $res;
-            foreach ($models as $item) {
-
+            $row = 6;
+            foreach ($models as $result) {
+                $sample = $result->sample;
                 $row++;
                 $col = 1;
                 $key++;
                 $soat=function($model){
                     return Soato::Full($model->soato_id);
                 };
-                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_NUMERIC);
-                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->name, DataType::TYPE_STRING);
-                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->surname, DataType::TYPE_STRING);
-                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->middlename, DataType::TYPE_STRING);
-                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $soat($item), DataType::TYPE_STRING);
-                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->adress, DataType::TYPE_STRING);
-            }*/
-            $name = 'ExcelReport.xlsx';
+                $ml = RouteSert::findOne(['sample_id'=>$sample->id]);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $sample->suspectedDisease->vet4 . $sample->animal->type->vet4.'-'.$sample->suspectedDisease->{'name_uz'}.', '.$sample->animal->type->{'name_uz'}, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $ml->vet4.', '.\common\models\SampleTypes::findOne(['vet4'=>substr($ml->vet4,5,3)])->{'name_'.$lg}, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, '1', DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->patonomiya, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->organoleptika, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->mikroskopiya_nurli, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->mikroskopiya_lyuminesent, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->bakterilogik, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->virusologik_TE_KE, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->virusologik_XM_KK, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->biologik, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->RA_KR, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->RSK, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->RDSK, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->RBP, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->RMA, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->RP_RDP, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->RH, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->RNGA, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->RGKA, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->RGA, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->IFA, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->IXLA, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->boshqa_serologiya, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->PSR, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->gistologiya, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->gemotologiya, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->koprologiya, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->kimyoviy, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->biokimyoviy, DataType::TYPE_STRING);
+
+                $cnt = 0;
+                $sum = 0;
+                $n=0;
+                foreach ($result->getAttributes() as $keys=>$item){
+                    $n++;
+                    if($n>17){
+                        if($item != 0){
+                            $cnt++;
+                            $sum += $item;
+                        }
+                    }
+                }
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->ads, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $cnt, DataType::TYPE_STRING);
+
+            }
+            $name = 'ExcelReport-' . Yii::$app->formatter->asDatetime(time(), 'php:d_m_Y_h_i_s') . '.xlsx';
             $writer = new Xlsx($speadsheet);
             $dir = Yii::getAlias('@tmp/excel');
             if (!is_dir($dir)) {

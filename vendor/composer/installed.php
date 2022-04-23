@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'acee69753bc0f6a0876bbef30197f03560df7ffc',
+        'reference' => '63c41a84d79eee47ad56e13627e733d17d3faba3',
         'name' => 'yiisoft/yii2-app-advanced',
         'dev' => true,
     ),
@@ -363,12 +363,12 @@
             'dev_requirement' => true,
         ),
         'mpdf/mpdf' => array(
-            'pretty_version' => 'v8.1.0',
-            'version' => '8.1.0.0',
+            'pretty_version' => 'v8.1.1',
+            'version' => '8.1.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../mpdf/mpdf',
             'aliases' => array(),
-            'reference' => '84a55688fdc9c86134f71a9ffe96a14bc6d059a7',
+            'reference' => 'e511e89a66bdb066e3fbf352f00f4734d5064cbf',
             'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
@@ -1001,7 +1001,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'acee69753bc0f6a0876bbef30197f03560df7ffc',
+            'reference' => '63c41a84d79eee47ad56e13627e733d17d3faba3',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(

@@ -23,6 +23,9 @@ use common\models\RouteStatus;
                         <span data-key="t-dashboard"><?= Yii::t('lab','Bosh sahifa')?></span>
                     </a>
                 </li>
+
+                <?php $type = Yii::$app->user->identity->empPosts->org->type_id; if($type==1){?>
+
                 <?php if(EmpPosts::isRegister(Yii::$app->user->identity->getId())):?>
                 <li class="menu-title" data-key="t-menu">Registrator</li>
 
@@ -192,6 +195,188 @@ use common\models\RouteStatus;
                     </ul>
                 </li>
                 <?php endif;?>
+
+                <?php }elseif($type == 2){?>
+                <!--Tuman bulim-->
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="bar-chart-2"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu', 'Arizalar ro\'yhati') ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/district/sertapp']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Hayvon kasalliklari tashhilari') ?></a>
+                            </li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/district/sertfood']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari') ?></a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="bar-chart-2"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu', 'Dalolatnomalar') ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/district/listanimal']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Hayvon kasalliklari tashhilari') ?></a>
+                            </li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/district/listfood']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari') ?></a></li>
+                        </ul>
+                    </li>
+
+                <?php }elseif($type == 3){?>
+                    <!--Viloyat boshqarmasi-->
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="bar-chart-2"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu', 'Arizalar ro\'yhati') ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/region/sertapp']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Hayvon kasalliklari tashhilari') ?></a>
+                            </li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/region/sertfood']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari') ?></a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="bar-chart-2"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu', 'Dalolatnomalar') ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/region/listanimal']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Hayvon kasalliklari tashhilari') ?></a>
+                            </li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/region/listfood']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari') ?></a></li>
+                        </ul>
+                    </li>
+
+
+                <?php }elseif($type == 4 and Yii::$app->user->identity->empPosts->post_id != 5){?>
+                    <!--Komitet-->
+
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="bar-chart-2"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu', 'Arizalar ro\'yhati') ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/sertapp']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Hayvon kasalliklari tashhilari') ?></a>
+                            </li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/sertfood']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari') ?></a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="bar-chart-2"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu', 'Dalolatnomalar') ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/listanimal']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Hayvon kasalliklari tashhilari') ?></a>
+                            </li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/listfood']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari') ?></a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="bar-chart-2"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu', 'Xabarlar') ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/reportanimal']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Hayvon kasalliklari') ?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/reportfood']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari') ?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/reportdrugs']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Dori darmonlar') ?></a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="bar-chart-2"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu', 'Statistika') ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/stat-reganimal']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Hayvon kasalliklari (Arizalar)') ?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/stat-regfood']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari (Arizalar)') ?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/stat-animal']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Hayvon kasalliklari (Dalolatnomalar)') ?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/komitet/stat-food']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari (Dalolatnomalar)') ?></a></li>
+                        </ul>
+                    </li>
+
+
+                <?php }elseif($type == 4 and Yii::$app->user->identity->empPosts->post_id == 5){?>
+
+                    <li>
+                        <a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/sert/'])?>">
+                            <i data-feather="sliders"></i>
+                            <span data-key="t-table"><?= Yii::t('cp.menu','Dalolatnomalar')?></span>
+
+                        </a>
+                    </li>
+                    <!--    <li>
+                    <a href="<?php /*= Yii::$app->urlManager->createUrl(['/cp/default/application/'])*/?>">
+                        <i data-feather="sliders"></i>
+                        <span data-key="t-table"><?php /*= Yii::t('cp.menu','Arizalar')*/?></span>
+
+                    </a>
+                </li>-->
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="users"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu','Ma\'lumotnoma')?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/inside'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Ichki')?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/outside'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Tashqi')?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/templates'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Shablonlar')?></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="folder"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu','Kontragentlar')?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/legal-entities'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Yuridik shaxslar')?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/individuals'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Jismoniy shaxslar')?></a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-title mt-2" data-key="t-components"><?= Yii::t('cp.menu','Sozlamalar')?></li>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="users"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu','Foydalanuvchilar')?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/employees/index'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Foydalanuvchilar')?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/post-list/index'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Lavozimlar ro\'yhati')?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/roles/index'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Foydalanuvchilar huquqlari')?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/organizations/index'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Tashkilotlar')?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/organization-type/index'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Tashkilot turlari')?></a></li>
+                        </ul>
+                    </li>
+
+                <?php }?>
+
             </ul>
 
         </div>

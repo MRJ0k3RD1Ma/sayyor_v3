@@ -623,6 +623,9 @@ class DirectorController extends Controller
             Yii::$app->session->setFlash('success', Yii::t('lab', 'Topshiriq imzolandi. Namunani yo\'q qilish uchun {code} raqamli dalolatnoma labarantga yuborildi', ['code' => $dest->code]));
 
             $result = ResultFood::findOne(['sample_id' => $dest->sample_id]);
+            $result->creator_id = $model->executor_id;
+            $result->consept_id = $model->director_id;
+            $result->save();
             $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations', 'template_food_regulations.regulation_id = regulations.id')
                 ->innerJoin('template_food', 'template_food.id=template_food_regulations.template_id')
                 ->where('template_food.id in (select result_food_tests.template_id from result_food_tests where result_food_tests.checked = 1 and result_id=' . $result->id . ')')

@@ -26,7 +26,8 @@ return [
     ],
     'result'=>[
         0=>Yii::t('lab','Yo\'q'),
-        1=>Yii::t('lab','Ha')
+        1=>Yii::t('lab','Ha'),
+        3=>Yii::t('lab','Киритилмаган')
     ],
 
 ];

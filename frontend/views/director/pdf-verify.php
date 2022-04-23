@@ -177,7 +177,7 @@ $qr =function() use ($samples) {
             <?php if ($item->template->unit->type_id == 1) { ?>
                 <td><?= $item->result ?></td>
             <?php } elseif ($item->template->unit->type_id == 2) { ?>
-                <td><?= Yii::$app->params['result'][$item->result] ?></td>
+                <td><?= @Yii::$app->params['result'][$item->result] ?></td>
             <?php } elseif ($item->template->unit->type_id == 3) { ?>
                 <td><?= $item->template->min . '-' . $item->template->max ?></td>
             <?php } elseif ($item->template->unit->type_id == 4) { ?>

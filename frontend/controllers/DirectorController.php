@@ -202,6 +202,9 @@ class DirectorController extends Controller
             Yii::$app->session->setFlash('success', Yii::t('leader', 'Namuna tekshiruv natijasi imzolandi. Namunani yo\'q qilish uchun topshiriq yuborildi.'));
 
             $result = ResultAnimal::findOne(['sample_id' => $dest->sample_id]);
+            $result->consent_id = $model->director_id;
+            $result->creator_id = $model->executor_id;
+            $result->save();
             $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
                 ->innerJoin('tamplate_animal', 'tamplate_animal.id=template_animal_regulations.template_id')
                 ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_animal_tests.checked = 1 and result_id=' . $result->id . ')')

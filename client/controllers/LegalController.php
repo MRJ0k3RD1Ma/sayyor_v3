@@ -310,6 +310,7 @@ class LegalController extends Controller
                 $animal->inn = "{$animal->inn}";
 
                 if($animal->save() and $sample->load(Yii::$app->request->post())){
+                    $sample->cnt = 1;
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if($sample->save(false)){

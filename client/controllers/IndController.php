@@ -335,6 +335,7 @@ class IndController extends Controller
                 if ($animal->save() and $sample->load(Yii::$app->request->post())) {
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
+                    $sample->cnt = 1;
                     if ($sample->save(false)) {
                         Yii::$app->session->setFlash('success', Yii::t('client', '{kod} raqamli namuna muvoffaqiyatli saqlandi', ['kod' => $sample->kod]));
                         return $this->redirect(['view', 'id' => $id]);

@@ -32,11 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model,'date')->textInput(['type'=>'date'])?>
 
-                <?= $form->field($model,'state_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\StateList::find()->all(),'id','name'),['prompt'=>Yii::t('cp','Holati')])?>
-
                 <?= $form->field($model,'status_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\StatusList::find()->all(),'id','name'),['prompt'=>Yii::t('cp','Status')])?>
 
-                <?php if(!$model->isNewRecord){?>
+                <?php if($model->emp_id){?>
                     <?= $form->field($model,'org_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->all(),'id','NAME_FULL'),['disabled'=>true,'prompt'=>Yii::t('cp','Tashkilot nomi')])?>
                 <?php }else{?>
                     <?= $form->field($model,'org_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->all(),'id','NAME_FULL'),['prompt'=>Yii::t('cp','Tashkilot nomi')])?>

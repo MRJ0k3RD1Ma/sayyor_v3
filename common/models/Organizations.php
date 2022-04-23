@@ -138,4 +138,7 @@ class Organizations extends \yii\db\ActiveRecord
     public function getSoato0(){
         return $this->hasOne(Soato::className(),['MHOBT_cod'=>'soato']);
     }
+    public function getType(){
+        return $this->hasOne(OrganizationType::className(),['id'=>'type_id']);
+    }
 }

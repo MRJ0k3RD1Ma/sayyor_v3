@@ -26,18 +26,22 @@ class Module extends \yii\base\Module
                         'roles' => ['@'],
                         'matchCallback' => function($rule, $action){
                             $u = false;
-                            foreach (EmpPosts::find()->where(['state_id'=>1])->andWhere(['emp_id'=>Yii::$app->user->id])->all() as $item){
-                                if($item->post_id==5){
-                                    $u = true; break;
+                            if(Yii::$app->user->identity->empPosts->org->type_id == 4){
+                                foreach (EmpPosts::find()->where(['state_id'=>1])->andWhere(['emp_id'=>Yii::$app->user->id])->all() as $item){
+                                    if($item->post_id==5){
+                                        $u = true; break;
+                                    }
                                 }
-                            }
-                            if($u){
-                                return $u;
+                                if($u){
+                                    return $u;
+                                }else{
+                                    header('Location: '.Yii::$app->urlManager->createUrl(['/site/index']));
+                                    exit;
+                                }
                             }else{
                                 header('Location: '.Yii::$app->urlManager->createUrl(['/site/index']));
                                 exit;
                             }
-
                         }
                     ],
                 ],
@@ -56,7 +60,7 @@ class Module extends \yii\base\Module
     public function init()
     {
         parent::init();
-        \Yii::$app->layoutPath = "@app/modules/admin/views/layouts";
+//        \Yii::$app->layoutPath = "@app/modules/admin/views/layouts";
         // custom initialization code goes here
     }
 }

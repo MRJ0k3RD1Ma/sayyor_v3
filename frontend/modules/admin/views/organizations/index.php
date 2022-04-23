@@ -59,7 +59,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         //'CHANGED',
                         //'GD_MOBILE',
                         //'BUDJET:boolean',
-
+                        [
+                            'attribute'=>'type_id',
+                            'value'=>function($d){
+                                $lg = 'uz'; if(Yii::$app->language=='ru'){$lg = 'ru';}
+                                return $d->type->{'name'};
+                            }
+                        ],
                         ['class' => 'yii\grid\ActionColumn'],
                     ],
                 ]) ?>

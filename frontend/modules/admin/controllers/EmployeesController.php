@@ -86,15 +86,14 @@ class EmployeesController extends Controller
     {
         $model = new EmpPosts();
         $model->emp_id = $id;
-        if ($m = EmpPosts::findOne($model->emp_id)) {
+        $model->state_id = 1;
+        if ($m = EmpPosts::findOne(['emp_id'=>$model->emp_id])) {
             $model->org_id = $m->org_id;
         }
         if ($model->load(Yii::$app->request->post()) and $model->save()) {
             return $this->redirect(['view', 'id' => $id]);
         }
-        else {
-             errdeb($model->errors);
-        }
+
 
         return $this->render('add', [
             'model' => $model

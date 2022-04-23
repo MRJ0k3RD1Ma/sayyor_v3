@@ -97,12 +97,7 @@ class SiteController extends Controller
         $this->layout = 'login';
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            foreach (EmpPosts::find()->where(['emp_id' => Yii::$app->user->getId()])->andWhere(['state_id' => 1])->all() as $item) {
-                if ($item->post_id == 5) {
-                    return $this->redirect(['/cp/default/index']);
-                }
-            }
-            return $this->goBack();
+            return $this->goHome();
         }
         if ($model->errors) {
             Yii::$app->session->setFlash('error', Yii::t('client', 'Login yoki parol xato'));

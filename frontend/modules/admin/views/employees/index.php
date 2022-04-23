@@ -31,7 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'email:email',
                         'phone',
 //                        'password',
-
+                        [
+                            'label'=>Yii::t('cp','Tashkilot nomi'),
+                            'value'=>function($d){
+                                return $d->empPosts->org->NAME_FULL;
+                            }
+                        ],
                         ['class' => 'yii\grid\ActionColumn'],
                     ],
                 ]) ?>

@@ -125,7 +125,7 @@ $this->registerJs("
                     $('#organizations-oked').val(data.data.OKED);
                     $('#organizations-okpo').val(data.data.OKPO);
                     $('#organizations-okonx').val(data.data.OKONX);
-                    $('#organizations-soato').val(data.data.soato);
+                    $('#organizations-soato').val(data.data.SOATO);
                     $('#organizations-email').val(data.data.EMAIL);
                     $('#organizations-date_end').val(data.data.DATE_END);
                     $('#organizations-created').val(data.data.CREATED);

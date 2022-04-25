@@ -845,9 +845,9 @@ class DirectorController extends Controller
         if($model->load(Yii::$app->request->post())){
 
             $res = ResultAnimal::find()
-                ->where('end_date is not null')
-                ->andWhere(['>=','end_date',$model->date_to])
-                ->andWhere(['<=','end_date',$model->date_do])
+//                ->where('end_date is not null')
+//                ->andWhere(['>=','end_date',$model->date_to])
+//                ->andWhere(['<=','end_date',$model->date_do])
                 ->andWhere(['org_id'=>Yii::$app->user->identity->empPosts->org_id])
 
             ->all();
@@ -916,7 +916,7 @@ class DirectorController extends Controller
             $sheet->mergeCells("D3:D5");
             $sheet->setCellValue('A3','');
             $sheet->mergeCells("E3:AE3");
-            $sheet->setCellValue('E3','4vet hisoboti uchun');
+            $sheet->setCellValue('E3','Tekshiruv natijalari');
 
             $sheet->mergeCells("AF3:AF5");
             $sheet->setCellValue('AF3','Musbat natijalar');

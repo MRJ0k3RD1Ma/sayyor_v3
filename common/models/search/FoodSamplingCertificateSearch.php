@@ -206,10 +206,7 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
         }
 
         $MHOBT_cod = Yii::$app->user->identity->posts->org->soato0->res_id . Yii::$app->user->identity->posts->org->soato0->region_id;
-        $vetSites = VetSites::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
-        $query->andFilterWhere([
-            'like', 'vet_site_id', $vetSites
-        ]);
+        $query->andWhere('sampling_site in (select id from vet_sites where soato like \'%'.$MHOBT_cod.'%\')');
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -252,10 +249,8 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
         }
 
         $MHOBT_cod = Yii::$app->user->identity->posts->org->soato0->res_id . Yii::$app->user->identity->posts->org->soato0->region_id.Yii::$app->user->identity->posts->org->soato0->district_id;
-        $vetSites = VetSites::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
-        $query->andFilterWhere([
-            'like', 'vet_site_id', $vetSites
-        ]);
+//        $vetSites = VetSites::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
+        $query->andWhere('sampling_site in (select id from vet_sites where soato like \'%'.$MHOBT_cod.'%\')');
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,

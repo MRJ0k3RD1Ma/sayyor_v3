@@ -215,10 +215,8 @@ class SertificatesSearch extends Sertificates
             return $dataProvider;
         }
         $MHOBT_cod = Yii::$app->user->identity->posts->org->soato0->res_id . Yii::$app->user->identity->posts->org->soato0->region_id;
-        $vetSites = VetSites::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
-        $query->andFilterWhere([
-            'like', 'vet_site_id', $vetSites
-        ]);
+//        $vetSites = VetSites::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
+        $query->andWhere('vet_site_id in (select id from vet_sites where soato like \'%'.$MHOBT_cod.'%\')');
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -251,10 +249,8 @@ class SertificatesSearch extends Sertificates
             return $dataProvider;
         }
         $MHOBT_cod = Yii::$app->user->identity->posts->org->soato0->res_id . Yii::$app->user->identity->posts->org->soato0->region_id.Yii::$app->user->identity->posts->org->soato0->district_id;
-        $vetSites = VetSites::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
-        $query->andFilterWhere([
-            'like', 'vet_site_id', $vetSites
-        ]);
+//        $vetSites = VetSites::find()->select(['distinct(id)'])->where(['like', 'soato', $MHOBT_cod])->column();
+        $query->andWhere('vet_site_id in (select id from vet_sites where soato like \'%'.$MHOBT_cod.'%\')');
 
         // grid filtering conditions
         $query->andFilterWhere([

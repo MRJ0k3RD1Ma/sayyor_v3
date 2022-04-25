@@ -7,11 +7,8 @@ use client\models\search\SampleRegistrationSearch;
 use client\models\search\SertificatesSearch;
 use common\models\Animals;
 use common\models\CompositeSamples;
-<<<<<<< HEAD
-=======
 use common\models\DestructionSampleAnimal;
 use common\models\DestructionSampleFood;
->>>>>>> 571ae740fd137186a9761cc76793de45536d0f25
 use common\models\Emlash;
 use common\models\FoodRegistration;
 use common\models\FoodSamples;
@@ -142,7 +139,15 @@ class DefaultController extends Controller
             ]);
             try {
                 return $pdf->render();
-            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
                 return $e;
             }
         }
@@ -463,7 +468,15 @@ class DefaultController extends Controller
             ]);
             try {
                 return $pdf->render();
-            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
                 return $e;
             }
         }
@@ -499,7 +512,15 @@ class DefaultController extends Controller
             ]);
             try {
                 return $pdf->render();
-            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
                 return $e;
             }
         }
@@ -884,8 +905,7 @@ class DefaultController extends Controller
             'samp' => $samples
         ]);
     }
-<<<<<<< HEAD
-=======
+
     public function actionPdfdest($id)
     {
         $model = DestructionSampleAnimal::findOne(['id' => $id]);
@@ -923,5 +943,5 @@ class DefaultController extends Controller
         $file = fopen($fileName, 'r+');
         Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
     }
->>>>>>> 571ae740fd137186a9761cc76793de45536d0f25
+
 }

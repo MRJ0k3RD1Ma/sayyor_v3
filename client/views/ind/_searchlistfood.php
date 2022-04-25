@@ -48,7 +48,7 @@ use yii\widgets\ActiveForm;
                             </div>
 
                         </div>
-                        <?= Html::a(Yii::t('client', 'Dalolatnoma qo\'shish'), ['animal'], ['class' => 'btn btn-success']) ?>
+                        <?= Html::a(Yii::t('client', 'Dalolatnoma qo\'shish'), ['product'], ['class' => 'btn btn-success']) ?>
                     </div>
                 </div>
 

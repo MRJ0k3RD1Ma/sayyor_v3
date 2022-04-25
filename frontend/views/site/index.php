@@ -15,14 +15,21 @@ $this->title = Yii::t('client','Bosh sahifa');
         if($type == 4 and $upost == 5){
     ?>
             <!-- Admin-->
+            <?= $this->render('_director')?>
 
     <?php }elseif($type == 4){?>
             <!--Komitet-->
-    <?php }elseif($type == 3){?>
+            <?= $this->render('_director')?>
+
+        <?php }elseif($type == 3){?>
             <!--Viloyat-->
-    <?php }elseif($type == 2){?>
+            <?= $this->render('_director')?>
+
+        <?php }elseif($type == 2){?>
             <!--Tuman-->
-    <?php }elseif($type == 1){?>
+            <?= $this->render('_director')?>
+
+        <?php }elseif($type == 1){?>
             <!--Labaratoriya-->
             <?php $uid = Yii::$app->user->id; if(EmpPosts::isDirector($uid)){?>
 

@@ -26,6 +26,10 @@ use Yii;
  * @property string|null $created
  * @property string|null $updated
  * @property string|null $explanations
+ * @property string|null $sert_date
+ * @property string|null $sert_number
+ * @property string|null $sampler_name
+ * @property string|null $sampler_position
  *
  * @property FoodSamples[] $foodSamples
  * @property ProductExpertise[] $productExpertises
@@ -48,10 +52,10 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ownertype','sampling_site','sampling_date','sampling_soato','sampling_adress','verification_pupose_id'],'required','on'=>'insert'],
+            [['ownertype','sampling_site','sampler_name','sampler_position','sert_number','sert_date','sampling_date','sampling_soato','sampling_adress','verification_pupose_id'],'required','on'=>'insert'],
             [['food_id','ownertype', 'sampling_site','sampling_soato', 'verification_pupose_id','status_id','state_id', 'based_public_information', 'message_number'], 'integer'],
-            [['sampling_date', 'send_sample_date', 'created', 'updated'], 'safe'],
-            [['code', 'inn', 'pnfl', 'sampling_adress', 'sampler_person_pnfl', 'sampler_person_inn','explanations'], 'string', 'max' => 255],
+            [['sampling_date', 'send_sample_date', 'created', 'updated','sert_date'], 'safe'],
+            [['code', 'inn', 'pnfl', 'sampling_adress', 'sampler_name','sampler_position','sampler_person_pnfl','sert_number', 'sampler_person_inn','explanations'], 'string', 'max' => 255],
             [['verification_pupose_id'], 'exist', 'skipOnError' => true, 'targetClass' => VerificationPurposes::className(), 'targetAttribute' => ['verification_pupose_id' => 'id']],
         ];
     }
@@ -81,6 +85,11 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
             'created' => Yii::t('model.food_sampling_certificate', 'Yaratildi'),
             'updated' => Yii::t('model.food_sampling_certificate', 'O\'zgartirildi'),
             'status_id' => Yii::t('model.food_sampling_certificate', 'Status'),
+            'sert_date' => Yii::t('model.food_sampling_certificate', 'Dalolatnoma sanasi'),
+            'sert_number' => Yii::t('model.food_sampling_certificate', 'Dalolatnoma raqami(Qog\'ozdagi)'),
+            'region' => Yii::t('model.food_sampling_certificate', 'Viloyat'),
+            'sampler_name' => Yii::t('model.food_sampling_certificate', 'FIO'),
+            'sampler_position' => Yii::t('model.food_sampling_certificate', 'Lavozim'),
         ];
     }
 

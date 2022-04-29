@@ -481,6 +481,8 @@ class IndController extends Controller
         $model->status_id = 0;
         $model->state_id = 1;
         $model->scenario = 'insert';
+        $model->sampling_date = date('Y-m-d');
+        $model->sert_date = date('Y-m-d');
         if ($model->load(Yii::$app->request->post())) {
             $vet = VetSites::findOne($model->sampling_site);
             $soato = $vet->soato0->region_id . $vet->soato0->district_id;

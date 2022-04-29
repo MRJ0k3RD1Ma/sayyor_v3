@@ -23,6 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
 //            'id',
+            'sert_number',
+            'sert_date',
             'code',
 //            'pnfl',
 //            'organization_id',
@@ -99,6 +101,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Yii::t('client','Ha').'<br>'.'<b>№'.$d->message_number.'</b>';
                     }
 
+                },
+                'format'=>'raw'
+            ],
+            [
+                'attribute'=>'sampler_name',
+                'label'=>'Namuna oluvchi shaxs',
+                'value'=>function($d){
+                    return $d->sampler_name.'<br>'.$d->sampler_position;
                 },
                 'format'=>'raw'
             ],

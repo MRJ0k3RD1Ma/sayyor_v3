@@ -29,6 +29,8 @@ YiiAsset::register($this);
         'model' => $model,
         'attributes' => [
 //            'id',
+            'sert_number',
+            'sert_date',
             'code',
 //            'pnfl',
 //            'organization_id',
@@ -109,6 +111,14 @@ YiiAsset::register($this);
                 'format' => 'raw'
             ],
             [
+                'attribute'=>'sampler_name',
+                'label'=>'Namuna oluvchi shaxs',
+                'value'=>function($d){
+                    return $d->sampler_name.'<br>'.$d->sampler_position;
+                },
+                'format'=>'raw'
+            ],
+            [
                 'attribute' => 'status_id',
                 'value' => function ($d) {
                     $lg = 'uz';
@@ -125,11 +135,13 @@ YiiAsset::register($this);
 
     <div>
         <h4 style="float: left">Namunalar ro'yhati</h4>
-        <span style="float: right"><a class="btn btn-primary"
-                                      href="<?= Yii::$app->urlManager->createUrl(['/ind/addfood', 'id' => $model->id]) ?>">
+        <?php if($model->status_id==0){?>
+            <span style="float: right">
+            <a class="btn btn-primary" href="<?= Yii::$app->urlManager->createUrl(['/ind/addfood', 'id' => $model->id]) ?>">
                     <span class="fa fa-plus"></span> Namuna qo'shish
                 </a>
             </span>
+        <?php }?>
     </div>
 
     <div class="table-responsive">

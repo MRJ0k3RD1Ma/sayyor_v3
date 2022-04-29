@@ -14,7 +14,7 @@ $this->title = Yii::t('login', "Tizimga kirish");
                      class="img-responsive">
             </div>
             <div class="text">
-                <?= Yii::t('login', 'Hayvon kasalliklari tashhisi va oziq-ovqat xavfsizligiga oid laboratoriya tekshiruvlari Yagona elektron ma\'lumotlar bazasini yurishish tizimi (VIS-Sayyor)') ?>
+                <?= Yii::t('login', 'Hayvon kasalliklari tashhisi va oziq-ovqat xavfsizligiga oid laboratoriya tekshiruvlari Yagona elektron ma\'lumotlar bazasini yuritish tizimi (VIS-Sayyor)') ?>
             </div>
 
         </div>

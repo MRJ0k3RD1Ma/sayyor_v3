@@ -155,3 +155,39 @@ class PetitionController extends ActiveController
     }
 
 }
+
+
+{
+    "sert":{
+    "registon_id":1,
+        "sert_date":"2022-04-25",
+        "ownertype":1,
+        "owner":{
+        "pnfl":31512620270065,
+            "name":"ABDURAXMAN",
+            "surname":"XUNDIBAYEV",
+            "middlename":"MALIKOVICH",
+            "soato_id":"1733223551",
+            "adress":"Manzil",
+            "passport":"AD0848707"
+            },
+        "sampler_name":"Dilmurod",
+        "sampler_position":"Dasturchi",
+        "vet_site_id":1
+    },
+    "registon_id":1,
+    "organization_id":1,
+    "sender_type":1,
+    "sender": {
+    "pnfl":31512620270065,
+        "name":"ABDURAXMAN",
+        "surname":"XUNDIBAYEV",
+        "middlename":"MALIKOVICH",
+        "soato_id":"1733223551",
+        "adress":"Manzil",
+        "passport":"AD0848707"
+        },
+    "sender_name":"ABDURAXMAN XUNDIBAYEV",
+    "sender_phone": "999670395",
+    "research_category_id":1
+}

@@ -27,6 +27,8 @@ use Yii;
  * @property int|null $reg_id
  * @property int|null $code_id
  * @property int|null $composite
+ * @property int|null $is_registon
+ * @property int|null $registon_id
  * @property string|null $ads
  *
  * @property Organizations $organization
@@ -51,7 +53,7 @@ class SampleRegistration extends \yii\db\ActiveRecord
     {
         return [
             [['organization_id','is_research','research_category_id','sender_name', 'sender_phone',],'required'],
-            [['is_research','reg_id','code_id', 'research_category_id', 'results_conformity_id','res_id', 'organization_id', 'emp_id','status_id', ], 'integer'],
+            [['is_research','reg_id','code_id', 'research_category_id','registon_id','is_registon', 'results_conformity_id','res_id', 'organization_id', 'emp_id','status_id', ], 'integer'],
             [['reg_date','created','updated'], 'safe'],
             ['composite','each','rule'=>['integer']],
             ['ads','string','max'=>500],

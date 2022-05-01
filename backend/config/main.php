@@ -88,6 +88,14 @@ return [
                         'POST createdrug'=>'createdrug',
                     ],
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'petition',
+                    'extraPatterns' => [
+                        'GET getorg'=>'getorg',
+                        'POST create'=>'create',
+                    ],
+                ],
             ],
         ]
 

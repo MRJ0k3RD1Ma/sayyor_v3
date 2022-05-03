@@ -111,7 +111,7 @@ class PetitionController extends ActiveController
 
                 if($post['sert']['ownertype']==1){
                     if($ind = Individuals::findOne(['pnfl'=>$post['sert']['owner']['pnfl']])){
-                        $sert->pnfl = $ind->pnfl;
+                        $sert->owner_pnfl = $ind->pnfl;
                         $res['pnfl'] = 1;
                     }else{
                         $ind = new Individuals();
@@ -123,12 +123,12 @@ class PetitionController extends ActiveController
                         $ind->adress = $post['sert']['owner']['adress'];
                         $ind->passport = $post['sert']['owner']['passport'];
                         $ind->save();
-                        $sert->pnfl = $ind->pnfl;
+                        $sert->owner_pnfl = $ind->pnfl;
                         $res['pnfl'] = 1;
                     }
                 }else{
                     if($ind = LegalEntities::findOne(['inn'=>$post['sert']['owner']['inn']])){
-                        $sert->inn = $ind->inn;
+                        $sert->owner_inn = $ind->inn;
                         $res['inn'] = 1;
                     }else{
                         $ind = new LegalEntities();
@@ -139,12 +139,57 @@ class PetitionController extends ActiveController
                         $ind->soato_id = $post['sert']['owner']['soato_id'];
                         $ind->status_id = 1;
                         $ind->save();
-                        $sert->inn = $ind->inn;
+                        $sert->owner_inn = $ind->inn;
                         $res['inn'] = 1;
                     }
                 }
 
+                if($post['sender_type']==1){
+                    if($ind = Individuals::findOne(['pnfl'=>$post['sender']['pnfl']])){
+                        $sert->pnfl = $ind->pnfl;
+                        $res['sertpnfl'] = 1;
+                    }else{
+                        $ind = new Individuals();
+                        $ind->pnfl = $post['sender']['pnfl'];
+                        $ind->name = $post['sender']['name'];
+                        $ind->surname = $post['sender']['surname'];
+                        $ind->middlename = $post['sender']['middlename'];
+                        $ind->soato_id = $post['sender']['soato_id'];
+                        $ind->adress = $post['sender']['adress'];
+                        $ind->passport = $post['sender']['passport'];
+                        $ind->save();
+                        $sert->pnfl = $ind->pnfl;
+                        $res['sertpnfl'] = 1;
+                    }
+                }else{
+                    if($ind = LegalEntities::findOne(['inn'=>$post['sender']['inn']])){
+                        $sert->inn = $ind->inn;
+                        $res['sertinn'] = 1;
+                    }else{
+                        $ind = new LegalEntities();
+                        $ind->inn = $post['sender']['inn'];
+                        $ind->name = $post['sender']['name'];
+                        $ind->tshx_id = $post['sender']['tshx_id'];
+                        $ind->soogu = $post['sender']['adress'];
+                        $ind->soato_id = $post['sender']['soato_id'];
+                        $ind->status_id = 1;
+                        $ind->save();
+                        $sert->inn = $ind->inn;
+                        $res['sertinn'] = 1;
+                    }
+                }
+
+
+
                 if(!$sert->inn and !$sert->pnfl){
+                    $allok = false;
+                    $res['sertinnpnfl'] = 0;
+                }else{
+                    $res['sertinnpnfl'] = 1;
+                }
+
+
+                if(!$sert->owner_inn and !$sert->owner_pnfl){
                     $allok = false;
                     $res['innpnfl'] = 0;
                 }else{
@@ -241,7 +286,6 @@ class PetitionController extends ActiveController
                 $code .= $num;
                 $model->code = $code;
                 $model->code_id = $num;
-
 
                 if($post['sender_type']==1){
                     if($ind = Individuals::findOne(['pnfl'=>$post['sender']['pnfl']])){

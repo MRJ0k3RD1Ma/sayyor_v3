@@ -4,11 +4,14 @@
 namespace backend\controllers;
 
 use common\models\AnimalCategory;
+use common\models\Animals;
 use common\models\Animaltype;
+use common\models\CompositeSamples;
 use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\Organizations;
 use common\models\SampleRegistration;
+use common\models\Samples;
 use common\models\Sertificates;
 use Yii;
 use common\models\DistrictView;
@@ -86,23 +89,30 @@ class PetitionController extends ActiveController
 
         $model = new SampleRegistration();
         $model->is_registon = 1;
+
         if(Yii::$app->request->isPost){
+
             $transaction = Yii::$app->db->beginTransaction();
             $allok = true;
+            $res = [];
+
             try {
 
                 $post = Yii::$app->request->post();
                 $sert = new Sertificates();
+                $res['begin'] = 1;
                 $sert->registon_id = $post['sert']['registon_id'];
                 $sert->is_registon = 1;
                 $sert->sert_date = $post['sert']['sert_date'];
                 $sert->sampler_name = $post['sert']['sampler_name'];
                 $sert->sampler_position = $post['sert']['sampler_position'];
                 $sert->vet_site_id = $post['sert']['vet_site_id'];
+                $sert->status_id = 1;
 
                 if($post['sert']['ownertype']==1){
                     if($ind = Individuals::findOne(['pnfl'=>$post['sert']['owner']['pnfl']])){
                         $sert->pnfl = $ind->pnfl;
+                        $res['pnfl'] = 1;
                     }else{
                         $ind = new Individuals();
                         $ind->pnfl = $post['sert']['owner']['pnfl'];
@@ -114,10 +124,12 @@ class PetitionController extends ActiveController
                         $ind->passport = $post['sert']['owner']['passport'];
                         $ind->save();
                         $sert->pnfl = $ind->pnfl;
+                        $res['pnfl'] = 1;
                     }
                 }else{
                     if($ind = LegalEntities::findOne(['inn'=>$post['sert']['owner']['inn']])){
                         $sert->inn = $ind->inn;
+                        $res['inn'] = 1;
                     }else{
                         $ind = new LegalEntities();
                         $ind->inn = $post['sert']['owner']['inn'];
@@ -128,25 +140,173 @@ class PetitionController extends ActiveController
                         $ind->status_id = 1;
                         $ind->save();
                         $sert->inn = $ind->inn;
+                        $res['inn'] = 1;
                     }
                 }
 
-            $sert->save();
+                if(!$sert->inn and !$sert->pnfl){
+                    $allok = false;
+                    $res['innpnfl'] = 0;
+                }else{
+                    $res['innpnfl'] = 1;
+                }
+
+
+
+                /*Sert code generate */
+                $num = Sertificates::find()->filterWhere(['like','sert_date',date('Y')])->max('sert_id');
+                $vet = VetSites::findOne($sert->vet_site_id);
+                $code = $vet->soato0->region_id.$vet->soato0->district_id.'-'.   substr(date('Y'),2,2).'-';
+
+                $num = $num+1;
+                $code .= $num;
+                $sert->sert_id = $num;
+                $sert->sert_full = $code;
+                $sert->sert_num = "{$sert->sert_num}";
+
+                if($sert->save()){
+                    $res['sert'] = 1;
+                    $samples = $post['sert']['samples'];
+                    $sample_ids = [];
+                    $n=0;
+//                    $res['samples'] = [];
+                    foreach ($samples as $item){
+
+                        $nam = new Samples();
+                        $nam->sert_id = $sert->id;
+                        $nam->registon_id = $item['registon_id'];
+                        $nam->label = $item['label'];
+                        $nam->sample_type_is = $item['type_id'];
+                        $nam->sample_box_id = $item['box_id'];
+
+                        $animal = $item['animal'];
+
+                        $anim = new Animals();
+                        $anim->name = $animal['name'];
+                        $anim->gender = $animal['gender'];
+                        $anim->birthday = date('Y-m-d',strtotime($animal['birthday']));
+                        $anim->inn = $animal['inn'];
+                        $anim->pnfl = $animal['pnfl'];
+                        $anim->vet_site_id = $animal['vet_site_id'];
+                        $anim->bsual_tag = $animal['bsual_tag'];
+                        $anim->type_id = $animal['type_id'];
+
+                        $anim->save(false);
+
+                        $nam->animal_id = $anim->id;
+                        $nam->suspected_disease_id = $item['disease_id'];
+                        $nam->test_mehod_id = $item['mehod_id'];
+                        $nam->repeat_code = $item['repeat_code'];
+                        $nam->status_id = 1;
+                        /*namuna raqami generatsiyasi*/
+
+                        $num = Samples::find()->filterWhere(['like','kod',$sert->sert_full])->max('samp_id');
+
+                        $code = $sert->sert_full;
+
+                        $num = $num+1;
+
+                        $nam->kod = $code.'/'.$num;
+                        $nam->samp_id = $num;
+
+                        $nam->save();
+
+                        $sample_ids[$n++] = $nam->id;
+                    }
+                    if($n==0){
+                        $allok = false;
+                        $res['n'] = 0;
+                    }else{
+                        $res['n'] = $n;
+                    }
+                }else{
+                    $allok = false;
+                    $res['sert'] = 0;
+                }
 
                 $model->registon_id = $post['registon_id'];
                 $model->organization_id = $post['organization_id'];
                 $model->sender_name = $post['sender_name'];
                 $model->sender_phone = $post['sender_phone'];
                 $model->research_category_id = $post['research_category_id'];
+                $model->is_research = $post['is_research'];
+                $model->status_id = 1;
 
 
-                if($allok){
+                $num = SampleRegistration::find()->filterWhere(['like','created',date('Y')])->max('code_id');
+
+                $code = substr(date('Y'),2,2).'-1-'.get3num($model->organization_id).'-';
+                $model->status_id = 1;
+                $num = $num+1;
+                $code .= $num;
+                $model->code = $code;
+                $model->code_id = $num;
+
+
+                if($post['sender_type']==1){
+                    if($ind = Individuals::findOne(['pnfl'=>$post['sender']['pnfl']])){
+                        $model->pnfl = $ind->pnfl;
+                        $res['senderpnfl'] = 1;
+                    }else{
+                        $ind = new Individuals();
+                        $ind->pnfl = $post['sender']['pnfl'];
+                        $ind->name = $post['sender']['name'];
+                        $ind->surname = $post['sender']['surname'];
+                        $ind->middlename = $post['sender']['middlename'];
+                        $ind->soato_id = $post['sender']['soato_id'];
+                        $ind->adress = $post['sender']['adress'];
+                        $ind->passport = $post['sender']['passport'];
+                        $ind->save();
+                        $model->pnfl = $ind->pnfl;
+                        $res['senderpnfl'] = 1;
+                    }
+                }else{
+                    if($ind = LegalEntities::findOne(['inn'=>$post['sender']['inn']])){
+                        $model->inn = $ind->inn;
+                        $res['senderinn'] = 1;
+                    }else{
+                        $ind = new LegalEntities();
+                        $ind->inn = $post['sender']['inn'];
+                        $ind->name = $post['sender']['name'];
+                        $ind->tshx_id = $post['sender']['tshx_id'];
+                        $ind->soogu = $post['sender']['adress'];
+                        $ind->soato_id = $post['sender']['soato_id'];
+                        $ind->status_id = 1;
+                        $ind->save();
+                        $model->inn = $ind->inn;
+                        $res['senderinn'] = 1;
+                    }
+                }
+
+                if(!$model->inn and !$model->pnfl){
+                    $allok = false;
+                    $res['senderinnpnfl'] = 0;
+                }else{
+                    $res['senderinnpnfl'] = 1;
+                }
+
+                $res['reg'] = $model;
+                if(!$model->save()){
+                    $allok = false;
+                    $res['regis'] = 0;
+                }
+                $m = 0;
+                foreach ($sample_ids as $item){
+                    $m++;
+                    $com = new CompositeSamples();
+                    $com->sample_status_id = 1;
+                    $com->sample_id = $item;
+                    $com->registration_id = $model->id;
+                    $com->save(false);
+                }
+                if($allok and $m = $n){
                     $transaction->commit();
+                }else{
+                    $transaction->rollBack();
                 }
             }catch (\Exception $e){
                 $transaction->rollBack();
             }
-
 
             return $allok;
         }
@@ -154,40 +314,4 @@ class PetitionController extends ActiveController
         return 0;
     }
 
-}
-
-
-{
-    "sert":{
-    "registon_id":1,
-        "sert_date":"2022-04-25",
-        "ownertype":1,
-        "owner":{
-        "pnfl":31512620270065,
-            "name":"ABDURAXMAN",
-            "surname":"XUNDIBAYEV",
-            "middlename":"MALIKOVICH",
-            "soato_id":"1733223551",
-            "adress":"Manzil",
-            "passport":"AD0848707"
-            },
-        "sampler_name":"Dilmurod",
-        "sampler_position":"Dasturchi",
-        "vet_site_id":1
-    },
-    "registon_id":1,
-    "organization_id":1,
-    "sender_type":1,
-    "sender": {
-    "pnfl":31512620270065,
-        "name":"ABDURAXMAN",
-        "surname":"XUNDIBAYEV",
-        "middlename":"MALIKOVICH",
-        "soato_id":"1733223551",
-        "adress":"Manzil",
-        "passport":"AD0848707"
-        },
-    "sender_name":"ABDURAXMAN XUNDIBAYEV",
-    "sender_phone": "999670395",
-    "research_category_id":1
 }

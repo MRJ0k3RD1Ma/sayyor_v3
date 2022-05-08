@@ -264,8 +264,9 @@ class PetitionController extends ActiveController
                         $anim->vet_site_id = $animal['vet_site_id'];
                         $anim->bsual_tag = $animal['bsual_tag'];
                         $anim->type_id = $animal['type_id'];
+                        $anim->adress = $animal['adress'];
 
-                        $anim->save(false);
+                        $anim->save();
 
                         if(isset($animal['vaccination']) and $vac = $animal['vaccination']){
                             $res['vaccination'] = 1;
@@ -417,7 +418,7 @@ class PetitionController extends ActiveController
             }
 
             if($allok){
-                return $res;
+                return $errors;
             }else{
                 return $errors;
             }

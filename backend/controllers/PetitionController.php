@@ -7,12 +7,14 @@ use common\models\AnimalCategory;
 use common\models\Animals;
 use common\models\Animaltype;
 use common\models\CompositeSamples;
+use common\models\Emlash;
 use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\Organizations;
 use common\models\SampleRegistration;
 use common\models\Samples;
 use common\models\Sertificates;
+use common\models\Vaccination;
 use Yii;
 use common\models\DistrictView;
 use common\models\QfiView;
@@ -95,13 +97,15 @@ class PetitionController extends ActiveController
             $transaction = Yii::$app->db->beginTransaction();
             $allok = true;
             $res = [];
-
+            $errors  = [];
+            $errors['code'] = 1;
             try {
 
                 $post = Yii::$app->request->post();
                 $sert = new Sertificates();
                 $res['begin'] = 1;
                 $sert->registon_id = $post['sert']['registon_id'];
+                $sert->sert_num = $post['sert']['number'];
                 $sert->is_registon = 1;
                 $sert->sert_date = $post['sert']['sert_date'];
                 $sert->sampler_name = $post['sert']['sampler_name'];
@@ -122,9 +126,14 @@ class PetitionController extends ActiveController
                         $ind->soato_id = $post['sert']['owner']['soato_id'];
                         $ind->adress = $post['sert']['owner']['adress'];
                         $ind->passport = $post['sert']['owner']['passport'];
-                        $ind->save();
-                        $sert->owner_pnfl = $ind->pnfl;
-                        $res['pnfl'] = 1;
+                        if($ind->save()){
+                            $sert->owner_pnfl = $ind->pnfl;
+                            $res['pnfl'] = 1;
+                        }else{
+                            $errors ['code'] = 0;
+                            $errors['data']['owner'] = "Owner malumotlari to\'liq emas";
+                        }
+
                     }
                 }else{
                     if($ind = LegalEntities::findOne(['inn'=>$post['sert']['owner']['inn']])){
@@ -138,9 +147,14 @@ class PetitionController extends ActiveController
                         $ind->soogu = $post['sert']['owner']['adress'];
                         $ind->soato_id = $post['sert']['owner']['soato_id'];
                         $ind->status_id = 1;
-                        $ind->save();
-                        $sert->owner_inn = $ind->inn;
-                        $res['inn'] = 1;
+
+                        if($ind->save()){
+                            $sert->owner_inn = $ind->inn;
+                            $res['inn'] = 1;
+                        }else{
+                            $errors ['code'] = 0;
+                            $errors['data']['owner'] = "Owner ma\'lumotlari to'liq emas";
+                        }
                     }
                 }
 
@@ -158,8 +172,14 @@ class PetitionController extends ActiveController
                         $ind->adress = $post['sender']['adress'];
                         $ind->passport = $post['sender']['passport'];
                         $ind->save();
-                        $sert->pnfl = $ind->pnfl;
-                        $res['sertpnfl'] = 1;
+                        if($ind->save()){
+                            $sert->pnfl = $ind->pnfl;
+                            $res['sertpnfl'] = 1;
+                        }else{
+                            $errors ['code'] = 0;
+                            $errors['data']['sender'] = "Sender ma'lumotlari to'liq emas";
+                        }
+
                     }
                 }else{
                     if($ind = LegalEntities::findOne(['inn'=>$post['sender']['inn']])){
@@ -174,8 +194,14 @@ class PetitionController extends ActiveController
                         $ind->soato_id = $post['sender']['soato_id'];
                         $ind->status_id = 1;
                         $ind->save();
-                        $sert->inn = $ind->inn;
-                        $res['sertinn'] = 1;
+
+                        if($ind->save()){
+                            $sert->inn = $ind->inn;
+                            $res['sertinn'] = 1;
+                        }else{
+                            $errors ['code'] = 0;
+                            $errors['data']['sender'] = "Sender ma'lumotlari to'liq emas";
+                        }
                     }
                 }
 
@@ -184,6 +210,8 @@ class PetitionController extends ActiveController
                 if(!$sert->inn and !$sert->pnfl){
                     $allok = false;
                     $res['sertinnpnfl'] = 0;
+                    $errors ['code'] = 0;
+                    $errors['data']['owner'] = "Owner ma'lumotlari to'liq emas";
                 }else{
                     $res['sertinnpnfl'] = 1;
                 }
@@ -192,6 +220,8 @@ class PetitionController extends ActiveController
                 if(!$sert->owner_inn and !$sert->owner_pnfl){
                     $allok = false;
                     $res['innpnfl'] = 0;
+                    $errors ['code'] = 0;
+                    $errors['data']['sender'] = "Sender ma'lumotlari to'liq emas";
                 }else{
                     $res['innpnfl'] = 1;
                 }
@@ -207,7 +237,6 @@ class PetitionController extends ActiveController
                 $code .= $num;
                 $sert->sert_id = $num;
                 $sert->sert_full = $code;
-                $sert->sert_num = "{$sert->sert_num}";
 
                 if($sert->save()){
                     $res['sert'] = 1;
@@ -215,7 +244,7 @@ class PetitionController extends ActiveController
                     $sample_ids = [];
                     $n=0;
 //                    $res['samples'] = [];
-                    foreach ($samples as $item){
+                    foreach ($samples as $k => $item){
 
                         $nam = new Samples();
                         $nam->sert_id = $sert->id;
@@ -238,6 +267,33 @@ class PetitionController extends ActiveController
 
                         $anim->save(false);
 
+                        if(isset($animal['vaccination']) and $vac = $animal['vaccination']){
+                            $res['vaccination'] = 1;
+                            foreach ($vac as $key=>$i){
+                                $v = new Vaccination();
+                                $v->vaccina_id = $i['vaccina_id'];
+                                $v->disease_id = $i['disease_id'];
+                                $v->disease_date = $i['disease_date'];
+                                $v->animal_id = $anim->id;
+                                $v->save(false);
+                                $res['vac'][$key] = $v;
+                            }
+
+                        }
+                        if(isset($animal['emlash']) and  $em = $animal['emlash']){
+                            $res['emlash'] = 1;
+                            foreach ($em as $key=>$i){
+                                $e = new Emlash();
+                                $e->animal_id = $anim->id;
+                                $e->antibiotic = $i['antibiotic'];
+                                $e->emlash_date = $i['date'];
+                                $e->save(false);
+                                $res['eml'][$key] = $e;
+                            }
+                        }
+
+
+
                         $nam->animal_id = $anim->id;
                         $nam->suspected_disease_id = $item['disease_id'];
                         $nam->test_mehod_id = $item['mehod_id'];
@@ -254,19 +310,27 @@ class PetitionController extends ActiveController
                         $nam->kod = $code.'/'.$num;
                         $nam->samp_id = $num;
 
-                        $nam->save();
+                        if($nam->save()){
+                            $res['namuna'][$k] = 1;
+                        }else{
+                            $res['namuna'][$k] = 0;
+                        }
 
                         $sample_ids[$n++] = $nam->id;
                     }
                     if($n==0){
                         $allok = false;
                         $res['n'] = 0;
+                        $errors ['code'] = 0;
+                        $errors['data']['animal'] = "animal ma'lumotlari to'liq emas";
                     }else{
                         $res['n'] = $n;
                     }
                 }else{
                     $allok = false;
                     $res['sert'] = 0;
+                    $errors ['code'] = 0;
+                    $errors['data']['sert'] = "sert ma'lumotlari to'liq emas";
                 }
 
                 $model->registon_id = $post['registon_id'];
@@ -352,7 +416,11 @@ class PetitionController extends ActiveController
                 $transaction->rollBack();
             }
 
-            return $allok;
+            if($allok){
+                return $res;
+            }else{
+                return $errors;
+            }
         }
 
         return 0;

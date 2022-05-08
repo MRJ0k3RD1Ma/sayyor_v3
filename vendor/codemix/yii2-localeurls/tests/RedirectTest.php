@@ -1,5 +1,7 @@
 <?php
+namespace tests;
 
+use Yii;
 use yii\helpers\Url;
 
 class RedirectTest extends TestCase
@@ -47,7 +49,7 @@ class RedirectTest extends TestCase
                     '/custom' => 'test/action',
                     '/slug/<name>' => 'test/slug',
                     [
-                        'class' => 'TestUrlRule',
+                        'class' => '\tests\TestUrlRule',
                     ],
                     [
                         'pattern' => '/slash',
@@ -179,7 +181,7 @@ class RedirectTest extends TestCase
                     '/custom' => 'test/action',
                     '/slug/<name>' => 'test/slug',
                     [
-                        'class' => 'TestUrlRule',
+                        'class' => '\tests\TestUrlRule',
                     ],
                     [
                         'pattern' => '/slash',
@@ -227,11 +229,11 @@ class RedirectTest extends TestCase
 
                 // Params
                 '/?a=b' => '/en?a=b',
-                '/site/page?a=b' => '/en/site/page?a=b',
+                '/site/page1?a=b' => '/en/site/page1?a=b',
                 '/custom?a=b' => '/en/custom?a=b',
                 '/slash/?a=b' => '/en/slash/?a=b',
-                '/site/page?a=b' => [
-                    ['/de/site/page?a=b', 'request' => ['acceptableLanguages' => ['de']]],
+                '/site/page2?a=b' => [
+                    ['/de/site/page2?a=b', 'request' => ['acceptableLanguages' => ['de']]],
                 ],
                 '/slug/value' => '/en/slug/value',
                 '/en/slug/value' => false,
@@ -421,11 +423,11 @@ class RedirectTest extends TestCase
 
                 // Params
                 '/?a=b' => '/en/?a=b',
-                '/site/page/?a=b' => '/en/site/page/?a=b',
+                '/site/page1/?a=b' => '/en/site/page1/?a=b',
                 '/custom/?a=b' => '/en/custom/?a=b',
                 '/noslash?a=b' => '/en/noslash?a=b',
-                '/site/page/?a=b' => [
-                    ['/de/site/page/?a=b', 'request' => ['acceptableLanguages' => ['de']]],
+                '/site/page2/?a=b' => [
+                    ['/de/site/page2/?a=b', 'request' => ['acceptableLanguages' => ['de']]],
                 ],
                 '/slug/value/' => '/en/slug/value/',
                 '/en/slug/value/' => false,

@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '63c41a84d79eee47ad56e13627e733d17d3faba3',
+        'reference' => NULL,
         'name' => 'yiisoft/yii2-app-advanced',
         'dev' => true,
     ),
@@ -164,12 +164,12 @@
             'dev_requirement' => true,
         ),
         'codemix/yii2-localeurls' => array(
-            'pretty_version' => '1.7.1',
-            'version' => '1.7.1.0',
+            'pretty_version' => '1.8.0',
+            'version' => '1.8.0.0',
             'type' => 'yii2-extension',
             'install_path' => __DIR__ . '/../codemix/yii2-localeurls',
             'aliases' => array(),
-            'reference' => 'f681040b9da5b35a8653041f98bd58c2dd84af07',
+            'reference' => 'afa019668ccd63b73dcd3cd27e74f5fd92d43c79',
             'dev_requirement' => false,
         ),
         'dasprid/enum' => array(
@@ -281,7 +281,7 @@
             'aliases' => array(
                 0 => '3.3.x-dev',
             ),
-            'reference' => '7f8c9270dde525b60960b8c4cb2d40d861b3bdb9',
+            'reference' => 'a5df137f458f4a9d1f4989e95df352e55ecbf9d4',
             'dev_requirement' => false,
         ),
         'kartik-v/yii2-krajee-base' => array(
@@ -312,7 +312,7 @@
             'aliases' => array(
                 0 => '1.1.x-dev',
             ),
-            'reference' => 'd3caa4911ecd8125a5f87865807fa1de7f6cdba7',
+            'reference' => '61cfc4a9c856cd710a1125ac53d49f20efc40c94',
             'dev_requirement' => false,
         ),
         'kartik-v/yii2-widget-select2' => array(
@@ -462,12 +462,12 @@
             'dev_requirement' => true,
         ),
         'phpoffice/phpspreadsheet' => array(
-            'pretty_version' => '1.22.0',
-            'version' => '1.22.0.0',
+            'pretty_version' => '1.23.0',
+            'version' => '1.23.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpoffice/phpspreadsheet',
             'aliases' => array(),
-            'reference' => '3a9e29b4f386a08a151a33578e80ef1747037a48',
+            'reference' => '21e4cf62699eebf007db28775f7d1554e612ed9e',
             'dev_requirement' => true,
         ),
         'phpspec/php-diff' => array(
@@ -783,12 +783,12 @@
             'dev_requirement' => true,
         ),
         'symfony/console' => array(
-            'pretty_version' => 'v5.4.7',
-            'version' => '5.4.7.0',
+            'pretty_version' => 'v5.4.8',
+            'version' => '5.4.8.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/console',
             'aliases' => array(),
-            'reference' => '900275254f0a1a2afff1ab0e11abd5587a10e1d6',
+            'reference' => 'ffe3aed36c4d60da2cf1b0a1cee6b8f2e5fa881b',
             'dev_requirement' => true,
         ),
         'symfony/css-selector' => array(
@@ -843,12 +843,12 @@
             ),
         ),
         'symfony/finder' => array(
-            'pretty_version' => 'v5.4.3',
-            'version' => '5.4.3.0',
+            'pretty_version' => 'v5.4.8',
+            'version' => '5.4.8.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/finder',
             'aliases' => array(),
-            'reference' => '231313534dded84c7ecaa79d14bc5da4ccb69b7d',
+            'reference' => '9b630f3427f3ebe7cd346c277a1408b00249dad9',
             'dev_requirement' => true,
         ),
         'symfony/polyfill-ctype' => array(
@@ -942,12 +942,12 @@
             'dev_requirement' => true,
         ),
         'symfony/string' => array(
-            'pretty_version' => 'v5.4.3',
-            'version' => '5.4.3.0',
+            'pretty_version' => 'v5.4.8',
+            'version' => '5.4.8.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/string',
             'aliases' => array(),
-            'reference' => '92043b7d8383e48104e411bc9434b260dbeb5a10',
+            'reference' => '3c061a76bff6d6ea427d85e12ad1bb8ed8cd43e8',
             'dev_requirement' => true,
         ),
         'symfony/yaml' => array(
@@ -996,12 +996,12 @@
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-app-advanced' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '63c41a84d79eee47ad56e13627e733d17d3faba3',
+            'reference' => NULL,
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(

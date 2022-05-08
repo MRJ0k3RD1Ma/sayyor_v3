@@ -3,15 +3,6 @@
 $vendorDir = dirname(__DIR__);
 
 return array (
-  'codemix/yii2-localeurls' => 
-  array (
-    'name' => 'codemix/yii2-localeurls',
-    'version' => '1.7.1.0',
-    'alias' => 
-    array (
-      '@codemix/localeurls' => $vendorDir . '/codemix/yii2-localeurls',
-    ),
-  ),
   'yiisoft/yii2-bootstrap4' => 
   array (
     'name' => 'yiisoft/yii2-bootstrap4',
@@ -127,6 +118,15 @@ return array (
     'alias' => 
     array (
       '@yii/debug' => $vendorDir . '/yiisoft/yii2-debug/src',
+    ),
+  ),
+  'codemix/yii2-localeurls' => 
+  array (
+    'name' => 'codemix/yii2-localeurls',
+    'version' => '1.8.0.0',
+    'alias' => 
+    array (
+      '@codemix/localeurls' => $vendorDir . '/codemix/yii2-localeurls',
     ),
   ),
 );

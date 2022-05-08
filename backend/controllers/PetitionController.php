@@ -258,6 +258,7 @@ class PetitionController extends ActiveController
                         $anim = new Animals();
                         $anim->name = $animal['name'];
                         $anim->gender = $animal['gender'];
+                        $anim->cat_id = $animal['cat_id'];
                         $anim->birthday = date('Y-m-d',strtotime($animal['birthday']));
                         $anim->inn = $animal['inn'];
                         $anim->pnfl = $animal['pnfl'];
@@ -266,7 +267,13 @@ class PetitionController extends ActiveController
                         $anim->type_id = $animal['type_id'];
                         $anim->adress = $animal['adress'];
 
-                        $anim->save();
+                        if($anim->save()){
+                            $res['animal'] = 1;
+                        }else{
+                            $errors['code'] = 0;
+                            $errors['data']['animal'] = "Hayvon ma'lumotlari to'liq emas";
+                            $errors['data']['animal_code'] = $anim;
+                        }
 
                         if(isset($animal['vaccination']) and $vac = $animal['vaccination']){
                             $res['vaccination'] = 1;

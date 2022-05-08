@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 03, 2022 at 06:02 PM
--- Server version: 10.4.18-MariaDB
--- PHP Version: 7.4.18
+-- Generation Time: May 08, 2022 at 02:25 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -64,7 +64,9 @@ INSERT INTO `animals` (`id`, `name`, `cat_id`, `gender`, `birthday`, `inn`, `pnf
 (56, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
 (57, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
 (58, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
-(59, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1);
+(59, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
+(78, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
+(79, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1);
 
 -- --------------------------------------------------------
 
@@ -178,7 +180,9 @@ INSERT INTO `composite_samples` (`sample_id`, `status_id`, `registration_id`, `a
 (51, NULL, 30, NULL, 1),
 (52, NULL, 30, NULL, 1),
 (53, NULL, 31, NULL, 1),
-(54, NULL, 31, NULL, 1);
+(54, NULL, 31, NULL, 1),
+(64, NULL, 32, NULL, 1),
+(65, NULL, 32, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -716,7 +720,9 @@ CREATE TABLE `emlash` (
 --
 
 INSERT INTO `emlash` (`animal_id`, `antibiotic`, `emlash_date`) VALUES
-(32, 'jhkhkhjkhjkhkhk', '2022-01-21');
+(32, 'jhkhkhjkhjkhkhk', '2022-01-21'),
+(78, 'Anitboitik nomi', '2022-04-01'),
+(78, 'Anitboitik nomi', '2022-04-03');
 
 -- --------------------------------------------------------
 
@@ -803,6 +809,129 @@ CREATE TABLE `emp_posts_history` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `food`
+--
+
+CREATE TABLE `food` (
+  `id` int(11) NOT NULL,
+  `name_uz` varchar(255) NOT NULL DEFAULT '',
+  `name_ru` varchar(255) NOT NULL DEFAULT '',
+  `category_id` int(11) NOT NULL,
+  `animal_type_id` varchar(255) DEFAULT NULL,
+  `for_all` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `food`
+--
+
+INSERT INTO `food` (`id`, `name_uz`, `name_ru`, `category_id`, `animal_type_id`, `for_all`) VALUES
+(1, 'Мясо, в том числе полуфабрикаты, парные, охлажденные, подмороженные, замороженные (все виды убойных, промысловых и диких животных)', 'Go\'sht, shu jumladan yarim tayyor mahsulotlar, yangi, sovutilgan, muzlagan, muzlatilgan (barcha turdagi so\'yish, ov va yovvoyi hayvonlar)', 1, 'XX', NULL),
+(2, 'Субпродукты убойных животных охлажденные, замороженные (печень, почки, язык, мозги, сердце), шкурка свиная, кровь пищевая и продукты ее переработки', 'So\'yilgan hayvonlarning sovutilgan, muzlatilgan submahsulotlari (jigar, buyraklar, til, miya, yurak), cho\'chqa terisi, oziq-ovqat qoni va uni qayta ishlash mahsulotlari', 1, 'XX', NULL),
+(3, 'Колбасные изделия, продукты из мяса всех видов убойных животных,(в т.ч. казы) кулинарные изделия из мяса', 'Kolbasa mahsulotlari, so\'yishning barcha turlaridan go\'sht mahsulotlari (shu jumladan qozi) go\'shtdan tayyorlangan oshpazlik mahsulotlari', 1, 'XX', NULL),
+(4, 'Продукты мясные с использованием субпродуктов (паштеты, ливерные колбасы, зельцы, студни, хасип и др.) и крови. Изделия вареные с использованием субпродуктов, крови, охлажденные и замороженные (хлебы, колбасы, студни, ливерные колбасы, заливные блюда)', 'Go\'sht mahsulotlari (pate, jigar kolbasa, guruch, jele, hasip va boshqalar) va qon. Sut mahsulotlari, qon bilan qaynatilgan, sovutilgan va muzlatilgan mahsulotlar (non, kolbasa, jele, jigar kolbasa, jelli idishlar)', 1, 'XX', NULL),
+(5, 'Консервы из мяса, мясорастительные', 'Go\'sht, go\'sht va sabzavot konservalari', 1, 'XX', NULL),
+(6, 'Консервы из субпродуктов, в том числе паштетные (все виды убойных и промысловых животных)', 'Submahsulotlardan tayyorlangan konservalar, shu jumladan pate (barcha turdagi so\'yish va ov hayvonlari)', 1, 'XX', NULL),
+(7, 'Мясо сублимационной и тепловой сушки', 'Sublimatsiyalangan va issiqlik bilan quritilgan go\'sht', 1, 'XX', NULL),
+(8, 'Мясо птицы, в том числе полуфабрикаты, охлажденные, замороженные (все виды птицы для убоя, пернатой дичи)', 'Parranda go\'shti, shu jumladan yarim tayyor mahsulotlar, sovutilgan, muzlatilgan (so\'yish uchun parrandalarning barcha turlari, ov qushlari)', 1, '05', NULL),
+(9, 'Субпродукты, полуфабрикаты из субпродуктов птицы', 'Parranda go\'shtidan tayyorlangan submahsulotlari, yarim tayyor mahsulotlar', 1, '05', NULL),
+(10, 'Колбасные изделия, копчености, кулинарные изделия с использованием мяса птицы', 'Parranda go\'shtidan foydalangan holda kolbasa, dudlangan go\'sht, pazandalik mahsulotlari', 1, '05', NULL),
+(11, 'Мясопродукты с использованием субпродуктов птицы, шкурки (паштеты, ливерные колбасы и др.)', 'Parranda go\'shti, terisidan foydalaniladigan go\'sht mahsulotlari (pat, jigar kolbasa va boshqalar).', 1, '05', NULL),
+(12, 'Консервы птичьи (из мяса птицы и мясорастительные*, в т.ч. паштетные и фаршевые)', 'Konservalangan parranda go\'shti (parranda go\'shti va go\'sht va sabzavotlardan *, shu jumladan pate va qiyma go\'shtdan)', 1, '05', NULL),
+(13, 'Продукты из мяса птицы сублимационной и тепловой сушки', 'Sublimatsiyalangan va issiqlik bilan quritilgan parranda go\'shti mahsulotlari', 1, '05', NULL),
+(14, 'Дополнительные показатели мяса и мясопродуктов (для всех)', 'Go\'sht va go\'sht mahsulotlarining qo\'shimcha ko\'rsatkichlari (barcha uchun)', 1, 'XX', 1),
+(15, 'Питьевое молоко и питьевые сливки, пахта, сыворотка молочная, молочный напиток, жидкие кисломолочные продукты (айран, ацидофилин, варенец, кефир, кумыс и кумысный продукт, йогурт, простокваша, ряженка), сметана, молочные составные продукты на их основе, п', 'Ichimlik suti va qaymoq, ayran, sut zardobi, sutli ichimlik, suyuq fermentlangan sut mahsulotlari (ayran, atsidofil, varenets, kefir, kumiss va kumiss mahsuloti, qatiq, tvorog, achitilgan pishirilgan sut), smetana, ular asosidagi sut mahsulotlari , mahsul', 2, NULL, NULL),
+(16, 'Творог, творожная масса, зерненный творог, сырок, творожные продукты, творожный сыр, молочные составные продукты на их основе, альбумин молочный и продукты на его основе, продукты пастообразные молочные белковые, в том числе термически обработанные после ', 'Tvorog, tvorog massasi, donli tvorog, tvorog, tvorog mahsulotlari, tvorog, ular asosidagi sut aralashmalari, sut albumini va uning asosidagi mahsulotlar, xamirli sut oqsili mahsulotlari, shu jumladan fermentatsiyadan keyin issiqlik bilan ishlov berilgan', 2, NULL, NULL),
+(17, 'Молоко, сливки, пахта, сыворотка, молочные составные продукты на их основе концентрированные и сгущенные с сахаром, молоко сгущенное стерилизованное, молочные консервы и молочные составные консервы', 'Sut, qaymoq, ayran, zardob, ular asosida konsentrlangan va shakar bilan quyultirilgan aralash sut mahsulotlari, sterillangan quyultirilgan sut, konservalangan sut va konservalangan sut aralashmasi', 2, NULL, NULL),
+(18, 'Продукты молочные, молочные составные сухие, сублимированные (молоко, сливки, кисломолочные продукты, напитки, смеси для мороженого, сыворотка, пахта, обезжиренное молоко)', 'Sut mahsulotlari, quruq, sublimatsiyalangan sut aralashmasi (sut, qaymoq, achitilgan sut mahsulotlari, ichimliklar, muzqaymoq aralashmalari, zardob, sariyog \', yog\'siz sut)', 2, NULL, NULL),
+(19, 'Концентраты молочных белков, лактулоза, сахар молочный, казеин, казеинаты, гидролизаты молочных белков', 'Sut oqsili konsentratlari, laktuloza, sut shakari, kazein, kazeinatlar, sut oqsili gidrolizatlari', 2, NULL, NULL),
+(20, 'Сыры, сырные продукты: сверхтвердые, твердые, полутвердые, мягкие, сывороточно-альбуминные, плавленые, сухие; сырные пасты, соусы', 'Pishloqlar, pishloq mahsulotlari: o\'ta qattiq, qattiq, yarim qattiq, yumshoq, zardob-albumin, qayta ishlangan, quruq; pishloqli yormalar, soslar', 2, NULL, NULL),
+(21, 'Масло, паста масляная из коровьего молока, молочный жир', 'Sariyog \', sigir sutidan yog\' pastasi, sut yog\'i', 2, NULL, NULL),
+(22, 'Сливочно-растительный спред, сливочно-растительная топленая смесь', 'Kremsi-sabzavotli yoyilgan, qaymoqli-sabzavotli pishirilgan aralashmasi', 2, NULL, NULL),
+(23, 'Мороженое всех видов из молока и на молочной основе', 'Sut va sutga asoslangan barcha turdagi muzqaymoqlar', 2, NULL, NULL),
+(24, 'Закваски: заквасочные и пробиотические микроорганизмы для изготовления кисломолочных продуктов, масла кислосливочного, сыров', 'Achitqilar: achitilgan sut mahsulotlari, madaniy sariyog \', pishloqlar ishlab chiqarish uchun boshlang\'ich va probiyotik mikroorganizmlar', 2, NULL, NULL),
+(25, 'Питательные среды сухие на молочной основе для культивирования заквасочной, пробиотической микрофлоры', 'Boshlang\'ich, probiyotik mikroflorani etishtirish uchun quruq sutga asoslangan ozuqaviy muhit', 2, NULL, NULL),
+(26, 'Молокосвертывающие ферментные препараты', 'Sut ivish fermenti preparatlari', 2, NULL, NULL),
+(27, 'Дополнительные показатели для молочной продукции', 'Sut mahsulotlari uchun qo\'shimcha ko\'rsatkichlar', 2, NULL, 1),
+(28, 'Кукуруза ', 'Makkajo\'xori', 3, NULL, NULL),
+(29, 'Пшеница ', 'Bug`doy', 3, NULL, NULL),
+(30, 'Отруби пшеничные ', 'Bug`doy kepagi ', 3, NULL, NULL),
+(31, 'Рожь ', 'Javdar', 3, NULL, NULL),
+(32, 'Отруби ржаные ', 'Javdar kepagi', 3, NULL, NULL),
+(33, 'Тритикале ', 'Tritikale', 3, NULL, NULL),
+(34, 'Овес ', 'Jo\'xori', 3, NULL, NULL),
+(35, 'Ячмень ', 'Arpa', 3, NULL, NULL),
+(36, 'Просо ', 'Tariq', 3, NULL, NULL),
+(37, 'Рис ', 'Guruch', 3, NULL, NULL),
+(38, 'Сорго ', 'Oq jo`xori', 3, NULL, NULL),
+(39, 'Бобы ', 'Бобы (loviya)', 4, NULL, NULL),
+(40, 'Горох ', 'No`xat', 4, NULL, NULL),
+(41, 'Фасоль ', 'Loviya', 4, NULL, NULL),
+(42, 'Нут ', 'Yong\'oq (nut)', 4, NULL, NULL),
+(43, 'Чечевица ', 'Yasmiq', 4, NULL, NULL),
+(44, 'Маш ', 'Мош', 4, NULL, NULL),
+(45, 'Подсолнечник', 'Kungaboqar', 5, NULL, NULL),
+(46, 'Соя ', 'Soya', 5, NULL, NULL),
+(47, 'Хлопчатник ', 'Chigit', 5, NULL, NULL),
+(48, 'Лен ', 'Zig\'ir', 5, NULL, NULL),
+(49, 'Рапс ', 'Raps urug\'i', 5, NULL, NULL),
+(50, 'Кунжут ', 'Kunjut', 5, NULL, NULL),
+(51, 'Арахис ', 'Yer yong`oq', 5, NULL, NULL),
+(52, 'Шрот подсолнечный ', 'kungaboqar shroti', 6, NULL, NULL),
+(53, 'Жмых подсолнечный', 'kungaboqar jmixi', 6, NULL, NULL),
+(54, 'Шрот соевый ', 'Soya shroti', 6, NULL, NULL),
+(55, 'Жмых соевый ', 'Soya jmixi', 6, NULL, NULL),
+(56, 'Шрот хлопковый ', 'Chigit shroti', 6, NULL, NULL),
+(57, 'Жмых  хлопковый', 'Chigit jmixi', 6, NULL, NULL),
+(58, 'Шрот арахисовый ', 'Yer yong`oq shroti', 6, NULL, NULL),
+(59, 'Жмых арахисов', 'Yer yong`oq jmixi', 6, NULL, NULL),
+(60, 'Жмых тыквы ', 'Qovoq jmixi', 6, NULL, NULL),
+(61, 'Жмых кунжута ', 'Kunjut jmixi', 6, NULL, NULL),
+(62, 'Шрот льняной', 'Jig`ir shroti', 6, NULL, NULL),
+(63, 'Жмых льняной', 'Zig\'ir jmixi', 6, NULL, NULL),
+(64, 'Шрот рапсовый ', 'Raps shroti', 6, NULL, NULL),
+(65, 'Дрожжи кормовые ', 'Ozuqa xamirturush', 6, NULL, NULL),
+(66, 'Мука мясо-костная ', 'Suyak uni', 7, NULL, NULL),
+(67, 'Мука кровяная', 'Qon uni', 7, NULL, NULL),
+(68, 'Мука рыбная из непищевой рыбы ', 'Baliq uni', 7, NULL, NULL),
+(69, 'Трикальцийфосфат ', 'Trikalsiyfosfat', 8, NULL, NULL),
+(70, 'Дикальций фосфат   ', 'Dikalsiyfosfat', 8, NULL, NULL),
+(71, 'Монокальцийфосфат  ', 'Nonokalsiyfosfat', 8, NULL, NULL),
+(72, 'Ракушка ', 'Rakushka', 8, NULL, NULL),
+(73, 'Известняк', 'Oxak', 8, NULL, NULL),
+(74, ' Мел', 'Bo`r', 8, NULL, NULL),
+(75, 'Мёд', 'Asal', 9, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `food_category`
+--
+
+CREATE TABLE `food_category` (
+  `id` int(11) NOT NULL,
+  `name_uz` varchar(255) NOT NULL DEFAULT '',
+  `name_ru` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `food_category`
+--
+
+INSERT INTO `food_category` (`id`, `name_uz`, `name_ru`) VALUES
+(1, 'Gosht va gosht mahsulotlari', 'Мясо и мясо продуктов'),
+(2, 'Sut mahsulotlari', 'Малочная продукция '),
+(3, 'Don va don mahsulotlari', 'Зерно и зернопродукты '),
+(4, 'Dukkalilar', 'Зернобобовые'),
+(5, 'Yog`li o`simliklar', 'Масличные культуры'),
+(6, 'Ozuqa va ozuqa qo\'shimchalari', 'Корма и кормовые добавки '),
+(7, 'Go`shtdan chiqadigan ozuqa', 'Корма мясного прихождения'),
+(8, 'Ozuqaga mineral qo\'shimchalar', 'Минеральные добавки корм'),
+(9, 'Asal', 'Мед');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `food_compose`
 --
 
@@ -824,6 +953,40 @@ INSERT INTO `food_compose` (`id`, `sample_id`, `registration_id`, `status_id`, `
 (10, 11, 11, 1, 'sdasd'),
 (11, 12, 11, 1, ''),
 (12, 13, 11, 1, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `food_group`
+--
+
+CREATE TABLE `food_group` (
+  `id` int(11) NOT NULL,
+  `name_ru` varchar(255) NOT NULL DEFAULT '',
+  `name_uz` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `food_group`
+--
+
+INSERT INTO `food_group` (`id`, `name_ru`, `name_uz`) VALUES
+(1, 'Токсичные элементы', 'Toksik elementlar'),
+(2, 'Микотоксины ', 'Mikotoksinlar'),
+(3, 'Пестициды', 'Pestitsidlar'),
+(4, 'Радионуклиды', 'Radionuklidlar'),
+(5, 'Антибиотики', 'Antibiotiklar'),
+(6, 'Паразитологические показатели', 'Parazit ko`satkichlar'),
+(7, 'Нитриты', 'Nitratlar'),
+(8, 'Нитрозамины', 'Nitrozaminlar'),
+(9, 'Микробиологические показатели', 'Mirrobiologik ko`rsatkichlar'),
+(10, 'Физико-химические показатели', 'Fizik-kimyoviy ko`rsatkichlar'),
+(11, 'Уровни остатков антимикробных средств', 'Antimirkrob vositalar qoldiqlari darajalari'),
+(12, 'Уровни остатков антипротозойных средств', 'Antiprotozoy vositalar qoldiqlari darajalari'),
+(13, 'Уровни остатков инсектицидов', 'Insektisidlar qoldiqlari darajalari'),
+(14, 'Ветеринарные лекарственные препараты (мёд)', 'Veterinar dori preparatlari (asal)'),
+(15, 'Органолептические показатели ', 'Organoleptik ko`rsatkichlar'),
+(16, 'Показатель окислительной порчи', 'Oksidlanishning buzilishi ko`rsatkichi');
 
 -- --------------------------------------------------------
 
@@ -991,35 +1154,6 @@ CREATE TABLE `food_sampling_certificate` (
 
 INSERT INTO `food_sampling_certificate` (`id`, `code`, `food_id`, `inn`, `pnfl`, `sampling_soato`, `sampling_site`, `sampling_adress`, `sampler_person_pnfl`, `sampler_person_inn`, `verification_pupose_id`, `sampling_date`, `send_sample_date`, `based_public_information`, `message_number`, `created`, `updated`, `explanations`, `status_id`, `state_id`) VALUES
 (15, '33204-22-1', 1, '305634884', NULL, 1733204, 1, 'test', NULL, '306922184', 1, '2022-04-05', '2022-04-05', 0, NULL, '2022-04-05 21:22:06', '2022-04-23 19:12:59', NULL, 5, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `food_type`
---
-
-CREATE TABLE `food_type` (
-  `id` int(11) NOT NULL,
-  `name` varchar(250) DEFAULT NULL,
-  `parent_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='produktalar turlari';
-
---
--- Dumping data for table `food_type`
---
-
-INSERT INTO `food_type` (`id`, `name`, `parent_id`) VALUES
-(1, 'ТИРИК ҲАЙВОНЛАР', NULL),
-(2, 'Тирик отлар, эшаклар, хачирлар', 1),
-(3, 'Тирик йирик шохли қорамоллар', 1),
-(4, 'Тирик отлар', 2),
-(5, 'Тирик эшаклар', 2),
-(6, 'Тирик хачирлар', 2),
-(7, 'ГЎШТ ВА ГЎШТЛИ ОЗИҚ-ОВҚАТ СУБМАҲСУЛОТЛАРИ', NULL),
-(8, 'Йирик шохли қорамол гўшти, янги сўйилган ёки совутилган', 7),
-(9, 'Йирик шохли қорамол гўшти, музлатилган', 7),
-(10, 'Чўчқа гўшти, янги сўйилган, совутилган ёки музлатилган', 7),
-(11, 'Чўчқа гўшти', 10);
 
 -- --------------------------------------------------------
 
@@ -3450,7 +3584,9 @@ INSERT INTO `samples` (`id`, `kod`, `samp_id`, `label`, `sample_type_is`, `sampl
 (51, '33204-22-10/1', 1, 'paketdagi belgi', 1, 1, 56, 80, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 1),
 (52, '33204-22-10/2', 2, 'paketdagi belgi', 1, 1, 57, 80, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 2),
 (53, '33204-22-11/1', 1, 'paketdagi belgi', 1, 1, 58, 81, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 1),
-(54, '33204-22-11/2', 2, 'paketdagi belgi', 1, 1, 59, 81, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 2);
+(54, '33204-22-11/2', 2, 'paketdagi belgi', 1, 1, 59, 81, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 2),
+(64, '33204-22-12/1', 1, 'paketdagi belgi', 1, 1, 78, 96, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 1),
+(65, '33204-22-12/2', 2, 'paketdagi belgi', 1, 1, 79, 96, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -3568,7 +3704,8 @@ INSERT INTO `sample_registration` (`id`, `pnfl`, `inn`, `is_research`, `code_id`
 (28, '31512620270065', NULL, 0, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-03 20:23:39', '2022-05-03 20:23:39', NULL, 1, NULL, 0, 1, 1),
 (29, '31512620270065', NULL, 0, 5, '22-1-001-5', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-03 20:25:50', '2022-05-03 20:25:50', NULL, 1, NULL, 0, 1, 1),
 (30, NULL, '123456789', 0, 6, '22-1-001-6', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-03 20:30:25', '2022-05-03 20:30:25', NULL, 1, NULL, 0, 1, 1),
-(31, NULL, '123456789', 0, 7, '22-1-001-7', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-03 21:01:55', '2022-05-03 21:01:55', NULL, 1, NULL, 0, 1, 1);
+(31, NULL, '123456789', 0, 7, '22-1-001-7', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-03 21:01:55', '2022-05-03 21:01:55', NULL, 1, NULL, 0, 1, 1),
+(32, NULL, '123456789', 0, 8, '22-1-001-8', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-08 12:07:50', '2022-05-08 12:07:50', NULL, 1, NULL, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -3662,7 +3799,8 @@ INSERT INTO `sertificates` (`id`, `sert_id`, `sert_full`, `sert_num`, `sert_date
 (75, 8, '33204-22-8', '', '2022-04-25', NULL, '31512620270065', 1, 1, NULL, '2022-05-03 20:23:39', NULL, NULL, 'Dilmurod', 'Dasturchi', 1, 1),
 (79, 9, '33204-22-9', '', '2022-04-25', NULL, '31512620270065', 1, 1, NULL, '2022-05-03 20:25:50', NULL, NULL, 'Dilmurod', 'Dasturchi', 1, 1),
 (80, 10, '33204-22-10', '', '2022-04-25', '123456789', '', 1, 1, NULL, '2022-05-03 20:30:25', NULL, NULL, 'Dilmurod', 'Dasturchi', 1, 1),
-(81, 11, '33204-22-11', '', '2022-04-25', '123456789', '', 1, 1, NULL, '2022-05-03 21:01:55', '123456789', NULL, 'Dilmurod', 'Dasturchi', 1, 1);
+(81, 11, '33204-22-11', '', '2022-04-25', '123456789', '', 1, 1, NULL, '2022-05-03 21:01:55', '123456789', NULL, 'Dilmurod', 'Dasturchi', 1, 1),
+(96, 12, '33204-22-12', '1', '2022-04-25', '123456789', '', 1, 1, NULL, '2022-05-08 12:07:50', '123456789', NULL, 'Dilmurod', 'Dasturchi', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -8303,31 +8441,1022 @@ INSERT INTO `template_animal_regulations` (`regulation_id`, `template_id`, `stat
 
 CREATE TABLE `template_food` (
   `id` int(11) NOT NULL,
-  `tasnif_code` varchar(255) DEFAULT NULL,
-  `laboratory_test_type_id` int(11) DEFAULT NULL,
-  `name_uz` varchar(255) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `food_id` int(11) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
   `name_ru` varchar(255) DEFAULT NULL,
-  `unit_uz` varchar(255) DEFAULT NULL,
-  `unit_ru` varchar(255) DEFAULT NULL,
-  `type_id` int(11) DEFAULT NULL,
-  `min` varchar(255) DEFAULT NULL,
+  `name_uz` varchar(255) DEFAULT NULL,
+  `unit_id` int(11) DEFAULT NULL,
   `min_1` varchar(255) DEFAULT NULL,
-  `max` varchar(255) DEFAULT NULL,
+  `min_2` varchar(255) DEFAULT NULL,
   `max_1` varchar(255) DEFAULT NULL,
-  `ads` varchar(255) DEFAULT NULL,
-  `creator_id` int(11) DEFAULT NULL,
-  `consept_id` int(11) DEFAULT NULL,
-  `created` datetime DEFAULT current_timestamp(),
-  `updated` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='foodni templatelari';
+  `max_2` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `template_food`
 --
 
-INSERT INTO `template_food` (`id`, `tasnif_code`, `laboratory_test_type_id`, `name_uz`, `name_ru`, `unit_uz`, `unit_ru`, `type_id`, `min`, `min_1`, `max`, `max_1`, `ads`, `creator_id`, `consept_id`, `created`, `updated`) VALUES
-(1, '1', 1, 'shablon1uz', 'shalon1ru', 'birlik1uz', 'birlik1ru', 1, '1', '', '2', '', 'asd', NULL, NULL, '2022-03-28 21:37:50', '2022-03-28 21:37:50'),
-(2, '1', 1, 'shablon2uz', 'shalon2ru', 'birlik2uz', 'birlik2ru', 1, '1', '', '2', '', 'asd', NULL, NULL, '2022-03-28 21:38:05', '2022-03-28 21:38:05');
+INSERT INTO `template_food` (`id`, `category_id`, `food_id`, `group_id`, `name_ru`, `name_uz`, `unit_id`, `min_1`, `min_2`, `max_1`, `max_2`) VALUES
+(1, 1, 1, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(2, 1, 1, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.1', NULL),
+(3, 1, 1, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.05', NULL),
+(4, 1, 1, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(5, 1, 1, 1, 'цинк', 'ruh', 9, '0', NULL, '70', NULL),
+(6, 1, 1, 1, 'медь', 'mis', 9, '0', NULL, '5', NULL),
+(7, 1, 1, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(8, 1, 1, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(9, 1, 1, 4, 'цезий-137', 'seziy-137', 9, '0', NULL, '160', NULL),
+(10, 1, 1, 4, 'стронций-90', 'stronsiy-90', 9, '0', NULL, '200', NULL),
+(11, 1, 1, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0.01', NULL),
+(12, 1, 1, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(13, 1, 1, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(14, 1, 1, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(15, 1, 1, 6, 'Финны (цистицерки), личинки трихинелл и эхинококков, цисты саркоцист и токсоплазм', 'Финны (цистицерки), личинки трихинелл и эхинококков, цисты саркоцист и токсоплазм', 1, '2', NULL, NULL, NULL),
+(16, 1, 2, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.6', NULL),
+(17, 1, 2, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '1', NULL),
+(18, 1, 2, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '1', NULL),
+(19, 1, 2, 1, 'ртуть', 'simob', 9, '0', NULL, '0.3', NULL),
+(20, 1, 2, 1, 'цинк', 'ruh', 9, '0', NULL, '1', NULL),
+(21, 1, 2, 1, 'медь', 'mis', 9, '0', NULL, '0.1', NULL),
+(22, 1, 2, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(23, 1, 2, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(24, 1, 2, 4, 'цезий-137', 'seziy-137', 9, '0', NULL, '160', NULL),
+(25, 1, 2, 4, 'стронций-90', 'stronsiy-90', 9, '0', NULL, '200', NULL),
+(26, 1, 2, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0', NULL),
+(27, 1, 2, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(28, 1, 2, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(29, 1, 2, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(30, 1, 2, 6, 'Финны (цистицерки), личинки трихинелл и эхинококков, цисты саркоцист и токсоплазм', 'Финны (цистицерки), личинки трихинелл и эхинококков, цисты саркоцист и токсоплазм', 1, '2', NULL, NULL, NULL),
+(31, 1, 3, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(32, 1, 3, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.1', NULL),
+(33, 1, 3, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.05', NULL),
+(34, 1, 3, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(35, 1, 3, 1, 'цинк', 'ruh', 9, '0', NULL, '70', NULL),
+(36, 1, 3, 1, 'медь', 'mis', 9, NULL, NULL, '0.5', NULL),
+(37, 1, 3, 7, 'Нитриты', 'Нитриты', 9, '0', NULL, '50', NULL),
+(38, 1, 3, 8, 'Сумма НДМА и НДЭА', 'Сумма НДМА и НДЭА', 4, NULL, NULL, '0.002', '0.004'),
+(39, 1, 3, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(40, 1, 3, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(41, 1, 3, 4, 'цезий-137', 'seziy-137', 9, '0', NULL, '160', NULL),
+(42, 1, 3, 4, 'стронций-90', 'stronsiy-90', 9, '0', NULL, '320', NULL),
+(43, 1, 3, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0', NULL),
+(44, 1, 3, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(45, 1, 3, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(46, 1, 3, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(47, 1, 3, 6, 'Финны (цистицерки), личинки трихинелл и эхинококков, цисты саркоцист и токсоплазм', 'Финны (цистицерки), личинки трихинелл и эхинококков, цисты саркоцист и токсоплазм', 1, '2', NULL, NULL, NULL),
+(48, 1, 3, 1, 'свинец', 'qo\'rg\'oshin', 9, NULL, NULL, '0.6', NULL),
+(49, 1, 3, 1, 'мышьяк', 'mishyak', 9, NULL, NULL, '1', NULL),
+(50, 1, 3, 1, 'кадмий', 'kadmiy', 9, NULL, NULL, '0.3', NULL),
+(51, 1, 3, 1, 'ртуть', 'simob', 9, NULL, NULL, '0.1', NULL),
+(52, 1, 3, 1, 'цинк', 'ruh', 9, NULL, NULL, '70', NULL),
+(53, 1, 3, 1, 'медь', 'mis', 9, NULL, NULL, '5', NULL),
+(54, 1, 3, 7, 'Нитриты', 'Нитриты', 9, NULL, NULL, '50', NULL),
+(55, 1, 3, 8, 'Сумма НДМА и НДЭА', 'Сумма НДМА и НДЭА', 4, NULL, NULL, '0.002', '0.004'),
+(56, 1, 3, 5, 'Левомицетин', 'Levomisetin', 10, NULL, NULL, '0.01', NULL),
+(57, 1, 3, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 10, NULL, NULL, '0.01', NULL),
+(58, 1, 3, 5, 'Гризин', 'Grizin', 10, NULL, NULL, '0.5', NULL),
+(59, 1, 3, 5, 'Бацитрацин', 'Basitrasin', 10, NULL, NULL, '0.02', NULL),
+(60, 1, 3, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, NULL, NULL, '0.1', NULL),
+(61, 1, 3, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, NULL, NULL, '0.1', NULL),
+(62, 1, 4, 1, 'свинец', 'qo\'rg\'oshin', 9, NULL, NULL, '0.6', NULL),
+(63, 1, 4, 1, 'мышьяк', 'mishyak', 9, NULL, NULL, '1', NULL),
+(64, 1, 4, 1, 'кадмий', 'kadmiy', 9, NULL, NULL, '0.3', NULL),
+(65, 1, 4, 1, 'ртуть', 'simob', 9, NULL, NULL, '0.1', NULL),
+(66, 1, 4, 1, 'цинк', 'ruh', 9, NULL, NULL, '70', NULL),
+(67, 1, 4, 1, 'медь', 'mis', 9, NULL, NULL, '5', NULL),
+(68, 1, 4, 5, 'Левомицетин', 'Levomisetin', 9, NULL, NULL, '0', NULL),
+(69, 1, 4, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, NULL, NULL, '0', NULL),
+(70, 1, 4, 5, 'Гризин', 'Grizin', 9, NULL, NULL, '0', NULL),
+(71, 1, 4, 5, 'Бацитрацин', 'Basitrasin', 9, NULL, NULL, '0', NULL),
+(72, 1, 4, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, NULL, NULL, '0.1', NULL),
+(73, 1, 4, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, NULL, NULL, '0.1', NULL),
+(74, 1, 4, 8, 'Сумма НДМА и НДЭА', 'Сумма НДМА и НДЭА', 4, NULL, NULL, '0.002', '0.004'),
+(75, 1, 4, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(76, 1, 4, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(77, 1, 4, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '160', NULL),
+(78, 1, 4, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '200', NULL),
+(79, 1, 5, 1, 'Свинец', 'qo\'rg\'oshin', 9, NULL, NULL, '0.5', NULL),
+(80, 1, 5, 1, 'Мышьяк', 'mishyak', 9, NULL, NULL, '0.1', NULL),
+(81, 1, 5, 1, 'Кадмий', 'kadmiy', 9, NULL, NULL, '0.05', NULL),
+(82, 1, 5, 1, 'Ртуть', 'simob', 9, NULL, NULL, '0.03', NULL),
+(83, 1, 5, 1, 'Олово', 'Qalay', 9, NULL, NULL, '200', NULL),
+(84, 1, 5, 1, 'Хром', 'Xrom', 9, NULL, NULL, '0.5', NULL),
+(85, 1, 5, 1, 'Гексахлорциклогексан(α, ß, γ-изомеры)', 'Гексахлорциклогексан(α, ß, γ-изомеры)', 9, NULL, NULL, '0.1', NULL),
+(86, 1, 5, 1, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, NULL, NULL, '0.1', NULL),
+(87, 1, 5, 8, 'Сумма НДМА и НДЭА', 'Сумма НДМА и НДЭА', 4, NULL, NULL, '0.002', '0.004'),
+(88, 1, 5, 7, 'Нитраты:', 'Nitratlar', 9, NULL, NULL, '200', NULL),
+(89, 1, 5, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '160', NULL),
+(90, 1, 5, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '200', NULL),
+(91, 1, 5, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0.01', NULL),
+(92, 1, 5, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(93, 1, 5, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(94, 1, 5, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(95, 1, 5, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(96, 1, 5, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(97, 1, 6, 1, 'Свинец', 'qo\'rg\'oshin', 9, NULL, NULL, '0.6', NULL),
+(98, 1, 6, 1, 'Мышьяк', 'mishyak', 9, NULL, NULL, '1', NULL),
+(99, 1, 6, 1, 'Кадмий', 'kadmiy', 9, NULL, NULL, '0.3', NULL),
+(100, 1, 6, 1, 'Ртуть', 'simob', 9, NULL, NULL, '0.1', NULL),
+(101, 1, 6, 1, 'Олово', 'Qalay', 9, NULL, NULL, '200', NULL),
+(102, 1, 6, 1, 'Хром', 'Xrom', 9, NULL, NULL, '0.5', NULL),
+(103, 1, 6, 8, 'Сумма НДМА и НДЭА', 'Сумма НДМА и НДЭА', 4, NULL, NULL, '0.002', '0.004'),
+(104, 1, 6, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(105, 1, 6, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(106, 1, 6, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '160', NULL),
+(107, 1, 6, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '200', NULL),
+(108, 1, 6, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0.01', NULL),
+(109, 1, 6, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(110, 1, 6, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(111, 1, 6, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(112, 1, 7, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(113, 1, 7, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.1', NULL),
+(114, 1, 7, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.05', NULL),
+(115, 1, 7, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(116, 1, 7, 1, 'цинк', 'ruh', 9, '0', NULL, '70', NULL),
+(117, 1, 7, 1, 'медь', 'mis', 9, '0', NULL, '5', NULL),
+(118, 1, 7, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(119, 1, 7, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(120, 1, 7, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '160', NULL),
+(121, 1, 7, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '200', NULL),
+(122, 1, 7, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0.01', NULL),
+(123, 1, 7, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(124, 1, 7, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(125, 1, 7, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(126, 1, 7, 8, 'Сумма НДМА и НДЭА', 'Сумма НДМА и НДЭА', 4, NULL, NULL, '0.002', '0.004'),
+(127, 1, 8, 1, 'Свинец', 'qo\'rg\'oshin', 9, NULL, NULL, '0.5', NULL),
+(128, 1, 8, 1, 'Мышьяк', 'mishyak', 9, NULL, NULL, '0.1', NULL),
+(129, 1, 8, 1, 'Кадмий', 'kadmiy', 9, NULL, NULL, '0.05', NULL),
+(130, 1, 8, 1, 'Ртуть', 'simob', 9, NULL, NULL, '0.03', NULL),
+(131, 1, 8, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(132, 1, 8, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(133, 1, 8, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '180', NULL),
+(134, 1, 8, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '80', NULL),
+(135, 1, 8, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0', NULL),
+(136, 1, 8, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(137, 1, 8, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(138, 1, 8, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(139, 1, 9, 1, 'Свинец', 'qo\'rg\'oshin', 9, NULL, NULL, '0.6', NULL),
+(140, 1, 9, 1, 'Мышьяк', 'mishyak', 9, NULL, NULL, '1', NULL),
+(141, 1, 9, 1, 'Кадмий', 'kadmiy', 9, NULL, NULL, '0.3', NULL),
+(142, 1, 9, 1, 'Ртуть', 'simob', 9, NULL, NULL, '0.1', NULL),
+(143, 1, 9, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(144, 1, 9, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(145, 1, 9, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '180', NULL),
+(146, 1, 9, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '80', NULL),
+(147, 1, 9, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0', NULL),
+(148, 1, 9, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(149, 1, 9, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(150, 1, 9, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(151, 1, 10, 1, 'Свинец', 'qo\'rg\'oshin', 9, NULL, NULL, '0.5', NULL),
+(152, 1, 10, 1, 'Мышьяк', 'mishyak', 9, NULL, NULL, '0.1', NULL),
+(153, 1, 10, 1, 'Кадмий', 'kadmiy', 9, NULL, NULL, '0.05', NULL),
+(154, 1, 10, 1, 'Ртуть', 'simob', 9, NULL, NULL, '0.03', NULL),
+(155, 1, 10, 7, 'Нитриты ', 'Нитриты ', 9, NULL, NULL, '50', NULL),
+(156, 1, 10, 8, 'Сумма НДМА и НДЭА', 'Сумма НДМА и НДЭА', 4, NULL, NULL, '0.002', '0.004'),
+(157, 1, 10, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(158, 1, 10, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(159, 1, 10, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '180', NULL),
+(160, 1, 10, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '80', NULL),
+(161, 1, 10, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0', NULL),
+(162, 1, 10, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(163, 1, 10, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(164, 1, 10, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(165, 1, 11, 1, 'Свинец', 'qo\'rg\'oshin', 9, NULL, NULL, '0.6', NULL),
+(166, 1, 11, 1, 'Мышьяк', 'mishyak', 9, NULL, NULL, '1', NULL),
+(167, 1, 11, 1, 'Кадмий', 'kadmiy', 9, NULL, NULL, '0.3', NULL),
+(168, 1, 11, 1, 'Ртуть', 'simob', 9, NULL, NULL, '0.1', NULL),
+(169, 1, 11, 8, 'Сумма НДМА и НДЭА', 'Сумма НДМА и НДЭА', 4, NULL, NULL, '0.002', '0.004'),
+(170, 1, 11, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(171, 1, 11, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(172, 1, 11, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '180', NULL),
+(173, 1, 11, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '80', NULL),
+(174, 1, 11, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0', NULL),
+(175, 1, 11, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(176, 1, 11, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(177, 1, 11, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(178, 1, 12, 1, 'Свинец', 'qo\'rg\'oshin', 9, NULL, NULL, '0.5', NULL),
+(179, 1, 12, 1, 'Мышьяк', 'mishyak', 9, NULL, NULL, '0.1', NULL),
+(180, 1, 12, 1, 'Кадмий', 'kadmiy', 9, NULL, NULL, '0.05', NULL),
+(181, 1, 12, 1, 'Ртуть', 'simob', 9, NULL, NULL, '0.03', NULL),
+(182, 1, 12, 1, 'Олово', 'Qalay', 9, NULL, NULL, '200', NULL),
+(183, 1, 12, 1, 'Хром', 'Xrom', 9, NULL, NULL, '0.5', NULL),
+(184, 1, 12, 8, 'Сумма НДМА и НДЭА', 'Сумма НДМА и НДЭА', 4, NULL, NULL, '0.002', '0.004'),
+(185, 1, 12, 7, 'Нитриты', 'Нитриты', 9, NULL, NULL, '200', NULL),
+(186, 1, 12, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(187, 1, 12, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(188, 1, 12, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '180', NULL),
+(189, 1, 12, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '80', NULL),
+(190, 1, 12, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0', NULL),
+(191, 1, 12, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(192, 1, 12, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(193, 1, 12, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(194, 1, 12, 1, 'Свинец', 'qo\'rg\'oshin', 9, NULL, NULL, '0.5', NULL),
+(195, 1, 13, 1, 'Мышьяк', 'mishyak', 9, NULL, NULL, '0.1', NULL),
+(196, 1, 13, 1, 'Кадмий', 'kadmiy', 9, NULL, NULL, '0.05', NULL),
+(197, 1, 13, 1, 'Ртуть', 'simob', 9, NULL, NULL, '0.03', NULL),
+(198, 1, 13, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.1', NULL),
+(199, 1, 13, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.1', NULL),
+(200, 1, 13, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '180', NULL),
+(201, 1, 13, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '80', NULL),
+(202, 1, 13, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0', NULL),
+(203, 1, 13, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(204, 1, 13, 5, 'Гризин', 'Grizin', 9, '0', NULL, '0', NULL),
+(205, 1, 13, 5, 'Бацитрацин', 'Basitrasin', 9, '0', NULL, '0', NULL),
+(206, 1, 13, 8, 'Сумма НДМА и НДЭА', 'Сумма НДМА и НДЭА', 4, NULL, NULL, '0.002', '0.004'),
+(207, 1, 13, 7, 'Нитраты:', 'Nitratlar', 9, NULL, NULL, '200', NULL),
+(208, 1, 14, 9, 'КМАФАнМ ', 'КМАФАнМ ', 13, NULL, NULL, NULL, NULL),
+(209, 1, 14, 9, 'БГКП (коли-формы)', 'БГКП (коли-формы)', 12, NULL, NULL, NULL, NULL),
+(210, 1, 14, 9, 'Патогенные, в т. ч. сальмонеллы', 'Патогенные, в т. ч. сальмонеллы', 12, NULL, NULL, NULL, NULL),
+(211, 1, 14, 9, 'Дрожжи, КОЕ', 'Дрожжи, КОЕ', 1, NULL, NULL, NULL, NULL),
+(212, 1, 14, 9, 'Плесени, КОЕ', 'Плесени, КОЕ', 1, NULL, NULL, NULL, NULL),
+(213, 1, 14, 10, 'Массовая доля сухих веществ', 'Quruq moddaning massa ulushi', 12, NULL, NULL, NULL, NULL),
+(214, 1, 14, 10, 'Белок ', 'Oqsil ', 12, NULL, NULL, NULL, NULL),
+(215, 1, 14, 10, 'Жир', 'Yog`', 12, NULL, NULL, NULL, NULL),
+(216, 1, 14, 10, 'Поверенная соль', 'Osh tuzi', 12, NULL, NULL, NULL, NULL),
+(217, 1, 14, 10, 'Крахмал ', 'Kraxmal ', 12, NULL, NULL, NULL, NULL),
+(218, 1, 14, 10, 'Рисовая и пшеничная мука', 'guruch va bug`doy uni', 12, NULL, NULL, NULL, NULL),
+(219, 1, 14, 10, 'Нитриты', 'Nitratlar', 9, NULL, NULL, NULL, NULL),
+(220, 1, 14, 10, 'Железо ', 'Temir', 12, NULL, NULL, NULL, NULL),
+(221, 1, 14, 10, 'Остаточная активность кислой фосфатазы', 'Achchiq fosfat faolligi qoldig`i', 7, NULL, NULL, NULL, NULL),
+(222, 1, 14, 10, 'Общий фосфор', 'Umumiy fasfor', 7, NULL, NULL, NULL, NULL),
+(223, 1, 14, 11, 'Апрамицин  (аминогликозиды)', 'Апрамицин  (аминогликозиды)', 9, NULL, NULL, NULL, NULL),
+(224, 1, 14, 11, 'Гентамицин (аминогликозиды)', 'Гентамицин (аминогликозиды)', 9, NULL, NULL, NULL, NULL),
+(225, 1, 14, 11, 'Канамицин (аминогликозиды)', 'Канамицин (аминогликозиды)', 9, NULL, NULL, NULL, NULL),
+(226, 1, 14, 11, 'Неомицин (аминогликозиды)', 'Неомицин (аминогликозиды)', 9, NULL, NULL, NULL, NULL),
+(227, 1, 14, 11, 'Паромомицин(аминогликозиды)', 'Паромомицин(аминогликозиды)', 9, NULL, NULL, NULL, NULL),
+(228, 1, 14, 11, 'Спектиномицин (аминогликозиды)', 'Спектиномицин (аминогликозиды)', 9, NULL, NULL, NULL, NULL),
+(229, 1, 14, 11, 'Стрептомицин/диги', 'Стрептомицин/диги', 9, NULL, NULL, NULL, NULL),
+(230, 1, 14, 11, 'Цефтиофур (цефалоспорины)', 'Цефтиофур (цефалоспорины)', 9, NULL, NULL, NULL, NULL),
+(231, 1, 14, 11, 'Цефалексин (цефалоспорины)', 'Цефалексин (цефалоспорины)', 9, NULL, NULL, NULL, NULL),
+(232, 1, 14, 11, 'Цефапирин (цефалоспорины)', 'Цефапирин (цефалоспорины)', 9, NULL, NULL, NULL, NULL),
+(233, 1, 14, 11, 'Цефкином (цефалоспорины)', 'Цефкином (цефалоспорины)', 9, NULL, NULL, NULL, NULL),
+(234, 1, 14, 11, 'Все вещества ульфаниламидной группы сульфаниламиды', 'Все вещества ульфаниламидной группы сульфаниламиды', 9, NULL, NULL, NULL, NULL),
+(235, 1, 14, 11, 'Баквилоприм (производные диаминопиримидина)', 'Баквилоприм (производные диаминопиримидина)', 9, NULL, NULL, NULL, NULL),
+(236, 1, 14, 11, 'Триметоприм (производные диаминопиримидина)', 'Триметоприм (производные диаминопиримидина)', 9, NULL, NULL, NULL, NULL),
+(237, 1, 14, 11, 'Клавулановая кислота (ингибиторы беталактамазы)', 'Клавулановая кислота (ингибиторы беталактамазы)', 9, NULL, NULL, NULL, NULL),
+(238, 1, 14, 11, 'Линкомицин (линкозамиды)', 'Линкомицин (линкозамиды)', 9, NULL, NULL, NULL, NULL),
+(239, 1, 14, 11, 'Пирлимицин (линкозамиды)', 'Пирлимицин (линкозамиды)', 9, NULL, NULL, NULL, NULL),
+(240, 1, 14, 11, 'Тиамфеникол', 'Тиамфеникол', 9, NULL, NULL, NULL, NULL),
+(241, 1, 14, 11, 'Флорфеникол', 'Флорфеникол', 9, NULL, NULL, NULL, NULL),
+(242, 1, 14, 11, 'Флумекин (хинолоны)', 'Флумекин (хинолоны)', 9, NULL, NULL, NULL, NULL),
+(243, 1, 14, 11, 'Ципрофлоксацин/ энрофлоксацин/ пефлоксацин/ офлоксацин/ норфлоксацин Cipro floxacin/Enrof', 'Ципрофлоксацин/ энрофлоксацин/ пефлоксацин/ офлоксацин/ норфлоксацин Cipro floxacin/Enrof', 9, NULL, NULL, NULL, NULL),
+(244, 1, 14, 11, 'Данофлоксацин (хинолоны)', 'Данофлоксацин (хинолоны)', 9, NULL, NULL, NULL, NULL),
+(245, 1, 14, 11, 'Марбофлоксацин (хинолоны)', 'Марбофлоксацин (хинолоны)', 9, NULL, NULL, NULL, NULL),
+(246, 1, 14, 11, 'Оксолиновая кислота (хинолоны)', 'Оксолиновая кислота (хинолоны)', 9, NULL, NULL, NULL, NULL),
+(247, 1, 14, 11, 'Эритромицин (макролиды)', 'Эритромицин (макролиды)', 9, NULL, NULL, NULL, NULL),
+(248, 1, 14, 11, 'Спирамицин (макролиды)', 'Спирамицин (макролиды)', 9, NULL, NULL, NULL, NULL),
+(249, 1, 14, 11, 'Тилмикозин (макролиды)', 'Тилмикозин (макролиды)', 9, NULL, NULL, NULL, NULL),
+(250, 1, 14, 11, 'Тилозин (макролиды)', 'Тилозин (макролиды)', 9, NULL, NULL, NULL, NULL),
+(251, 1, 14, 11, 'Тилвалозин (макролиды)', 'Тилвалозин (макролиды)', 9, NULL, NULL, NULL, NULL),
+(252, 1, 14, 11, 'Тиамулин (плевромутилины)', 'Тиамулин (плевромутилины)', 9, NULL, NULL, NULL, NULL),
+(253, 1, 14, 11, 'Вальнемулин (плевромутилины)', 'Вальнемулин (плевромутилины)', 9, NULL, NULL, NULL, NULL),
+(254, 1, 14, 11, 'Рифаксимин/ рифампицин (ансамицины)', 'Рифаксимин/ рифампицин (ансамицины)', 9, NULL, NULL, NULL, NULL),
+(255, 1, 14, 11, 'Колистин (полимиксины)', 'Колистин (полимиксины)', 9, NULL, NULL, NULL, NULL),
+(256, 1, 14, 11, 'Бацитрацин (полипептиды)', 'Basitrasin (полипептиды)', 9, NULL, NULL, NULL, NULL),
+(257, 1, 14, 11, 'Авиламицин (ортозомицины)', 'Авиламицин (ортозомицины)', 9, NULL, NULL, NULL, NULL),
+(258, 1, 14, 11, 'Монензин (ионофоры)', 'Монензин (ионофоры)', 9, NULL, NULL, NULL, NULL),
+(259, 1, 14, 11, 'Ласалоцид (ионофоры)', 'Ласалоцид (ионофоры)', 9, NULL, NULL, NULL, NULL),
+(260, 1, 14, 11, 'Нитрофураны (включая фуразолидон)', 'Нитрофураны (включая фуразолидон)', 9, NULL, NULL, NULL, NULL),
+(261, 1, 14, 11, 'Метронидазол/ диметридазол/ ронидазол/дапсон/ клотримазол/ аминитризол ', 'Метронидазол/ диметридазол/ ронидазол/дапсон/ клотримазол/ аминитризол ', 9, NULL, NULL, NULL, NULL),
+(262, 1, 14, 11, 'Флавомицин (стрептотрицины)', 'Флавомицин (стрептотрицины)', 9, NULL, NULL, NULL, NULL),
+(263, 1, 14, 11, 'Доксициклин (тетрациклины)', 'Доксициклин (тетрациклины)', 9, NULL, NULL, NULL, NULL),
+(264, 1, 14, 11, 'Бензилпенициллин (группа пенициллина)', 'Бензилпенициллин (группа пенициллина)', 9, NULL, NULL, NULL, NULL),
+(265, 1, 14, 11, 'Ампициллин (группа пенициллина)', 'Ампициллин (группа пенициллина)', 9, NULL, NULL, NULL, NULL),
+(266, 1, 14, 11, 'Амоксициллин (группа пенициллина)', 'Амоксициллин (группа пенициллина)', 9, NULL, NULL, NULL, NULL),
+(267, 1, 14, 11, 'Клоксациллин (пенициллины)', 'Клоксациллин (пенициллины)', 9, NULL, NULL, NULL, NULL),
+(268, 1, 14, 11, 'Диклоксациллин (пенициллины)', 'Диклоксациллин (пенициллины)', 9, NULL, NULL, NULL, NULL),
+(269, 1, 14, 11, 'Нафциллин (пенициллины)', 'Нафциллин (пенициллины)', 9, NULL, NULL, NULL, NULL),
+(270, 1, 14, 11, 'Оксациллин (пенициллины)', 'Оксациллин (пенициллины)', 9, NULL, NULL, NULL, NULL),
+(271, 1, 14, 11, 'Феноксиметилпенициллин (группа пенициллина)', 'Феноксиметилпенициллин (группа пенициллина)', 9, NULL, NULL, NULL, NULL),
+(272, 1, 14, 12, 'Диклазурил ', 'Диклазурил ', 9, NULL, NULL, NULL, NULL),
+(273, 1, 14, 12, 'Имидокарб', 'Имидокарб', 9, NULL, NULL, NULL, NULL),
+(274, 1, 14, 12, 'Толтразурил', 'Толтразурил', 9, NULL, NULL, NULL, NULL),
+(275, 1, 14, 12, 'Робенидин', 'Робенидин', 9, NULL, NULL, NULL, NULL),
+(276, 1, 14, 12, 'Семдурамицин', 'Семдурамицин', 9, NULL, NULL, NULL, NULL),
+(277, 1, 14, 12, 'Наразин', 'Наразин', 9, NULL, NULL, NULL, NULL),
+(278, 1, 14, 12, 'Мадуромицин', 'Мадуромицин', 9, NULL, NULL, NULL, NULL),
+(279, 1, 14, 12, 'Салиномицин', 'Салиномицин', 9, NULL, NULL, NULL, NULL),
+(280, 1, 14, 12, 'Галофугинон', 'Галофугинон', 9, NULL, NULL, NULL, NULL),
+(281, 1, 14, 12, 'Декоквинат', 'Декоквинат', 9, NULL, NULL, NULL, NULL),
+(282, 1, 14, 13, 'Амитраз', 'Амитраз', 9, NULL, NULL, NULL, NULL),
+(283, 2, 27, 2, 'Афлатоксин M1', 'Афлатоксин M1', 9, NULL, NULL, NULL, NULL),
+(284, 2, 27, 5, 'Левомицетин (хлорамфеникол)', 'Levomisetin (хлорамфеникол)', 9, NULL, NULL, NULL, NULL),
+(285, 2, 27, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, NULL, NULL, NULL, NULL),
+(286, 2, 27, 5, 'Стрептомицин', 'Стрептомицин', 9, NULL, NULL, NULL, NULL),
+(287, 2, 27, 5, 'Пенициллин', 'Пенициллин', 9, NULL, NULL, NULL, NULL),
+(288, 2, 27, 5, 'Меламин ', 'Меламин ', 9, NULL, NULL, NULL, NULL),
+(289, 2, 27, 5, 'Диоксины ', 'Диоксины ', 9, NULL, NULL, NULL, NULL),
+(290, 2, 15, 1, 'Свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.1', NULL),
+(291, 2, 15, 1, 'Мышьяк', 'mishyak', 9, '0', NULL, '0.05', NULL),
+(292, 2, 15, 1, 'Кадмий', 'kadmiy', 9, '0', NULL, '0.03', NULL),
+(293, 2, 15, 1, 'Ртуть', 'simob', 9, '0', NULL, '0.005', NULL),
+(294, 2, 15, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.05', NULL),
+(295, 2, 15, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.05', NULL),
+(296, 2, 15, 4, 'Цезий-137', 'seziy-137', 11, '0', NULL, '300', NULL),
+(297, 2, 15, 4, 'Стронций-90', 'stronsiy-90', 11, '0', NULL, '10', NULL),
+(298, 2, 15, 4, 'Перекисное число', 'Перекисное число', 7, '0', NULL, NULL, NULL),
+(299, 2, 16, 1, 'Свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.3', NULL),
+(300, 2, 16, 1, 'Мышьяк', 'mishyak', 9, '0', NULL, '0.2', NULL),
+(301, 2, 16, 1, 'Кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(302, 2, 16, 1, 'Ртуть', 'simob', 9, '0', NULL, '0.02', NULL),
+(303, 2, 16, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '1.25', NULL),
+(304, 2, 16, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '1', NULL),
+(305, 2, 16, 4, 'Цезий-137', 'seziy-137', 9, '0', NULL, '100', NULL),
+(306, 2, 16, 4, 'Стронций-90', 'stronsiy-90', 9, '0', NULL, '25', NULL),
+(307, 2, 16, 4, 'Показатель кислотности - для творога и творожных продуктов', 'Achchiqlik ko`rsatkichi', 9, '0', NULL, '240', NULL),
+(308, 2, 17, 1, 'Свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.3', NULL),
+(309, 2, 17, 1, 'Мышьяк', 'mishyak', 9, '0', NULL, '0.15', NULL),
+(310, 2, 17, 1, 'Кадмий', 'kadmiy', 11, '0', NULL, '0.1', NULL),
+(311, 2, 17, 1, 'Ртуть', 'simob', 11, '0', NULL, '0.015', NULL),
+(312, 2, 17, 1, 'Олово', 'Qalay', 9, '0', NULL, '200', NULL),
+(313, 2, 17, 1, 'Хром', 'Xrom', 9, '0', NULL, '0.5', NULL),
+(314, 2, 17, 2, 'Афлотоксин М1', 'Афлотоксин М1', 9, '0', NULL, '0', NULL),
+(315, 2, 17, 2, 'Меламин ', 'Меламин ', 9, '0', NULL, '0', NULL),
+(316, 2, 17, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '1.25', NULL),
+(317, 2, 17, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '1', NULL),
+(318, 2, 17, 4, 'Цезий-137', 'seziy-137', 9, '0', NULL, '300', NULL),
+(319, 2, 17, 4, 'Стронций-90', 'stronsiy-90', 9, '0', NULL, '100', NULL),
+(320, 2, 18, 1, 'Свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.1', NULL),
+(321, 2, 18, 1, 'Мышьяк', 'mishyak', 9, '0', NULL, '0.05', NULL),
+(322, 2, 18, 1, 'Кадмий', 'kadmiy', 9, '0', NULL, '0.03', NULL),
+(323, 2, 18, 1, 'Ртуть', 'simob', 11, '0', NULL, '0.005', NULL),
+(324, 2, 18, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 11, '0', NULL, '1.25', NULL),
+(325, 2, 18, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '1', NULL),
+(326, 2, 18, 4, 'Цезий-137', 'seziy-137', 9, '0', NULL, '500', NULL),
+(327, 2, 18, 4, 'Стронций-90', 'stronsiy-90', 9, '0', NULL, '200', NULL),
+(328, 2, 19, 1, 'Свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.3', NULL),
+(329, 2, 19, 1, 'Мышьяк', 'mishyak', 9, '0', NULL, '1', NULL),
+(330, 2, 19, 1, 'Кадмий', 'kadmiy', 9, '0', NULL, '0.2', NULL),
+(331, 2, 19, 1, 'Ртуть', 'simob', 11, '0', NULL, '0.03', NULL),
+(332, 2, 19, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 11, '0', NULL, '1.25', NULL),
+(333, 2, 19, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '1', NULL),
+(334, 2, 19, 4, 'Цезий-137', 'seziy-137', 9, '0', NULL, '300', NULL),
+(335, 2, 19, 4, 'Стронций-90', 'stronsiy-90', 9, '0', NULL, '80', NULL),
+(336, 2, 20, 1, 'Свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(337, 2, 20, 1, 'Мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(338, 2, 20, 1, 'Кадмий', 'kadmiy', 9, '0', NULL, '0.2', NULL),
+(339, 2, 20, 1, 'Ртуть', 'simob', 11, '0', NULL, '0.03', NULL),
+(340, 2, 20, 1, 'Бенз(а)пирен', 'Benzapiren', 11, '0', NULL, '0', NULL),
+(341, 2, 20, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '1.25', NULL),
+(342, 2, 20, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '1', NULL),
+(343, 2, 20, 4, 'Цезий-137', 'seziy-137', 9, '0', NULL, '50', NULL),
+(344, 2, 20, 4, 'Стронций-90', 'stronsiy-90', 9, '0', NULL, '100', NULL),
+(345, 2, 21, 16, 'Кислотность жировой фазы', 'Yog` fazasi kislotligi', 9, '0', NULL, '2.5', NULL),
+(346, 2, 21, 1, 'Свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.1', NULL),
+(347, 2, 21, 1, 'Мышьяк', 'mishyak', 9, '0', NULL, '0.1', NULL),
+(348, 2, 21, 1, 'Кадмий', 'kadmiy', 11, '0', NULL, '0.03', NULL),
+(349, 2, 21, 1, 'Ртуть', 'simob', 11, '0', NULL, '0.03', NULL),
+(350, 2, 21, 1, 'Медь', 'mis', 9, '0', NULL, '0.4', NULL),
+(351, 2, 21, 1, 'Цинк ', 'ruh ', 9, '0', NULL, '0', NULL),
+(352, 2, 21, 1, 'Железо', 'Железо', 9, '0', NULL, '1.5', NULL),
+(353, 2, 21, 1, 'Олово', 'Qalay', 9, '0', NULL, '0', NULL),
+(354, 2, 21, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '1.25', NULL),
+(355, 2, 21, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '1', NULL),
+(356, 2, 21, 3, '2,4 Д-кислота', '2,4 D-kislota', 9, '0', NULL, '0', NULL),
+(357, 2, 21, 4, 'Цезий-137', 'seziy-137', 9, '0', NULL, '200', NULL),
+(358, 2, 21, 4, 'Стронций-90', 'stronsiy-90', 9, '0', NULL, '60', NULL),
+(359, 2, 22, 16, 'Перекисное число в жире, выделенном из продукта', 'Yog`dagi perekis soni', 9, '0', NULL, '10', NULL),
+(360, 2, 22, 16, 'Кислотность жировой фазы', 'Yog` fazasi kislotligi', 9, '0', NULL, '2.5', NULL),
+(361, 2, 22, 1, 'Свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.1', NULL),
+(362, 2, 22, 1, 'Мышьяк', 'mishyak', 11, '0', NULL, '0.1', NULL),
+(363, 2, 22, 1, 'Кадмий', 'kadmiy', 11, '0', NULL, '0.03', NULL),
+(364, 2, 22, 1, 'Ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(365, 2, 22, 1, 'Медь', 'mis', 9, '0', NULL, '0.4', NULL),
+(366, 2, 22, 1, 'Железо', 'Железо', 9, '0', NULL, '1.5', NULL),
+(367, 2, 22, 1, 'Никель ', 'Никель ', 9, '0', NULL, '0.7', NULL),
+(368, 2, 22, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры) ', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar) ', 9, '0', NULL, '1.25', NULL),
+(369, 2, 22, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '1', NULL),
+(370, 2, 22, 4, 'Цезий-137', 'seziy-137', 9, '0', NULL, '100', NULL),
+(371, 2, 22, 4, 'Стронций-90', 'stronsiy-90', 9, '0', NULL, '80', NULL),
+(372, 2, 23, 1, 'Свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.1', NULL),
+(373, 2, 23, 1, 'Мышьяк', 'mishyak', 9, '0', NULL, '0.05', NULL),
+(374, 2, 23, 1, 'Кадмий', 'kadmiy', 9, '0', NULL, '0.03', NULL),
+(375, 2, 23, 1, 'Ртуть', 'simob', 11, '0', NULL, '0.005', NULL),
+(376, 2, 23, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры) ', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar) ', 11, '0', NULL, '1.25', NULL),
+(377, 2, 23, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '1', NULL),
+(378, 2, 23, 3, '2,4 Д-кислота<*>', '2,4 Д-кислота<*>', 9, '0', NULL, '0', NULL),
+(379, 2, 23, 4, 'Цезий-137', 'seziy-137', 9, '0', NULL, '100', NULL),
+(380, 2, 23, 4, 'Стронций-90', 'stronsiy-90', 9, '0', NULL, '25', NULL),
+(381, 2, 24, 1, 'Свинец', 'qo\'rg\'oshin', 9, '0', NULL, '1', NULL),
+(382, 2, 24, 1, 'Мышьяк', 'mishyak', 9, '0', NULL, '0.2', NULL),
+(383, 2, 24, 1, 'Кадмий', 'kadmiy', 9, '0', NULL, '0.2', NULL),
+(384, 2, 24, 1, 'Ртуть', 'simob', 11, '0', NULL, '0.03', NULL),
+(385, 2, 25, 1, 'Свинец', 'qo\'rg\'oshin', 11, '0', NULL, '0.3', NULL),
+(386, 2, 25, 1, 'Мышьяк', 'mishyak', 9, '0', NULL, '1', NULL),
+(387, 2, 25, 1, 'Кадмий', 'kadmiy', 9, '0', NULL, '0.2', NULL),
+(388, 2, 25, 1, 'Ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(389, 2, 25, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры) ', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar) ', 9, '0', NULL, '1.25', NULL),
+(390, 2, 25, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '1', NULL),
+(391, 2, 25, 4, 'Цезий-137', 'seziy-137', 9, '0', NULL, '160', NULL),
+(392, 2, 25, 4, 'Стронций-90', 'stronsiy-90', 9, '0', NULL, '80', NULL),
+(393, 2, 26, 1, 'Свинец', 'qo\'rg\'oshin', 9, '0', NULL, '10', NULL),
+(394, 2, 26, 1, 'Мышьяк', 'mishyak', 9, '0', NULL, '3', NULL),
+(395, 2, 27, 9, 'КМАФАнМ, КОЕ', 'КМАФАнМ, КОЕ', 9, NULL, NULL, NULL, NULL),
+(396, 2, 27, 9, 'БГКП колиформы', 'БГКП колиформы', 11, NULL, NULL, NULL, NULL),
+(397, 2, 27, 9, 'патогенные микроорганизмы,в т.ч. сальмонеллы', 'патогенные микроорганизмы,в т.ч. сальмонеллы', 11, NULL, NULL, NULL, NULL),
+(398, 2, 27, 9, 'S. aureus', 'S. aureus', 9, NULL, NULL, NULL, NULL),
+(399, 2, 27, 9, 'L. mono-cytogenes', 'L. mono-cytogenes', 9, NULL, NULL, NULL, NULL),
+(400, 2, 27, 9, 'Дрожжи (Д), ', 'Дрожжи (Д), ', 14, NULL, NULL, NULL, NULL),
+(401, 2, 27, 9, 'Плесени (П)', 'Плесени (П)', 14, NULL, NULL, NULL, NULL),
+(402, 2, 27, 15, 'внешний вид', 'tashqi ko`rinish', 15, NULL, NULL, NULL, NULL),
+(403, 2, 27, 15, 'консистенция', 'konsistensiya', 15, NULL, NULL, NULL, NULL),
+(404, 2, 27, 15, 'вкус и запах', 'ta\'m va xid', 15, NULL, NULL, NULL, NULL),
+(405, 2, 27, 15, 'цвет', 'rang', 15, NULL, NULL, NULL, NULL),
+(406, 2, 27, 5, 'Левомицетин (дестская питания)', 'Levomisetin (дестская питания)', 9, NULL, NULL, NULL, NULL),
+(407, 2, 27, 5, 'Тетрациклиновая группа (дестская питания)', 'Tetrasiklin guruhi (дестская питания)', 9, NULL, NULL, NULL, NULL),
+(408, 2, 27, 5, 'Пенициллин (дестская питания)', 'Пенициллин (дестская питания)', 9, NULL, NULL, NULL, NULL),
+(409, 2, 27, 5, 'Стрептомицин (дестская питания)', 'Стрептомицин (дестская питания)', 9, NULL, NULL, NULL, NULL),
+(410, 2, 27, 5, 'Патулин(дестская питания)', 'Патулин(дестская питания)', 9, NULL, NULL, NULL, NULL),
+(411, 2, 27, 5, 'Меламин (дестская питания)', 'Меламин (дестская питания)', 9, NULL, NULL, NULL, NULL),
+(412, 2, 27, 5, 'Диоксины (дестская питания)', 'Диоксины (дестская питания)', 9, NULL, NULL, NULL, NULL),
+(413, 2, 27, 16, 'Показатель окислительной порчи', 'Показатель окислительной порчи', 9, NULL, NULL, NULL, NULL),
+(414, 2, 27, 2, 'Микотоксины (дестская питания)', 'Микотоксины (дестская питания)', 9, NULL, NULL, NULL, NULL),
+(415, 2, 27, 16, 'Кислотность (дестская питания)', 'Кислотность (дестская питания)', 4, NULL, NULL, '1', '40'),
+(416, 2, 27, 16, 'Осмоляльность (дестская питания)', 'Осмоляльность (дестская питания)', 17, NULL, NULL, NULL, NULL),
+(417, 3, 28, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(418, 3, 28, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.2', NULL),
+(419, 3, 28, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(420, 3, 28, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(421, 3, 28, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0.2', NULL, '0.5', NULL),
+(422, 3, 28, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.02', NULL),
+(423, 3, 28, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(424, 3, 28, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(425, 3, 28, 2, 'Зеараленон ', 'Zearalenon ', 9, '0', NULL, '1', NULL),
+(426, 3, 28, 2, 'Фумонизин ', 'Fumonizin ', 9, '0', NULL, '4', NULL),
+(427, 3, 28, 2, 'Бенз(а) пирен', 'Benzapiren', 9, '0', NULL, '0.001', NULL),
+(428, 3, 28, 2, ' Влажность', 'Namlik', 7, '12', NULL, '14', NULL),
+(429, 3, 28, 2, 'Сырой протеин ', 'Xom protein ', 7, '8', NULL, '10', NULL),
+(430, 3, 28, 2, 'Сырой жир ', 'Xom yog` ', 7, '3', NULL, '5', NULL),
+(431, 3, 28, 2, 'Сырая клечатка ', 'Xom klechatka ', 7, '1.2', NULL, '3.2', NULL),
+(432, 3, 28, 2, 'Кальций ', 'Kalsiy ', 7, '0.04', NULL, '0.06', NULL),
+(433, 3, 28, 2, 'Фосфор ', 'Fosfor ', 7, '0.2', NULL, '0.4', NULL),
+(434, 3, 28, 2, 'Натрий ', 'Natriy ', 7, '0.02', NULL, '0.04', NULL),
+(435, 3, 29, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(436, 3, 29, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.2', NULL),
+(437, 3, 29, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(438, 3, 29, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(439, 3, 29, 2, 'Дезоксиниваленол ', 'Dezoksinivalenol ', 9, '0.7', NULL, '1', NULL),
+(440, 3, 29, 2, 'Т-2 токсин ', 'Т-2 toksin ', 9, '0', NULL, '1', NULL),
+(441, 3, 29, 2, 'Охратоксин А', 'Oxratoksin A', 9, '0', NULL, '0.005', NULL),
+(442, 3, 29, 2, 'Зеараленон ', 'Zearalenon ', 9, '0', NULL, '1', NULL),
+(443, 3, 29, 3, 'Гексахлорбензол ', 'geksaxlorbenzol ', 9, '0', NULL, '0.01', NULL),
+(444, 3, 29, 3, 'Ртутьорганические 3 ', 'Рутьорганические 3 ', 9, '0', NULL, '0', NULL),
+(445, 3, 29, 3, '2,4-Д кислота,ее соли, эфиры ', '2,4-Д кислота,ее соли, эфиры ', 9, '0', NULL, '0', NULL),
+(446, 3, 29, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(447, 3, 29, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(448, 3, 29, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(449, 3, 29, 4, ' Влажность', ' Namlik', 7, '12', NULL, '14', NULL),
+(450, 3, 29, 4, 'Сырой протеин ', 'Xom protein ', 7, '11.6', NULL, '13.6', NULL),
+(451, 3, 29, 4, 'Сырой жир ', 'Xom yog` ', 7, '1.2', NULL, '3.2', NULL),
+(452, 3, 29, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '1.7', NULL, '3.7', NULL),
+(453, 3, 29, 4, 'Кальций ', 'Kalsiy ', 7, '0.05', NULL, '0.07', NULL),
+(454, 3, 29, 4, 'Фосфор ', 'Fosfor ', 7, '0.3', NULL, '0.5', NULL),
+(455, 3, 29, 4, 'Натрий ', 'Natriy ', 7, '0.01', NULL, '0.03', NULL),
+(456, 3, 30, 4, ' Влажность', ' Namlik', 7, '12.5', NULL, '14.5', NULL),
+(457, 3, 30, 4, 'Сырой протеин ', 'Xom protein ', 7, '14.2', NULL, '16.2', NULL),
+(458, 3, 30, 4, 'Сырой жир ', 'Xom yog` ', 7, '3.2', NULL, '4.2', NULL),
+(459, 3, 30, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '8', NULL, '10', NULL),
+(460, 3, 30, 4, 'Кальций ', 'Kalsiy ', 7, '0.13', NULL, '0.15', NULL),
+(461, 3, 30, 4, 'Фосфор ', 'Fosfor ', 7, '0.99', NULL, '1.1', NULL),
+(462, 3, 30, 4, 'Натрий ', 'Natriy ', 7, '0.03', NULL, '0.04', NULL),
+(463, 3, 31, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(464, 3, 31, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.2', NULL),
+(465, 3, 31, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(466, 3, 31, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(467, 3, 31, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(468, 3, 31, 2, 'Охратоксин А', 'Oxratoksin A', 9, '0', NULL, '0.005', NULL),
+(469, 3, 31, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(470, 3, 31, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(471, 3, 31, 4, ' Влажность', ' Namlik', 7, '12', NULL, '14', NULL),
+(472, 3, 31, 4, 'Сырой протеин ', 'Xom protein ', 7, '10.7', NULL, '12.7', NULL),
+(473, 3, 31, 4, 'Сырой жир ', 'Xom yog` ', 7, '1', NULL, '3', NULL),
+(474, 3, 31, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '1.4', NULL, '3.4', NULL),
+(475, 3, 31, 4, 'Кальций ', 'Kalsiy ', 7, '0.06', NULL, '0.08', NULL),
+(476, 3, 31, 4, 'Фосфор ', 'Fosfor ', 7, '0.2', NULL, '0.4', NULL),
+(477, 3, 31, 4, 'Натрий ', 'Natriy ', 7, '0.01', NULL, '0.04', NULL),
+(478, 3, 32, 4, ' Влажность', ' Namlik', 7, '12.5', NULL, '14.5', NULL),
+(479, 3, 32, 4, 'Сырой протеин ', 'Xom protein ', 7, '14', NULL, '15', NULL),
+(480, 3, 32, 4, 'Сырой жир ', 'Xom yog` ', 7, '3.3', NULL, '3.5', NULL),
+(481, 3, 32, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '6', NULL, '8', NULL),
+(482, 3, 32, 4, 'Кальций ', 'Kalsiy ', 7, '0.1', NULL, '0.12', NULL),
+(483, 3, 32, 4, 'Фосфор ', 'Fosfor ', 7, '0.6', NULL, '0.7', NULL),
+(484, 3, 32, 4, 'Натрий ', 'Natriy ', 7, '0.03', NULL, '0.05', NULL),
+(485, 3, 33, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(486, 3, 33, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.2', NULL),
+(487, 3, 33, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(488, 3, 33, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(489, 3, 33, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(490, 3, 33, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(491, 3, 33, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(492, 3, 33, 4, 'Влаги ', 'Влаги ', 7, '15.6', NULL, '17', NULL),
+(493, 3, 34, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(494, 3, 34, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.2', NULL),
+(495, 3, 34, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(496, 3, 34, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(497, 3, 34, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(498, 3, 34, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(499, 3, 34, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(500, 3, 34, 4, ' Влажность', ' Namlik', 7, '11.5', NULL, '13.5', NULL),
+(501, 3, 34, 4, 'Сырой протеин ', 'Xom protein ', 7, '9.5', NULL, '11.5', NULL),
+(502, 3, 34, 4, 'Сырой жир ', 'Xom yog` ', 7, '3.5', NULL, '5.5', NULL),
+(503, 3, 34, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '9.3', NULL, '11.3', NULL),
+(504, 3, 34, 4, 'Кальций ', 'Kalsiy ', 7, '0.11', NULL, '0.13', NULL),
+(505, 3, 34, 4, 'Фосфор ', 'Fosfor ', 7, '0.34', NULL, '0.36', NULL),
+(506, 3, 34, 4, 'Натрий ', 'Natriy ', 7, '0.02', NULL, '0.04', NULL),
+(507, 3, 35, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(508, 3, 35, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.2', NULL),
+(509, 3, 35, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(510, 3, 35, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(511, 3, 35, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(512, 3, 35, 2, 'Дезоксиниваленол ', 'Dezoksinivalenol ', 9, '0.7', NULL, '1', NULL),
+(513, 3, 35, 2, 'Т-2 токсин ', 'Т-2 toksin ', 9, '0', NULL, '1', NULL),
+(514, 3, 35, 2, 'Охратоксин А', 'Oxratoksin A', 9, '0', NULL, '0.005', NULL),
+(515, 3, 35, 2, 'Зеараленон ', 'Zearalenon ', 9, '0', NULL, '1', NULL),
+(516, 3, 35, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(517, 3, 35, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(518, 3, 35, 4, ' Влажность', ' Namlik', 7, '12', NULL, '14', NULL),
+(519, 3, 35, 4, 'Сырой протеин ', 'Xom protein ', 7, '10.1', NULL, '12.1', NULL),
+(520, 3, 35, 4, 'Сырой жир ', 'Xom yog` ', 7, '1.2', NULL, '3.2', NULL),
+(521, 3, 35, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '4.5', NULL, '6.5', NULL),
+(522, 3, 35, 4, 'Кальций ', 'Kalsiy ', 7, '0.05', NULL, '0.07', NULL),
+(523, 3, 35, 4, 'Фосфор ', 'Fosfor ', 7, '0.33', NULL, '0.35', NULL),
+(524, 3, 35, 4, 'Натрий ', 'Natriy ', 7, '0.03', NULL, '0.05', NULL),
+(525, 3, 36, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(526, 3, 36, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.2', NULL),
+(527, 3, 36, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(528, 3, 36, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(529, 3, 36, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(530, 3, 36, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(531, 3, 36, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(532, 3, 36, 4, 'Влажность', 'Namlik', 7, '12', NULL, '14', NULL),
+(533, 3, 36, 4, 'Сырой протеин ', 'Xom protein ', 7, '10', NULL, '12', NULL),
+(534, 3, 36, 4, 'Сырой жир ', 'Xom yog` ', 7, '2.6', NULL, '4.6', NULL),
+(535, 3, 36, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '8', NULL, '10', NULL),
+(536, 3, 36, 4, 'Кальций ', 'Kalsiy ', 7, '0.06', NULL, '0.08', NULL),
+(537, 3, 36, 4, 'Фосфор ', 'Fosfor ', 7, '0.29', NULL, '0.31', NULL),
+(538, 3, 36, 4, 'Натрий ', 'Natriy ', 7, '0.02', NULL, '0.04', NULL),
+(539, 3, 37, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(540, 3, 37, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.2', NULL),
+(541, 3, 37, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(542, 3, 37, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(543, 3, 37, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(544, 3, 37, 2, 'Охратоксин А', 'Oxratoksin A', 9, '0', NULL, '0.005', NULL),
+(545, 3, 37, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(546, 3, 37, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(547, 3, 37, 4, ' Влажность', ' Namlik', 7, '11', NULL, '13', NULL),
+(548, 3, 37, 4, 'Сырой протеин ', 'Xom protein ', 7, '7.3', NULL, '9.3', NULL),
+(549, 3, 37, 4, 'Сырой жир ', 'Xom yog` ', 7, '1.1', NULL, '3.1', NULL),
+(550, 3, 37, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '7.4', NULL, '9.4', NULL),
+(551, 3, 37, 4, 'Кальций ', 'Kalsiy ', 7, '0.06', NULL, '0.08', NULL),
+(552, 3, 37, 4, 'Фосфор ', 'Fosfor ', 7, '0.22', NULL, '0.24', NULL),
+(553, 3, 37, 4, 'Натрий ', 'Natriy ', 7, '0.02', NULL, '0.04', NULL),
+(554, 3, 38, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(555, 3, 38, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.2', NULL),
+(556, 3, 38, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(557, 3, 38, 1, 'ртуть', 'simob', 9, '0', NULL, '0.03', NULL),
+(558, 3, 38, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(559, 3, 38, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(560, 3, 38, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(561, 3, 38, 4, 'Влажность', 'Namlik', 7, '11', NULL, '13', NULL),
+(562, 3, 38, 4, 'Сырой протеин ', 'Xom protein ', 7, '9.3', NULL, '11.3', NULL),
+(563, 3, 38, 4, 'Сырой жир ', 'Xom yog` ', 7, '1.8', NULL, '3.8', NULL),
+(564, 3, 38, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '2.3', NULL, '4.3', NULL),
+(565, 3, 38, 4, 'Кальций ', 'Kalsiy ', 7, '0.1', NULL, '0.12', NULL),
+(566, 3, 38, 4, 'Фосфор ', 'Fosfor ', 7, '0.24', NULL, '0.26', NULL),
+(567, 3, 38, 4, 'Натрий ', 'Natriy ', 7, '0.02', NULL, '0.04', NULL),
+(568, 4, 39, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(569, 4, 39, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(570, 4, 39, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(571, 4, 39, 1, 'ртуть', 'simob', 9, '0', NULL, '0.02', NULL),
+(572, 4, 39, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(573, 4, 39, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.5', NULL),
+(574, 4, 39, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.05', NULL),
+(575, 4, 39, 3, 'Ртутьорганические 3 ', 'Рутьорганические 3 ', 9, '0', NULL, '0', NULL),
+(576, 4, 39, 3, '2,4-Д кислоте, ее соли, эфиры ', '2,4-D kislota, uning tuzi, efiri ', 9, '0', NULL, '0', NULL),
+(577, 4, 39, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(578, 4, 39, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(579, 4, 39, 4, ' Влажность', ' Namlik', 7, '13', NULL, '15', NULL),
+(580, 4, 39, 4, 'Сырой протеин ', 'Xom protein ', 7, '24', NULL, '26', NULL),
+(581, 4, 39, 4, 'Сырой жир ', 'Xom yog` ', 7, '0.5', NULL, '2.5', NULL),
+(582, 4, 39, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '5.6', NULL, '7.6', NULL),
+(583, 4, 39, 4, 'Кальций ', 'Kalsiy ', 7, '0.13', NULL, '0.15', NULL),
+(584, 4, 39, 4, 'Фосфор ', 'Fosfor ', 7, '0.49', NULL, '0.51', NULL),
+(585, 4, 39, 4, 'Натрий ', 'Natriy ', 7, '0.02', NULL, '0.04', NULL),
+(586, 4, 40, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(587, 4, 40, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(588, 4, 40, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(589, 4, 40, 1, 'ртуть', 'simob', 9, '0', NULL, '0.02', NULL),
+(590, 4, 40, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(591, 4, 40, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.5', NULL),
+(592, 4, 40, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.05', NULL),
+(593, 4, 40, 3, 'Ртутьорганические 3 ', 'Рутьорганические 3 ', 9, '0', NULL, '0', NULL),
+(594, 4, 40, 3, '2,4-Д кислоте, ее соли, эфиры ', '2,4-D kislota, uning tuzi, efiri ', 9, '0', NULL, '0', NULL),
+(595, 4, 40, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(596, 4, 40, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(597, 4, 40, 4, 'Влажность', 'Namlik', 7, '13', NULL, '15', NULL),
+(598, 4, 40, 4, 'Сырой протеин ', 'Xom protein ', 7, '20.2', NULL, '22.2', NULL),
+(599, 4, 40, 4, 'Сырой жир ', 'Xom yog` ', 7, '0.5', NULL, '2.5', NULL),
+(600, 4, 40, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '4.4', NULL, '6.4', NULL),
+(601, 4, 40, 4, 'Кальций ', 'Kalsiy ', 7, '0.13', NULL, '0.15', NULL),
+(602, 4, 40, 4, 'Фосфор ', 'Fosfor ', 7, '0.36', NULL, '0.38', NULL),
+(603, 4, 40, 4, 'Натрий ', 'Natriy ', 7, '0.02', NULL, '0.04', NULL),
+(604, 4, 41, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(605, 4, 41, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(606, 4, 41, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(607, 4, 41, 1, 'ртуть', 'simob', 9, '0', NULL, '0.02', NULL),
+(608, 4, 41, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(609, 4, 41, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.5', NULL),
+(610, 4, 41, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.05', NULL),
+(611, 4, 41, 3, 'Ртутьорганические 3 ', 'Рутьорганические 3 ', 9, '0', NULL, '0', NULL),
+(612, 4, 41, 3, '2,4-Д кислоте, ее соли, эфиры ', '2,4-D kislota, uning tuzi, efiri ', 9, '0', NULL, '0', NULL),
+(613, 4, 41, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(614, 4, 41, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(615, 4, 41, 4, ' Влажность', ' Namlik', 7, '15', NULL, '18', NULL),
+(616, 4, 42, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(617, 4, 42, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(618, 4, 42, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(619, 4, 42, 1, 'ртуть', 'simob', 9, '0', NULL, '0.02', NULL),
+(620, 4, 42, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(621, 4, 42, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.5', NULL),
+(622, 4, 42, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.05', NULL),
+(623, 4, 42, 3, 'Ртутьорганические 3 ', 'simobорганические 3 ', 9, '0', NULL, '0', NULL),
+(624, 4, 42, 3, '2,4-Д кислоте, ее соли, эфиры ', '2,4-D kislota, uning tuzi, efiri ', 9, '0', NULL, '0', NULL),
+(625, 4, 42, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(626, 4, 42, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(627, 4, 42, 4, 'Влажность', 'Namlik', 7, '13', NULL, '15', NULL),
+(628, 4, 42, 4, 'Сырой протеин ', 'Xom protein ', 7, '21.6', NULL, '23.6', NULL),
+(629, 4, 42, 4, 'Сырой жир ', 'Xom yog` ', 7, '3.7', NULL, '5.7', NULL),
+(630, 4, 42, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '1.5', NULL, '3.5', NULL),
+(631, 4, 42, 4, 'Кальций ', 'Kalsiy ', 7, '0.06', NULL, '0.08', NULL),
+(632, 4, 42, 4, 'Фосфор ', 'Fosfor ', 7, '0.29', NULL, '0.31', NULL),
+(633, 4, 42, 4, 'Натрий ', 'Natriy ', 7, '0.02', NULL, '0.04', NULL),
+(634, 4, 43, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(635, 4, 43, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL);
+INSERT INTO `template_food` (`id`, `category_id`, `food_id`, `group_id`, `name_ru`, `name_uz`, `unit_id`, `min_1`, `min_2`, `max_1`, `max_2`) VALUES
+(636, 4, 43, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(637, 4, 43, 1, 'ртуть', 'simob', 9, '0', NULL, '0.02', NULL),
+(638, 4, 43, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(639, 4, 43, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.5', NULL),
+(640, 4, 43, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.05', NULL),
+(641, 4, 43, 3, 'Ртутьорганические 3 ', 'Рутьорганические 3 ', 9, '0', NULL, '0', NULL),
+(642, 4, 43, 3, '2,4-Д кислоте, ее соли, эфиры ', '2,4-D kislota, uning tuzi, efiri ', 9, '0', NULL, '0', NULL),
+(643, 4, 43, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(644, 4, 43, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(645, 4, 43, 4, 'Влажность', 'Namlik', 7, '13', NULL, '15', NULL),
+(646, 4, 43, 4, 'Сырой протеин ', 'Xom protein ', 7, '24.2', NULL, '26.2', NULL),
+(647, 4, 43, 4, 'Сырой жир ', 'Xom yog` ', 7, '0.3', NULL, '2.3', NULL),
+(648, 4, 43, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '3.3', NULL, '5.3', NULL),
+(649, 4, 43, 4, 'Кальций ', 'Kalsiy ', 7, '0.11', NULL, '0.13', NULL),
+(650, 4, 43, 4, 'Фосфор ', 'Fosfor ', 7, '0.44', NULL, '0.46', NULL),
+(651, 4, 43, 4, 'Натрий ', 'Natriy ', 7, '0.02', NULL, '0.04', NULL),
+(652, 4, 44, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(653, 4, 44, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(654, 4, 44, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(655, 4, 44, 1, 'ртуть', 'simob', 9, '0', NULL, '0.02', NULL),
+(656, 4, 44, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(657, 4, 44, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.5', NULL),
+(658, 4, 44, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.05', NULL),
+(659, 4, 44, 3, 'Ртутьорганические 3 ', 'Рутьорганические 3 ', 9, '0', NULL, '0', NULL),
+(660, 4, 44, 3, '2,4-Д кислоте, ее соли, эфиры ', '2,4-D kislota, uning tuzi, efiri ', 9, '0', NULL, '0', NULL),
+(661, 4, 44, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(662, 4, 44, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(663, 4, 44, 4, 'Влажность', 'Namlik', 7, '13', NULL, '15', NULL),
+(664, 5, 45, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '1', NULL),
+(665, 5, 45, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(666, 5, 45, 1, 'кадмий', 'kadmiy', 9, '0.1', NULL, '0.35', NULL),
+(667, 5, 45, 1, 'ртуть', 'simob', 9, '0', NULL, '0.05', NULL),
+(668, 5, 45, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(669, 5, 45, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.5', NULL),
+(670, 5, 45, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.15', NULL),
+(671, 5, 45, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(672, 5, 45, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(673, 5, 45, 4, 'Влажность', 'Namlik', 7, '8.1', NULL, '9', NULL),
+(674, 5, 46, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '1', NULL),
+(675, 5, 46, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(676, 5, 46, 1, 'кадмий', 'kadmiy', 9, '0.1', NULL, '0.35', NULL),
+(677, 5, 46, 1, 'ртуть', 'simob', 9, '0', NULL, '0.05', NULL),
+(678, 5, 46, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(679, 5, 46, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.2', NULL),
+(680, 5, 46, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.05', NULL),
+(681, 5, 46, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(682, 5, 46, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(683, 5, 46, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(684, 5, 46, 4, 'Влажность', 'Namlik', 7, '13', NULL, '15', NULL),
+(685, 5, 46, 4, 'Сырой протеин ', 'Xom protein ', 7, '33', NULL, '35', NULL),
+(686, 5, 46, 4, 'Сырой жир ', 'Xom yog` ', 7, '15.6', NULL, '17.6', NULL),
+(687, 5, 46, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '5', NULL, '7', NULL),
+(688, 5, 46, 4, 'Кальций ', 'Kalsiy ', 7, '0.29', NULL, '0.31', NULL),
+(689, 5, 46, 4, 'Фосфор ', 'Fosfor ', 7, '0.54', NULL, '0.56', NULL),
+(690, 5, 46, 4, 'Натрий ', 'Natriy ', 7, '0.02', NULL, '0.04', NULL),
+(691, 5, 47, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '1', NULL),
+(692, 5, 47, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(693, 5, 47, 1, 'кадмий', 'kadmiy', 9, '0.1', NULL, '0.35', NULL),
+(694, 5, 47, 1, 'ртуть', 'simob', 9, '0', NULL, '0.05', NULL),
+(695, 5, 47, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(696, 5, 47, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.2', NULL),
+(697, 5, 47, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.05', NULL),
+(698, 5, 47, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(699, 5, 47, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(700, 5, 47, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(701, 5, 47, 4, 'Влажность', 'Namlik', 7, '8.7', NULL, '14.9', NULL),
+(702, 5, 48, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '1', NULL),
+(703, 5, 48, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(704, 5, 48, 1, 'кадмий', 'kadmiy', 9, '0.1', NULL, '0.35', NULL),
+(705, 5, 48, 1, 'ртуть', 'simob', 9, '0', NULL, '0.05', NULL),
+(706, 5, 48, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(707, 5, 48, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.4', NULL),
+(708, 5, 48, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.1', NULL),
+(709, 5, 48, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(710, 5, 48, 4, 'цезий-137', 'seziy-137', 9, '0', NULL, '60', NULL),
+(711, 5, 48, 4, 'стронций-90', 'stronsiy-90', 9, '0', NULL, '11', NULL),
+(712, 5, 48, 4, 'Влажность', 'Namlik', 9, '10', NULL, '12', NULL),
+(713, 5, 49, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '1', NULL),
+(714, 5, 49, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(715, 5, 49, 1, 'кадмий', 'kadmiy', 9, '0.1', NULL, '0.35', NULL),
+(716, 5, 49, 1, 'ртуть', 'simob', 9, '0', NULL, '0.05', NULL),
+(717, 5, 49, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(718, 5, 49, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.4', NULL),
+(719, 5, 49, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.1', NULL),
+(720, 5, 49, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(721, 5, 49, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(722, 5, 49, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(723, 5, 49, 4, 'Влажность', 'Namlik', 7, '10', NULL, '12', NULL),
+(724, 5, 50, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '1', NULL),
+(725, 5, 50, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(726, 5, 50, 1, 'кадмий', 'kadmiy', 9, '0.1', NULL, '0.35', NULL),
+(727, 5, 50, 1, 'ртуть', 'simob', 9, '0', NULL, '0.05', NULL),
+(728, 5, 50, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(729, 5, 50, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(730, 5, 50, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(731, 5, 50, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(732, 5, 50, 4, 'Влажность', 'Namlik', 7, '10', NULL, '12', NULL),
+(733, 5, 51, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '1', NULL),
+(734, 5, 51, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.3', NULL),
+(735, 5, 51, 1, 'кадмий', 'kadmiy', 9, '0.1', NULL, '0.35', NULL),
+(736, 5, 51, 1, 'ртуть', 'simob', 9, '0', NULL, '0.05', NULL),
+(737, 5, 51, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.005', NULL),
+(738, 5, 51, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.5', NULL),
+(739, 5, 51, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.15', NULL),
+(740, 5, 51, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(741, 5, 51, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '60', NULL),
+(742, 5, 51, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '11', NULL),
+(743, 5, 51, 4, 'Влажность', 'Namlik', 7, '7', NULL, '9', NULL),
+(744, 6, 52, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(745, 6, 52, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(746, 6, 52, 1, 'ртуть', 'simob', 9, '0', NULL, '0.02', NULL),
+(747, 6, 52, 2, 'Зеараленон', 'Zearalenon', 9, '0', NULL, '0.1', NULL),
+(748, 6, 52, 2, 'Т-2 токсина ', 'Т-2 toksin', 9, '0', NULL, '0.1', NULL),
+(749, 6, 52, 2, 'Дезаксиниваленола ', 'Дезаксиниваленола ', 9, '0', NULL, '1', NULL),
+(750, 6, 52, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(751, 6, 52, 3, ' Влажность', ' Namlik', 7, '7', NULL, '11', NULL),
+(752, 6, 52, 3, 'Сырой протеин ', 'Xom protein ', 7, '25', NULL, '42.9', NULL),
+(753, 6, 52, 3, 'Сырой жир ', 'Xom yog` ', 7, '1.5', NULL, '1.7', NULL),
+(754, 6, 52, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '15', NULL, '23', NULL),
+(755, 6, 52, 3, 'Кальций ', 'Kalsiy ', 7, '0.3', NULL, '0.32', NULL),
+(756, 6, 52, 3, 'Фосфор ', 'Fosfor ', 7, '0.91', NULL, '1', NULL),
+(757, 6, 52, 3, 'Натрий ', 'Natriy ', 7, '0.07', NULL, '0.09', NULL),
+(758, 6, 52, 3, 'Зола ', 'Зола ', 7, '6.4', NULL, '6.5', NULL),
+(759, 6, 53, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(760, 6, 53, 1, 'кадмий', 'kadmiy', 9, '0.1', NULL, '0.5', NULL),
+(761, 6, 53, 1, 'ртуть', 'simob', 9, '0', NULL, '0.02', NULL),
+(762, 6, 53, 2, 'Зеараленон', 'Zearalenon', 9, '0', NULL, '1', NULL),
+(763, 6, 53, 2, 'Т-2 токсина ', 'Т-2 toksin', 9, '0', NULL, '0.1', NULL),
+(764, 6, 53, 2, 'Дезаксиниваленола ', 'Dezaksinivalenol', 9, '0', NULL, '1', NULL),
+(765, 6, 53, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(766, 6, 53, 3, ' Влажность', ' Namlik', 7, '7', NULL, '9', NULL),
+(767, 6, 53, 3, 'Сырой протеин ', 'Xom protein ', 7, '39.2', NULL, '41.2', NULL),
+(768, 6, 53, 3, 'Сырой жир ', 'Xom yog` ', 7, '6.5', NULL, '7.5', NULL),
+(769, 6, 53, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '12.3', NULL, '14.3', NULL),
+(770, 6, 53, 3, 'Кальций ', 'Kalsiy ', 7, '0.3', NULL, '0.33', NULL),
+(771, 6, 53, 3, 'Фосфор ', 'Fosfor ', 7, '0.9', NULL, '0.92', NULL),
+(772, 6, 53, 3, 'Натрий ', 'Natriy ', 7, '0.08', NULL, '0.1', NULL),
+(773, 6, 54, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '5', NULL),
+(774, 6, 54, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.5', NULL),
+(775, 6, 54, 1, 'ртуть', 'simob', 9, '0', NULL, '0.1', NULL),
+(776, 6, 54, 2, 'Афлатоксин В1', 'Аflatoksin В1', 9, '0', NULL, '0.025', NULL),
+(777, 6, 54, 2, 'Т-2 токсина ', 'Т-2 toksin', 9, '0', NULL, '0.1', NULL),
+(778, 6, 54, 2, 'Зеараленон  ', 'Zearalenon  ', 9, '0', NULL, '1', NULL),
+(779, 6, 54, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '600', NULL),
+(780, 6, 54, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '100', NULL),
+(781, 6, 54, 4, ' Влажность', ' Namlik', 7, '9', NULL, '12', NULL),
+(782, 6, 54, 4, 'Сырой протеин ', 'Xom protein ', 7, '35.6', NULL, '52', NULL),
+(783, 6, 54, 4, 'Сырой жир ', 'Xom yog` ', 7, '0.5', NULL, '5.8', NULL),
+(784, 6, 54, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '4', NULL, '8', NULL),
+(785, 6, 54, 4, 'Кальций ', 'Kalsiy ', 7, '0.41', NULL, '0.43', NULL),
+(786, 6, 54, 4, 'Фосфор ', 'Fosfor ', 7, '0.62', NULL, '0.64', NULL),
+(787, 6, 54, 4, 'Натрий ', 'Natriy ', 7, '0.03', NULL, '0.05', NULL),
+(788, 6, 54, 4, 'Зола ', 'Зола ', 7, '5', NULL, '7.5', NULL),
+(789, 6, 3, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(790, 6, 55, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(791, 6, 55, 2, 'Зеараленон', 'Zearalenon', 9, '0', NULL, '0', NULL),
+(792, 6, 55, 2, 'Т-2 токсина ', 'Т-2 toksin', 9, '0', NULL, '0.1', NULL),
+(793, 6, 55, 2, 'Афлатоксина В1', 'Афлатоксина В1', 9, '0', NULL, '0.005', NULL),
+(794, 6, 55, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(795, 6, 55, 3, 'Уреаза ', 'Уреаза ', 19, '0.1', NULL, '0.3', NULL),
+(796, 6, 55, 3, ' Влажность', 'Namlik', 7, '7', NULL, '10', NULL),
+(797, 6, 55, 3, 'Сырой протеин ', 'Xom protein ', 7, '41.5', NULL, '43.5', NULL),
+(798, 6, 55, 3, 'Сырой жир ', 'Xom yog` ', 7, '5.7', NULL, '5.9', NULL),
+(799, 6, 55, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '7', NULL, '7.3', NULL),
+(800, 6, 55, 3, 'Кальций ', 'Kalsiy ', 7, '0.41', NULL, '0.43', NULL),
+(801, 6, 55, 3, 'Фосфор ', 'Fosfor ', 7, '0.62', NULL, '0.64', NULL),
+(802, 6, 55, 3, 'Натрий ', 'Natriy ', 7, '0.03', NULL, '0.05', NULL),
+(803, 6, 55, 3, 'Зола ', 'Зола ', 7, '1.4', NULL, '1.6', NULL),
+(804, 6, 56, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.2', NULL),
+(805, 6, 56, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.05', NULL),
+(806, 6, 56, 3, 'Гептахлор (епоксид гептахлора )', 'Гептахлор (епоксид гептахлора )', 9, '0', NULL, '0', NULL),
+(807, 6, 56, 3, ' Влажность', ' Namlik', 7, '7', NULL, '11', NULL),
+(808, 6, 56, 3, 'Сырой протеин ', 'Xom protein ', 7, '36', NULL, '44', NULL),
+(809, 6, 56, 3, 'Сырой жир ', 'Xom yog` ', 7, '1.5', NULL, '2.6', NULL),
+(810, 6, 56, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '14', NULL, '25', NULL),
+(811, 6, 56, 3, 'Кальций ', 'Kalsiy ', 7, '0.27', NULL, '0.29', NULL),
+(812, 6, 56, 3, 'Фосфор ', 'Fosfor ', 7, '1.09', NULL, '1.15', NULL),
+(813, 6, 56, 3, 'Натрий ', 'Natriy ', 7, '0.03', NULL, '0.05', NULL),
+(814, 6, 56, 3, 'Зола ', 'Зола ', 7, '0.5', NULL, '1', NULL),
+(815, 6, 57, 3, 'Гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.2', NULL),
+(816, 6, 57, 3, 'ДДТ и его метоболиты', 'DDT va uning metobolitlari', 9, '0', NULL, '0.05', NULL),
+(817, 6, 57, 3, 'Гептахлор (епоксид гептахлора )', 'Гептахлор (епоксид гептахлора )', 9, '0', NULL, '0', NULL),
+(818, 6, 57, 3, ' Влажность', ' Namlik', 7, '6', NULL, '8', NULL),
+(819, 6, 57, 3, 'Сырой протеин ', 'Xom protein ', 7, '30', NULL, '38', NULL),
+(820, 6, 57, 3, 'Сырой жир ', 'Xom yog` ', 7, '7', NULL, '9', NULL),
+(821, 6, 57, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '12', NULL, '16', NULL),
+(822, 6, 57, 3, 'Кальций ', 'Kalsiy ', 7, '0.35', NULL, '0.37', NULL),
+(823, 6, 57, 3, 'Фосфор ', 'Fosfor ', 7, '0.94', NULL, '0.96', NULL),
+(824, 6, 57, 3, 'Натрий ', 'Natriy ', 7, '0.05', NULL, '0.07', NULL),
+(825, 6, 57, 3, 'Зола ', 'Зола ', 7, '1.8', NULL, '2', NULL),
+(826, 6, 58, 3, ' Влажность', ' Namlik', 7, '8', NULL, '10', NULL),
+(827, 6, 58, 3, 'Сырой протеин ', 'Xom protein ', 7, '49', NULL, '51', NULL),
+(828, 6, 58, 3, 'Сырой жир ', 'Xom yog` ', 7, '1.1', NULL, '1.3', NULL),
+(829, 6, 58, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '7.8', NULL, '9.8', NULL),
+(830, 6, 58, 3, 'Кальций ', 'Kalsiy ', 7, '0.17', NULL, '0.19', NULL),
+(831, 6, 58, 3, 'Фосфор ', 'Fosfor ', 7, '0.52', NULL, '0.54', NULL),
+(832, 6, 58, 3, 'Натрий ', 'Natriy ', 7, '0.04', NULL, '0.06', NULL),
+(833, 6, 59, 3, 'ГХЦГ(сумма изомеров)', 'ГХЦГ(сумма изомеров)', 9, '0', NULL, '0.1', NULL),
+(834, 6, 59, 3, 'ДДТ (сумма изомеров и метаболитов)', 'DDT va uning metobolitlari', 9, '0', NULL, '0.02', NULL),
+(835, 6, 59, 3, 'Гептахлор (эпоксид гептахлора)', 'Гептахлор (эпоксид гептахлора)', 9, '0', NULL, '0.02', NULL),
+(836, 6, 59, 3, ' Влажность', ' Namlik', 7, '6', NULL, '8.5', NULL),
+(837, 6, 59, 3, 'Сырой протеин ', 'Xom protein ', 7, '47.5', NULL, '52', NULL),
+(838, 6, 59, 3, 'Сырой жир ', 'Xom yog` ', 7, '5.7', NULL, '6.5', NULL),
+(839, 6, 59, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '4.5', NULL, '5', NULL),
+(840, 6, 59, 3, 'Кальций ', 'Kalsiy ', 7, '0.17', NULL, '0.19', NULL),
+(841, 6, 59, 3, 'Фосфор ', 'Fosfor ', 7, '0.52', NULL, '0.54', NULL),
+(842, 6, 59, 3, 'Натрий ', 'Natriy ', 7, '0.04', NULL, '0.06', NULL),
+(843, 6, 59, 3, 'Зола ', 'Зола ', 7, '0.1', NULL, '0.3', NULL),
+(844, 6, 60, 3, ' Влажность', ' Namlik', 7, '8', NULL, '10', NULL),
+(845, 6, 60, 3, 'Сырой протеин ', 'Xom protein ', 7, '33', NULL, '35', NULL),
+(846, 6, 60, 3, 'Сырой жир ', 'Xom yog` ', 7, '9', NULL, '11', NULL),
+(847, 6, 60, 3, 'Зола ', 'Зола ', 7, '6', NULL, '8', NULL),
+(848, 6, 61, 3, ' Влажность', ' Namlik', 7, '8', NULL, '10', NULL),
+(849, 6, 61, 3, 'Сырой протеин ', 'Xom protein ', 7, '29', NULL, '31', NULL),
+(850, 6, 61, 3, 'Сырой жир ', 'Xom yog` ', 7, '9', NULL, '11', NULL),
+(851, 6, 61, 3, 'Зола ', 'Зола ', 7, '6', NULL, '8', NULL),
+(852, 6, 62, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(853, 6, 62, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(854, 6, 62, 1, 'Ртут', 'Ртут', 9, '0', NULL, '0.02', NULL),
+(855, 6, 62, 2, 'Зеараленона ', 'Zearalenonа ', 9, '0', NULL, '1', NULL),
+(856, 6, 62, 2, 'Т-2 токсина ', 'Т-2 toksin', 9, '0', NULL, '0.1', NULL),
+(857, 6, 62, 2, 'Афлатоксина В1', 'Афлатоксина В1', 9, '0', NULL, '0.025', NULL),
+(858, 6, 62, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(859, 6, 62, 3, ' Влажность', ' Namlik', 7, '7.5', NULL, '9.5', NULL),
+(860, 6, 62, 3, 'Сырой протеин ', 'Xom protein ', 7, '32.3', NULL, '34.3', NULL),
+(861, 6, 62, 3, 'Сырой жир ', 'Xom yog` ', 7, '1.7', NULL, '1.9', NULL),
+(862, 6, 62, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '8.8', NULL, '10.8', NULL),
+(863, 6, 62, 3, 'Кальций ', 'Kalsiy ', 7, '0.32', NULL, '0.34', NULL),
+(864, 6, 62, 3, 'Фосфор ', 'Fosfor ', 7, '0.75', NULL, '0.77', NULL),
+(865, 6, 62, 3, 'Натрий ', 'Natriy ', 7, '0.05', NULL, '0.07', NULL),
+(866, 6, 63, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(867, 6, 63, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(868, 6, 63, 1, 'Ртут', 'Ртут', 9, '0', NULL, '0.02', NULL),
+(869, 6, 63, 2, 'Зеараленона ', 'Zearalenonа ', 9, '0', NULL, '1', NULL),
+(870, 6, 63, 2, 'Т-2 токсина ', 'Т-2 toksin', 9, '0', NULL, '0.1', NULL),
+(871, 6, 63, 2, 'Афлатоксина В1', 'Афлатоксина В1', 9, '0', NULL, '0.005', NULL),
+(872, 6, 63, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(873, 6, 63, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '600', NULL),
+(874, 6, 63, 4, ' Влажность', ' Namlik', 7, '6', NULL, '8', NULL),
+(875, 6, 63, 4, 'Сырой протеин ', 'Xom protein ', 7, '31.6', NULL, '34', NULL),
+(876, 6, 63, 4, 'Сырой жир ', 'Xom yog` ', 7, '6.3', NULL, '6.5', NULL),
+(877, 6, 63, 4, 'Сырая клечатка ', 'Xom klechatka ', 7, '8.6', NULL, '10.6', NULL),
+(878, 6, 63, 4, 'Кальций ', 'Kalsiy ', 7, '0.35', NULL, '0.37', NULL),
+(879, 6, 63, 4, 'Фосфор ', 'Fosfor ', 7, '0.81', NULL, '0.83', NULL),
+(880, 6, 63, 4, 'Натрий ', 'Natriy ', 7, '0.05', NULL, '0.07', NULL),
+(881, 6, 63, 4, 'Зола ', 'Зола ', 7, '1.4', NULL, '1.5', NULL),
+(882, 6, 64, 16, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '0.5', NULL),
+(883, 6, 64, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.1', NULL),
+(884, 6, 64, 1, 'Ртути ', 'Ртути ', 9, '0', NULL, '0.02', NULL),
+(885, 6, 64, 2, 'Афлатоксина В1', 'Афлатоксина В1', 9, '0', NULL, '0.005', NULL),
+(886, 6, 64, 3, 'Зараженность вредителями ', 'Zararkunanda bilan zararlanish ', 9, '0', NULL, '0', NULL),
+(887, 6, 64, 3, ' Влажность', ' Namlik', 7, '7.5', NULL, '9.5', NULL),
+(888, 6, 64, 3, 'Сырой протеин ', 'Xom protein ', 7, '35', NULL, '37', NULL),
+(889, 6, 64, 3, 'Сырой жир ', 'Xom yog` ', 7, '2', NULL, '2.3', NULL),
+(890, 6, 64, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '12', NULL, '13', NULL),
+(891, 6, 64, 3, 'Кальций ', 'Kalsiy ', 7, '0.38', NULL, '0.58', NULL),
+(892, 6, 64, 3, 'Фосфор ', 'Fosfor ', 7, '0.7', NULL, '0.9', NULL),
+(893, 6, 64, 3, 'Натрий ', 'Natriy ', 7, '0.02', NULL, '0.04', NULL),
+(894, 6, 65, 3, ' Влажность', ' Namlik', 7, '8', NULL, '10', NULL),
+(895, 6, 65, 3, 'Сырой протеин ', 'Xom protein ', 7, '41.3', NULL, '43.3', NULL),
+(896, 6, 65, 3, 'Сырой жир ', 'Xom yog` ', 7, '0.4', NULL, '3.4', NULL),
+(897, 6, 65, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '0.5', NULL, '2.5', NULL),
+(898, 6, 65, 3, 'Кальций ', 'Kalsiy ', 7, '1.02', NULL, '1.04', NULL),
+(899, 6, 65, 3, 'Фосфор ', 'Fosfor ', 7, '1.39', NULL, '1.41', NULL),
+(900, 6, 65, 3, 'Натрий ', 'Natriy ', 7, '0.15', NULL, '0.17', NULL),
+(901, 7, 66, 3, ' Влажность', ' Namlik', 7, '8', NULL, '10', NULL),
+(902, 7, 66, 3, 'Сырой протеин ', 'Xom protein ', 7, '33.1', NULL, '35.1', NULL),
+(903, 7, 66, 3, 'Сырой жир ', 'Xom yog` ', 7, '16.5', NULL, '17.5', NULL),
+(904, 7, 66, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '1', NULL, '3', NULL),
+(905, 7, 66, 3, 'Кальций ', 'Kalsiy ', 7, '9.5', NULL, '11.5', NULL),
+(906, 7, 66, 3, 'Фосфор ', 'Fosfor ', 7, '4.35', NULL, '6.35', NULL),
+(907, 7, 66, 3, 'Натрий ', 'Natriy ', 7, '0.55', NULL, '2.55', NULL),
+(908, 7, 67, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '5', NULL),
+(909, 7, 67, 1, 'Мышьяк ', 'mishyak ', 9, '0', NULL, '2', NULL),
+(910, 7, 67, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.3', NULL),
+(911, 7, 67, 1, 'цинка', 'ruhа', 9, '0', NULL, '100', NULL),
+(912, 7, 67, 1, 'Меди ', 'Меди ', 9, '0', NULL, '80', NULL),
+(913, 7, 67, 1, 'ртуть', 'simob', 9, '0', NULL, '0.5', NULL),
+(914, 7, 67, 4, 'цезий-137', 'seziy-137', 11, '0', NULL, '600', NULL),
+(915, 7, 67, 4, 'стронций-90', 'stronsiy-90', 11, '0', NULL, '100', NULL),
+(916, 7, 67, 3, 'ГХЦГ(сумма изомеров)', 'ГХЦГ(сумма изомеров)', 9, '0', NULL, '0.2', NULL),
+(917, 7, 67, 3, 'ДДТ (сумма изомеров и метаболитов)', 'DDT va uning metobolitlari', 9, '0', NULL, '0.4', NULL),
+(918, 7, 67, 3, ' Влажность', ' Namlik', 7, '8', NULL, '10', NULL),
+(919, 7, 67, 3, 'Сырой протеин ', 'Xom protein ', 7, '74', NULL, '76', NULL),
+(920, 7, 67, 3, 'Сырой жир ', 'Xom yog` ', 7, '3', NULL, '3.2', NULL),
+(921, 7, 67, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '0', NULL, '0', NULL),
+(922, 7, 67, 3, 'Кальций ', 'Kalsiy ', 7, '0.36', NULL, '0.38', NULL),
+(923, 7, 67, 3, 'Фосфор ', 'Fosfor ', 7, '0.33', NULL, '0.35', NULL),
+(924, 7, 67, 3, 'Натрий ', 'Natriy ', 7, '0.94', NULL, '0.96', NULL),
+(925, 7, 68, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '5', NULL),
+(926, 7, 68, 1, 'Мышьяк ', 'mishyak ', 9, '0', NULL, '2', NULL),
+(927, 7, 68, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.3', NULL),
+(928, 7, 68, 1, 'цинка', 'ruhа', 9, '0', NULL, '100', NULL),
+(929, 7, 68, 1, 'Меди ', 'Меди ', 9, '0', NULL, '80', NULL),
+(930, 7, 68, 1, 'ртуть', 'simob', 9, '0', NULL, '0.5', NULL),
+(931, 7, 68, 3, 'ГХЦГ(сумма изомеров)', 'ГХЦГ(сумма изомеров)', 9, '0', NULL, '0.2', NULL),
+(932, 7, 68, 3, 'ДДТ (сумма изомеров и метаболитов)', 'DDT va uning metobolitlari', 9, '0', NULL, '0.4', NULL),
+(933, 7, 68, 3, ' Влажность', ' Namlik', 7, '8', NULL, '10', NULL),
+(934, 7, 68, 3, 'Сырой протеин ', 'Xom protein ', 7, '57.1', NULL, '59.1', NULL),
+(935, 7, 68, 3, 'Сырой жир ', 'Xom yog` ', 7, '7.1', NULL, '9.1', NULL),
+(936, 7, 68, 3, 'Сырая клечатка ', 'Xom klechatka ', 7, '0', NULL, '0', NULL),
+(937, 7, 68, 3, 'Кальций ', 'Kalsiy ', 7, '4.5', NULL, '6.5', NULL),
+(938, 7, 68, 3, 'Фосфор ', 'Fosfor ', 7, '3.1', NULL, '5.1', NULL),
+(939, 7, 68, 3, 'Натрий ', 'Natriy ', 7, '1.12', NULL, '4.12', NULL),
+(940, 8, 69, 3, ' Влажность', ' Namlik', 7, '2', NULL, '4', NULL),
+(941, 8, 69, 3, 'Кальций ', 'Kalsiy ', 7, '31', NULL, '33', NULL),
+(942, 8, 69, 3, 'Фосфор ', 'Fosfor ', 7, '13', NULL, '15', NULL),
+(943, 8, 70, 3, ' Влажность', ' Namlik', 7, '2', NULL, '4', NULL),
+(944, 8, 70, 3, 'Кальций ', 'Kalsiy ', 7, '24', NULL, '26', NULL),
+(945, 8, 70, 3, 'Фосфор ', 'Fosfor ', 7, '17.8', NULL, '19.8', NULL),
+(946, 8, 71, 3, ' Влажность', ' Namlik', 7, '2', NULL, '4', NULL),
+(947, 8, 71, 3, 'Кальций ', 'Kalsiy ', 7, '15.4', NULL, '17.4', NULL),
+(948, 8, 71, 3, 'Фосфор ', 'Fosfor ', 7, '22', NULL, '24', NULL),
+(949, 8, 72, 3, ' Влажность', ' Namlik', 7, '8', NULL, '10', NULL),
+(950, 8, 72, 3, 'Кальций ', 'Kalsiy ', 7, '32', NULL, '34', NULL),
+(951, 8, 73, 3, 'Кальций ', 'Kalsiy ', 7, '32', NULL, '34', NULL),
+(952, 8, 74, 3, 'Кальций ', 'Kalsiy ', 7, '32', NULL, '34', NULL),
+(953, 9, 75, 1, 'свинец', 'qo\'rg\'oshin', 9, '0', NULL, '1', NULL),
+(954, 9, 75, 1, 'мышьяк', 'mishyak', 9, '0', NULL, '0.5', NULL),
+(955, 9, 75, 1, 'кадмий', 'kadmiy', 9, '0', NULL, '0.05', NULL),
+(956, 9, 75, 3, 'гексахлорциклогексан (α, ß, γ-изомеры)', 'geksaxlorotsiklogeksan (a, ß, g-izomerlar)', 9, '0', NULL, '0.005', NULL),
+(957, 9, 75, 3, 'ДДТ и его метаболиты', 'DDT va uning metabolitlari', 9, '0', NULL, '0.005', NULL),
+(958, 9, 75, 3, 'Остаточные количества других пестицидов', 'Boshqa pestitsidlarning qoldiqlari', 9, '0', NULL, '0', NULL),
+(959, 9, 75, 4, 'цезий-137', 'seziy-137', 9, '0', NULL, '100', NULL),
+(960, 9, 75, 4, 'стронций-90', 'stronsiy-90', 9, '0', NULL, '80', NULL),
+(961, 9, 75, 5, 'Левомицетин', 'Levomisetin', 9, '0', NULL, '0', NULL),
+(962, 9, 75, 5, 'Тетрациклиновая группа', 'Tetrasiklin guruhi', 9, '0', NULL, '0', NULL),
+(963, 9, 75, 5, 'Нитрофуран', 'Nitrofuran', 9, '0', NULL, '0', NULL),
+(964, 9, 75, 5, 'Стрептомицин', 'Streptomisin', 9, '0', NULL, '0', NULL),
+(965, 9, 75, 5, 'Сульфонамит', 'Sulfonamit', 9, '0', NULL, '0', NULL),
+(966, 9, 75, 5, 'Метронидазол', 'Metronidazol', 9, '0', NULL, '0', NULL),
+(967, 9, 75, 5, 'Фуразалидон', 'Furazalidon', 9, '0', NULL, '0', NULL),
+(968, 9, 75, 5, 'Тетрациклин', 'Tetrasiklin', 9, '0', NULL, '0', NULL),
+(969, 9, 75, 5, 'Эпрофлоксацин', 'Eprofloksasin', 9, '0', NULL, '0', NULL),
+(970, 9, 75, 5, 'Ципрофлоксацин', 'Siprofloksasin', 9, '0', NULL, '0', NULL),
+(971, 9, 75, 5, 'Тайлозин', 'Taylozin', 9, '0', NULL, '0', NULL),
+(972, 9, 75, 5, 'Сульфатиазол', 'Sulfatiazol', 9, '0', NULL, '0', NULL),
+(973, 9, 75, 14, 'Хлорамфеникол', 'Xloramfeikol', 9, '0', NULL, '0', NULL),
+(974, 9, 75, 14, 'Хлорфармазин', 'Xlorfapmazin', 9, '0', NULL, '0', NULL),
+(975, 9, 75, 14, 'Колхицин', 'Kolxisin', 9, '0', NULL, '0', NULL),
+(976, 9, 75, 14, 'Дапсон', 'Dapson', 9, '0', NULL, '0', NULL),
+(977, 9, 75, 14, 'Диметридазол', 'Dimetridazol', 9, '0', NULL, '0', NULL),
+(978, 9, 75, 14, 'Ронидазол', 'Ronidazol', 9, '0', NULL, '0', NULL),
+(979, 9, 75, 14, 'Амитраз', 'Amitroz', 9, '0', NULL, '100', NULL),
+(980, 9, 75, 14, 'Цимиазол', 'Simiazol', 9, '0', NULL, '50', NULL),
+(981, 9, 75, 14, 'Кумафос', 'Kumafos', 9, '0', NULL, '20', NULL),
+(982, 9, 75, 10, 'Массовая доля воды', 'Suv massasi ulushi', 7, '20', NULL, '23', NULL),
+(983, 9, 75, 10, 'Массовая доля редуцирующих сахаров для цветочного меда', 'Gul asal uchun shakarni kamaytirishning massa ulushi', 7, '60', NULL, '65', NULL),
+(984, 9, 75, 10, 'Массовая доля редуцирующих сахаров для падевого и смешанного меда', 'Asal va aralash asal uchun shakarni kamaytirishning massa ulushi', 7, '45', NULL, '65', NULL),
+(985, 9, 75, 10, 'Массовая доля сахарозы для цветочного меда', 'Gul asal uchun saxaroza massa ulushi', 7, '5', NULL, '15', NULL),
+(986, 9, 75, 10, 'Массовая доля сахарозы для меда акациевого', 'Akasiya asal uchun saxarozaning massa ulushi', 7, '10', NULL, '15', NULL),
+(987, 9, 75, 10, 'Массовая доля сахарозы  для падевого и смешанного меда', 'Asal va aralash asal uchun sukrozning massa ulushi', 7, '15', NULL, ' ', NULL),
+(988, 9, 75, 10, 'Диастазное число, ед. Готе: для всех видов меда', 'Diastaza soni, birliklari Gothe: asalning barcha turlari uchun', 9, '7', NULL, NULL, NULL),
+(989, 9, 75, 10, 'Диастазное число, ед. Готе: для меда с белой акации при содержании гидроксиметилфурфураля (ГМФ), не более 15 млн', 'Diastaza soni, birliklari Gothe: tarkibida gidroksimetil furfural (HMF) bo\'lgan oq chigirtkali asal uchun 15 mln.', 9, '5', NULL, ' ', NULL),
+(990, 9, 75, 10, 'Массовая доля ГМФ, млн', 'ГМФ ning massa ulushi, mln', 9, '25', NULL, NULL, NULL),
+(991, 9, 75, 10, 'Качественная реакция на гидроксиметилфурфурол', 'Gidroksimetilfurfuralga sifatli reaktsiya', 1, '2', NULL, NULL, NULL),
+(992, 9, 75, 10, 'Общая кислотность', 'Umumiy kislotalilik', 4, ' ', NULL, '1', '40'),
+(993, 9, 75, 10, 'Содержание пролина', 'Prolin tarkibi', 9, '180', NULL, ' ', NULL),
+(994, 9, 75, 10, 'Качественная реакция на крахмал', 'Kraxmalga sifatli reaksiya', 1, '2', NULL, NULL, NULL),
+(995, 9, 75, 10, 'Электропроводность все виды меда, кроме падевого и смесей с ним', 'Elektr o\'tkazuvchanligi asalning barcha turlari, shudring va u bilan aralashmalardan tashqari', 18, '0', NULL, '0.8', NULL),
+(996, 9, 75, 10, 'Электропроводность падевый и смеси с ним', 'Asalning elektr o\'tkazuvchanligi va u bilan aralashmalar', 18, '0.8', NULL, ' ', NULL),
+(997, 9, 75, 10, 'Массовая доля нерастворимых в воде веществ всех видов меда', 'Asalning barcha turlarining suvda erimaydigan moddalarining massa ulushi', 7, '0.1', NULL, '0.5', NULL),
+(998, 9, 75, 10, 'Соотношение массовых долей фруктозы к глюкозе', 'Fruktoza massa ulushlarining glyukozaga nisbati', 7, '1.05', NULL, ' ', NULL);
 
 -- --------------------------------------------------------
 
@@ -8362,10 +9491,26 @@ INSERT INTO `template_unit` (`id`, `name_uz`, `name_ru`, `type_id`) VALUES
 (1, 'Belgi', 'Признак', 2),
 (2, 'шт', 'шт', 1),
 (3, 'МЕ/см3', 'МЕ/см3', 1),
-(4, 'Nisbat', 'Соотношение ', 4),
-(5, 'Soat', 'час ', 1),
+(4, 'Nisbat (Titr)', 'Соотношение (Titr)', 4),
+(5, 'Буш', 'час ', 1),
 (6, 'Ед.ОП', 'Ед.ОП', 1),
-(7, '%', '%', 3);
+(7, '%', '%', 3),
+(8, 'mg', 'mg', 1),
+(9, 'Mg/kg', 'Mg/kg', 1),
+(10, 'ед/g', 'ед/g', 1),
+(11, 'Bk/kg', 'Bk/kg', 1),
+(12, 'g', 'g', 1),
+(13, 'KOE/g', 'КОЕ/g', 1),
+(14, 'g/sm3', 'g/sm3', 1),
+(15, 'Matn', 'Текст', 1),
+(16, 'Буш', '', 1),
+(17, 'mmol/kg', 'mmol/kg', 1),
+(18, 'Sm/m', 'Sm/m', 1),
+(19, 'pH', 'pH', 1),
+(20, 'soat', 'час', 1),
+(21, 'daqiqa', 'мин', 1),
+(22, 'soniya', 'сек', 1),
+(23, 'krest (+)', 'кресты (+)', 1);
 
 -- --------------------------------------------------------
 
@@ -8481,7 +9626,9 @@ CREATE TABLE `vaccination` (
 --
 
 INSERT INTO `vaccination` (`animal_id`, `vaccina_id`, `disease_id`, `disease_date`) VALUES
-(32, NULL, 3, '2021-11-20');
+(32, NULL, 3, '2021-11-20'),
+(78, 1, 1, '2022-04-25'),
+(78, 2, 1, '2022-04-25');
 
 -- --------------------------------------------------------
 
@@ -8541,7 +9688,7 @@ INSERT INTO `vet_sites` (`id`, `code`, `name`, `soato`) VALUES
 --
 DROP TABLE IF EXISTS `district_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `district_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`region_id` AS `region_id`, `s`.`district_id` AS `district_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`qfi_id` is null AND `s`.`district_id` is not null ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `district_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`region_id` AS `region_id`, `s`.`district_id` AS `district_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`qfi_id` is null AND `s`.`district_id` is not nullnot null  ;
 
 -- --------------------------------------------------------
 
@@ -8550,7 +9697,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `qfi_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `qfi_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`district_id` AS `district_id`, `s`.`region_id` AS `region_id`, `s`.`qfi_id` AS `qfi_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`qfi_id` is not null ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `qfi_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`district_id` AS `district_id`, `s`.`region_id` AS `region_id`, `s`.`qfi_id` AS `qfi_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`qfi_id` is not nullnot null  ;
 
 -- --------------------------------------------------------
 
@@ -8559,7 +9706,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `regions_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `regions_view`  AS SELECT `s`.`region_id` AS `region_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`district_id` is null ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `regions_view`  AS SELECT `s`.`region_id` AS `region_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`district_id` is nullnull  ;
 
 --
 -- Indexes for dumped tables
@@ -8680,12 +9827,31 @@ ALTER TABLE `emp_posts_history`
   ADD KEY `FK_emp_posts_history_status_list_id` (`status_id`);
 
 --
+-- Indexes for table `food`
+--
+ALTER TABLE `food`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_food_category_id` (`category_id`);
+
+--
+-- Indexes for table `food_category`
+--
+ALTER TABLE `food_category`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `food_compose`
 --
 ALTER TABLE `food_compose`
   ADD PRIMARY KEY (`id`,`sample_id`,`registration_id`),
   ADD KEY `FK_food_compose_sample_id` (`sample_id`),
   ADD KEY `FK_food_compose_registration_id` (`registration_id`);
+
+--
+-- Indexes for table `food_group`
+--
+ALTER TABLE `food_group`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `food_recomendation`
@@ -8737,12 +9903,6 @@ ALTER TABLE `food_sampling_certificate`
   ADD KEY `food_sampling_certificate_ibfk_3` (`pnfl`),
   ADD KEY `FK_food_sampling_certificate_status_id` (`status_id`),
   ADD KEY `FK_food_sampling_certificate_state_id` (`state_id`);
-
---
--- Indexes for table `food_type`
---
-ALTER TABLE `food_type`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `goverments`
@@ -8862,7 +10022,6 @@ ALTER TABLE `report_drug_type`
 --
 ALTER TABLE `report_food`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_report_food_type_id` (`type_id`),
   ADD KEY `FK_report_food_cat_id` (`cat_id`),
   ADD KEY `FK_report_food_soato_id` (`soato_id`),
   ADD KEY `FK_report_food_status_id` (`status_id`);
@@ -8930,9 +10089,9 @@ ALTER TABLE `result_food`
 --
 ALTER TABLE `result_food_tests`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_result_food_tests_template_id` (`template_id`),
   ADD KEY `FK_result_food_tests_type_id` (`type_id`),
-  ADD KEY `FK_result_food_tests_result_id` (`result_id`);
+  ADD KEY `FK_result_food_tests_result_id` (`result_id`),
+  ADD KEY `FK_result_food_tests_template_id` (`template_id`);
 
 --
 -- Indexes for table `roles`
@@ -9082,15 +10241,16 @@ ALTER TABLE `template_animal_regulations`
 --
 ALTER TABLE `template_food`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_template_food_laboratory_test_type_id` (`laboratory_test_type_id`),
-  ADD KEY `FK_template_food_type_id` (`type_id`);
+  ADD KEY `FK_template_food_category_id` (`category_id`),
+  ADD KEY `FK_template_food_food_id` (`food_id`),
+  ADD KEY `FK_template_food_unit_id` (`unit_id`),
+  ADD KEY `FK_template_food_group_id` (`group_id`);
 
 --
 -- Indexes for table `template_food_regulations`
 --
 ALTER TABLE `template_food_regulations`
-  ADD PRIMARY KEY (`regulation_id`,`template_id`),
-  ADD KEY `FK_template_food_regulations_template_id` (`template_id`);
+  ADD PRIMARY KEY (`regulation_id`,`template_id`);
 
 --
 -- Indexes for table `template_unit`
@@ -9165,7 +10325,7 @@ ALTER TABLE `vet_sites`
 -- AUTO_INCREMENT for table `animals`
 --
 ALTER TABLE `animals`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `animal_status`
@@ -9210,10 +10370,28 @@ ALTER TABLE `emp_posts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT for table `food`
+--
+ALTER TABLE `food`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+
+--
+-- AUTO_INCREMENT for table `food_category`
+--
+ALTER TABLE `food_category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `food_compose`
 --
 ALTER TABLE `food_compose`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `food_group`
+--
+ALTER TABLE `food_group`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `food_recomendation`
@@ -9244,12 +10422,6 @@ ALTER TABLE `food_samples`
 --
 ALTER TABLE `food_sampling_certificate`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `food_type`
---
-ALTER TABLE `food_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `organizations`
@@ -9393,7 +10565,7 @@ ALTER TABLE `route_status`
 -- AUTO_INCREMENT for table `samples`
 --
 ALTER TABLE `samples`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `sample_conditions`
@@ -9411,7 +10583,7 @@ ALTER TABLE `sample_recomendation`
 -- AUTO_INCREMENT for table `sample_registration`
 --
 ALTER TABLE `sample_registration`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `sample_status`
@@ -9423,7 +10595,7 @@ ALTER TABLE `sample_status`
 -- AUTO_INCREMENT for table `sertificates`
 --
 ALTER TABLE `sertificates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `sert_normatives`
@@ -9465,13 +10637,13 @@ ALTER TABLE `tamplate_animal`
 -- AUTO_INCREMENT for table `template_food`
 --
 ALTER TABLE `template_food`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=999;
 
 --
 -- AUTO_INCREMENT for table `template_unit`
 --
 ALTER TABLE `template_unit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `template_unit_type`
@@ -9566,6 +10738,12 @@ ALTER TABLE `emp_posts_history`
   ADD CONSTRAINT `FK_emp_posts_history_post_list_id` FOREIGN KEY (`post_id`) REFERENCES `post_list` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_emp_posts_history_state_list_id` FOREIGN KEY (`state_id`) REFERENCES `state_list` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_emp_posts_history_status_list_id` FOREIGN KEY (`status_id`) REFERENCES `status_list` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `food`
+--
+ALTER TABLE `food`
+  ADD CONSTRAINT `FK_food_category_id` FOREIGN KEY (`category_id`) REFERENCES `food_category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `food_compose`
@@ -9678,8 +10856,7 @@ ALTER TABLE `report_drugs`
 ALTER TABLE `report_food`
   ADD CONSTRAINT `FK_report_food_cat_id` FOREIGN KEY (`cat_id`) REFERENCES `report_food_category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_report_food_soato_id` FOREIGN KEY (`soato_id`) REFERENCES `soato` (`MHOBT_cod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_report_food_status_id` FOREIGN KEY (`status_id`) REFERENCES `report_status` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_report_food_type_id` FOREIGN KEY (`type_id`) REFERENCES `food_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_report_food_status_id` FOREIGN KEY (`status_id`) REFERENCES `report_status` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `report_food_images`
@@ -9716,7 +10893,7 @@ ALTER TABLE `result_food`
 --
 ALTER TABLE `result_food_tests`
   ADD CONSTRAINT `FK_result_food_tests_result_id` FOREIGN KEY (`result_id`) REFERENCES `result_food` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_result_food_tests_template_id` FOREIGN KEY (`template_id`) REFERENCES `template_food` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_result_food_tests_template_id` FOREIGN KEY (`template_id`) REFERENCES `template_food` (`id`) ON DELETE NO ACTION,
   ADD CONSTRAINT `FK_result_food_tests_type_id` FOREIGN KEY (`type_id`) REFERENCES `template_unit_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
@@ -9779,15 +10956,16 @@ ALTER TABLE `template_animal_regulations`
 -- Constraints for table `template_food`
 --
 ALTER TABLE `template_food`
-  ADD CONSTRAINT `FK_template_food_laboratory_test_type_id` FOREIGN KEY (`laboratory_test_type_id`) REFERENCES `laboratory_test_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_template_food_type_id` FOREIGN KEY (`type_id`) REFERENCES `template_unit_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_template_food_category_id` FOREIGN KEY (`category_id`) REFERENCES `food_category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_template_food_food_id` FOREIGN KEY (`food_id`) REFERENCES `food` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_template_food_group_id` FOREIGN KEY (`group_id`) REFERENCES `food_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_template_food_unit_id` FOREIGN KEY (`unit_id`) REFERENCES `template_unit` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `template_food_regulations`
 --
 ALTER TABLE `template_food_regulations`
-  ADD CONSTRAINT `FK_template_food_regulations_regulation_id` FOREIGN KEY (`regulation_id`) REFERENCES `regulations` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_template_food_regulations_template_id` FOREIGN KEY (`template_id`) REFERENCES `template_food` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_template_food_regulations_regulation_id` FOREIGN KEY (`regulation_id`) REFERENCES `regulations` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `template_unit`

@@ -90,6 +90,8 @@ use yii\bootstrap4\ActiveForm;
                 <?= $form->field($model, 'true')->dropDownList([0 => 'Yo\'q', 1 => 'Ha']) ?>
                 <?= $form->field($model, 'true1')->dropDownList([0 => 'Yo\'q', 1 => 'Ha']) ?>
             </div>
+
+
             <?= $form->field($model, 'is_vaccination')->dropDownList([0 => 'Yo\'q', 1 => 'Ha', 2 => 'Baribir']) ?>
 
             <?= $form->field($model, 'dead_days')->textInput(['type' => 'number']) ?>
@@ -117,7 +119,6 @@ use yii\bootstrap4\ActiveForm;
             display: block;
         }
     </style>
-
 <?php
 $url = Yii::$app->urlManager->createUrl(['/cp/template-animal/gettype']);
 // minimal va maksimallarni aniqlashtirib ishlash kerak
@@ -125,14 +126,21 @@ $this->registerJs("
     $('#tamplateanimal-unit_id').change(function(){
 //         alert($('#tamplateanimal-unit_id').val());
           $.get('{$url}?id='+$('#tamplateanimal-unit_id').val()).done(function(data){
-              $('.oraliq').hide();
-              $('.istrue').hide();
+              $('.oraliq').css('display','none');
+              $('.istrue').css('display','none');
               $('.isfalse').css('display','block');
-              if(data == 4){
-                $('.oraliq').show();
-              }else if(data == 2){
-                 $('.istrue').css('display','block');
-                 $('.isfalse').css('display','none');
+              if(data==4){
+                  $('.isfalse').css('display','block');
+                  $('.oraliq').css('display','block');
+                  $('.istrue').css('display','none');
+              }else if(data==2){
+                  $('.oraliq').css('display','none');
+                  $('.isfalse').css('display','none');
+                  $('.istrue').css('display','block');
+              }else{
+                  $('.oraliq').css('display','none');
+                  $('.istrue').css('display','none');
+                  $('.isfalse').css('display','block');
               }
           })
     })

@@ -1,15 +1,9 @@
 <?php
 
-use common\models\FoodType;
-use common\models\LaboratoryTestType;
-use common\models\Regulations;
 use common\models\TemplateFoodRegulations;
-use common\models\TemplateUnitType;
-use kartik\base\BootstrapInterface;
 use kartik\select2\Select2;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\TemplateFood */
@@ -20,16 +14,15 @@ use yii\bootstrap4\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'tasnif_code')->dropDownList(ArrayHelper::map(FoodType::find()->all(), 'id', 'name')) ?>
+    <?= $form->field($model, 'category_id')->textInput() ?>
 
-    <?= $form->field($model, 'laboratory_test_type_id')->dropDownList(ArrayHelper::map(LaboratoryTestType::find()->all(), 'id', 'name_uz')) ?>
+    <?= $form->field($model, 'food_id')->textInput() ?>
 
-    <?= $form->field($model, 'name_uz')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'group_id')->textInput() ?>
 
     <?= $form->field($model, 'name_ru')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'unit_uz')->textInput(['maxlength' => true]) ?>
-
+    <?= $form->field($model, 'name_uz')->textInput(['maxlength' => true]) ?>
     <?php
     $res = TemplateFoodRegulations::find()->select(['regulation_id'])->where(['template_id' => $model->id])->all();
     $arr = [];
@@ -39,35 +32,34 @@ use yii\bootstrap4\ActiveForm;
     ?>
     <?= $form->field($model, 'regulations[]')->widget(Select2::class,
         [
-            'data' => ArrayHelper::map(Regulations::find()->asArray()->all(), 'id', 'name_uz'),
+            'data' => \yii\helpers\ArrayHelper::map(\common\models\Regulations::find()->asArray()->all(), 'id', 'name_uz'),
             'theme' => Select2::THEME_KRAJEE,
-            'size' => BootstrapInterface::SIZE_MEDIUM,
+            'size' => \kartik\base\BootstrapInterface::SIZE_MEDIUM,
             'value' => $arr,
             'options' => [
                 'multiple' => true
             ]
-        ])->label(Yii::t('cp', 'Normativ hujjatlar'))
-
+        ])->label(Yii::t('cp', 'Normativ hujjatlar'));
+        $lg = 'uz'; if(Yii::$app->language=='ru'){$lg = 'ru';}
     ?>
+    <?= $form->field($model, 'unit_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\TemplateUnit::find()->all(),'id','name_'.$lg)) ?>
 
-    <?= $form->field($model, 'unit_ru')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'type_id')->dropDownList(ArrayHelper::map(TemplateUnitType::find()->all(), 'id', 'name_uz')) ?>
     <div class="isfalse">
 
-        <?= $form->field($model, 'min')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'min_1')->textInput(['maxlength' => true]) ?>
 
         <div class="oraliq" style="display: none">
 
-            <?= $form->field($model, 'min_1')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'min_2')->textInput(['maxlength' => true]) ?>
 
         </div>
 
-        <?= $form->field($model, 'max')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'max_1')->textInput(['maxlength' => true]) ?>
 
         <div class="oraliq" style="display: none">
 
-            <?= $form->field($model, 'max_1')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'max_2')->textInput(['maxlength' => true]) ?>
 
         </div>
 
@@ -75,35 +67,48 @@ use yii\bootstrap4\ActiveForm;
 
     <div class="istrue" style="display: none">
 
-        <?= $form->field($model, 'true')->dropDownList([0=>'Yo\'q',1=>'Ha']) ?>
-        <?= $form->field($model, 'true1')->dropDownList([0=>'Yo\'q',1=>'Ha']) ?>
+        <?= $form->field($model, 'true_1')->dropDownList([0 => 'Yo\'q', 1 => 'Ha']) ?>
+
+        <?= $form->field($model, 'true_2')->dropDownList([0 => 'Yo\'q', 1 => 'Ha']) ?>
+
     </div>
 
-    <?= $form->field($model, 'ads')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model,'consept_id')->dropDownList(ArrayHelper::map(\common\models\Employees::find()->all(),'id','name'))?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Saqlash'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('cp', 'Saqlash'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
 
+
 <?php
+$url = Yii::$app->urlManager->createUrl(['/cp/template-animal/gettype']);
+// minimal va maksimallarni aniqlashtirib ishlash kerak
 $this->registerJs("
-    $('#templatefood-type_id').change(function(){
-          $('.oraliq').hide();
-          $('.istrue').hide();
-          $('.isfalse').css('display','block');
-          data = $('#templatefood-type_id').val();
-          if(data == 4){
-            $('.oraliq').show();
-          }else if(data == 2){
-             $('.istrue').css('display','block');
-             $('.isfalse').css('display','none');
-          }
+    $('#templatefood-unit_id').change(function(){
+//         alert($('#tamplateanimal-unit_id').val());
+          $.get('{$url}?id='+$('#templatefood-unit_id').val()).done(function(data){
+              $('.oraliq').css('display','none');
+              $('.istrue').css('display','none');
+              $('.isfalse').css('display','block');
+              if(data==4){
+                  $('.isfalse').css('display','block');
+                  $('.oraliq').css('display','block');
+                  $('.istrue').css('display','none');
+              }else if(data==2){
+                  $('.oraliq').css('display','none');
+                  $('.isfalse').css('display','none');
+                  $('.istrue').css('display','block');
+              }else{
+                  $('.oraliq').css('display','none');
+                  $('.istrue').css('display','none');
+                  $('.isfalse').css('display','block');
+              }
+          })
     })
 ")
+
 ?>

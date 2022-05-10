@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\TemplateFood */
+/* @var $model common\models\FoodGroup */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('cp', 'Template Foods'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('cp', 'Food Groups'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="template-food-view">
+<div class="food-group-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,16 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'category_id',
-            'food_id',
-            'group_id',
             'name_ru',
             'name_uz',
-            'unit_id',
-            'min_1',
-            'min_2',
-            'max_1',
-            'max_2',
         ],
     ]) ?>
 

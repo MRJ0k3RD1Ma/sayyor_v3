@@ -4,12 +4,12 @@ namespace common\models\search;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\TemplateFood;
+use common\models\FoodCategory;
 
 /**
- * TemplateFoodSearch represents the model behind the search form of `common\models\TemplateFood`.
+ * FoodCategorySearch represents the model behind the search form of `common\models\FoodCategory`.
  */
-class TemplateFoodSearch extends TemplateFood
+class FoodCategorySearch extends FoodCategory
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class TemplateFoodSearch extends TemplateFood
     public function rules()
     {
         return [
-            [['id', 'category_id', 'food_id', 'group_id', 'unit_id'], 'integer'],
-            [['name_ru', 'name_uz', 'min_1', 'min_2', 'max_1', 'max_2'], 'safe'],
+            [['id'], 'integer'],
+            [['name_uz', 'name_ru'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class TemplateFoodSearch extends TemplateFood
      */
     public function search($params)
     {
-        $query = TemplateFood::find();
+        $query = FoodCategory::find();
 
         // add conditions that should always apply here
 
@@ -59,18 +59,10 @@ class TemplateFoodSearch extends TemplateFood
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'category_id' => $this->category_id,
-            'food_id' => $this->food_id,
-            'group_id' => $this->group_id,
-            'unit_id' => $this->unit_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name_ru', $this->name_ru])
-            ->andFilterWhere(['like', 'name_uz', $this->name_uz])
-            ->andFilterWhere(['like', 'min_1', $this->min_1])
-            ->andFilterWhere(['like', 'min_2', $this->min_2])
-            ->andFilterWhere(['like', 'max_1', $this->max_1])
-            ->andFilterWhere(['like', 'max_2', $this->max_2]);
+        $query->andFilterWhere(['like', 'name_uz', $this->name_uz])
+            ->andFilterWhere(['like', 'name_ru', $this->name_ru]);
 
         return $dataProvider;
     }

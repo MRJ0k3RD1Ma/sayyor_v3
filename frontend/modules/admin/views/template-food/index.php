@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\TemplateFoodSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Oziq-ovqat ekspertizasi shablonlari');
+$this->title = Yii::t('cp', 'Oziq-ovqat ekspertizasi shablonlari');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="template-food-index">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Shablon qo\'shish'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('cp', 'Shablon qo`shish'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -29,25 +29,47 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
-            'tasnif_code',
-//            'laboratory_test_type_id',
-            'name_uz',
+//            'category_id',
+//            'food_id',
+//            'group_id',
+            [
+                'attribute'=>'category_id',
+                'value'=>function($d){
+                    $lg = Yii::$app->language=='ru'?'ru':'uz';
+                    return $d->category->{'name_'.$lg};
+                }
+            ],
+            [
+                'attribute'=>'food_id',
+                'value'=>function($d){
+                    $lg = Yii::$app->language=='ru'?'ru':'uz';
+                    return $d->group->{'name_'.$lg};
+                }
+            ],
+            [
+                'attribute'=>'food_id',
+                'value'=>function($d){
+                    $lg = Yii::$app->language=='ru'?'ru':'uz';
+                    return $d->food->{'name_'.$lg};
+                }
+            ],
             'name_ru',
-            'unit_uz',
-            'unit_ru',
-            //'type_id',
-            //'min',
-            //'min_1',
-            //'max',
-            //'max_1',
-            //'ads',
-            //'creator_id',
-            //'consept_id',
-            'created',
-            //'updated',
+            'name_uz',
+//            'unit_id',
+            [
+                'attribute'=>'unit_id',
+                'value'=>function($d){
+                    $lg = Yii::$app->language=='ru'?'ru':'uz';
+                    return $d->unit->{'name_'.$lg};
+                }
+            ],
+            'min_1',
+            'min_2',
+            'max_1',
+            'max_2',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action,  $model, $key, $index, $column) {
+                'urlCreator' => function ($action, $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],

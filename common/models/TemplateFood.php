@@ -8,30 +8,26 @@ use Yii;
  * This is the model class for table "template_food".
  *
  * @property int $id
- * @property string|null $tasnif_code
- * @property int|null $laboratory_test_type_id
- * @property string|null $name_uz
+ * @property int|null $category_id
+ * @property int|null $food_id
+ * @property int|null $group_id
  * @property string|null $name_ru
- * @property string|null $unit_uz
- * @property string|null $unit_ru
- * @property int|null $type_id
- * @property string|null $min
+ * @property string|null $name_uz
+ * @property int|null $unit_id
  * @property string|null $min_1
- * @property string|null $max
+ * @property string|null $min_2
  * @property string|null $max_1
- * @property string|null $ads
- * @property int|null $creator_id
- * @property int|null $consept_id
- * @property string|null $created
- * @property string|null $updated
+ * @property string|null $max_2
  *
- * @property LaboratoryTestType $laboratoryTestType
- * @property TemplateUnitType $type
- * @property TemplateFoodRegulations $TemplateFoodRegulations
+ * @property FoodCategory $category
+ * @property Food $food
+ * @property FoodGroup $group
+ * @property ResultFoodTests[] $resultFoodTests
+ * @property TemplateUnit $unit
  */
 class TemplateFood extends \yii\db\ActiveRecord
 {
-    public $true,$true1;
+    public $true_1,$true_2;
     /**
      * {@inheritdoc}
      */
@@ -40,19 +36,19 @@ class TemplateFood extends \yii\db\ActiveRecord
         return 'template_food';
     }
 
-    public $regulations;
-
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['laboratory_test_type_id', 'type_id', 'creator_id', 'consept_id','true','true1'], 'integer'],
-            [['created', 'updated'], 'safe'],
-            [['tasnif_code', 'name_uz', 'name_ru', 'unit_uz', 'unit_ru', 'min', 'min_1', 'max', 'max_1', 'ads'], 'string', 'max' => 255],
-            [['laboratory_test_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => LaboratoryTestType::className(), 'targetAttribute' => ['laboratory_test_type_id' => 'id']],
-            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => TemplateUnitType::className(), 'targetAttribute' => ['type_id' => 'id']],
+            [['category_id', 'food_id', 'group_id', 'unit_id','name_ru', 'name_uz',],'required'],
+            [['category_id', 'food_id', 'group_id', 'unit_id'], 'integer'],
+            [['name_ru', 'name_uz', 'min_1', 'min_2', 'max_1', 'max_2','true_1','true_2'], 'string', 'max' => 255],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => FoodCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['food_id'], 'exist', 'skipOnError' => true, 'targetClass' => Food::className(), 'targetAttribute' => ['food_id' => 'id']],
+            [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => FoodGroup::className(), 'targetAttribute' => ['group_id' => 'id']],
+            [['unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => TemplateUnit::className(), 'targetAttribute' => ['unit_id' => 'id']],
         ];
     }
 
@@ -62,53 +58,72 @@ class TemplateFood extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'tasnif_code' => Yii::t('app', 'Tasnif Kod'),
-            'laboratory_test_type_id' => Yii::t('app', 'Laboratoriya test turi'),
-            'name_uz' => Yii::t('app', 'Parametr(uz)'),
-            'name_ru' => Yii::t('app', 'Paramentr(ru)'),
-            'unit_uz' => Yii::t('app', 'Birlik(uz)'),
-            'unit_ru' => Yii::t('app', 'Birlik(ru)'),
-            'type_id' => Yii::t('app', 'Birlik turi'),
-            'min' => Yii::t('app', 'Minimal'),
-            'min_1' => Yii::t('app', 'Minimal 2(oraliq)'),
-            'max' => Yii::t('app', 'Maksimal'),
-            'max_1' => Yii::t('app', 'Maksimal 2(oraliq)'),
-            'ads' => Yii::t('app', 'Izoh'),
-            'creator_id' => Yii::t('app', 'Kirituvchi'),
-            'consept_id' => Yii::t('app', 'Tasdiqlovchi'),
-            'created' => Yii::t('app', 'Yaratildi'),
-            'updated' => Yii::t('app', 'O\'zgartirildi'),
+            'id' => Yii::t('model', 'ID'),
+            'category_id' => Yii::t('model', 'Kategoriya'),
+            'food_id' => Yii::t('model', 'Mahsulot'),
+            'group_id' => Yii::t('model', 'Guruh'),
+            'name_ru' => Yii::t('model', 'Parametr(RU)'),
+            'name_uz' => Yii::t('model', 'Parametr(UZ)'),
+            'unit_id' => Yii::t('model', 'Birlik'),
+            'min_1' => Yii::t('model', 'Minimal'),
+            'min_2' => Yii::t('model', 'Minimal(oraliq)'),
+            'max_1' => Yii::t('model', 'Maximal'),
+            'max_2' => Yii::t('model', 'Maximal(Oraliq)'),
+            'true_1' => Yii::t('model', 'Minimal'),
+            'true_2' => Yii::t('model', 'Maximal'),
         ];
     }
 
     /**
-     * Gets query for [[LaboratoryTestType]].
+     * Gets query for [[Category]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getLaboratoryTestType()
+    public function getCategory()
     {
-        return $this->hasOne(LaboratoryTestType::className(), ['id' => 'laboratory_test_type_id']);
+        return $this->hasOne(FoodCategory::className(), ['id' => 'category_id']);
     }
 
     /**
-     * Gets query for [[Type]].
+     * Gets query for [[Food]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getType()
+    public function getFood()
     {
-        return $this->hasOne(TemplateUnitType::className(), ['id' => 'type_id']);
+        return $this->hasOne(Food::className(), ['id' => 'food_id']);
     }
 
+    /**
+     * Gets query for [[Group]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGroup()
+    {
+        return $this->hasOne(FoodGroup::className(), ['id' => 'group_id']);
+    }
+
+    /**
+     * Gets query for [[ResultFoodTests]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getResultFoodTests()
+    {
+        return $this->hasMany(ResultFoodTests::className(), ['template_id' => 'id']);
+    }
     public function getRegulations()
     {
-        return $this->hasMany(Regulations::class, ['id' => 'regulation_id'])->viaTable('template_food_regulations', ['template_id' => 'id']);
+        return $this->hasMany(Regulations::className(), ['id' => 'regulation_id'])->viaTable('template_food_regulations', ['template_id' => 'id']);
     }
-
-    public function getTemplateFoodRegulations()
+    /**
+     * Gets query for [[Unit]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUnit()
     {
-        return $this->hasMany(TemplateFoodRegulations::class, ['template_id' => 'id']);
+        return $this->hasOne(TemplateUnit::className(), ['id' => 'unit_id']);
     }
 }

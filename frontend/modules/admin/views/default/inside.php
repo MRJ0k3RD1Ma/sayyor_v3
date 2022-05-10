@@ -346,6 +346,60 @@
                     </div>
                 </a>
             </div>
+            <div class="col-md-4">
+                <a href="<?= Yii::$app->urlManager->createUrl(['/cp/food-category']) ?>">
+                    <div class="card">
+                        <!-- card body -->
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-10">
+
+                                    <h5 class="text-muted mb-3 lh-1 d-block text-truncate"><?= Yii::t('cp', 'Oziq-ovqatlar kategoriyalari') ?></h5>
+                                </div>
+                                <div class="col-2">
+                                    <i class="fa fa-list"></i>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="<?= Yii::$app->urlManager->createUrl(['/cp/food-group']) ?>">
+                    <div class="card">
+                        <!-- card body -->
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-10">
+
+                                    <h5 class="text-muted mb-3 lh-1 d-block text-truncate"><?= Yii::t('cp', 'Oziq-ovqatlar guruhlari') ?></h5>
+                                </div>
+                                <div class="col-2">
+                                    <i class="fa fa-list"></i>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="<?= Yii::$app->urlManager->createUrl(['/cp/food']) ?>">
+                    <div class="card">
+                        <!-- card body -->
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-10">
+
+                                    <h5 class="text-muted mb-3 lh-1 d-block text-truncate"><?= Yii::t('cp', 'Oziq-ovqatlar') ?></h5>
+                                </div>
+                                <div class="col-2">
+                                    <i class="fa fa-list"></i>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 </div>

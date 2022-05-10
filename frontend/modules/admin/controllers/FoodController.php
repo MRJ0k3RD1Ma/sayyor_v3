@@ -2,17 +2,16 @@
 
 namespace app\modules\admin\controllers;
 
-use common\models\TemplateFood;
-use common\models\search\TemplateFoodSearch;
-use common\models\TemplateFoodRegulations;
+use common\models\Food;
+use common\models\search\FoodSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * TemplateFoodController implements the CRUD actions for TemplateFood model.
+ * FoodController implements the CRUD actions for Food model.
  */
-class TemplateFoodController extends Controller
+class FoodController extends Controller
 {
     /**
      * @inheritDoc
@@ -33,13 +32,13 @@ class TemplateFoodController extends Controller
     }
 
     /**
-     * Lists all TemplateFood models.
+     * Lists all Food models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new TemplateFoodSearch();
+        $searchModel = new FoodSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -49,7 +48,7 @@ class TemplateFoodController extends Controller
     }
 
     /**
-     * Displays a single TemplateFood model.
+     * Displays a single Food model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -62,28 +61,16 @@ class TemplateFoodController extends Controller
     }
 
     /**
-     * Creates a new TemplateFood model.
+     * Creates a new Food model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new TemplateFood();
+        $model = new Food();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                if($model->unit->type_id == 2){
-                    $model->min = $model->true;
-                    $model->max = $model->true1;
-                }
-                $model->save();
-                foreach ($this->request->post('TamplateFood')['regulations'] as $reg) {
-                    $relation = new TemplateFoodRegulations();
-                    $relation->regulation_id = $reg;
-                    $relation->template_id = $model->id;
-                    $relation->state_id = $model->state_id;
-                    $relation->save();
-                }
+            if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -96,7 +83,7 @@ class TemplateFoodController extends Controller
     }
 
     /**
-     * Updates an existing TemplateFood model.
+     * Updates an existing Food model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -106,20 +93,7 @@ class TemplateFoodController extends Controller
     {
         $model = $this->findModel($id);
 
-        if($model->unit->type_id == 2){$model->true = $model->min; $model->true1 = $model->max;}
-        if ($this->request->isPost && $model->load($this->request->post())) {
-            if($model->unit->type_id == 2){
-                $model->min = $model->true;
-                $model->max = $model->true1;
-            }
-            $model->save();
-            foreach ($this->request->post('TamplateFood')['regulations'] as $reg) {
-                $relation = new TemplateFoodRegulations();
-                $relation->regulation_id = $reg;
-                $relation->template_id = $model->id;
-                $relation->state_id = $model->state_id;
-                $relation->save();
-            }
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -129,7 +103,7 @@ class TemplateFoodController extends Controller
     }
 
     /**
-     * Deletes an existing TemplateFood model.
+     * Deletes an existing Food model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -143,18 +117,18 @@ class TemplateFoodController extends Controller
     }
 
     /**
-     * Finds the TemplateFood model based on its primary key value.
+     * Finds the Food model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return TemplateFood the loaded model
+     * @return Food the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = TemplateFood::findOne(['id' => $id])) !== null) {
+        if (($model = Food::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('cp', 'The requested page does not exist.'));
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

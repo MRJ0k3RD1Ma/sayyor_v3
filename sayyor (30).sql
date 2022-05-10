@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2022 at 02:25 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 7.4.29
+-- Generation Time: May 10, 2022 at 08:50 PM
+-- Server version: 10.4.18-MariaDB
+-- PHP Version: 7.4.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -66,7 +66,13 @@ INSERT INTO `animals` (`id`, `name`, `cat_id`, `gender`, `birthday`, `inn`, `pnf
 (58, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
 (59, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
 (78, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
-(79, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1);
+(79, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
+(80, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
+(81, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
+(82, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
+(83, 'hayvon egasi', NULL, 1, '2022-01-10', '123456789', '31512620270065', NULL, 1, 'NBU123456789', 1),
+(84, 'hayvon egasi', 1, 1, '2022-01-10', '123456789', '31512620270065', 'Manzil', 1, 'NBU123456789', 1),
+(85, 'hayvon egasi', 1, 1, '2022-01-10', '123456789', '31512620270065', 'Manzil', 1, 'NBU123456789', 1);
 
 -- --------------------------------------------------------
 
@@ -182,7 +188,13 @@ INSERT INTO `composite_samples` (`sample_id`, `status_id`, `registration_id`, `a
 (53, NULL, 31, NULL, 1),
 (54, NULL, 31, NULL, 1),
 (64, NULL, 32, NULL, 1),
-(65, NULL, 32, NULL, 1);
+(65, NULL, 32, NULL, 1),
+(66, NULL, 33, NULL, 1),
+(67, NULL, 33, NULL, 1),
+(68, NULL, 34, NULL, 1),
+(69, NULL, 34, NULL, 1),
+(70, NULL, 35, NULL, 1),
+(71, NULL, 35, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -722,7 +734,9 @@ CREATE TABLE `emlash` (
 INSERT INTO `emlash` (`animal_id`, `antibiotic`, `emlash_date`) VALUES
 (32, 'jhkhkhjkhjkhkhk', '2022-01-21'),
 (78, 'Anitboitik nomi', '2022-04-01'),
-(78, 'Anitboitik nomi', '2022-04-03');
+(78, 'Anitboitik nomi', '2022-04-03'),
+(84, 'Anitboitik nomi', '2022-04-01'),
+(84, 'Anitboitik nomi', '2022-04-03');
 
 -- --------------------------------------------------------
 
@@ -1086,7 +1100,6 @@ CREATE TABLE `food_samples` (
   `samp_code` varchar(255) DEFAULT NULL COMMENT 'Namunaning raqami toliq',
   `samp_id` int(11) DEFAULT NULL COMMENT 'namunaning raqami faqat son',
   `sert_id` int(11) DEFAULT NULL COMMENT 'namunaning food_sample_sertification idsi',
-  `tasnif_code` varchar(255) DEFAULT NULL COMMENT 'tasnif.soliq.uz dan olinadi',
   `unit_id` int(11) DEFAULT NULL COMMENT 'birligi',
   `count` int(11) DEFAULT NULL COMMENT 'soni',
   `sample_box_id` int(11) DEFAULT NULL,
@@ -1105,19 +1118,22 @@ CREATE TABLE `food_samples` (
   `state_id` int(11) DEFAULT 1,
   `_country` int(11) DEFAULT NULL,
   `emp_id` int(11) DEFAULT NULL,
-  `is_group` int(11) DEFAULT 0
+  `is_group` int(11) DEFAULT 0,
+  `food_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='oziq ovqat ekspertizasi uchun namunalar';
 
 --
 -- Dumping data for table `food_samples`
 --
 
-INSERT INTO `food_samples` (`id`, `samp_code`, `samp_id`, `sert_id`, `tasnif_code`, `unit_id`, `count`, `sample_box_id`, `sample_condition_id`, `total_amount`, `verification_sample`, `producer`, `serial_num`, `manufacture_date`, `sell_by`, `coments`, `laboratory_test_type_id`, `created`, `updated`, `status_id`, `state_id`, `_country`, `emp_id`, `is_group`) VALUES
-(9, '33204-22-1/1', 1, 15, '1', 1, 2, 1, 1, '1000', 0, 'UMDSoft MCHJ', '20152365', '2022-04-05', '2022-04-05', 'test malumot', 1, '2022-04-05 21:22:28', '2022-04-23 19:13:07', 5, 1, 192, 1, 1),
-(10, '33204-22-1/2', 2, 15, '1', 1, 2, 1, 1, '1000', 0, 'UMDSoft MCHJ', '20152365', '2022-04-05', '2022-04-05', 'test malumot', 1, '2022-04-05 21:22:49', '2022-04-05 23:09:24', 6, 1, 192, NULL, 1),
-(11, '33204-22-1/3', 3, 15, '1', 1, 2, 1, 1, '1000', 0, 'UMDSoft MCHJ', '20152365', '2022-04-05', '2022-04-05', 'test malumot', 1, '2022-04-05 21:23:09', '2022-04-23 19:12:59', 5, 1, 192, 1, 1),
-(12, '33204-22-1/4', 4, 15, '1', 1, 2, 1, 1, '1000', 0, 'UMDSoft MCHJ', '20152365', '2022-04-05', '2022-04-05', 'test malumot', 1, '2022-04-05 21:23:30', '2022-04-05 23:10:45', 4, 1, 192, 1, 0),
-(13, '33204-22-1/5', 5, 15, '1', 1, 2, 1, 1, '1000', 0, 'UMDSoft MCHJ', '20152365', '2022-04-05', '2022-04-06', 'test malumot', 1, '2022-04-05 21:24:46', '2022-04-05 23:10:50', 4, 1, 192, 1, 0);
+INSERT INTO `food_samples` (`id`, `samp_code`, `samp_id`, `sert_id`, `unit_id`, `count`, `sample_box_id`, `sample_condition_id`, `total_amount`, `verification_sample`, `producer`, `serial_num`, `manufacture_date`, `sell_by`, `coments`, `laboratory_test_type_id`, `created`, `updated`, `status_id`, `state_id`, `_country`, `emp_id`, `is_group`, `food_id`, `category_id`, `group_id`) VALUES
+(9, '33204-22-1/1', 1, 15, 1, 2, 1, 1, '1000', 0, 'UMDSoft MCHJ', '20152365', '2022-04-05', '2022-04-05', 'test malumot', 1, '2022-04-05 21:22:28', '2022-05-10 23:23:08', 5, 1, 192, 1, 1, 1, 1, 1),
+(10, '33204-22-1/2', 2, 15, 1, 2, 1, 1, '1000', 0, 'UMDSoft MCHJ', '20152365', '2022-04-05', '2022-04-05', 'test malumot', 1, '2022-04-05 21:22:49', '2022-05-10 23:23:24', 6, 1, 192, 1, 1, 1, 1, 1),
+(11, '33204-22-1/3', 3, 15, 1, 2, 1, 1, '1000', 0, 'UMDSoft MCHJ', '20152365', '2022-04-05', '2022-04-05', 'test malumot', 1, '2022-04-05 21:23:09', '2022-05-10 23:23:15', 5, 1, 192, 1, 1, 1, 1, 1),
+(12, '33204-22-1/4', 4, 15, 1, 2, 1, 1, '1000', 0, 'UMDSoft MCHJ', '20152365', '2022-04-05', '2022-04-05', 'test malumot', 1, '2022-04-05 21:23:30', '2022-05-10 23:23:18', 4, 1, 192, 1, 0, 1, 1, 1),
+(13, '33204-22-1/5', 5, 15, 1, 2, 1, 1, '1000', 0, 'UMDSoft MCHJ', '20152365', '2022-04-05', '2022-04-06', 'test malumot', 1, '2022-04-05 21:24:46', '2022-05-10 23:23:21', 4, 1, 192, 1, 0, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1145,15 +1161,20 @@ CREATE TABLE `food_sampling_certificate` (
   `updated` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `explanations` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status_id` int(11) DEFAULT 0,
-  `state_id` int(11) DEFAULT 1
+  `state_id` int(11) DEFAULT 1,
+  `sert_date` date NOT NULL DEFAULT current_timestamp(),
+  `sert_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sampler_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sampler_position` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `food_sampling_certificate`
 --
 
-INSERT INTO `food_sampling_certificate` (`id`, `code`, `food_id`, `inn`, `pnfl`, `sampling_soato`, `sampling_site`, `sampling_adress`, `sampler_person_pnfl`, `sampler_person_inn`, `verification_pupose_id`, `sampling_date`, `send_sample_date`, `based_public_information`, `message_number`, `created`, `updated`, `explanations`, `status_id`, `state_id`) VALUES
-(15, '33204-22-1', 1, '305634884', NULL, 1733204, 1, 'test', NULL, '306922184', 1, '2022-04-05', '2022-04-05', 0, NULL, '2022-04-05 21:22:06', '2022-04-23 19:12:59', NULL, 5, 1);
+INSERT INTO `food_sampling_certificate` (`id`, `code`, `food_id`, `inn`, `pnfl`, `sampling_soato`, `sampling_site`, `sampling_adress`, `sampler_person_pnfl`, `sampler_person_inn`, `verification_pupose_id`, `sampling_date`, `send_sample_date`, `based_public_information`, `message_number`, `created`, `updated`, `explanations`, `status_id`, `state_id`, `sert_date`, `sert_number`, `sampler_name`, `sampler_position`) VALUES
+(15, '33204-22-1', 1, '305634884', NULL, 1733204, 1, 'test', NULL, '306922184', 1, '2022-04-05', '2022-04-05', 0, NULL, '2022-04-05 21:22:06', '2022-04-23 19:12:59', NULL, 5, 1, '2022-05-10', '', '', ''),
+(16, '33204-22-2', 2, NULL, '30507903120132', 1733204, 1, 'sad', NULL, '306922184', 1, '2022-05-10', NULL, 0, NULL, '2022-05-10 23:20:17', '2022-05-10 23:20:17', NULL, 0, 1, '2022-05-10', '12', 'Allabergenov Dilmurod', 'Dasturchi');
 
 -- --------------------------------------------------------
 
@@ -2812,7 +2833,76 @@ INSERT INTO `message` (`id`, `language`, `translation`) VALUES
 (1115, 'uz', 'Tashkilot nomi'),
 (1116, 'uz', 'Foydalanuvchi qo\'shish'),
 (1117, 'uz', 'Foydalanuvchi qo\'shish'),
-(1118, 'uz', 'Hayvon kasalliklari tashhisi va oziq-ovqat xavfsizligiga oid laboratoriya tekshiruvlari Yagona elektron ma\'lumotlar bazasini yuritish tizimi (VIS-Sayyor)');
+(1118, 'uz', 'Hayvon kasalliklari tashhisi va oziq-ovqat xavfsizligiga oid laboratoriya tekshiruvlari Yagona elektron ma\'lumotlar bazasini yuritish tizimi (VIS-Sayyor)'),
+(1119, 'uz', 'Oziq-ovqatlar'),
+(1120, 'uz', 'Aloqasiz'),
+(1121, 'uz', 'Barcha kat. uchun'),
+(1122, 'uz', 'Oziq-ovqatlar guruhlari'),
+(1123, 'uz', 'Oziq-ovqat guruhlari'),
+(1124, 'uz', 'Guruh qo\'shish'),
+(1125, 'uz', 'Create Food Group'),
+(1126, 'uz', 'Food Groups'),
+(1127, 'uz', 'Save'),
+(1128, 'uz', 'O`zgartirish: {name}'),
+(1129, 'uz', 'Oziq-ovqatlar kategoriyalari'),
+(1130, 'uz', 'Food Categories'),
+(1131, 'uz', 'Create Food Category'),
+(1132, 'uz', 'Oziq-ovqat kategoriyalari'),
+(1133, 'uz', 'Kategoriya qo`shish'),
+(1134, 'uz', 'Kategoriya qo\'shish'),
+(1135, 'uz', 'Kategoriya'),
+(1136, 'uz', 'Mahsulot'),
+(1137, 'uz', 'Guruh'),
+(1138, 'uz', 'Parametr(RU)'),
+(1139, 'uz', 'Parametr(UZ)'),
+(1140, 'uz', 'Birlik'),
+(1141, 'uz', 'Minimal'),
+(1142, 'uz', 'Minimal(oraliq)'),
+(1143, 'uz', 'Maximal'),
+(1144, 'uz', 'Maximal(Oraliq)'),
+(1145, 'uz', 'Kategoriya'),
+(1146, 'uz', 'Mahsulot'),
+(1147, 'uz', 'Guruh'),
+(1148, 'uz', 'Parametr(RU)'),
+(1149, 'uz', 'Parametr(UZ)'),
+(1150, 'uz', 'Birlik'),
+(1151, 'uz', 'Minimal'),
+(1152, 'uz', 'Minimal(oraliq)'),
+(1153, 'uz', 'Maximal'),
+(1154, 'uz', 'Maximal(Oraliq)'),
+(1155, 'uz', 'Template Foods'),
+(1156, 'uz', 'Create Template Food'),
+(1157, 'uz', 'Oziq-ovqat ekspertizasi shablonlari'),
+(1158, 'uz', 'Shablon qo`shish'),
+(1159, 'uz', 'Oziq-ovqat ekspertizasi shablonlari'),
+(1160, 'uz', 'Shablon qo`shish'),
+(1161, 'uz', 'Shablonlar'),
+(1162, 'uz', 'Dalolatnoma sanasi'),
+(1163, 'uz', 'Dalolatnoma raqami(Qog\'ozdagi)'),
+(1164, 'uz', 'Viloyat'),
+(1165, 'uz', 'FIO'),
+(1166, 'uz', 'Lavozim'),
+(1167, 'uz', 'Oziq-ovqat ekspertizasi uchun ariza'),
+(1168, 'uz', 'Vet uchstkani tanlang'),
+(1169, 'uz', 'Tekshirishdan maqsadni tanlang'),
+(1170, 'uz', 'Saqlash'),
+(1171, 'uz', 'Dalolatnomalar ro\'yhati'),
+(1172, 'uz', 'Namuna qo\'shish'),
+(1173, 'uz', 'Mahsulot birligini tanlang'),
+(1174, 'uz', 'Mahsulot nomi'),
+(1175, 'uz', 'Mahsulot kategoriyasi'),
+(1176, 'uz', 'Mahsulot guruhi'),
+(1177, 'uz', 'Namuna o\'ramini tanlang'),
+(1178, 'uz', 'Davlatni tanlang'),
+(1179, 'uz', 'Namuna holatini tanlang'),
+(1180, 'uz', 'Tanlanmagan'),
+(1181, 'uz', 'Tanlangan'),
+(1182, 'uz', 'Laboratoriya test turini tanlang'),
+(1183, 'uz', 'Saqlash'),
+(1184, 'uz', 'Parametr guruhini tanlang'),
+(1185, 'uz', 'Parametr guruhi'),
+(1186, 'uz', 'Mahsulot kategoriyasini tanlang'),
+(1187, 'uz', 'Mahsulot guruhini tanlang');
 
 -- --------------------------------------------------------
 
@@ -3586,7 +3676,13 @@ INSERT INTO `samples` (`id`, `kod`, `samp_id`, `label`, `sample_type_is`, `sampl
 (53, '33204-22-11/1', 1, 'paketdagi belgi', 1, 1, 58, 81, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 1),
 (54, '33204-22-11/2', 2, 'paketdagi belgi', 1, 1, 59, 81, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 2),
 (64, '33204-22-12/1', 1, 'paketdagi belgi', 1, 1, 78, 96, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 1),
-(65, '33204-22-12/2', 2, 'paketdagi belgi', 1, 1, 79, 96, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 2);
+(65, '33204-22-12/2', 2, 'paketdagi belgi', 1, 1, 79, 96, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 2),
+(66, '33204-22-13/1', 1, 'paketdagi belgi', 1, 1, 80, 97, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 1),
+(67, '33204-22-13/2', 2, 'paketdagi belgi', 1, 1, 81, 97, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 2),
+(68, '33204-22-14/1', 1, 'paketdagi belgi', 1, 1, 82, 98, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 1),
+(69, '33204-22-14/2', 2, 'paketdagi belgi', 1, 1, 83, 98, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 2),
+(70, '33204-22-15/1', 1, 'paketdagi belgi', 1, 1, 84, 107, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 1),
+(71, '33204-22-15/2', 2, 'paketdagi belgi', 1, 1, 85, 107, 1, 1, 1, 1, -1, 'Takroriy tekshiruv raqami', 0, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -3700,12 +3796,15 @@ INSERT INTO `sample_registration` (`id`, `pnfl`, `inn`, `is_research`, `code_id`
 (24, NULL, '305634884', 1, 2, '22-1-001-2', 1, NULL, 1, 1, NULL, NULL, 'Allabergenov Dilmurod', '(99)-967-0395', '2022-04-05 21:58:41', '2022-04-23 16:29:10', NULL, 5, 'M/001-5', 5, 0, 0),
 (25, '31003953120018', NULL, 1, 3, '22-1-001-3', 1, NULL, 1, 1, NULL, NULL, 'Fffffffff', '(90)-121-3354', '2022-04-18 17:28:43', '2022-04-18 17:50:47', NULL, 5, NULL, 0, 0, 0),
 (26, '31512620270065', NULL, 1, 4, '22-1-001-4', 1, NULL, 1, NULL, NULL, NULL, 'ADDDDDDDDDDD', '(90)-168-5983', '2022-04-19 11:21:41', '2022-04-19 11:21:41', NULL, 1, NULL, 0, 0, 0),
-(27, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-03 20:18:52', '2022-05-03 20:18:52', NULL, 1, NULL, 0, 1, 1),
+(27, NULL, NULL, 0, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-03 20:18:52', '2022-05-08 17:58:46', NULL, 1, NULL, 0, 1, 1),
 (28, '31512620270065', NULL, 0, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-03 20:23:39', '2022-05-03 20:23:39', NULL, 1, NULL, 0, 1, 1),
 (29, '31512620270065', NULL, 0, 5, '22-1-001-5', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-03 20:25:50', '2022-05-03 20:25:50', NULL, 1, NULL, 0, 1, 1),
 (30, NULL, '123456789', 0, 6, '22-1-001-6', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-03 20:30:25', '2022-05-03 20:30:25', NULL, 1, NULL, 0, 1, 1),
 (31, NULL, '123456789', 0, 7, '22-1-001-7', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-03 21:01:55', '2022-05-03 21:01:55', NULL, 1, NULL, 0, 1, 1),
-(32, NULL, '123456789', 0, 8, '22-1-001-8', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-08 12:07:50', '2022-05-08 12:07:50', NULL, 1, NULL, 0, 1, 1);
+(32, NULL, '123456789', 0, 8, '22-1-001-8', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-08 12:07:50', '2022-05-08 12:07:50', NULL, 1, NULL, 0, 1, 1),
+(33, NULL, '123456789', 0, 9, '22-1-001-9', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-08 18:00:12', '2022-05-08 18:00:12', NULL, 1, NULL, 0, 1, 1),
+(34, NULL, '123456789', 0, 10, '22-1-001-10', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-08 18:01:33', '2022-05-08 18:01:33', NULL, 1, NULL, 0, 1, 1),
+(35, NULL, '123456789', 0, 11, '22-1-001-11', 1, NULL, 1, NULL, NULL, NULL, 'ABDURAXMAN XUNDIBAYEV', '999670395', '2022-05-08 18:20:25', '2022-05-08 18:20:25', NULL, 1, NULL, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -3800,7 +3899,10 @@ INSERT INTO `sertificates` (`id`, `sert_id`, `sert_full`, `sert_num`, `sert_date
 (79, 9, '33204-22-9', '', '2022-04-25', NULL, '31512620270065', 1, 1, NULL, '2022-05-03 20:25:50', NULL, NULL, 'Dilmurod', 'Dasturchi', 1, 1),
 (80, 10, '33204-22-10', '', '2022-04-25', '123456789', '', 1, 1, NULL, '2022-05-03 20:30:25', NULL, NULL, 'Dilmurod', 'Dasturchi', 1, 1),
 (81, 11, '33204-22-11', '', '2022-04-25', '123456789', '', 1, 1, NULL, '2022-05-03 21:01:55', '123456789', NULL, 'Dilmurod', 'Dasturchi', 1, 1),
-(96, 12, '33204-22-12', '1', '2022-04-25', '123456789', '', 1, 1, NULL, '2022-05-08 12:07:50', '123456789', NULL, 'Dilmurod', 'Dasturchi', 1, 1);
+(96, 12, '33204-22-12', '1', '2022-04-25', '123456789', '', 1, 1, NULL, '2022-05-08 12:07:50', '123456789', NULL, 'Dilmurod', 'Dasturchi', 1, 1),
+(97, 13, '33204-22-13', '', '2022-04-25', '123456789', '', 1, 1, NULL, '2022-05-08 18:00:12', NULL, NULL, 'Dilmurod', 'Dasturchi', 1, 1),
+(98, 14, '33204-22-14', '', '2022-04-25', '123456789', '', 1, 1, NULL, '2022-05-08 18:01:33', NULL, NULL, 'Dilmurod', 'Dasturchi', 1, 1),
+(107, 15, '33204-22-15', '1', '2022-04-25', '123456789', '', 1, 1, NULL, '2022-05-08 18:20:25', '123456789', NULL, 'Dilmurod', 'Dasturchi', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -8315,7 +8417,76 @@ INSERT INTO `source_message` (`id`, `category`, `message`) VALUES
 (1115, 'cp', 'Tashkilot nomi'),
 (1116, 'cp', 'Foydalanuvchi qo\'shish'),
 (1117, 'cp', 'Foydalanuvchi qo\'shish'),
-(1118, 'login', 'Hayvon kasalliklari tashhisi va oziq-ovqat xavfsizligiga oid laboratoriya tekshiruvlari Yagona elektron ma\'lumotlar bazasini yuritish tizimi (VIS-Sayyor)');
+(1118, 'login', 'Hayvon kasalliklari tashhisi va oziq-ovqat xavfsizligiga oid laboratoriya tekshiruvlari Yagona elektron ma\'lumotlar bazasini yuritish tizimi (VIS-Sayyor)'),
+(1119, 'cp', 'Oziq-ovqatlar'),
+(1120, 'cp', 'Aloqasiz'),
+(1121, 'cp', 'Barcha kat. uchun'),
+(1122, 'cp', 'Oziq-ovqatlar guruhlari'),
+(1123, 'cp', 'Oziq-ovqat guruhlari'),
+(1124, 'cp', 'Guruh qo\'shish'),
+(1125, 'cp', 'Create Food Group'),
+(1126, 'cp', 'Food Groups'),
+(1127, 'cp', 'Save'),
+(1128, 'cp', 'O`zgartirish: {name}'),
+(1129, 'cp', 'Oziq-ovqatlar kategoriyalari'),
+(1130, 'cp', 'Food Categories'),
+(1131, 'cp', 'Create Food Category'),
+(1132, 'cp', 'Oziq-ovqat kategoriyalari'),
+(1133, 'cp', 'Kategoriya qo`shish'),
+(1134, 'cp', 'Kategoriya qo\'shish'),
+(1135, 'model', 'Kategoriya'),
+(1136, 'model', 'Mahsulot'),
+(1137, 'model', 'Guruh'),
+(1138, 'model', 'Parametr(RU)'),
+(1139, 'model', 'Parametr(UZ)'),
+(1140, 'model', 'Birlik'),
+(1141, 'model', 'Minimal'),
+(1142, 'model', 'Minimal(oraliq)'),
+(1143, 'model', 'Maximal'),
+(1144, 'model', 'Maximal(Oraliq)'),
+(1145, 'model', 'Kategoriya'),
+(1146, 'model', 'Mahsulot'),
+(1147, 'model', 'Guruh'),
+(1148, 'model', 'Parametr(RU)'),
+(1149, 'model', 'Parametr(UZ)'),
+(1150, 'model', 'Birlik'),
+(1151, 'model', 'Minimal'),
+(1152, 'model', 'Minimal(oraliq)'),
+(1153, 'model', 'Maximal'),
+(1154, 'model', 'Maximal(Oraliq)'),
+(1155, 'cp', 'Template Foods'),
+(1156, 'cp', 'Create Template Food'),
+(1157, 'cp', 'Oziq-ovqat ekspertizasi shablonlari'),
+(1158, 'cp', 'Shablon qo`shish'),
+(1159, 'cp', 'Oziq-ovqat ekspertizasi shablonlari'),
+(1160, 'cp', 'Shablon qo`shish'),
+(1161, 'cp', 'Shablonlar'),
+(1162, 'model.food_sampling_certificate', 'Dalolatnoma sanasi'),
+(1163, 'model.food_sampling_certificate', 'Dalolatnoma raqami(Qog\'ozdagi)'),
+(1164, 'model.food_sampling_certificate', 'Viloyat'),
+(1165, 'model.food_sampling_certificate', 'FIO'),
+(1166, 'model.food_sampling_certificate', 'Lavozim'),
+(1167, 'client', 'Oziq-ovqat ekspertizasi uchun ariza'),
+(1168, 'cp.vetsites', 'Vet uchstkani tanlang'),
+(1169, 'cp.individuals', 'Tekshirishdan maqsadni tanlang'),
+(1170, 'cp.food_sampling_certificate', 'Saqlash'),
+(1171, 'cp.food_sampling_certificate', 'Dalolatnomalar ro\'yhati'),
+(1172, 'food', 'Namuna qo\'shish'),
+(1173, 'client', 'Mahsulot birligini tanlang'),
+(1174, 'food', 'Mahsulot nomi'),
+(1175, 'food', 'Mahsulot kategoriyasi'),
+(1176, 'food', 'Mahsulot guruhi'),
+(1177, 'client', 'Namuna o\'ramini tanlang'),
+(1178, 'client', 'Davlatni tanlang'),
+(1179, 'client', 'Namuna holatini tanlang'),
+(1180, 'client', 'Tanlanmagan'),
+(1181, 'client', 'Tanlangan'),
+(1182, 'client', 'Laboratoriya test turini tanlang'),
+(1183, 'food', 'Saqlash'),
+(1184, 'client', 'Parametr guruhini tanlang'),
+(1185, 'food', 'Parametr guruhi'),
+(1186, 'client', 'Mahsulot kategoriyasini tanlang'),
+(1187, 'client', 'Mahsulot guruhini tanlang');
 
 -- --------------------------------------------------------
 
@@ -9502,7 +9673,7 @@ INSERT INTO `template_unit` (`id`, `name_uz`, `name_ru`, `type_id`) VALUES
 (12, 'g', 'g', 1),
 (13, 'KOE/g', 'КОЕ/g', 1),
 (14, 'g/sm3', 'g/sm3', 1),
-(15, 'Matn', 'Текст', 1),
+(15, 'Matn', 'Текст', 3),
 (16, 'Буш', '', 1),
 (17, 'mmol/kg', 'mmol/kg', 1),
 (18, 'Sm/m', 'Sm/m', 1),
@@ -9628,7 +9799,9 @@ CREATE TABLE `vaccination` (
 INSERT INTO `vaccination` (`animal_id`, `vaccina_id`, `disease_id`, `disease_date`) VALUES
 (32, NULL, 3, '2021-11-20'),
 (78, 1, 1, '2022-04-25'),
-(78, 2, 1, '2022-04-25');
+(78, 2, 1, '2022-04-25'),
+(84, 1, 1, '2022-04-25'),
+(84, 2, 1, '2022-04-25');
 
 -- --------------------------------------------------------
 
@@ -9688,7 +9861,7 @@ INSERT INTO `vet_sites` (`id`, `code`, `name`, `soato`) VALUES
 --
 DROP TABLE IF EXISTS `district_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `district_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`region_id` AS `region_id`, `s`.`district_id` AS `district_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`qfi_id` is null AND `s`.`district_id` is not nullnot null  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `district_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`region_id` AS `region_id`, `s`.`district_id` AS `district_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`qfi_id` is null AND `s`.`district_id` is not null ;
 
 -- --------------------------------------------------------
 
@@ -9697,7 +9870,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `qfi_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `qfi_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`district_id` AS `district_id`, `s`.`region_id` AS `region_id`, `s`.`qfi_id` AS `qfi_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`qfi_id` is not nullnot null  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `qfi_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`district_id` AS `district_id`, `s`.`region_id` AS `region_id`, `s`.`qfi_id` AS `qfi_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`qfi_id` is not null ;
 
 -- --------------------------------------------------------
 
@@ -9706,7 +9879,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `regions_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `regions_view`  AS SELECT `s`.`region_id` AS `region_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`district_id` is nullnull  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `regions_view`  AS SELECT `s`.`region_id` AS `region_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`district_id` is null ;
 
 --
 -- Indexes for dumped tables
@@ -9892,7 +10065,10 @@ ALTER TABLE `food_samples`
   ADD KEY `FK_food_samples_laboratory_test_type_id` (`laboratory_test_type_id`),
   ADD KEY `FK_food_samples_status_id` (`status_id`),
   ADD KEY `FK_food_samples_state_id` (`state_id`),
-  ADD KEY `FK_food_samples__country` (`_country`);
+  ADD KEY `FK_food_samples__country` (`_country`),
+  ADD KEY `FK_food_samples_food_id` (`food_id`),
+  ADD KEY `FK_food_samples_category_id` (`category_id`),
+  ADD KEY `FK_food_samples_group_id` (`group_id`);
 
 --
 -- Indexes for table `food_sampling_certificate`
@@ -10325,7 +10501,7 @@ ALTER TABLE `vet_sites`
 -- AUTO_INCREMENT for table `animals`
 --
 ALTER TABLE `animals`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT for table `animal_status`
@@ -10373,7 +10549,7 @@ ALTER TABLE `emp_posts`
 -- AUTO_INCREMENT for table `food`
 --
 ALTER TABLE `food`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `food_category`
@@ -10421,7 +10597,7 @@ ALTER TABLE `food_samples`
 -- AUTO_INCREMENT for table `food_sampling_certificate`
 --
 ALTER TABLE `food_sampling_certificate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `organizations`
@@ -10565,7 +10741,7 @@ ALTER TABLE `route_status`
 -- AUTO_INCREMENT for table `samples`
 --
 ALTER TABLE `samples`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `sample_conditions`
@@ -10583,7 +10759,7 @@ ALTER TABLE `sample_recomendation`
 -- AUTO_INCREMENT for table `sample_registration`
 --
 ALTER TABLE `sample_registration`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `sample_status`
@@ -10595,7 +10771,7 @@ ALTER TABLE `sample_status`
 -- AUTO_INCREMENT for table `sertificates`
 --
 ALTER TABLE `sertificates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT for table `sert_normatives`
@@ -10613,7 +10789,7 @@ ALTER TABLE `sert_status`
 -- AUTO_INCREMENT for table `source_message`
 --
 ALTER TABLE `source_message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1119;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1188;
 
 --
 -- AUTO_INCREMENT for table `state_list`
@@ -10776,6 +10952,9 @@ ALTER TABLE `food_route`
 --
 ALTER TABLE `food_samples`
   ADD CONSTRAINT `FK_food_samples__country` FOREIGN KEY (`_country`) REFERENCES `countres` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_food_samples_category_id` FOREIGN KEY (`category_id`) REFERENCES `food_category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_food_samples_food_id` FOREIGN KEY (`food_id`) REFERENCES `food` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_food_samples_group_id` FOREIGN KEY (`group_id`) REFERENCES `food_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_food_samples_laboratory_test_type_id` FOREIGN KEY (`laboratory_test_type_id`) REFERENCES `laboratory_test_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_food_samples_sample_box_id` FOREIGN KEY (`sample_box_id`) REFERENCES `sample_boxes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_food_samples_sample_condition_id` FOREIGN KEY (`sample_condition_id`) REFERENCES `sample_conditions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,

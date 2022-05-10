@@ -8,7 +8,7 @@ use yii\helpers\Html;
 $this->title = Yii::t('cp', 'O`zgartirish: {name}', [
     'name' => $model->id,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('cp', 'Oziq-ovqat guruhlari'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('cp', 'Oziq-ovqat Parametr guruhlari'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('cp', 'O\'zgartirish');
 ?>

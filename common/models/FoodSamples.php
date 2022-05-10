@@ -12,7 +12,6 @@ use yii\db\ActiveQuery;
  * @property string|null $samp_code Namunaning raqami toliq
  * @property int|null $samp_id namunaning raqami faqat son
  * @property int|null $sert_id namunaning food_sample_sertification idsi
- * @property string|null $tasnif_code tasnif.soliq.uz dan olinadi
  * @property int|null $unit_id birligi
  * @property int|null $count soni
  * @property int $_country Davlat nomi
@@ -28,6 +27,9 @@ use yii\db\ActiveQuery;
  * @property int|null $laboratory_test_type_id
  * @property int|null $status_id
  * @property int|null $emp_id
+ * @property int|null $food_id
+ * @property int|null $category_id
+ * @property int|null $group_id
  * @property string|null $created
  * @property string|null $updated
  *
@@ -54,7 +56,7 @@ class FoodSamples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['unit_id','count','sample_box_id','sample_condition_id', 'verification_sample', 'laboratory_test_type_id','manufacture_date', 'sell_by','tasnif_code', 'total_amount', 'producer', 'serial_num',],'required','on'=>'insert'],
+            [['unit_id','food_id','category_id','group_id','count','sample_box_id','sample_condition_id', 'verification_sample', 'laboratory_test_type_id','manufacture_date', 'sell_by', 'total_amount', 'producer', 'serial_num',],'required','on'=>'insert'],
             [['samp_id', 'sert_id', 'unit_id','emp_id', 'count', 'is_group','_country', 'sample_box_id', 'sample_condition_id', 'verification_sample', 'laboratory_test_type_id', 'status_id', 'state_id'], 'integer'],
             [['_country'], 'required'],
             [['manufacture_date', 'sell_by', 'created', 'updated'], 'safe'],
@@ -74,10 +76,12 @@ class FoodSamples extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('food', 'ID'),
+            'food_id' => Yii::t('food', 'Mahsulot guruhi'),
+            'category_id' => Yii::t('food', 'Mahsulot kategoriyasi'),
+            'group_id' => Yii::t('food', 'Parametr guruhi'),
             'samp_code' => Yii::t('food', 'Raqami'),
             'samp_id' => Yii::t('food', 'raqami'),
             'sert_id' => Yii::t('food', 'Dalolatnoma'),
-            'tasnif_code' => Yii::t('food', 'Namuna nomi'),
             'unit_id' => Yii::t('food', 'Birlik'),
             'count' => Yii::t('food', 'Soni'),
             'sample_box_id' => Yii::t('food', 'Namuna o\'rami'),

@@ -35,8 +35,11 @@ $this->params['breadcrumbs'][] = $this->title;
     }
     ?>
 
-    <?= $form->field($model, 'tasnif_code')->dropDownList(ArrayHelper::map(FoodType::find()->all(), 'id', 'name'), ['maxlength' => true, 'class' => 'form-control select2list'
-        , 'prompt' => Yii::t('client', 'Mahsulotni tanlang')]) ?>
+    <?= $form->field($model,'group_id')->dropDownList(ArrayHelper::map(\common\models\FoodGroup::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Parametr guruhini tanlang')])?>
+
+    <?= $form->field($model,'category_id')->dropDownList(ArrayHelper::map(\common\models\FoodGroup::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Mahsulot kategoriyasini tanlang')])?>
+
+    <?= $form->field($model,'food_id')->dropDownList([],['prompt'=>Yii::t('client','Mahsulot guruhini tanlang')])?>
 
     <?= $form->field($model, 'unit_id')->dropDownList(ArrayHelper::map(Units::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('client', 'Mahsulot birligini tanlang')]) ?>
 
@@ -77,3 +80,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+    $url = Yii::$app->urlManager->createUrl(['/site/getfood']);
+    $this->registerJs("
+        $('#foodsamples-category_id').change(function(){
+            $.get('{$url}?id='+$('#foodsamples-category_id').val()).done(function(data){
+                $('#foodsamples-food_id').empty();
+                $('#foodsamples-food_id').append(data);
+            })
+        })
+    ")
+
+?>

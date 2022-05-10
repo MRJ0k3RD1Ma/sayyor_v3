@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\FoodGroup */
 
 $this->title = Yii::t('cp', 'Guruh qo\'shish');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('cp', 'Oziq-ovqat guruhlari'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('cp', 'Parametr guruhlari'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="food-group-create">

@@ -119,7 +119,9 @@ $this->title = Yii::t('client','Oziq-ovqat ekspertizasi uchun ariza');
 
         <?= $form->field($model, 'based_public_information')->dropDownList([0=>'Yo\'q',1=>'Ha']) ?>
 
-        <?= $form->field($model, 'message_number')->textInput() ?>
+        <div class="mes" style="display: none">
+            <?= $form->field($model, 'message_number')->textInput() ?>
+        </div>
         <h3>Namuna olgan shaxs</h3>
         <?= $form->field($model, 'sampler_name')->textInput() ?>
 
@@ -149,6 +151,15 @@ $this->registerJs("
                 $('#foodsamplingcertificate-sampling_site').empty();
                 $('#foodsamplingcertificate-sampling_site').append(data);
             })        
+        })
+        
+        
+        $('#foodsamplingcertificate-based_public_information').change(function(){
+            if($('#foodsamplingcertificate-based_public_information').val()==1){
+                $('.mes').css('display','block');
+            }else{
+                $('.mes').css('display','none');
+            }
         })
         
     ")

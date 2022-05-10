@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\FoodGroupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('cp', 'Oziq-ovqat guruhlari');
+$this->title = Yii::t('cp', 'Oziq-ovqat Parametr guruhlari');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="food-group-index">

@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="food-index">
 
     <p>
-        <?= Html::a('Oziq-ovqat qo\'shish', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Oziq-ovqat guruhi qo\'shish', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

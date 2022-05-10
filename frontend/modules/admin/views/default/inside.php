@@ -372,7 +372,7 @@
                             <div class="row align-items-center">
                                 <div class="col-10">
 
-                                    <h5 class="text-muted mb-3 lh-1 d-block text-truncate"><?= Yii::t('cp', 'Oziq-ovqatlar guruhlari') ?></h5>
+                                    <h5 class="text-muted mb-3 lh-1 d-block text-truncate"><?= Yii::t('cp', 'Oziq-ovqatlar parametr guruhlari') ?></h5>
                                 </div>
                                 <div class="col-2">
                                     <i class="fa fa-list"></i>
@@ -390,7 +390,7 @@
                             <div class="row align-items-center">
                                 <div class="col-10">
 
-                                    <h5 class="text-muted mb-3 lh-1 d-block text-truncate"><?= Yii::t('cp', 'Oziq-ovqatlar') ?></h5>
+                                    <h5 class="text-muted mb-3 lh-1 d-block text-truncate"><?= Yii::t('cp', 'Oziq-ovqatlar guruhlari') ?></h5>
                                 </div>
                                 <div class="col-2">
                                     <i class="fa fa-list"></i>

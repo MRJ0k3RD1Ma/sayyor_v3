@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model,'group_id')->dropDownList(ArrayHelper::map(\common\models\FoodGroup::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Parametr guruhini tanlang')])?>
 
-    <?= $form->field($model,'category_id')->dropDownList(ArrayHelper::map(\common\models\FoodGroup::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Mahsulot kategoriyasini tanlang')])?>
+    <?= $form->field($model,'category_id')->dropDownList(ArrayHelper::map(\common\models\FoodCategory::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Mahsulot kategoriyasini tanlang')])?>
 
     <?= $form->field($model,'food_id')->dropDownList([],['prompt'=>Yii::t('client','Mahsulot guruhini tanlang')])?>
 

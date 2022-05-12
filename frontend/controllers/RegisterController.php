@@ -627,8 +627,10 @@ class RegisterController extends Controller
 
 
                 $template = TemplateFood::find()
-                    ->where(['laboratory_test_type_id' => $cs->sample->laboratory_test_type_id])
-                    ->andWhere(['tasnif_code' => $cs->sample->tasnif_code])->all();
+                    ->where(['category_id' => $cs->sample->category_id])
+                    ->andWhere(['group_id' => $cs->sample->group_id])
+                    ->andWhere('food_id in (select id from food where id='.$cs->sample->food_id.' or (for_all=1 and category_id='.$cs->sample->category_id.'))')
+                    ->all();
                 $result = new ResultFood();
 
                 $num = ResultFood::find()->where(['org_id' => Yii::$app->user->identity->empPosts->org_id])->max('code_id');
@@ -647,7 +649,7 @@ class RegisterController extends Controller
                     $test->template_id = $item->id;
                     $test->result = '';
                     $test->result_2 = '';
-                    $test->type_id = $item->type_id;
+                    $test->type_id = $item->unit->type_id;
                     $test->save();
                     $test = null;
                 }

@@ -42,7 +42,7 @@ class ResultFood extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code_id', 'sample_id', 'require_id', 'creator_id', 'consept_id', 'state_id', 'org_id'], 'integer'],
+            [['code_id', 'sample_id', 'require_id', 'creator_id', 'consept_id', 'state_id', 'org_id','organoleptik','mikroskopik','mikrobiologik','kimyoviy','radiologik'], 'integer'],
             [['created', 'updated'], 'safe'],
             [['code', 'ads'], 'string', 'max' => 255],
             [['org_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['org_id' => 'id']],
@@ -70,6 +70,11 @@ class ResultFood extends \yii\db\ActiveRecord
             'updated' => Yii::t('model', 'O\'zgartirilgan'),
             'state_id' => Yii::t('model', 'Holat'),
             'org_id' => Yii::t('model', 'Tashkilot'),
+            'radiologik' => Yii::t('model', 'Tashkilot'),
+            'kimyoviy' => Yii::t('model', 'Tashkilot'),
+            'mikrobiologik' => Yii::t('model', 'Tashkilot'),
+            'mikroskopik' => Yii::t('model', 'Tashkilot'),
+            'organoleptik' => Yii::t('model', 'Tashkilot'),
         ];
     }
 

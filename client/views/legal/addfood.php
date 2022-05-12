@@ -1,7 +1,14 @@
 <?php
 
+use common\models\Countres;
+use common\models\FoodType;
+use common\models\LaboratoryTestType;
+use common\models\SampleBoxes;
+use common\models\SampleConditions;
+use common\models\Units;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\FoodSamples */
@@ -11,62 +18,78 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunalar ro\'yhati
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="food-samples-form">
+    <div class="food-samples-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(); ?>
 
-    <?php
+        <?php
         $lang = Yii::$app->language;
         $lg = 'uz';
-        if($lang=='ru'){
+        if ($lang == 'ru') {
             $ads = 'ru';
             $lg = 'ru';
-        }elseif($lang == 'uz'){
+        } elseif ($lang == 'uz') {
             $ads = 'lot';
-        }else{
+        } else {
             $ads = 'cyr';
         }
-    ?>
+        ?>
 
-    <?= $form->field($model, 'tasnif_code')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\FoodType::find()->all(),'id','name'),['maxlength' => true,'class'=>'form-control select2list'
-    ,'prompt'=>Yii::t('client','Mahsulotni tanlang')]) ?>
+        <?= $form->field($model,'group_id')->dropDownList(ArrayHelper::map(\common\models\FoodGroup::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Parametr guruhini tanlang')])?>
 
-    <?= $form->field($model, 'unit_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Units::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Mahsulot birligini tanlang')]) ?>
+        <?= $form->field($model,'category_id')->dropDownList(ArrayHelper::map(\common\models\FoodCategory::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Mahsulot kategoriyasini tanlang')])?>
 
-    <?= $form->field($model, 'count')->textInput() ?>
+        <?= $form->field($model,'food_id')->dropDownList([],['prompt'=>Yii::t('client','Mahsulot guruhini tanlang')])?>
 
-    <?= $form->field($model, 'sample_box_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SampleBoxes::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Namuna o\'ramini tanlang')]) ?>
-    <?= $form->field($model, '_country')->dropDownList(
-        \yii\helpers\ArrayHelper::map(\common\models\Countres::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('client', 'Davlatni tanlang'),'class'=>'form-control select2list']) ?>
+        <?= $form->field($model, 'unit_id')->dropDownList(ArrayHelper::map(Units::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('client', 'Mahsulot birligini tanlang')]) ?>
 
-    <?= $form->field($model, 'sample_condition_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SampleConditions::find()->all(),'id','name_'.$lg),[
-            'prompt'=>Yii::t('client','Namuna holatini tanlang')
-    ]) ?>
+        <?= $form->field($model, 'count')->textInput() ?>
 
-    <?= $form->field($model, 'total_amount')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'sample_box_id')->dropDownList(ArrayHelper::map(SampleBoxes::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('client', 'Namuna o\'ramini tanlang')]) ?>
+        <?= $form->field($model, '_country')->dropDownList(
+            ArrayHelper::map(Countres::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('client', 'Davlatni tanlang'),'class'=>'form-control select2list']) ?>
 
-    <?= $form->field($model, 'verification_sample')->radioList([
-            0=>Yii::t('client','Tanlanmagan'),
-            1=>Yii::t('client','Tanlangan'),
-    ]) ?>
+        <?= $form->field($model, 'sample_condition_id')->dropDownList(ArrayHelper::map(SampleConditions::find()->all(), 'id', 'name_' . $lg), [
+            'prompt' => Yii::t('client', 'Namuna holatini tanlang')
+        ]) ?>
 
-    <?= $form->field($model, 'producer')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'total_amount')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'serial_num')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'verification_sample')->radioList([
+            0 => Yii::t('client', 'Tanlanmagan'),
+            1 => Yii::t('client', 'Tanlangan'),
+        ]) ?>
 
-    <?= $form->field($model, 'manufacture_date')->textInput(['type'=>'date']) ?>
+        <?= $form->field($model, 'producer')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'sell_by')->textInput(['type'=>'date']) ?>
+        <?= $form->field($model, 'serial_num')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'coments')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'manufacture_date')->textInput(['type' => 'date']) ?>
 
-    <?= $form->field($model, 'laboratory_test_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\LaboratoryTestType::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('client','Laboratoriya test turini tanlang')]) ?>
+        <?= $form->field($model, 'sell_by')->textInput(['type' => 'date']) ?>
+
+        <?= $form->field($model, 'coments')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'laboratory_test_type_id')->dropDownList(ArrayHelper::map(LaboratoryTestType::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('client', 'Laboratoriya test turini tanlang')]) ?>
 
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('food', 'Saqlash'), ['class' => 'btn btn-success']) ?>
+        <div class="form-group">
+            <?= Html::submitButton(Yii::t('food', 'Saqlash'), ['class' => 'btn btn-success']) ?>
+        </div>
+
+        <?php ActiveForm::end(); ?>
+
     </div>
 
-    <?php ActiveForm::end(); ?>
+<?php
+$url = Yii::$app->urlManager->createUrl(['/site/getfood']);
+$this->registerJs("
+        $('#foodsamples-category_id').change(function(){
+            $.get('{$url}?id='+$('#foodsamples-category_id').val()).done(function(data){
+                $('#foodsamples-food_id').empty();
+                $('#foodsamples-food_id').append(data);
+            })
+        })
+    ")
 
-</div>
+?>

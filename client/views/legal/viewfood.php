@@ -138,45 +138,60 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </div>
 
-    <div class="table-responsive">
-    <table class="table table-bordered  table-hover mt-3">
-        <thead>
-            <tr>
-                <th>№</th>
-                <th>Nomi</th>
-                <th>Soni</th>
-                <th>O'rami</th>
-                <th>Holati</th>
-                <th>To'plam</th>
-                <th>Ishlab chiqaruvchi</th>
-                <th>Serya raqami</th>
-                <th>Yaroqlilik muddati</th>
-                <th>Test turi</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
+        <div class="table-responsive">
+            <table class="table table-bordered  table-hover mt-3">
+                <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Parametr guruhi</th>
+                    <th>Nomi</th>
+                    <th>Soni</th>
+                    <th>O'rami</th>
+                    <th>Holati</th>
+                    <th>Davlat</th>
+                    <th>To'plam</th>
+                    <th>Ishlab chiqaruvchi</th>
+                    <th>Serya raqami</th>
+                    <th>Yaroqlilik muddati</th>
+                    <th>Test turi</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
                 $lang = Yii::$app->language;
                 $lg = 'uz';
-                if($lang == 'ru'){
+                if ($lang == 'ru') {
                     $lg = 'ru';
                 }
-            ?>
-            <?php foreach ($samp as $item):?>
-                <tr>
-                    <td><?= $item->status->icon.' '.$item->samp_code ?></td>
-                    <td><?= $item->tasnif->name?></td>
-                    <td><?= $item->count.' '.$item->unit->{'name_'.$lg}?></td>
-                    <td><?= $item->sampleBox->{'name_'.$lg}?></td>
-                    <td><?= $item->sampleCondition->{'name_'.$lg}?></td>
-                    <td><?= $item->total_amount?></td>
-                    <td><?= $item->producer?></td>
-                    <td><?= $item->serial_num?></td>
-                    <td><?= $item->sell_by ?></td>
-                    <td><?= $item->laboratoryTestType->{'name_'.$lg} ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+                ?>
+
+                <?php
+                /*@var FoodSamples $item*/
+                foreach ($samp as $item): ?>
+                    <tr><?php
+                        $cnt = 0;
+                        $destruction_id = @\common\models\DestructionSampleFood::findOne(['state_id' => 1, 'sample_id' => $item->id])->id;
+                        $RouteSert = @\common\models\FoodRoute::findOne(['sample_id' => $item->id, 'status_id' => 3]);
+                        ?>
+                        <td rowspan="
+                            <?= $cnt + 1 ?>">
+                            <?= ($RouteSert) ? Html::a($item->status->icon . ' ' . $item->samp_code, ['/legal/food-pdf', 'id' => $item->id], ['class' => 'btn btn-warning']) : $item->status->icon . ' ' . $item->samp_code ?>
+                            <?= ($destruction_id) ? Html::a("Yo'q qilish dalolatnomasi", ['/legal/pdfdestfood', 'id' => $destruction_id], ['class' => 'btn btn-danger']) : '' ?>
+                        </td>
+                        <td><?= @$item->group->{'name_'.$lg}?></td>
+                        <td><?= @$item->category->{'name_'.$lg}.' '.@$item->food->{'name_'.$lg} ?></td>
+                        <td><?= $item->count . ' ' . @$item->unit->{'name_' . $lg} ?></td>
+                        <td><?= @$item->sampleBox->{'name_' . $lg} ?></td>
+                        <td><?= @$item->sampleCondition->{'name_' . $lg} ?></td>
+                        <td><?= $item->country->code ?></td>
+                        <td><?= $item->total_amount ?></td>
+                        <td><?= $item->producer ?></td>
+                        <td><?= $item->serial_num ?></td>
+                        <td><?= $item->sell_by ?></td>
+                        <td><?= @$item->laboratoryTestType->{'name_' . $lg} ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
     </div>
 </div>

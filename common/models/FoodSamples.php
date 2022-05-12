@@ -60,7 +60,7 @@ class FoodSamples extends \yii\db\ActiveRecord
             [['samp_id', 'sert_id', 'unit_id','emp_id', 'count', 'is_group','_country', 'sample_box_id', 'sample_condition_id', 'verification_sample', 'laboratory_test_type_id', 'status_id', 'state_id'], 'integer'],
             [['_country'], 'required'],
             [['manufacture_date', 'sell_by', 'created', 'updated'], 'safe'],
-            [['samp_code', 'tasnif_code', 'total_amount', 'producer', 'serial_num', 'coments'], 'string', 'max' => 255],
+            [['samp_code', 'total_amount', 'producer', 'serial_num', 'coments'], 'string', 'max' => 255],
             [['laboratory_test_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => LaboratoryTestType::className(), 'targetAttribute' => ['laboratory_test_type_id' => 'id']],
             [['sample_box_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleBoxes::className(), 'targetAttribute' => ['sample_box_id' => 'id']],
             [['sample_condition_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleConditions::className(), 'targetAttribute' => ['sample_condition_id' => 'id']],
@@ -103,11 +103,6 @@ class FoodSamples extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getTasnif()
-    {
-        return $this->hasOne(FoodType::className(), ['id' => 'tasnif_code']);
-    }
-
     /**
      * Gets query for [[LaboratoryTestType]].
      *
@@ -118,6 +113,15 @@ class FoodSamples extends \yii\db\ActiveRecord
         return $this->hasOne(LaboratoryTestType::className(), ['id' => 'laboratory_test_type_id']);
     }
 
+    public function getCategory(){
+        return $this->hasOne(FoodCategory::className(),['id'=>'category_id']);
+    }
+    public function getFood(){
+        return $this->hasOne(Food::className(),['id'=>'food_id']);
+    }
+    public function getGroup(){
+        return $this->hasOne(FoodGroup::className(),['id'=>'group_id']);
+    }
     /**
      * Gets query for [[SampleBox]].
      *

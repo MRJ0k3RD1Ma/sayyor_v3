@@ -371,6 +371,11 @@ class LabController extends Controller
     {
         $model = FoodRoute::findOne($id);
         $model->status_id = 4;
+        $sample = ResultFood::findOne(['sample_id'=>$model->sample_id]);
+        if($sample->radiologik==0 and $sample->kimyoviy==0 and $sample->mikrobiologik==0 and $sample->mikroskopik==0 and $sample->organoleptik==0){
+            Yii::$app->session->setFlash('error', Yii::t('lab', 'Vet4 uchun natijalar kiritilmagan'));
+            return $this->redirect(['viewfood', 'id' => $id]);
+        }
         $model->save();
         Yii::$app->session->setFlash('success', Yii::t('lab', 'Natijalar muvoffaqiyatli yuborildi'));
         return $this->redirect(['viewfood', 'id' => $id]);

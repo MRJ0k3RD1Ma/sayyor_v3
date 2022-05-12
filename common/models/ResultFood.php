@@ -70,11 +70,11 @@ class ResultFood extends \yii\db\ActiveRecord
             'updated' => Yii::t('model', 'O\'zgartirilgan'),
             'state_id' => Yii::t('model', 'Holat'),
             'org_id' => Yii::t('model', 'Tashkilot'),
-            'radiologik' => Yii::t('model', 'Tashkilot'),
-            'kimyoviy' => Yii::t('model', 'Tashkilot'),
-            'mikrobiologik' => Yii::t('model', 'Tashkilot'),
-            'mikroskopik' => Yii::t('model', 'Tashkilot'),
-            'organoleptik' => Yii::t('model', 'Tashkilot'),
+            'radiologik' => Yii::t('model', 'radiologik'),
+            'kimyoviy' => Yii::t('model', 'kimyoviy'),
+            'mikrobiologik' => Yii::t('model', 'mikrobiologik'),
+            'mikroskopik' => Yii::t('model', 'mikroskopik'),
+            'organoleptik' => Yii::t('model', 'organoleptik'),
         ];
     }
 

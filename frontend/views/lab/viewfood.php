@@ -222,6 +222,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
             </div>
 
+            <h4>O`tkazilgan tekshiruv 4VET uchun</h4>
+            <div class="row">
+                <div class="col-md-2">
+                    <?= $form->field($result,'organoleptik')->checkbox(['value'=>1])?>
+                </div>
+                <div class="col-md-2">
+                    <?= $form->field($result,'mikroskopik')->checkbox(['value'=>1])?>
+
+                </div>
+                <div class="col-md-2">
+                    <?= $form->field($result,'mikrobiologik')->checkbox(['value'=>1])?>
+
+                </div>
+                <div class="col-md-2">
+                    <?= $form->field($result,'kimyoviy')->checkbox(['value'=>1])?>
+
+                </div>
+                <div class="col-md-2">
+                    <?= $form->field($result,'radiologik')->checkbox(['value'=>1])?>
+
+                </div>
+                <div class="col-md-2"></div>
+            </div>
             <button type="submit" class="btn btn-success"><?= Yii::t('lab','Saqlash')?></button>
 
             <?php ActiveForm::end()?>

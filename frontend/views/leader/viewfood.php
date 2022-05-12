@@ -214,16 +214,16 @@ YiiAsset::register($this);
                                 <?php ?>
                                 <td><?= $n ?></td>
                                 <td><?= $item->template->{'name_' . $lg} ?></td>
-                                <td><?= $item->template->{'unit_' . $lg} ?></td>
+                                <td><?= $item->template->unit->{'name_' . $lg} ?></td>
                                 <?php if ($item->type_id == 1) { ?>
-                                    <td><?= $item->template->min . '-' . $item->template->max ?></td>
+                                    <td><?= $item->template->min_1 . '-' . $item->template->max_1 ?></td>
                                 <?php } elseif ($item->type_id == 2) { ?>
-                                    <td><?= Yii::$app->params['result'][$item->template->min] ?></td>
+                                    <td><?= Yii::$app->params['result'][$item->template->min_1] ?></td>
                                 <?php } elseif ($item->type_id == 3) { ?>
-                                    <td><?= $item->template->min . '-' . $item->template->max . ' %' ?></td>
+                                    <td><?= $item->template->min_1 . '-' . $item->template->max_1  ?></td>
                                 <?php } elseif ($item->type_id == 4) { ?>
-                                    <td><?= $item->template->min . '-' . $item->template->max ?>
-                                        <br> <?= $item->template->min_1 . '-' . $item->template->max_1 ?></td>
+                                    <td><?= $item->template->min_1 . '-' . $item->template->max_1 ?>
+                                        <br> <?= $item->template->min_2 . '-' . $item->template->max_2 ?></td>
                                 <?php } ?>
                                 <td><?= $item->result ?></td>
 

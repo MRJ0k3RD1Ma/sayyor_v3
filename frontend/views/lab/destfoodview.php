@@ -44,18 +44,18 @@ YiiAsset::register($this);
                         'format' => 'raw'
                     ],
                     [
-                        'label' => Yii::t('lab', 'Namuna ma\'lumotlari'),
-                        'value' => function ($d) {
+                        'label'=>Yii::t('lab','Namuna ma\'lumotlari'),
+                        'value'=>function($d){
                             $samp = $d->sample;
                             $res = "";
-                            $lg = 'uz';
-                            if (Yii::$app->language == 'ru') $lg = 'ru';
-                            $res .= Yii::t('model', 'Namuna nomi') . ': ' . $samp->tasnif->{'name'} . '<br>';
-                            $res .= Yii::t('model', 'Soni') . ': ' . $samp->count;
+                            $lg = 'uz'; if(Yii::$app->language=='ru')$lg='ru';
+                            $res .= Yii::t('model','Parametr guruhi').': '.$samp->group->{'name_'.$lg}.'<br>';
+                            $res .= Yii::t('model','Mahsulot guruhi').': '.$samp->category->{'name_'.$lg}.'-'.$samp->food->{'name_'.$lg}.'<br>';
+                            $res .= Yii::t('model','Soni').': '.$samp->count;
 
                             return $res;
                         },
-                        'format' => 'raw'
+                        'format'=>'raw'
                     ],
                     'ads',
                     [

@@ -98,7 +98,9 @@ $lg = 'uz';
 </div>
 <br>
 <div>
-    <b>Tekshiruv obyekti: Namuna nomi:</b> <?= $samples->tasnif_code.'-'.$samples->tasnif->name?>; <b>Qo'shimcha ma'lumotlar:</b>
+    <b>Tekshiruv obyekti: Parametr nomi:</b> <?= $samples->group->{'name_'.$lg}?>;
+    <b>Mahsulot guruhi:</b><?= $samples->category->{'name_'.$lg}.'-'.$samples->food->{'name_'.$lg}?>
+    <b>Qo'shimcha ma'lumotlar:</b>
     <b>Ishlab chiqarilgan davlat:</b> <?= @$samples->country->name_uz ?>
     <b>Ishlab chiqaruvchi:</b> <?= $samples->producer?>
     <b>Seriya raqami:</b> <?= $samples->serial_num?>
@@ -133,9 +135,6 @@ $lg = 'uz';
         <th colspan="3">
             Parametr qiymatlari
         </th>
-        <th rowspan="2">
-            Talabga mosligi
-        </th>
     </tr>
     <tr>
         <th>Birlik</th>
@@ -156,64 +155,29 @@ $lg = 'uz';
     <?php foreach ($resultanimal->tests as $item): ?>
         <tr>
             <td><?= $item->template->name_uz?></td>
-            <td><?= $item->template->unit_uz ?></td>
-            <?php if ($item->template->type_id == 1) { ?>
-                <td><?= $item->template->min . '-' . $item->template->max ?></td>
-            <?php } elseif ($item->template->type_id == 2) { ?>
-                <td><?= Yii::$app->params['result'][$item->template->min] ?></td>
-            <?php } elseif ($item->template->type_id == 3) { ?>
-                <td><?= $item->template->min . '-' . $item->template->max . ' %' ?></td>
-            <?php } elseif ($item->template->type_id == 4) { ?>
-                <td><?= $item->template->min . '-' . $item->template->max ?>
-                    <br> <?= $item->template->min_1 . '-' . $item->template->max_1 ?></td>
+            <td><?= $item->template->unit->name_uz ?></td>
+            <?php $type = $item->template->unit->type_id; if ($type == 1) { ?>
+                <td><?= $item->template->min_1 . '-' . $item->template->max_1 ?></td>
+            <?php } elseif ($type == 2) { ?>
+                <td><?= Yii::$app->params['result'][$item->template->min_1] ?></td>
+            <?php } elseif ($type == 3) { ?>
+                <td><?= $item->template->min_1 . '-' . $item->template->max_1 . ' %' ?></td>
+            <?php } elseif ($type == 4) { ?>
+                <td><?= $item->template->min_1 . '-' . $item->template->max_1 ?>
+                    <br> <?= $item->template->min_2 . '-' . $item->template->max_2 ?></td>
             <?php } ?>
 
 
-            <?php if ($item->template->type_id == 1) { ?>
+            <?php if ($type == 1) { ?>
                 <td><?= $item->result ?></td>
-            <?php } elseif ($item->template->type_id == 2) { ?>
+            <?php } elseif ($type== 2) { ?>
                 <td><?= Yii::$app->params['result'][$item->result] ?></td>
-            <?php } elseif ($item->template->unit->type_id == 3) { ?>
-                <td><?= $item->template->min . '-' . $item->template->max ?></td>
-            <?php } elseif ($item->template->type_id == 4) { ?>
+            <?php } elseif ($type == 3) { ?>
+                <td><?= $item->result ?></td>
+            <?php } elseif ($type == 4) { ?>
                 <td><?= $item->result.'-'.$item->result_2?></td>
             <?php } ?>
 
-
-            <?php if ($item->template->type_id == 1) { ?>
-                <td><?php if(((!$item->template->min) or intval($item->template->min) <= intval($item->result)) and (intval($item->result)<= intval($item->template->max) or (!$item->template->max))){echo 'Ha';}else{echo 'Yo\'q';} ?></td>
-            <?php } elseif ($item->template->type_id == 2) { ?>
-                <td>
-                    <?php if($item->result==$item->template->min){?><?= Yii::$app->params['result'][1] ?><?php }else{?><?= Yii::$app->params['result'][0]?><?php }?>
-                </td>
-            <?php } elseif ($item->template->type_id == 3) { ?>
-                <td><?php if(((!$item->template->min) or intval($item->template->min) <= intval($item->result)) and (intval($item->result)<= intval($item->template->max) or (!$item->template->max))){echo 'Ha';}else{echo 'Yo\'q';} ?></td>
-            <?php } elseif ($item->template->type_id == 4) { ?>
-                <td><?php
-                    $one = true;
-                    if (((!$item->template->min) or intval($item->template->min) <= intval($item->result))
-                        and
-                        (intval($item->result) <= intval($item->template->max) or (!$item->template->max))
-                    ) {
-                        $one = true;
-                    } else {
-                        $one = false;
-                    }
-                    $two = true;
-                    if (((!$item->template->min_1) or intval($item->template->min_1) <= intval($item->result_2))
-                        and
-                        (intval($item->result_2) <= intval($item->template->max_1) or (!$item->template->max_1))
-                    ) {
-                        $two = true;
-                    } else {
-                        $two = false;
-                    }
-
-                    if($one and $two){echo "Ha";}else{echo "Yo'q";}
-
-
-                    ?></td>
-            <?php } ?>
 
         </tr>
     <?php endforeach;?>

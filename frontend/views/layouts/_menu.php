@@ -275,7 +275,8 @@ use common\models\RouteStatus;
                                 <span data-key="t-tables"><?= Yii::t('app','Hisobotlar')?></span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/reportvet4'])?>" data-key="t-basic-tables">Vet4</a></li>
+                                <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/reportvet4'])?>" data-key="t-basic-tables">4VET hayvon kasalliklari</a></li>
+                                <li><a href="<?= Yii::$app->urlManager->createUrl(['/director/reportvet4food'])?>" data-key="t-basic-tables">4VET oziq-ovqat</a></li>
                             </ul>
                         </li>
                     <?php endif;?>

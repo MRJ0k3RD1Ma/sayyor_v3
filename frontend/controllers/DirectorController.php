@@ -1080,8 +1080,14 @@ class DirectorController extends Controller
             $writer->save($fileName);
             return Yii::$app->response->sendFile($fileName);
         }
-        return $this->render('vet4',['model'=>$model]);
+        return $this->render('vet4',['model'=>$model,'type'=>'animal']);
     }
 
 
+    public function actionReportvet4food(){
+
+        $model = new Vet4();
+
+        return $this->render('vet4',['model'=>$model,'type'=>'food']);
+    }
 }

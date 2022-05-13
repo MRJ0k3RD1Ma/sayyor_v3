@@ -130,6 +130,9 @@ $lg = 'uz';
     <thead>
     <tr>
         <th rowspan="2" style="text-align: center;vertical-align: middle;">
+            Parametr guruhi
+        </th>
+        <th rowspan="2" style="text-align: center;vertical-align: middle;">
             Parametr (talab) nomi
         </th>
         <th colspan="3">
@@ -154,6 +157,7 @@ $lg = 'uz';
     </tr>
     <?php foreach ($resultanimal->tests as $item): ?>
         <tr>
+            <td><?= $item->template->group->name_uz?></td>
             <td><?= $item->template->name_uz?></td>
             <td><?= $item->template->unit->name_uz ?></td>
             <?php $type = $item->template->unit->type_id; if ($type == 1) { ?>
@@ -171,7 +175,7 @@ $lg = 'uz';
             <?php if ($type == 1) { ?>
                 <td><?= $item->result ?></td>
             <?php } elseif ($type== 2) { ?>
-                <td><?= Yii::$app->params['result'][$item->result] ?></td>
+                <td><?= $item->result ?></td>
             <?php } elseif ($type == 3) { ?>
                 <td><?= $item->result ?></td>
             <?php } elseif ($type == 4) { ?>

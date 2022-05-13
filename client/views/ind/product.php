@@ -122,7 +122,7 @@ $this->title = Yii::t('client','Oziq-ovqat ekspertizasi uchun ariza');
         <div class="mes" style="display: none">
             <?= $form->field($model, 'message_number')->textInput() ?>
         </div>
-        <h3>Namuna olgan shaxs</h3>
+        <h3>Namuna olgan shaxs: <?= Yii::$app->session->get('doc_name')?></h3>
         <?= $form->field($model, 'sampler_name')->textInput() ?>
 
         <?= $form->field($model, 'sampler_position')->textInput() ?>

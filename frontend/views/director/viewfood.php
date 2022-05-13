@@ -178,9 +178,21 @@ YiiAsset::register($this);
                     'model' => $result,
                     'attributes' => [
                         'code',
-                        'ads',
+                        [
+                            'attribute'=>'ads',
+                            'value'=>function($d){
+                                $lg = 'uz'; if(Yii::$app->language == 'ru'){$lg = 'ru';}
+                                if($d->ads==0){
+                                    return 'Tasdiqlanmadi';
+                                }else{
+                                    return 'Tasdiqlandi';
+                                }
+                            }
+                        ],
+//                        'ads',
 //                        'require_id',
 //                        'creator_id',
+
                         [
                             'attribute'=>'require_id',
                             'value'=>function($d){

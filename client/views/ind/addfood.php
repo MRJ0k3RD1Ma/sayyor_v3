@@ -46,8 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($model, 'count')->textInput() ?>
 
     <?= $form->field($model, 'sample_box_id')->dropDownList(ArrayHelper::map(SampleBoxes::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('client', 'Namuna o\'ramini tanlang')]) ?>
-    <?= $form->field($model, '_country')->dropDownList(
-        ArrayHelper::map(Countres::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('client', 'Davlatni tanlang'),'class'=>'form-control select2list']) ?>
 
     <?= $form->field($model, 'sample_condition_id')->dropDownList(ArrayHelper::map(SampleConditions::find()->all(), 'id', 'name_' . $lg), [
         'prompt' => Yii::t('client', 'Namuna holatini tanlang')
@@ -61,6 +59,9 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <?= $form->field($model, 'producer')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, '_country')->dropDownList(
+        ArrayHelper::map(Countres::find()->all(), 'id', 'name_' . $lg), ['prompt' => Yii::t('client', 'Davlatni tanlang'),'class'=>'form-control select2list']) ?>
 
     <?= $form->field($model, 'serial_num')->textInput(['maxlength' => true]) ?>
 

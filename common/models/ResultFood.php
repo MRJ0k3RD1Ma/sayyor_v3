@@ -105,7 +105,7 @@ class ResultFood extends \yii\db\ActiveRecord
      */
     public function getTests()
     {
-        return $this->hasMany(ResultFoodTests::className(), ['result_id' => 'id']);
+        return $this->hasMany(ResultFoodTests::className(), ['result_id' => 'id'])->andWhere(['checked'=>1]);
     }
 
     /**

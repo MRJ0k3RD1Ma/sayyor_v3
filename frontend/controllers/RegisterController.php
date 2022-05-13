@@ -628,7 +628,7 @@ class RegisterController extends Controller
 
                 $template = TemplateFood::find()
                     ->where(['category_id' => $cs->sample->category_id])
-                    ->andWhere(['group_id' => $cs->sample->group_id])
+//                    ->andWhere(['group_id' => $cs->sample->group_id])
                     ->andWhere('food_id in (select id from food where id='.$cs->sample->food_id.' or (for_all=1 and category_id='.$cs->sample->category_id.'))')
                     ->all();
                 $result = new ResultFood();

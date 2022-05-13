@@ -176,6 +176,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <tr>
                         <th></th>
                         <th>№</th>
+                        <th><?= Yii::t('lab','Parametr guruhi')?></th>
                         <th><?= Yii::t('lab','Parametr nomi')?></th>
                         <th><?= Yii::t('lab','Birlik')?></th>
                         <th><?= Yii::t('lab','Minimal-maksimal oraliq')?></th>
@@ -188,6 +189,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr id="tr-<?= $item->id?>" style="<?= $item->checked == 1 ? 'background: #fff;' : 'background: #e9e9ef;'?>">
                             <td><?= $form->field($item,'['.$item->id.']checked')->checkbox(['value'=>1,'data-id'=>$item->id,'class'=>'checkboxok'],false)->label(false)?></td>
                             <td><?= $n?></td>
+                            <td><?= $item->template->group->{'name_'.$lg}?></td>
                             <td><?= $item->template->{'name_'.$lg}?></td>
                             <td><?= $item->template->unit->{'name_'.$lg}?></td>
                             <?php if($item->type_id == 1){?>

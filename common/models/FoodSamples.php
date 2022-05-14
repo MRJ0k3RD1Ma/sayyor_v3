@@ -29,7 +29,6 @@ use yii\db\ActiveQuery;
  * @property int|null $emp_id
  * @property int|null $food_id
  * @property int|null $category_id
- * @property int|null $group_id
  * @property string|null $created
  * @property string|null $updated
  *
@@ -56,7 +55,7 @@ class FoodSamples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['unit_id','food_id','category_id','group_id','count','sample_box_id','sample_condition_id', 'verification_sample', 'laboratory_test_type_id','manufacture_date', 'sell_by', 'total_amount', 'producer', 'serial_num',],'required','on'=>'insert'],
+            [['unit_id','food_id','category_id','count','sample_box_id','sample_condition_id', 'verification_sample', 'laboratory_test_type_id','manufacture_date', 'sell_by', 'total_amount', 'producer', 'serial_num',],'required','on'=>'insert'],
             [['samp_id', 'sert_id', 'unit_id','emp_id', 'count', 'is_group','_country', 'sample_box_id', 'sample_condition_id', 'verification_sample', 'laboratory_test_type_id', 'status_id', 'state_id'], 'integer'],
             [['_country'], 'required'],
             [['manufacture_date', 'sell_by', 'created', 'updated'], 'safe'],
@@ -78,7 +77,6 @@ class FoodSamples extends \yii\db\ActiveRecord
             'id' => Yii::t('food', 'ID'),
             'food_id' => Yii::t('food', 'Mahsulot guruhi'),
             'category_id' => Yii::t('food', 'Mahsulot kategoriyasi'),
-            'group_id' => Yii::t('food', 'Parametr guruhi'),
             'samp_code' => Yii::t('food', 'Raqami'),
             'samp_id' => Yii::t('food', 'raqami'),
             'sert_id' => Yii::t('food', 'Dalolatnoma'),
@@ -119,9 +117,7 @@ class FoodSamples extends \yii\db\ActiveRecord
     public function getFood(){
         return $this->hasOne(Food::className(),['id'=>'food_id']);
     }
-    public function getGroup(){
-        return $this->hasOne(FoodGroup::className(),['id'=>'group_id']);
-    }
+
     /**
      * Gets query for [[SampleBox]].
      *

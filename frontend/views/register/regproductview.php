@@ -87,7 +87,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <thead>
                 <tr>
                     <th>№</th>
-                    <th>Parametr guruhi</th>
                     <th>Nomi</th>
                     <th>Soni</th>
                     <th>O'rami</th>
@@ -123,7 +122,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?= ($destruction_id) ? Html::a("Yo'q qilish dalolatnomasi", ['/ind/pdfdestfood', 'id' => $destruction_id], ['class' => 'btn btn-danger']) : '' ?>
                             <?php } ?>
                         </td>
-                        <td><?= $item->group->{'name_'.$lg} ?></td>
                         <td><?= $item->category->{'name_'.$lg}.' '.$item->food->{'name_'.$lg} ?></td>
                         <td><?= $item->count . ' ' . $item->unit->{'name_' . $lg} ?></td>
                         <td><?= $item->sampleBox->{'name_' . $lg} ?></td>

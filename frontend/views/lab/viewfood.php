@@ -71,13 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attributes' => [
 //            'id',
                         'samp_code',
-                        [
-                            'attribute'=>'group_id',
-                            'value'=>function($d){
-                                $lg = Yii::$app->language=='ru' ?'ru':'uz';
-                                return $d->group->{'name_'.$lg};
-                            }
-                        ],
+
                         [
                             'attribute'=>'category_id',
                             'value'=>function($d){

@@ -25,7 +25,6 @@ use Yii;
  * @property string|null $conditions
  * @property string|null $end_date
  * @property Organizations $org
- * @property Requirements $require
  * @property ResultFoodTests[] $resultFoodTests
  * @property FoodSamples $sample
  * @property StateList $state
@@ -46,7 +45,7 @@ class ResultFood extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code_id', 'sample_id', 'require_id', 'creator_id', 'consept_id', 'state_id', 'org_id','organoleptik','mikroskopik','mikrobiologik','kimyoviy','radiologik'], 'integer'],
+            [['code_id', 'sample_id',  'creator_id', 'consept_id', 'state_id', 'org_id','organoleptik','mikroskopik','mikrobiologik','kimyoviy','radiologik'], 'integer'],
             [['created', 'updated'], 'safe'],
             [['code', 'ads', 'reagent_name', 'reagent_series','conditions','temprature','humidity',], 'string', 'max' => 255],
             [['org_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['org_id' => 'id']],

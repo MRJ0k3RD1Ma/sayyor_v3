@@ -18,7 +18,11 @@ if($lang == 'uz'){
 }else{
     $ads = 'cyr';
 }
-$this->title = Yii::t('food', 'Hayvon kasalliklari tashxisi bo`yicha o`tkazilgan tekshiruvlar hisoboti');
+if($type == 'animal'){
+    $this->title = Yii::t('food', 'Hayvon kasalliklari tashxisi bo`yicha o`tkazilgan tekshiruvlar hisoboti');
+}else{
+    $this->title = Yii::t('food', 'Oziq-ovqat ekspertizasi bo`yicha o`tkazilgan tekshiruvlar hisoboti');
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="route-sert-index">

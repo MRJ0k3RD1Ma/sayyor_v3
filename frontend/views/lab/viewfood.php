@@ -155,14 +155,27 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <?php $form = ActiveForm::begin()?>
 
+
             <div class="row">
                 <div class="col-md-6">
+                    <?= $form->field($result, 'temprature')->textInput(['type' => 'number']) ?>
 
-                    <?= $form->field($result,'require_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Requirements::find()->all(),'id','name_'.$lg),['prompt'=>Yii::t('lab','Talabga muvoffiqligini tanlang')])?>
+                    <?= $form->field($result, 'humidity')->textInput(['type' => 'number']) ?>
+
+                    <?= $form->field($result, 'reagent_series')->textInput() ?>
+
+                    <?= $form->field($result, 'reagent_name')->textInput() ?>
 
                 </div>
+                <div class="col-md-6">
+                    <?= $form->field($result, 'conditions')->textInput() ?>
 
+                    <?= $form->field($result, 'end_date')->textInput(['type' => 'date']) ?>
+
+
+                </div>
             </div>
+
 
             <div class="table-responsive">
                 <table class="table table-bordered">
@@ -278,16 +291,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="row">
             <div class="col-md-6">
+                <?= $form->field($result, 'temprature')->textInput(['type' => 'number','disabled'=>true]) ?>
 
-                <?= $form->field($result,'require_id')->dropDownList(
-                        \yii\helpers\ArrayHelper::map(\common\models\Requirements::find()->all(),'id','name_'.$lg),
-                        ['prompt'=>Yii::t('lab','Talabga muvoffiqligini tanlang'),'disabled'=>true]
-                )?>
+                <?= $form->field($result, 'humidity')->textInput(['type' => 'number','disabled'=>true]) ?>
 
+                <?= $form->field($result, 'reagent_series')->textInput(['disabled'=>true]) ?>
+
+                <?= $form->field($result, 'reagent_name')->textInput(['disabled'=>true]) ?>
+
+            </div>
+            <div class="col-md-6">
+                <?= $form->field($result, 'conditions')->textInput(['disabled'=>true]) ?>
+
+                <?= $form->field($result, 'end_date')->textInput(['type' => 'date','disabled'=>true]) ?>
 
 
             </div>
-
         </div>
 
         <div class="table-responsive">

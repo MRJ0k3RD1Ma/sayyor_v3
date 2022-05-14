@@ -172,6 +172,12 @@ YiiAsset::register($this);
                     'model' => $result,
                     'attributes' => [
                         'code',
+                        'temprature',
+                        'humidity',
+                        'reagent_series',
+                        'reagent_name',
+                        'conditions',
+                        'end_date',
                         [
                             'attribute'=>'ads',
                             'value'=>function($d){
@@ -187,17 +193,7 @@ YiiAsset::register($this);
 //                        'require_id',
 //                        'creator_id',
 
-                        [
-                            'attribute'=>'require_id',
-                            'value'=>function($d){
-                                $lg = 'uz'; if(Yii::$app->language == 'ru'){$lg = 'ru';}
-                                if($d->require_id){
-                                    return $d->require->{'name_'.$lg};
-                                }else{
-                                    return null;
-                                }
-                            }
-                        ],
+
                         [
                             'attribute'=>'creator_id',
                             'value'=>function($d){

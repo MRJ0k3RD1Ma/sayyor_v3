@@ -1163,17 +1163,17 @@
         },
         {
             "name": "endroid/qr-code",
-            "version": "4.4.8",
-            "version_normalized": "4.4.8.0",
+            "version": "4.4.9",
+            "version_normalized": "4.4.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/qr-code.git",
-                "reference": "9109eb7790ece1d46b1ab40eb7f375bbd6e7cb5d"
+                "reference": "bf087fa1e93a1b7310e2d94d187e26ae51db199d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code/zipball/9109eb7790ece1d46b1ab40eb7f375bbd6e7cb5d",
-                "reference": "9109eb7790ece1d46b1ab40eb7f375bbd6e7cb5d",
+                "url": "https://api.github.com/repos/endroid/qr-code/zipball/bf087fa1e93a1b7310e2d94d187e26ae51db199d",
+                "reference": "bf087fa1e93a1b7310e2d94d187e26ae51db199d",
                 "shasum": ""
             },
             "require": {
@@ -1192,7 +1192,7 @@
                 "roave/security-advisories": "Makes sure package versions with known security issues are not installed",
                 "setasign/fpdf": "Enables you to use the PDF writer"
             },
-            "time": "2022-04-06T09:39:20+00:00",
+            "time": "2022-05-10T07:25:08+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1226,7 +1226,7 @@
             ],
             "support": {
                 "issues": "https://github.com/endroid/qr-code/issues",
-                "source": "https://github.com/endroid/qr-code/tree/4.4.8"
+                "source": "https://github.com/endroid/qr-code/tree/4.4.9"
             },
             "funding": [
                 {
@@ -1480,20 +1480,20 @@
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
-            "version": "v5.2.7",
-            "version_normalized": "5.2.7.0",
+            "version": "v5.2.8",
+            "version_normalized": "5.2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-                "reference": "02e2e6bccad31373bb2224fccdb8e9a3166124b9"
+                "reference": "89be70dbb9470dd8a56ef27508e344fcfccdb5af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/02e2e6bccad31373bb2224fccdb8e9a3166124b9",
-                "reference": "02e2e6bccad31373bb2224fccdb8e9a3166124b9",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/89be70dbb9470dd8a56ef27508e344fcfccdb5af",
+                "reference": "89be70dbb9470dd8a56ef27508e344fcfccdb5af",
                 "shasum": ""
             },
-            "time": "2021-12-17T16:05:03+00:00",
+            "time": "2022-05-10T14:17:20+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1534,7 +1534,7 @@
             ],
             "support": {
                 "issues": "https://github.com/kartik-v/bootstrap-fileinput/issues",
-                "source": "https://github.com/kartik-v/bootstrap-fileinput/tree/v5.2.7"
+                "source": "https://github.com/kartik-v/bootstrap-fileinput/tree/v5.2.8"
             },
             "funding": [
                 {

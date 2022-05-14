@@ -16,7 +16,6 @@ use common\models\FoodRegistration;
 use common\models\FoodRoute;
 use common\models\FoodSamples;
 use common\models\FoodSamplingCertificate;
-use common\models\Individuals;
 use common\models\Organizations;
 use common\models\Regulations;
 use common\models\ResultAnimal;
@@ -39,7 +38,6 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
 use setasign\Fpdi\PdfParser\PdfParserException;
 use setasign\Fpdi\PdfParser\Type\PdfTypeException;
-use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
 use yii\helpers\VarDumper;
@@ -1087,7 +1085,106 @@ class DirectorController extends Controller
     public function actionReportvet4food(){
 
         $model = new Vet4();
+        if($model->load(Yii::$app->request->post())){
+            $res = ResultFood::find()->all();
 
+
+            $speadsheet = new Spreadsheet();
+
+            $sheet = $speadsheet->getActiveSheet();
+            $speadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+            $speadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+            $speadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+            $speadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(12);
+
+            $title = date('Y-m-d h:i:s');
+            $row = 1;
+            $col = 1;
+            $sheet->mergeCells("A1:L1");
+            $sheet->setCellValue('A1','Hayvon kasalliklari tashxisi bo`yicha o`tkazilgan tekshiruvlar');
+            $sheet->mergeCells("A2:D2");
+            $sheet->mergeCells("C2:D2");
+            $sheet->mergeCells("E2:L2");
+            $sheet->setCellValue("E2",date('d.m.Y',strtotime($model->date_to)).' - '.date('d.m.Y',strtotime($model->date_do)));
+            $sheet->setCellValue('A2',Organizations::findOne(Yii::$app->user->identity->empPosts->org_id)->NAME_FULL);
+
+            $sheet->mergeCells("M1:O1");
+            $sheet->setCellValue('M1','4vet hisoboti');
+            $sheet->mergeCells("M2:O2");
+            $sheet->setCellValue('M2',date('Y-m-d h:i:s'));
+
+           $sheet->mergeCells("A3:A4");
+           $sheet->setCellValue('A3','№');
+
+            $sheet->mergeCells("B3:B4");
+            $sheet->setCellValue('B3','Mahsulot nomi');
+
+            $sheet->mergeCells("C3:C4");
+            $sheet->setCellValue('C3','Hayvon mahsuloti');
+
+            $sheet->mergeCells("D3:D4");
+            $sheet->setCellValue('D3','Namuna soni');
+
+            $sheet->mergeCells("E3:E4");
+            $sheet->setCellValue('E3','Namunadagi mahsulot miqdori');
+
+            $sheet->mergeCells("F3:F4");
+            $sheet->setCellValue('F3','Partiya miqdori');
+
+            $sheet->mergeCells("G3:K3");
+            $sheet->setCellValue('G3','Laboratoriya tekshiruvi');
+
+            $sheet->setCellValue('G4','Organoleptik');
+            $sheet->setCellValue('G4','Mikroskopik');
+            $sheet->setCellValue('G4','Mikrobiologik');
+            $sheet->setCellValue('G4','Kimyoviy');
+            $sheet->setCellValue('G4','Radiologik');
+
+            $sheet->mergeCells("L3:L4");
+            $sheet->setCellValue('L3','Musbat natijalar');
+
+            $sheet->mergeCells("M3:M4");
+            $sheet->setCellValue('M3','Tekshiruvlar soni');
+
+
+            $sheet->setCellValue('A4','');
+            $sheet->setCellValue('B4','A');
+            $sheet->setCellValue('C4','B');
+            $sheet->setCellValue('D4','1');
+            $sheet->setCellValue('E4','2');
+            $sheet->setCellValue('F4','3');
+            $sheet->setCellValue('G4','4');
+            $sheet->setCellValue('H4','5');
+            $sheet->setCellValue('I4','6');
+            $sheet->setCellValue('J4','7');
+            $sheet->setCellValue('K4','8');
+            $sheet->setCellValue('L4','9');
+            $sheet->setCellValue('M4','10');
+
+
+
+
+
+            $name = 'ExcelReport-' . Yii::$app->formatter->asDatetime(time(), 'php:d_m_Y_h_i_s') . '.xlsx';
+            $writer = new Xlsx($speadsheet);
+            $dir = Yii::getAlias('@tmp/excel');
+            if (!is_dir($dir)) {
+                FileHelper::createDirectory($dir, 0777);
+            }
+            $fileName = $dir . DIRECTORY_SEPARATOR . $name;
+            $writer->save($fileName);
+            return Yii::$app->response->sendFile($fileName);
+
+        }
         return $this->render('vet4',['model'=>$model,'type'=>'food']);
     }
 }

@@ -12,14 +12,18 @@ use Yii;
  * @property int|null $code_id
  * @property string|null $ads
  * @property int|null $sample_id
- * @property int|null $require_id
  * @property int|null $creator_id
  * @property int|null $consept_id
  * @property string|null $created
  * @property string|null $updated
  * @property int|null $state_id
  * @property int|null $org_id
- *
+ * * @property int|null $temprature
+ * @property int|null $humidity
+ * @property string|null $reagent_name
+ * @property string|null $reagent_series
+ * @property string|null $conditions
+ * @property string|null $end_date
  * @property Organizations $org
  * @property Requirements $require
  * @property ResultFoodTests[] $resultFoodTests
@@ -44,9 +48,8 @@ class ResultFood extends \yii\db\ActiveRecord
         return [
             [['code_id', 'sample_id', 'require_id', 'creator_id', 'consept_id', 'state_id', 'org_id','organoleptik','mikroskopik','mikrobiologik','kimyoviy','radiologik'], 'integer'],
             [['created', 'updated'], 'safe'],
-            [['code', 'ads'], 'string', 'max' => 255],
+            [['code', 'ads', 'reagent_name', 'reagent_series','conditions','temprature','humidity',], 'string', 'max' => 255],
             [['org_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['org_id' => 'id']],
-            [['require_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requirements::className(), 'targetAttribute' => ['require_id' => 'id']],
             [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => FoodSamples::className(), 'targetAttribute' => ['sample_id' => 'id']],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => StateList::className(), 'targetAttribute' => ['state_id' => 'id']],
         ];
@@ -63,7 +66,6 @@ class ResultFood extends \yii\db\ActiveRecord
             'code_id' => Yii::t('model', 'Raqami'),
             'ads' => Yii::t('model', 'Umumlashgan natija'),
             'sample_id' => Yii::t('model', 'Namuna'),
-            'require_id' => Yii::t('model', 'Talabga muvofiqligi'),
             'creator_id' => Yii::t('model', 'Kirituvchi'),
             'consept_id' => Yii::t('model', 'Tasdiqlovchi'),
             'created' => Yii::t('model', 'Yaratilgan'),
@@ -75,6 +77,12 @@ class ResultFood extends \yii\db\ActiveRecord
             'mikrobiologik' => Yii::t('model', 'mikrobiologik'),
             'mikroskopik' => Yii::t('model', 'mikroskopik'),
             'organoleptik' => Yii::t('model', 'organoleptik'),
+            'temprature' => Yii::t('model', 'Xona tempraturasi'),
+            'humidity' => Yii::t('model', 'Xona namligi'),
+            'reagent_name' => Yii::t('model', 'Reaktiv nomi'),
+            'reagent_series' => Yii::t('model', 'Reaktiv seriyasi'),
+            'conditions' => Yii::t('model', 'Boshqa sharoitlar'),
+            'end_date' => Yii::t('model', 'Test tugash vaqti'),
         ];
     }
 
@@ -88,15 +96,6 @@ class ResultFood extends \yii\db\ActiveRecord
         return $this->hasOne(Organizations::className(), ['id' => 'org_id']);
     }
 
-    /**
-     * Gets query for [[Require]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRequire()
-    {
-        return $this->hasOne(Requirements::className(), ['id' => 'require_id']);
-    }
 
     /**
      * Gets query for [[ResultFoodTests]].

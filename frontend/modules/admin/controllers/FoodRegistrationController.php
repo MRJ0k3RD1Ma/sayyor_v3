@@ -2,9 +2,9 @@
 
 namespace app\modules\admin\controllers;
 
-use common\models\SampleRegistration;
-use common\models\Samples;
-use common\models\search\SampleRegistrationSearch;
+use common\models\FoodRegistration;
+use common\models\FoodSamples;
+use common\models\search\FoodRegistrationSearch;
 use kartik\mpdf\Pdf;
 use Mpdf\MpdfException;
 use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
@@ -15,11 +15,11 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
-
+use Yii;
 /**
- * SampleRegistrationController implements the CRUD actions for SampleRegistration model.
+ * FoodRegistrationController implements the CRUD actions for FoodRegistration model.
  */
-class SampleRegistrationController extends Controller
+class FoodRegistrationController extends Controller
 {
     /**
      * @inheritDoc
@@ -40,23 +40,23 @@ class SampleRegistrationController extends Controller
     }
 
     /**
-     * Lists all SampleRegistration models.
+     * Lists all FoodRegistration models.
      *
      * @return string
      */
     public function actionIndex($export = null)
     {
-        $searchModel = new SampleRegistrationSearch();
-        $dataProvider = $searchModel->searchFull($this->request->queryParams);
+        $searchModel = new FoodRegistrationSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
         if ($export == 1) {
-            $searchModel->exportToExcel($dataProvider->query);
-        } elseif ($export == 2) {
-            \Yii::$app->response->format = Response::FORMAT_RAW;
+            return $searchModel->exportToExcel($dataProvider->query);
+        } else if ($export == 2) {
+            Yii::$app->response->format = Response::FORMAT_RAW;
 
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('_pdfregtest', ['dataProvider' => $dataProvider]),
+                'content' => $this->renderPartial('_pdfregproduct', ['dataProvider' => $dataProvider]),
                 'options' => [
                 ],
                 'methods' => [
@@ -88,33 +88,31 @@ class SampleRegistrationController extends Controller
     }
 
     /**
-     * Displays a single SampleRegistration model.
+     * Displays a single FoodRegistration model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $model = SampleRegistration::findOne($id);
-        $samples = Samples::find()->select(['samples.*'])
-            ->innerJoin('composite_samples', 'composite_samples.sample_id = samples.id')
-            ->where(['composite_samples.registration_id' => $id])->all();
-
-
+        $model = FoodRegistration::findOne($id);
+        $samples = FoodSamples::find()->select(['food_samples.*'])
+            ->innerJoin('food_compose', 'food_compose.sample_id = food_samples.id')
+            ->where(['food_compose.registration_id' => $id])->all();
         return $this->render('view', [
             'model' => $model,
-            'samples' => $samples
+            'samp' => $samples
         ]);
     }
 
     /**
-     * Creates a new SampleRegistration model.
+     * Creates a new FoodRegistration model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new SampleRegistration();
+        $model = new FoodRegistration();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -130,7 +128,7 @@ class SampleRegistrationController extends Controller
     }
 
     /**
-     * Updates an existing SampleRegistration model.
+     * Updates an existing FoodRegistration model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -150,7 +148,7 @@ class SampleRegistrationController extends Controller
     }
 
     /**
-     * Deletes an existing SampleRegistration model.
+     * Deletes an existing FoodRegistration model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -164,15 +162,15 @@ class SampleRegistrationController extends Controller
     }
 
     /**
-     * Finds the SampleRegistration model based on its primary key value.
+     * Finds the FoodRegistration model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return SampleRegistration the loaded model
+     * @return FoodRegistration the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = SampleRegistration::findOne(['id' => $id])) !== null) {
+        if (($model = FoodRegistration::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

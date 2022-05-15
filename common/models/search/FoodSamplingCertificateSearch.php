@@ -115,6 +115,7 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
         $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Namuna yuborilgan sana", DataType::TYPE_STRING);
         $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Xabar asosida tuzilgan", DataType::TYPE_STRING);
         $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Status", DataType::TYPE_STRING);
+        $sheet->setCellValueExplicitByColumnAndRow($col++, $row, "Tashkilot", DataType::TYPE_STRING);
         $key = 0;
         $models = $query->all();
         foreach ($models as $item) {
@@ -175,6 +176,7 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->send_sample_date, DataType::TYPE_STRING);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $information($item), DataType::TYPE_STRING);
             $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $status($item), DataType::TYPE_STRING);
+            $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $item->org->NAME_FULL, DataType::TYPE_STRING);
         }
         $name = 'ExcelReport-' . \Yii::$app->formatter->asDatetime(time(), 'php:d_m_Y_h_i_s') . '.xlsx';
         $writer = new Xlsx($speadsheet);

@@ -108,6 +108,9 @@ class FoodRegistration extends \yii\db\ActiveRecord
         return $this->hasOne(Organizations::className(), ['id' => 'organization_id']);
     }
 
+    public function getSamples(){
+        return FoodSamples::find()->where('id in (select sample_id from food_compose where registration_id='.$this->id.')')->all();
+    }
     /**
      * Gets query for [[ResearchCategory]].
      *

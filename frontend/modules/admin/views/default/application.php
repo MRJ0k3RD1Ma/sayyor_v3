@@ -3,7 +3,7 @@
         <div class="row">
 
             <div class="col-md-3">
-                <a href="<?= Yii::$app->urlManager->createUrl(['/cp/sertificate-application'])?>">
+                <a href="<?= Yii::$app->urlManager->createUrl(['/cp/food-registration'])?>">
                     <div class="card">
                         <!-- card body -->
                         <div class="card-body">
@@ -21,7 +21,7 @@
             </div>
 
             <div class="col-md-3">
-                <a href="#">
+                <a href="<?= Yii::$app->urlManager->createUrl(['/cp/sample-registration'])?>">
                     <div class="card">
                         <!-- card body -->
                         <div class="card-body">

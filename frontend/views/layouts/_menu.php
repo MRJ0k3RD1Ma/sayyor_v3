@@ -98,6 +98,14 @@ use common\models\RouteStatus;
                     </a>
                 </li>
 
+                    <li>
+                        <a href="<?= Yii::$app->urlManager->createUrl(['/cp/default/application'])?>">
+                            <i data-feather="sliders"></i>
+                            <span data-key="t-table"><?= Yii::t('cp.menu','Arizalar')?></span>
+
+                        </a>
+                    </li>
+
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="users"></i>

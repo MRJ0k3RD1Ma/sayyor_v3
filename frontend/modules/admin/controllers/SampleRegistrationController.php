@@ -2,8 +2,8 @@
 
 namespace app\modules\admin\controllers;
 
-use common\models\FoodSamplingCertificate;
-use common\models\search\FoodSamplingCertificateSearch;
+use common\models\SampleRegistration;
+use common\models\search\SampleRegistrationSearch;
 use kartik\mpdf\Pdf;
 use Mpdf\MpdfException;
 use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
@@ -14,11 +14,11 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
-use Yii;
+
 /**
- * FoodSamplingCertificateController implements the CRUD actions for FoodSamplingCertificate model.
+ * SampleRegistrationController implements the CRUD actions for SampleRegistration model.
  */
-class FoodSamplingCertificateController extends Controller
+class SampleRegistrationController extends Controller
 {
     /**
      * @inheritDoc
@@ -39,23 +39,23 @@ class FoodSamplingCertificateController extends Controller
     }
 
     /**
-     * Lists all FoodSamplingCertificate models.
-     * @return mixed
+     * Lists all SampleRegistration models.
+     *
+     * @return string
      */
-    public function actionIndex(int $export=null)
+    public function actionIndex($export = null)
     {
-        $searchModel = new FoodSamplingCertificateSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-
+        $searchModel = new SampleRegistrationSearch();
+        $dataProvider = $searchModel->searchFull($this->request->queryParams);
         if ($export == 1) {
             $searchModel->exportToExcel($dataProvider->query);
         } elseif ($export == 2) {
-            Yii::$app->response->format = Response::FORMAT_RAW;
+            \Yii::$app->response->format = Response::FORMAT_RAW;
 
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('_pdf', ['dataProvider' => $dataProvider]),
+                'content' => $this->renderPartial('_pdfregtest', ['dataProvider' => $dataProvider]),
                 'options' => [
                 ],
                 'methods' => [
@@ -68,7 +68,15 @@ class FoodSamplingCertificateController extends Controller
             ]);
             try {
                 return $pdf->render();
-            } catch (MpdfException|CrossReferenceException|PdfTypeException|PdfParserException|InvalidConfigException $e) {
+            } catch (MpdfException $e) {
+                return $e;
+            } catch (CrossReferenceException $e) {
+                return $e;
+            } catch (PdfTypeException $e) {
+                return $e;
+            } catch (PdfParserException $e) {
+                return $e;
+            } catch (InvalidConfigException $e) {
                 return $e;
             }
         }
@@ -79,29 +87,26 @@ class FoodSamplingCertificateController extends Controller
     }
 
     /**
-     * Displays a single FoodSamplingCertificate model.
+     * Displays a single SampleRegistration model.
      * @param int $id ID
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $model = FoodSamplingCertificate::findOne($id);
-        $samp = $model->foodSamples;
         return $this->render('view', [
-            'model' => $model,
-            'samp' => $samp
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new FoodSamplingCertificate model.
+     * Creates a new SampleRegistration model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new FoodSamplingCertificate();
+        $model = new SampleRegistration();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -117,10 +122,10 @@ class FoodSamplingCertificateController extends Controller
     }
 
     /**
-     * Updates an existing FoodSamplingCertificate model.
+     * Updates an existing SampleRegistration model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return mixed
+     * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -137,10 +142,10 @@ class FoodSamplingCertificateController extends Controller
     }
 
     /**
-     * Deletes an existing FoodSamplingCertificate model.
+     * Deletes an existing SampleRegistration model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
-     * @return mixed
+     * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
@@ -151,18 +156,18 @@ class FoodSamplingCertificateController extends Controller
     }
 
     /**
-     * Finds the FoodSamplingCertificate model based on its primary key value.
+     * Finds the SampleRegistration model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return FoodSamplingCertificate the loaded model
+     * @return SampleRegistration the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = FoodSamplingCertificate::findOne($id)) !== null) {
+        if (($model = SampleRegistration::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('cp.food_sampling_certificate', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('cp', 'The requested page does not exist.'));
     }
 }

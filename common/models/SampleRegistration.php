@@ -88,6 +88,7 @@ class SampleRegistration extends \yii\db\ActiveRecord
             'ads' => Yii::t('model', 'Izoh'),
             'res' => Yii::t('model', 'res'),
             'res_id' => Yii::t('model', 'resid'),
+            'status_id' => Yii::t('model', 'Holat'),
         ];
     }
 

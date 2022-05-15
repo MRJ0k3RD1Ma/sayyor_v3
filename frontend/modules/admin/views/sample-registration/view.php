@@ -1,0 +1,57 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\DetailView;
+
+/* @var $this yii\web\View */
+/* @var $model common\models\SampleRegistration */
+
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('cp', 'Sample Registrations'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+\yii\web\YiiAsset::register($this);
+?>
+<div class="sample-registration-view">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <p>
+        <?= Html::a(Yii::t('cp', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('cp', 'Delete'), ['delete', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => Yii::t('cp', 'Are you sure you want to delete this item?'),
+                'method' => 'post',
+            ],
+        ]) ?>
+    </p>
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'id',
+            'pnfl',
+            'inn',
+            'is_research',
+            'code_id',
+            'code',
+            'research_category_id',
+            'results_conformity_id',
+            'organization_id',
+            'emp_id',
+            'reg_date',
+            'reg_id',
+            'sender_name',
+            'sender_phone',
+            'created',
+            'updated',
+            'ads',
+            'status_id',
+            'res',
+            'res_id',
+            'registon_id',
+            'is_registon',
+        ],
+    ]) ?>
+
+</div>

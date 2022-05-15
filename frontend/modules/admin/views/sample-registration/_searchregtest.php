@@ -15,7 +15,6 @@ use yii\widgets\ActiveForm;
 <div class="animals-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['dest'],
         'method' => 'get',
         'id' => 'regtest-grid-filters',
         'fieldConfig' => [

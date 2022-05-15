@@ -35,9 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
 //            'rep_id',
                             [
-                                'attribute' => 'type_id',
+                                'attribute' => 'food_id',
                                 'value' => function ($model) {
-                                    return \common\models\FoodType::find()->where(['id' => $model->type_id])->one()->name;
+                                    $lg = Yii::$app->language=='ru'?'ru':'uz';
+                                    return $model->food->{'name_'.$lg};
                                 }
                             ],
                             [

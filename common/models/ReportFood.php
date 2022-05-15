@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string|null $code
  * @property int|null $rep_id
- * @property int|null $type_id
+ * @property int|null $food_id
  * @property int|null $cat_id
  * @property string|null $lat
  * @property string|null $long
@@ -44,7 +44,7 @@ class ReportFood extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rep_id', 'type_id', 'cat_id','operator_id', 'soato_id', 'is_true', 'status_id'], 'integer'],
+            [['rep_id', 'food_id', 'cat_id','operator_id', 'soato_id', 'is_true', 'status_id'], 'integer'],
             [['detail'], 'string'],
             ['image','each','rule'=>['string']],
             [['created', 'updated'], 'safe'],
@@ -63,7 +63,7 @@ class ReportFood extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('report', 'ID'),
-            'type_id' => Yii::t('report', 'Turi'),
+            'food_id' => Yii::t('report', 'Turi'),
             'cat_id' => Yii::t('report', 'Holat'),
             'soato_id' => Yii::t('report', 'Manzil'),
             'lat' => Yii::t('report', 'Lat'),
@@ -115,8 +115,8 @@ class ReportFood extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getType()
+    public function getFood()
     {
-        return $this->hasOne(FoodType::className(), ['id' => 'type_id']);
+        return $this->hasOne(Food::className(), ['id' => 'food_id']);
     }
 }

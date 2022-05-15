@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'rep_id',
+//            'id',
+//            'rep_id',
             'code',
             [
                 'attribute'=>'cat_id',
@@ -76,28 +76,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $s[$d->is_true];
                 }
             ],
+
+//            'status_id',
             [
-                'label' => 'image',
-                'format' => 'html',
-                'value' => function ($model) {
-                    $img = 'http://' . Yii::$app->request->serverName . '/uploads/' . \common\models\ReportDrugImages::find()->where(['report_id' => $model->id])->one()->image;
-                    echo \lo\widgets\magnific\MagnificPopup::widget(
-                        [
-                            'target' => '#test',
-                            'options' => [
-                                'delegate' => 'a',
-                            ]
-                        ]
-                    );
-                    return
-                        '<a id="test" target="_blank" href="'.$img.'">'
-                        .   \yii\helpers\Html::img($img, ['width' => 75, 'height' => 75])
-                        . '</a>';
+                'attribute'=>'status_id',
+                'value'=>function($d){
+                    $lg = Yii::$app->language=='ru'?'ru':'uz';
+                    return $d->status->{'name_'.$lg};
                 }
             ],
-            'status_id',
         ],
     ]) ?>
+    <div class="row">
+        <?php foreach (\common\models\ReportDrugImages::find()->where(['report_id' => $model->id])->all() as $image):
+//            var_dump($image) or die();
+            $img = 'http://' . Yii::$app->request->serverName . '/uploads/' . $image->image;
+            ?>
+            <div class="col-md-2"><?= '<a id="test" target="_blank" href="' . $img . '">'
+                . \yii\helpers\Html::img($img, ['width' => '100%', 'height' => '100%'])
+                . '</a>' ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
     <div id="map"></div>
 
     <style>

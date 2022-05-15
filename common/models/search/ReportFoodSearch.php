@@ -24,7 +24,7 @@ class ReportFoodSearch extends ReportFood
     public function rules()
     {
         return [
-            [['id', 'rep_id', 'type_id', 'cat_id', 'soato_id', 'is_true', 'status_id', 'operator_id'], 'integer'],
+            [['id', 'rep_id', 'food_id', 'cat_id', 'soato_id', 'is_true', 'status_id', 'operator_id'], 'integer'],
             [['q','code', 'lat', 'long', 'phone', 'detail', 'created', 'updated'], 'safe'],
         ];
     }
@@ -67,7 +67,7 @@ class ReportFoodSearch extends ReportFood
         $query->andFilterWhere([
             'id' => $this->id,
             'rep_id' => $this->rep_id,
-            'type_id' => $this->type_id,
+            'food_id' => $this->food_id,
             'cat_id' => $this->cat_id,
             'soato_id' => $this->soato_id,
             'created' => $this->created,

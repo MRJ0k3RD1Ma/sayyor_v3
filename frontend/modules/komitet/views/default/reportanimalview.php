@@ -83,14 +83,30 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $s[$d->is_true];
                 }
             ],
-            'report_status_id',
+//            'report_status_id',
+            [
+                'attribute'=>'report_status_id',
+                'value'=>function($d){
+                    $lg=Yii::$app->language=='ru'?'ru':'uz';
+                    return $d->status->{'name_'.$lg};
+                }
+            ],
             'phone',
             'created',
             'updated',
             'code',
-            'rep_id',
+//            'rep_id',
             'lang',
-            'organization_id',
+//            'organization_id',
+            [
+                'attribute'=>'organization_id',
+                'value'=>function($d){
+                    if($d->organization_id){
+                        return $d->org->NAME_FULL;
+                    }
+                    return null;
+                }
+            ],
         ],
     ]) ?>
     <div class="row">

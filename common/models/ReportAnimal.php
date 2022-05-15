@@ -140,4 +140,8 @@ class ReportAnimal extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Animaltype::className(), ['id' => 'type_id']);
     }
+
+    public function getStatus(){
+        return $this->hasOne(ReportStatus::className(),['id'=>'report_status_id']);
+    }
 }

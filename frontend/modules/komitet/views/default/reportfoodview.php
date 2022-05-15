@@ -16,18 +16,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+//            'id',
             'code',
-            'rep_id',
+//            'rep_id',
             [
-                'attribute'=>'type_id',
+                'attribute'=>'food_id',
                 'value'=>function($d){
                     $lang = Yii::$app->language;
                     $lg = 'uz';
                     if($lang == 'ru'){
                         $lg = 'ru';
                     }
-                    return $d->type->{'name'};
+                    return $d->food->{'name_'.$lg};
                 }
             ],
             [
@@ -66,7 +66,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $s[$d->is_true];
                 }
             ],
-            'status_id',
+//            'status_id',
+            [
+                'attribute'=>'status_id',
+                'value'=>function($d){
+                    $lg = Yii::$app->language=='ru'?'ru':'uz';
+                    return $d->status->{'name_'.$lg};
+                }
+            ],
             [
                 'attribute'=>'operator_id',
                 'value'=>function($d){
@@ -77,28 +84,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 }
             ],
-            [
-                'label' => 'image',
-                'format' => 'html',
-                'value' => function ($model) {
-                    $img = 'http://' . Yii::$app->request->serverName . '/uploads/' . \common\models\ReportFoodImages::find()->where(['report_id' => $model->id])->one()->image;
-                    echo \lo\widgets\magnific\MagnificPopup::widget(
-                        [
-                            'target' => '#test',
-                            'options' => [
-                                'delegate' => 'a',
-                            ]
-                        ]
-                    );
-                    return
-                        '<a id="test" target="_blank" href="'.$img.'">'
-                        .   \yii\helpers\Html::img($img, ['width' => 75, 'height' => 75])
-                        . '</a>';
-                }
-            ],
+
         ],
     ]) ?>
-
+    <div class="row">
+        <?php foreach (\common\models\ReportFoodImages::find()->where(['report_id' => $model->id])->all() as $image):
+//            var_dump($image) or die();
+            $img = 'http://' . Yii::$app->request->serverName . '/uploads/' . $image->image;
+            ?>
+            <div class="col-md-2"><?= '<a id="test" target="_blank" href="' . $img . '">'
+                . \yii\helpers\Html::img($img, ['width' => '100%', 'height' => '100%'])
+                . '</a>' ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
     <div id="map"></div>
 
     <style>

@@ -2075,7 +2075,7 @@
             },
             "time": "2020-05-30T13:11:16+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "ZipStream\\": "src/"
@@ -2146,7 +2146,7 @@
             },
             "time": "2021-06-29T15:32:53+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Complex\\": "classes/src/"
@@ -2204,7 +2204,7 @@
             },
             "time": "2021-07-01T19:01:15+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Matrix\\": "classes/src/"
@@ -2401,7 +2401,7 @@
             },
             "time": "2021-07-05T08:18:36+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "MyCLabs\\Enum\\": "src/"
@@ -2908,7 +2908,7 @@
             },
             "time": "2022-04-24T13:53:10+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "PhpOffice\\PhpSpreadsheet\\": "src/PhpSpreadsheet"
@@ -3617,7 +3617,7 @@
                     "dev-master": "1.0.x-dev"
                 }
             },
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Psr\\Http\\Client\\": "src/"
@@ -3838,7 +3838,7 @@
                     "dev-master": "1.0.x-dev"
                 }
             },
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Psr\\SimpleCache\\": "src/"
@@ -7323,16 +7323,11 @@
         "doctrine/instantiator",
         "fakerphp/faker",
         "guzzlehttp/psr7",
-        "maennchen/zipstream-php",
-        "markbaker/complex",
-        "markbaker/matrix",
-        "myclabs/php-enum",
         "phar-io/manifest",
         "phar-io/version",
         "phpdocumentor/reflection-common",
         "phpdocumentor/reflection-docblock",
         "phpdocumentor/type-resolver",
-        "phpoffice/phpspreadsheet",
         "phpspec/php-diff",
         "phpspec/prophecy",
         "phpunit/php-code-coverage",
@@ -7343,9 +7338,6 @@
         "phpunit/phpunit",
         "psr/container",
         "psr/event-dispatcher",
-        "psr/http-client",
-        "psr/http-factory",
-        "psr/simple-cache",
         "ralouphie/getallheaders",
         "sebastian/code-unit-reverse-lookup",
         "sebastian/comparator",

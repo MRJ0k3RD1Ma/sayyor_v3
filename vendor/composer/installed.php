@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '82acf50a772e6a48f7932568067468cc0eaf5132',
+        'reference' => '471ae7c241ce5fbd3e2aa76a42bf89f1d0f84a94',
         'name' => 'yiisoft/yii2-app-advanced',
         'dev' => true,
     ),
@@ -342,7 +342,7 @@
             'install_path' => __DIR__ . '/../maennchen/zipstream-php',
             'aliases' => array(),
             'reference' => 'c4c5803cc1f93df3d2448478ef79394a5981cc58',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'markbaker/complex' => array(
             'pretty_version' => '3.0.1',
@@ -351,7 +351,7 @@
             'install_path' => __DIR__ . '/../markbaker/complex',
             'aliases' => array(),
             'reference' => 'ab8bc271e404909db09ff2d5ffa1e538085c0f22',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'markbaker/matrix' => array(
             'pretty_version' => '3.0.0',
@@ -360,7 +360,7 @@
             'install_path' => __DIR__ . '/../markbaker/matrix',
             'aliases' => array(),
             'reference' => 'c66aefcafb4f6c269510e9ac46b82619a904c576',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'mpdf/mpdf' => array(
             'pretty_version' => 'v8.1.1',
@@ -387,7 +387,7 @@
             'install_path' => __DIR__ . '/../myclabs/php-enum',
             'aliases' => array(),
             'reference' => 'b942d263c641ddb5190929ff840c68f78713e937',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'npm-asset/bootstrap' => array(
             'pretty_version' => '4.6.1',
@@ -468,7 +468,7 @@
             'install_path' => __DIR__ . '/../phpoffice/phpspreadsheet',
             'aliases' => array(),
             'reference' => '21e4cf62699eebf007db28775f7d1554e612ed9e',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'phpspec/php-diff' => array(
             'pretty_version' => 'v1.1.3',
@@ -573,7 +573,7 @@
             'install_path' => __DIR__ . '/../psr/http-client',
             'aliases' => array(),
             'reference' => '2dfb5f6c5eff0e91e20e913f8c5452ed95b86621',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'psr/http-factory' => array(
             'pretty_version' => '1.0.1',
@@ -582,7 +582,7 @@
             'install_path' => __DIR__ . '/../psr/http-factory',
             'aliases' => array(),
             'reference' => '12ac7fcd07e5b077433f5f2bee95b3a771bf61be',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'psr/http-factory-implementation' => array(
             'dev_requirement' => true,
@@ -627,7 +627,7 @@
             'install_path' => __DIR__ . '/../psr/simple-cache',
             'aliases' => array(),
             'reference' => '408d5eafb83c57f6365a3ca330ff23aa4a5fa39b',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'ralouphie/getallheaders' => array(
             'pretty_version' => '3.0.3',
@@ -1001,7 +1001,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '82acf50a772e6a48f7932568067468cc0eaf5132',
+            'reference' => '471ae7c241ce5fbd3e2aa76a42bf89f1d0f84a94',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(

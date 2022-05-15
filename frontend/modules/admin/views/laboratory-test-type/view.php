@@ -14,6 +14,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="laboratory-test-type-view">
 
     <p>
+        <?= Html::a(Yii::t('cp', 'Yana qo`shish'), ['create'], ['class' => 'btn btn-success']) ?>
+
         <?= Html::a(Yii::t('cp.laboratory_test_type', 'O\'zgartirish'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('cp.laboratory_test_type', 'O\'chirish'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',

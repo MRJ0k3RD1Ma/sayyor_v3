@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?= Html::a(Yii::t('cp', 'Yana qo`shish'), ['create'], ['class' => 'btn btn-success']) ?>
+
         <?= Html::a(Yii::t('cp.individuals', 'O\'zgartirish'), ['update', 'pnfl' => $model->pnfl], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('cp.individuals', 'O\'chirish'), ['delete', 'pnfl' => $model->pnfl], [
             'class' => 'btn btn-danger',

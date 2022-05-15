@@ -18,7 +18,8 @@ YiiAsset::register($this);
 ?>
 <div class="tamplate-animal-view">
 
-    <p>
+    <p>        <?= Html::a(Yii::t('cp', 'Yana qo`shish'), ['create'], ['class' => 'btn btn-success']) ?>
+
         <?= Html::a(Yii::t('app', 'Yangilash'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'O\'chirish'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',

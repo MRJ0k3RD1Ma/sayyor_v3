@@ -70,11 +70,16 @@ function get_token($where = 'hamsa'){
 
     curl_close($ch);
     $content = json_decode($content,true);
-    if($content['code']['result']=='200'){
-        return $content['data']['token'];
+    if($content){
+        if($content['code']['result']=='200'){
+            return $content['data']['token'];
+        }else{
+            return -1;
+        }
     }else{
         return -1;
     }
+
 
 }
 

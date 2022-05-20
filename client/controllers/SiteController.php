@@ -218,18 +218,26 @@ class SiteController extends Controller
                     $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'].'?pinfl='.$model->pnfl.'&document='.$model->passport,'hamsa');
 
                     $res = json_decode($res,true);
-                    if($res['code']['result']!=2200 or (isset($res['data']['result']) and $res['data']['result']==0)){
+                    if($res){
+                        if($res['code']['result']!=2200 or (isset($res['data']['result']) and $res['data']['result']==0)){
 
-                        Yii::$app->session->setFlash('error',Yii::t('client','Pasport ma\'lumotlari topilmadi'));
+                            Yii::$app->session->setFlash('error',Yii::t('client','Pasport ma\'lumotlari topilmadi'));
+                            return $this->render('login',[
+                                'model'=>$model,
+                            ]);
+                        }else{
+                            Yii::$app->session->set('doc_type','pnfl');
+                            Yii::$app->session->set('doc_pnfl',$model->pnfl);
+                            Yii::$app->session->set('doc_document',$model->passport);
+                            return $this->redirect(['individual']);
+                        }
+                    }else{
+                        Yii::$app->session->setFlash('error',Yii::t('client','Pasport ma\'lumotlarini topishda xatolik. Qayta urinib ko`ring'));
                         return $this->render('login',[
                             'model'=>$model,
                         ]);
-                    }else{
-                        Yii::$app->session->set('doc_type','pnfl');
-                        Yii::$app->session->set('doc_pnfl',$model->pnfl);
-                        Yii::$app->session->set('doc_document',$model->passport);
-                        return $this->redirect(['individual']);
                     }
+
                 }
             }
 

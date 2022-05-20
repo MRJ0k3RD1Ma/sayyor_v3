@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '471ae7c241ce5fbd3e2aa76a42bf89f1d0f84a94',
+        'reference' => '97b26208f9809394dfbd097cfd90dbb5a1fe5333',
         'name' => 'yiisoft/yii2-app-advanced',
         'dev' => true,
     ),
@@ -336,12 +336,12 @@
             'dev_requirement' => false,
         ),
         'maennchen/zipstream-php' => array(
-            'pretty_version' => '2.1.0',
-            'version' => '2.1.0.0',
+            'pretty_version' => '2.2.1',
+            'version' => '2.2.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../maennchen/zipstream-php',
             'aliases' => array(),
-            'reference' => 'c4c5803cc1f93df3d2448478ef79394a5981cc58',
+            'reference' => '211e9ba1530ea5260b45d90c9ea252f56ec52729',
             'dev_requirement' => false,
         ),
         'markbaker/complex' => array(
@@ -1001,7 +1001,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '471ae7c241ce5fbd3e2aa76a42bf89f1d0f84a94',
+            'reference' => '97b26208f9809394dfbd097cfd90dbb5a1fe5333',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(

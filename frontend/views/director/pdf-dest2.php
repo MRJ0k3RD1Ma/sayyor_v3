@@ -73,10 +73,13 @@ $qr =function() use ($model) {
             . $ind->middlename . " "
             . Soato::Full($ind->soato_id,'lot');
     }
+
+
     ?>
 </div>
 
-<b>Tekshiruv obyekti: Namuna nomi:</b><?= $model->sample->tasnif_code.' - '.$model->sample->tasnif->name ?> &nbsp;
+<b>Tekshiruv obyekti:</b>
+<b>Mahsulot guruhi:</b><?= $model->sample->category->{'name_uz'}.'-'.$model->sample->food->{'name_uz'}?>
 <b>Ishlab chiqaruvchi:</b> <?= $model->sample->producer?>&nbsp;
 <b>Davlat:</b><?= $model->sample->country->name_uz?>&nbsp;
 <b>Soni:</b><?= $model->sample->count.' '.$model->sample->unit->name_uz?>&nbsp;

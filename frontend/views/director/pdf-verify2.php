@@ -98,7 +98,7 @@ $lg = 'uz';
 </div>
 <br>
 <div>
-    <b>Tekshiruv obyekti:
+    <b>Tekshiruv obyekti:</b>
     <b>Mahsulot guruhi:</b><?= $samples->category->{'name_'.$lg}.'-'.$samples->food->{'name_'.$lg}?>
     <b>Qo'shimcha ma'lumotlar:</b>
     <b>Ishlab chiqarilgan davlat:</b> <?= @$samples->country->name_uz ?>

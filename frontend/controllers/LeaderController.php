@@ -162,7 +162,7 @@ class LeaderController extends Controller
                 return $this->redirect(['viewanimal', 'id' => $id]);
             }
         }
-        
+
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked' => 1])->all();
 
@@ -264,6 +264,8 @@ class LeaderController extends Controller
             ->where(['emp_posts.post_id' => 2])
             ->andWhere(['emp_posts.org_id' => Yii::$app->user->identity->empPosts->org_id])
             ->andWhere(['emp_posts.gov_id' => Yii::$app->user->identity->empPosts->gov_id])->all();
+
+        $model->scenario = 'send';
 
         if ($model->load(Yii::$app->request->post())) {
             $model->status_id = 2;

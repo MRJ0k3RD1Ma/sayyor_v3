@@ -162,6 +162,7 @@ class LeaderController extends Controller
                 return $this->redirect(['viewanimal', 'id' => $id]);
             }
         }
+        
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->andWhere(['checked' => 1])->all();
 

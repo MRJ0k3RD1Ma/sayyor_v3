@@ -42,9 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'soato_id',
                                 'label' => 'Hudud nomi',
                                 'value' => function ($model) {
-
                                     return \common\models\Soato::Full($model->soato_id);
-
                                 }
                             ],
                             //'status_id',

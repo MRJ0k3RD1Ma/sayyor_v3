@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel frontend\models\search\RouteSertSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('food', 'Hayvon kasalliklari namunalar ro\'yhati');
+$this->title = Yii::t('food', 'Hayvon kasalliklari tashhisi bo`yicha kelgan namunalar ro\'yhati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="route-sert-index">

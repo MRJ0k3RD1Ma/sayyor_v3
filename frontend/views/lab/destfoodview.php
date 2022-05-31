@@ -9,14 +9,12 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\DestructionSampleAnimal */
 
-$this->title = $model->code;
+$this->title = $model->code.' '.Yii::t('cp','sonli oziq-ovqat havfsizligi bo`yicha namunani yo`q qilish dalolatnomasi');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunani yo\'q qilish dalolatnomalarii'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>
 <div class="destruction-sample-animal-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="row">
         <div class="col-md-6">

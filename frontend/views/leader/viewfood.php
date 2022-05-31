@@ -14,7 +14,8 @@ use yii\widgets\DetailView;
 /* @var $item ResultAnimalTests */
 /* @var $d \common\models\Samples */
 
-$this->title = $model->id;
+$this->title = $model->sample->samp_code.' '.Yii::t('cp','sonli oziq-ovqat havfsizligi bo`yicha namuna raqami');
+
 $this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunalar ro\'yhati'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
@@ -32,6 +33,7 @@ YiiAsset::register($this);
 //                    'director_id',
 //                    'leader_id',
 //                    'executor_id',
+
                     [
                         'attribute' => 'executor_id',
                         'value' => function ($d) {
@@ -96,6 +98,16 @@ YiiAsset::register($this);
                 'model' => $sample,
                 'attributes' => [
 //            'id',
+                    [
+                        'attribute'=>'is_group',
+                        'value'=>function($d){
+                            if($d->is_group and $d->is_group == 1){
+                                return Yii::t('cp','Birlashgan namuna');
+                            }else{
+                                return Yii::t('cp','Alohida kelgan namuna');
+                            }
+                        }
+                    ],
                     'samp_code',
 
                     [

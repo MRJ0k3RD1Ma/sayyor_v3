@@ -76,6 +76,7 @@ class ResultAnimal extends \yii\db\ActiveRecord
                 'RBP', 'RMA', 'RP_RDP', 'RH', 'RNGA','RGKA', 'RGA', 'IFA', 'IXLA', 'boshqa_serologiya', 'PSR', 'gistologiya',
                 'gemotologiya', 'koprologiya', 'kimyoviy', 'biokimyoviy'], 'integer'],
             [['conditions'], 'string'],
+            [['temprature','humidity'],'required','on'=>'lab'],
             [['created', 'updated', 'end_date', ], 'safe'],
             [['code', 'reagent_name', 'reagent_series','ads'], 'string', 'max' => 255],
         ];

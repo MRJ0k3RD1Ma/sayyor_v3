@@ -47,6 +47,7 @@ class ResultFood extends \yii\db\ActiveRecord
         return [
             [['code_id', 'sample_id',  'creator_id', 'consept_id', 'state_id', 'org_id','organoleptik','mikroskopik','mikrobiologik','kimyoviy','radiologik'], 'integer'],
             [['created', 'updated'], 'safe'],
+            [['temprature','humidity'],'required','on'=>'lab'],
             [['code', 'ads', 'reagent_name', 'reagent_series','conditions','temprature','humidity',], 'string', 'max' => 255],
             [['org_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['org_id' => 'id']],
             [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => FoodSamples::className(), 'targetAttribute' => ['sample_id' => 'id']],

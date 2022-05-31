@@ -8,8 +8,8 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\DestructionSampleAnimal */
 
-$this->title = $model->code;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunani yo\'q qilish dalolatnomalarii'), 'url' => ['index']];
+$this->title = $model->code.' '.Yii::t('cp','sonli hayvon kasalliklari tashhisi bo`yicha namunani yo`q qilish dalolatnomasi');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunani yo\'q qilish dalolatnomalari'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

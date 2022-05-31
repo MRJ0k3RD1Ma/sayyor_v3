@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $result common\models\ResultAnimal */
 /* @var $test common\models\ResultAnimalTests */
 
-$this->title = $model->id;
+$this->title = $model->sample->samp_code.' '.Yii::t('cp','sonli oziq-ovqat havfsizligi bo`yicha namuna raqami');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunalar ro\'yhati'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -70,6 +70,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     'model' => $sample,
                     'attributes' => [
 //            'id',
+                        [
+                            'attribute'=>'is_group',
+                            'value'=>function($d){
+                                if($d->is_group and $d->is_group == 1){
+                                    return Yii::t('cp','Birlashgan namuna');
+                                }else{
+                                    return Yii::t('cp','Alohida kelgan namuna');
+                                }
+                            }
+                        ],
                         'samp_code',
 
                         [

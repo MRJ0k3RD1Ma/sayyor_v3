@@ -143,6 +143,7 @@ class LabController extends Controller
         $sample = $model->sample;
 
         $result = ResultAnimal::findOne(['sample_id' => $sample->id]);
+
         $recom = new SampleRecomendation();
         $test = ResultAnimalTests::find()->indexBy('id')->where(['result_id' => $result->id])->all();
         if($recom->load(Yii::$app->request->post())){
@@ -167,7 +168,7 @@ class LabController extends Controller
             ->innerJoin('tamplate_animal', 'tamplate_animal.id=template_animal_regulations.template_id')
             ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_id=' . $result->id . ')')
             ->groupBy('regulations.id')->all();
-
+        $result->scenario = 'lab';
         return $this->render('viewanimal', [
             'model' => $model,
             'sample' => $sample,
@@ -354,6 +355,7 @@ class LabController extends Controller
             ->innerJoin('template_food', 'template_food_regulations.template_id = template_food.id')
             ->orderBy('template_food_regulations.regulation_id')
             ->where('template_food.id IN (SELECT result_food_tests.id from result_food_tests inner join template_food on result_food_tests.template_id=template_food.id where result_food_tests.result_id=' . $result->id . ')')->all();;
+        $result->scenario = 'lab';
         return $this->render('viewfood', [
             'model' => $model,
             'sample' => $sample,

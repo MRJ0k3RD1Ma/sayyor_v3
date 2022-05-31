@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\SampleRegistration */
 
-$this->title = $model->code;
+$this->title = $model->code.' '.Yii::t('cp','sonli oziq-ovqat havfsizligi bo`yicha ariza');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Arizalar ro\'yhati'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);

@@ -9,13 +9,12 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\SampleRegistration */
 
-$this->title = $model->code;
+$this->title = $model->code.'-'.Yii::t('cp','sonli hayvon kasalliklari tashhisi bo`yicha ariza');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Arizalar ro\'yhati'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>
     <div class="sertificates-view">
-
 
         <?php if ($model->status_id > 1) { ?>
             <p style="font-weight: bold">

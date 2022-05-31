@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel common\models\search\SertificatesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('cp.sertificates', 'Arizalar ro\'yhati');
+$this->title = Yii::t('cp.sertificates', 'Oziq-ovqat havfsizligi bo`yicha arizalar ro\'yhati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sertificates-index">

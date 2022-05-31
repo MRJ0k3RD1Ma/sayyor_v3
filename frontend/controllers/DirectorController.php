@@ -117,7 +117,7 @@ class DirectorController extends Controller
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
                 'content' => $this->renderPartial('_pdfindexanimal', ['dataProvider' => $dataProvider]),
-                'options' => [\
+                'options' => [
                 ],
                 'methods' => [
                     'SetTitle' => $searchModel::tableName(),

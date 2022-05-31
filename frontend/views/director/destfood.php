@@ -11,7 +11,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel \app\models\search\director\DestructionSampleFoodSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('food', 'Namunani yo\'q qilish dalolatnomalari ro\'yhati');
+$this->title = Yii::t('food', 'Oziq-ovqat havfsizligi uchun kalgan namunalarni yo\'q qilish dalolatnomalari ro\'yhati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="route-sert-index">

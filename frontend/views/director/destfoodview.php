@@ -7,8 +7,8 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\DestructionSampleAnimal */
 
-$this->title = $model->code;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunani yo\'q qilish dalolatnomalarii'), 'url' => ['index']];
+$this->title = $model->code.' '.Yii::t('cp','sonli oziq-ovqat havfsizligi uchun kelgan namunani yo`q qilish dalolatnomasi');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunani yo\'q qilish dalolatnomalari'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -21,9 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php if ($model->state_id == 1): ?>
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="<?= Url::to(['director/dest-pdffood', 'id' => $model->id]) ?>" class="btn btn-warning">Arizani
-                            PDF
-                            ko'rinishda yuklab olish</a>
+                        <a href="<?= Url::to(['director/dest-pdffood', 'id' => $model->id]) ?>" class="btn btn-warning">Dalolatnomani PDF shaklda yuklab olish</a>
                     </div>
                 </div>
             <?php endif; ?>

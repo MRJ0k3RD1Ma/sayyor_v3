@@ -15,7 +15,8 @@ use yii\widgets\DetailView;
 /* @var $item ResultAnimalTests */
 /* @var $d \common\models\Samples */
 
-$this->title = $model->id;
+$this->title = $model->sample->samp_code.' '.Yii::t('cp','sonli oziq-ovqat havfsizligi uchun kelgan namuna raqami');
+
 $this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Namunalar ro\'yhati'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
@@ -27,8 +28,7 @@ YiiAsset::register($this);
 
             <?php if($model->status_id == 3){?>
                 <div class="col-md-12">
-                    <a href="<?= Url::to(['director/pdf-food', 'id' => $model->sample_id]) ?>" class="btn btn-warning">Arizani PDF
-                        ko'rinishda yuklab olish</a>
+                    <a href="<?= Url::to(['director/pdf-food', 'id' => $model->sample_id]) ?>" class="btn btn-warning">Bayonomani PDF shaklda yuklab olish</a>
 
                 </div>
             <?php }?>
@@ -91,6 +91,16 @@ YiiAsset::register($this);
                 'model' => $sample,
                 'attributes' => [
 //            'id',
+                    [
+                        'attribute'=>'is_group',
+                        'value'=>function($d){
+                            if($d->is_group and $d->is_group == 1){
+                                return Yii::t('cp','Birlashgan namuna');
+                            }else{
+                                return Yii::t('cp','Alohida kelgan namuna');
+                            }
+                        }
+                    ],
                     'samp_code',
 
                     [

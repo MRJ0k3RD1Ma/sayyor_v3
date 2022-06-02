@@ -35,10 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
 //            'rep_id',
                             [
-                                'attribute' => 'food_id',
+                                'attribute' => 'type_id',
                                 'value' => function ($model) {
                                     $lg = Yii::$app->language=='ru'?'ru':'uz';
-                                    return $model->food->{'name_'.$lg};
+                                    return $model->type->{'name_'.$lg};
                                 }
                             ],
                             [

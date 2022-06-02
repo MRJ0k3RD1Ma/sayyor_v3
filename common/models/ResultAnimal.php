@@ -135,7 +135,7 @@ class ResultAnimal extends \yii\db\ActiveRecord
     }
 
     public function getTests(){
-        return $this->hasMany(ResultAnimalTests::className(),['result_id'=>'id']);
+        return $this->hasMany(ResultAnimalTests::className(),['result_id'=>'id'])->where(['checked'=>true]);
     }
 
     public function getSample(){

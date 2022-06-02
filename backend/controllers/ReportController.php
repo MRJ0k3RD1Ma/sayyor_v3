@@ -6,6 +6,7 @@ namespace backend\controllers;
 use backend\models\Image;
 use common\models\AnimalCategory;
 use common\models\Animaltype;
+use common\models\Food;
 use common\models\FoodType;
 use common\models\ReportAnimal;
 use common\models\ReportAnimalImages;
@@ -78,9 +79,7 @@ class ReportController extends ActiveController
 
     public function actionGetfoodtype($id = -1){
         if($id == -1){
-            return FoodType::find()->where(['is', 'parent_id', new \yii\db\Expression('null')])->all();
-        }elseif($model = FoodType::find()->where(['parent_id'=>$id])->all()){
-            return $model;
+            return Food::find()->all();
         }else{
             return $id;
         }

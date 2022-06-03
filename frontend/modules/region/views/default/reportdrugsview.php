@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -16,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'rep_id',
+//            'id',
+//            'rep_id',
             'code',
             [
                 'attribute'=>'cat_id',
@@ -72,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'is_true',
                 'value'=>function($d){
-                    $s = [0=>Yii::t('region','Yo\'q'),1=>Yii::t('region','Ha'),-1=>Yii::t('region','Tekshirilmagan')];
+                    $s = [0=>Yii::t('district','Yo\'q'),1=>Yii::t('district','Ha'),-1=>Yii::t('district','Tekshirilmagan')];
                     return $s[$d->is_true];
                 }
             ],
@@ -95,7 +96,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         . '</a>';
                 }
             ],
-            'status_id',
+            [
+                'attribute'=>'status_id',
+                'value'=>function($d){
+                    $lg = Yii::$app->language=='ru'?'ru':'uz';
+                    return $d->status->{'name_'.$lg};
+                }
+            ],
         ],
     ]) ?>
     <div id="map"></div>
@@ -109,7 +116,6 @@ $this->params['breadcrumbs'][] = $this->title;
             /* The width is the width of the web page */
         }
     </style>
-    <div id="map"></div>
     <script>
 
         // Attach your callback function to the `window` object

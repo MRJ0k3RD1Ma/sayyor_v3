@@ -1,13 +1,14 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\ReportFood */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Report Foods', 'url' => ['index']];
+$this->title = $model->code;
+$this->params['breadcrumbs'][] = ['label' => 'Oziq ovqat ekspertizalari', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,18 +17,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+//            'id',
             'code',
-            'rep_id',
+//            'rep_id',
             [
-                'attribute'=>'type_id',
+                'attribute'=>'food_id',
                 'value'=>function($d){
                     $lang = Yii::$app->language;
                     $lg = 'uz';
                     if($lang == 'ru'){
                         $lg = 'ru';
                     }
-                    return $d->type->{'name'};
+                    return $d->food->{'name_'.$lg};
                 }
             ],
             [
@@ -62,11 +63,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'is_true',
                 'value'=>function($d){
-                    $s = [0=>Yii::t('region','Yo\'q'),1=>Yii::t('region','Ha'),-1=>Yii::t('region','Tekshirilmagan')];
+                    $s = [0=>Yii::t('district','Yo\'q'),1=>Yii::t('district','Ha'),-1=>Yii::t('district','Tekshirilmagan')];
                     return $s[$d->is_true];
                 }
             ],
-            'status_id',
             [
                 'attribute'=>'operator_id',
                 'value'=>function($d){
@@ -75,6 +75,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     }else{
                         return null;
                     }
+                }
+            ],
+            [
+                'attribute'=>'status_id',
+                'value'=>function($d){
+                    $lg=Yii::$app->language=='ru'?'ru':'uz';
+                    return $d->status->{'name_'.$lg};
                 }
             ],
             [
@@ -110,7 +117,6 @@ $this->params['breadcrumbs'][] = $this->title;
             /* The width is the width of the web page */
         }
     </style>
-    <div id="map"></div>
     <script>
 
         // Attach your callback function to the `window` object
@@ -134,5 +140,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAKc6n_ShV0w0BIcrtYymLAwK4UB1g0g4&callback=initMap">
     </script>
+
 
 </div>

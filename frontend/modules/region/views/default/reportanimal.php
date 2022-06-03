@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'code',
                                 'format' => 'raw',
                                 'value' => function ($model) {
-                                    return \yii\bootstrap4\Html::a($model->code, '/region/reportanimalview?id=' . $model->id);
+                                    return \yii\bootstrap4\Html::a($model->code, '/district/reportanimalview?id=' . $model->id);
                                 }
                             ],
                             [

@@ -30,14 +30,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'code',
                                 'format' => 'raw',
                                 'value' => function ($model) {
-                                    return \yii\bootstrap4\Html::a($model->code, '/region/reportfoodview?id=' . $model->id);
+                                    return \yii\bootstrap4\Html::a($model->code, '/district/reportfoodview?id=' . $model->id);
                                 }
                             ],
 //            'rep_id',
                             [
-                                'attribute' => 'type_id',
+                                'attribute' => 'food_id',
                                 'value' => function ($model) {
-                                    return \common\models\FoodType::find()->where(['id' => $model->type_id])->one()->name;
+                                    $lg = Yii::$app->language=='ru'?'ru':'uz';
+                                    return \common\models\Food::find()->where(['id' => $model->food_id])->one()->{'name_'.$lg};
                                 }
                             ],
                             [

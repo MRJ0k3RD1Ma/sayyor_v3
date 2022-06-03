@@ -62,15 +62,8 @@ class DefaultController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -518,37 +511,6 @@ class DefaultController extends Controller
             'model' => $model,
             'samples' => $samples
         ]);
-    }
-
-    public
-    function actionLogin()
-    {
-
-//        echo "OK";
-        $this->layout = "login";
-//        if (!Yii::$app->user->isGuest) {
-//            return $this->redirect(['/komitet/index']);
-//        }
-
-//        var_dump(Yii::$app->user->identity) or die();
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->redirect(['/komitet/']);
-        }
-
-        $model->password = '';
-
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        header('Location: /komitet/login');
-        exit;
     }
 
     public function actionViewnamuna($id)

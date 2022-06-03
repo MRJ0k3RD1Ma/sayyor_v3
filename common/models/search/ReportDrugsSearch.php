@@ -85,6 +85,47 @@ class ReportDrugsSearch extends ReportDrugs
 
         return $dataProvider;
     }
+
+    public function searchSub($params)
+    {
+        $query = ReportDrugs::find()->filterWhere(['like','soato_id',\Yii::$app->user->identity->empPosts->org->soato])->orderBy(['created'=>SORT_DESC]);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'rep_id' => $this->rep_id,
+            'cat_id' => $this->cat_id,
+            'type_id' => $this->type_id,
+            'soato_id' => $this->soato_id,
+            'created' => $this->created,
+            'updated' => $this->updated,
+            'operator_id' => $this->operator_id,
+            'is_true' => $this->is_true,
+            'status_id' => $this->status_id,
+        ]);
+
+        $query->orFilterWhere(['like', 'code', $this->q])
+            ->orFilterWhere(['like', 'lat', $this->q])
+            ->orFilterWhere(['like', 'long', $this->q])
+            ->orFilterWhere(['like', 'detail', $this->q])
+            ->orFilterWhere(['like', 'phone', $this->q]);
+
+        return $dataProvider;
+    }
     /**
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @throws \yii\base\Exception

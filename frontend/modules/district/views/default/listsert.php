@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute'=>'code',
                                 'value'=>function($d){
-                                    $url = Yii::$app->urlManager->createUrl(['/region/viewsert','id'=>$d->id]);
+                                    $url = Yii::$app->urlManager->createUrl(['/district/viewsert','id'=>$d->id]);
                                     return "<a href='{$url}'>{$d->code}</a>";
                                 },
                                 'filter'=>false,

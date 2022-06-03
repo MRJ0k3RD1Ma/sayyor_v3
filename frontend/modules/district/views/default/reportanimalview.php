@@ -1,6 +1,7 @@
 <?php
 
 use common\models\ReportAnimalImages;
+use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -79,18 +80,25 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'is_true',
                 'value' => function ($d) {
-                    $s = [0 => Yii::t('region', 'Yo\'q'), 1 => Yii::t('region', 'Ha'), -1 => Yii::t('region', 'Tekshirilmagan')];
+                    $s = [0 => Yii::t('district', 'Tasdiqlanmadi'), 1 => Yii::t('district', 'Tasdiqlandi'), -1 => Yii::t('district', 'Tekshirilmagan')];
                     return $s[$d->is_true];
                 }
             ],
-            'report_status_id',
+//            'report_status_id',
+            [
+                'attribute'=>'report_status_id',
+                'value'=>function($d){
+                    $lg = Yii::$app->language=='ru'?'ru':'uz';
+                    return $d->status->{'name_'.$lg};
+                }
+            ],
             'phone',
             'created',
             'updated',
-            'code',
-            'rep_id',
+//            'code',
+//            'rep_id',
             'lang',
-            'organization_id',
+//            'organization_id',
         ],
     ]) ?>
     <div class="row">
@@ -115,7 +123,6 @@ $this->params['breadcrumbs'][] = $this->title;
             /* The width is the width of the web page */
         }
     </style>
-    <div id="map"></div>
     <script>
 
         // Attach your callback function to the `window` object
@@ -139,6 +146,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAKc6n_ShV0w0BIcrtYymLAwK4UB1g0g4&callback=initMap">
     </script>
+
+    <?php if($model->report_status_id == 1){?>
+
+        <h4>Tekshiruv natijasini kiritish</h4>
+        <?php $form = ActiveForm::begin();?>
+            <?= $form->field($model,'is_true')->dropDownList([0=>'Tasdiqlanmadi',1=>'Tasdiqlandi'])?>
+
+            <?= $form->field($model,'report_status_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\ReportStatus::find()->where(['>','id','1'])->all(),'id','name_'.$lg))?>
+
+        <button class="btn btn-success">Saqlash</button>
+
+        <?php ActiveForm::end()?>
+
+    <?php }?>
 
 
 </div>

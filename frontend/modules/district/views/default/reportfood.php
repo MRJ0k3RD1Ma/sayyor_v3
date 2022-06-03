@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'code',
                                 'format' => 'raw',
                                 'value' => function ($model) {
-                                    return \yii\bootstrap4\Html::a($model->code, '/region/reportfoodview?id=' . $model->id);
+                                    return \yii\bootstrap4\Html::a($model->code, '/district/reportfoodview?id=' . $model->id);
                                 }
                             ],
 //            'rep_id',

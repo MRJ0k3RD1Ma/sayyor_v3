@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'sert_full',
                                 'format' => 'raw',
                                 'value' => function ($d) {
-                                    $url = Yii::$app->urlManager->createUrl(['/region/viewanimal', 'id' => $d->id]);
+                                    $url = Yii::$app->urlManager->createUrl(['/district/viewanimal', 'id' => $d->id]);
                                     return "<a href='{$url}'>{$d->sert_full}</a>";
                                 },
                             ],

@@ -144,4 +144,8 @@ class ReportAnimal extends \yii\db\ActiveRecord
     public function getStatus(){
         return $this->hasOne(ReportStatus::className(),['id'=>'report_status_id']);
     }
+
+    public function getOperator(){
+        return $this->hasOne(Employees::className(),['id'=>'operator_id']);
+    }
 }

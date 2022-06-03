@@ -7,6 +7,7 @@ use common\models\ReportAnimal;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use yii\base\BaseObject;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\QueryInterface;
@@ -146,5 +147,50 @@ class ReportAnimalSearch extends ReportAnimal
         $fileName = $dir . DIRECTORY_SEPARATOR . $name;
         $writer->save($fileName);
         return \Yii::$app->response->sendFile($fileName);
+    }
+
+    public function searchSub($params)
+    {
+        $query = ReportAnimal::find()
+            ->filterWhere(['like','soato_id',\Yii::$app->user->identity->empPosts->org->soato])
+            ->orderBy(['created'=>SORT_DESC]);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'type_id' => $this->type_id,
+            'cat_id' => $this->cat_id,
+            'soato_id' => $this->soato_id,
+            'operator_id' => $this->operator_id,
+            'is_true' => $this->is_true,
+            'report_status_id' => $this->report_status_id,
+            'created' => $this->created,
+            'updated' => $this->updated,
+            'rep_id' => $this->rep_id,
+            'organization_id' => $this->organization_id,
+        ]);
+
+        $query->orFilterWhere(['like', 'lat', $this->q])
+            ->orFilterWhere(['like', 'long', $this->q])
+            ->orFilterWhere(['like', 'detail', $this->q])
+            ->orFilterWhere(['like', 'phone', $this->q])
+            ->orFilterWhere(['like', 'code', $this->q])
+            ->orFilterWhere(['like', 'lang', $this->q]);
+
+        return $dataProvider;
     }
 }

@@ -17,7 +17,7 @@ $this->title = Yii::t('login',"Tizimga kirish");
         </div>
         <div class="login-form">
             <h3><?= Yii::t('login','Tizimga kirish')?></h3>
-            <p><?= Yii::t('login','region tizimiga xush kelibsiz!')?></p>
+            <p><?= Yii::t('login','district tizimiga xush kelibsiz!')?></p>
             <?php $form = ActiveForm::begin([
                 'fieldConfig' => [
                     'template' => "{input}",

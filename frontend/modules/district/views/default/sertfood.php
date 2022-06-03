@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => 'code',
                                 'value' => function ($d) {
-                                    $url = Yii::$app->urlManager->createUrl(['/region/sertfoodview', 'id' => $d->id]);
+                                    $url = Yii::$app->urlManager->createUrl(['/district/sertfoodview', 'id' => $d->id]);
                                     return "<a href='{$url}'>{$d->code}</a>";
                                 },
                                 'filter' => false,

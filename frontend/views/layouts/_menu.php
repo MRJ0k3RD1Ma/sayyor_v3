@@ -173,7 +173,20 @@ use common\models\RouteStatus;
                                    data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari') ?></a></li>
                         </ul>
                     </li>
-
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="bar-chart-2"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu', 'Xabarlar') ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/region/reportanimal']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Hayvon kasalliklari') ?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/region/reportfood']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari') ?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/region/reportdrugs']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Dori darmonlar') ?></a></li>
+                        </ul>
+                    </li>
                 <?php }elseif($type == 2){?>
                     <!--Tuman bulim-->
                     <li>
@@ -203,7 +216,20 @@ use common\models\RouteStatus;
                                    data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari') ?></a></li>
                         </ul>
                     </li>
-
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="bar-chart-2"></i>
+                            <span data-key="t-tables"><?= Yii::t('cp.menu', 'Xabarlar') ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/district/reportanimal']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Hayvon kasalliklari') ?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/district/reportfood']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Oziq-ovqat ekspertizalari') ?></a></li>
+                            <li><a href="<?= Yii::$app->urlManager->createUrl(['/district/reportdrugs']) ?>"
+                                   data-key="t-basic-tables"><?= Yii::t('cp.menu', 'Dori darmonlar') ?></a></li>
+                        </ul>
+                    </li>
 
                 <?php }elseif($type==1){?>
 

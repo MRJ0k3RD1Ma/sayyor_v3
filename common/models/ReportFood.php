@@ -25,7 +25,7 @@ use Yii;
  * @property ReportFoodCategory $cat
  * @property Soato $soato
  * @property ReportStatus $status
- * @property FoodType $type
+ * @property Food $food
  */
 class ReportFood extends \yii\db\ActiveRecord
 {
@@ -44,7 +44,7 @@ class ReportFood extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rep_id', 'type_id', 'cat_id','operator_id', 'soato_id', 'is_true', 'status_id'], 'integer'],
+            [['rep_id', 'food_id', 'cat_id','operator_id', 'soato_id', 'is_true', 'status_id'], 'integer'],
             [['detail'], 'string'],
             ['image','each','rule'=>['string']],
             [['created', 'updated'], 'safe'],
@@ -52,7 +52,7 @@ class ReportFood extends \yii\db\ActiveRecord
             [['cat_id'], 'exist', 'skipOnError' => true, 'targetClass' => FoodCategory::className(), 'targetAttribute' => ['cat_id' => 'id']],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::className(), 'targetAttribute' => ['soato_id' => 'MHOBT_cod']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
-            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => Food::className(), 'targetAttribute' => ['type_id' => 'id']],
+            [['food_id'], 'exist', 'skipOnError' => true, 'targetClass' => Food::className(), 'targetAttribute' => ['food_id' => 'id']],
         ];
     }
 
@@ -63,7 +63,7 @@ class ReportFood extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('report', 'ID'),
-            'type_id' => Yii::t('report', 'Turi'),
+            'food_id' => Yii::t('report', 'Mahsulot turi'),
             'cat_id' => Yii::t('report', 'Holat'),
             'soato_id' => Yii::t('report', 'Manzil'),
             'lat' => Yii::t('report', 'Lat'),
@@ -111,11 +111,11 @@ class ReportFood extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Type]].
+     * Gets query for [[Food]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getType()
+    public function getFood()
     {
         return $this->hasOne(Food::className(), ['id' => 'food_id']);
     }

@@ -115,10 +115,10 @@ class ReportFoodSearch extends ReportFood
             $col = 1;
             $key++;
             $type=static function ($model) {
-                return \common\models\FoodType::find()->where(['id' => $model->type_id])->one()->name;
+                return \common\models\Food::find()->where(['id' => $model->food_id])->one()->name;
             };
             $cate=static function ($model) {
-                return \common\models\ReportFoodCategory::find()->where(['id' => $model->cat_id])->one()->name_uz;
+                return \common\models\FoodCategory::find()->where(['id' => $model->cat_id])->one()->name_uz;
             };
             $soato=static function ($model) {
                 return \common\models\Soato::Full($model->soato_id);

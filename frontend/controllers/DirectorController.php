@@ -6,6 +6,7 @@ namespace frontend\controllers;
 use app\models\search\director\DestructionSampleAnimalSearch;
 use app\models\search\director\DestructionSampleFoodSearch;
 use app\models\search\director\FoodRouteSearch;
+use common\models\Animaltype;
 use common\models\CompositeSamples;
 use common\models\DestructionSampleAnimal;
 use common\models\DestructionSampleFood;
@@ -849,9 +850,9 @@ class DirectorController extends Controller
         if($model->load(Yii::$app->request->post())){
 
             $res = ResultAnimal::find()
-//                ->where('end_date is not null')
-//                ->andWhere(['>=','end_date',$model->date_to])
-//                ->andWhere(['<=','end_date',$model->date_do])
+                ->where('end_date is not null')
+                ->andWhere(['>=','end_date',$model->date_to])
+                ->andWhere(['<=','end_date',$model->date_do])
                 ->andWhere(['org_id'=>Yii::$app->user->identity->empPosts->org_id])
 
             ->all();
@@ -1116,7 +1117,7 @@ class DirectorController extends Controller
             $row = 1;
             $col = 1;
             $sheet->mergeCells("A1:L1");
-            $sheet->setCellValue('A1','Hayvon kasalliklari tashxisi bo`yicha o`tkazilgan tekshiruvlar');
+            $sheet->setCellValue('A1','Oziq-ovqat havfsizligi ekspertizasi bo`yicha o`tkazilgan tekshiruvlar');
             $sheet->mergeCells("A2:D2");
             $sheet->mergeCells("C2:D2");
             $sheet->mergeCells("E2:L2");
@@ -1132,7 +1133,7 @@ class DirectorController extends Controller
            $sheet->setCellValue('A3','№');
 
             $sheet->mergeCells("B3:B4");
-            $sheet->setCellValue('B3','Mahsulot nomi');
+            $sheet->setCellValue('B3','Mahsulot guruhi');
 
             $sheet->mergeCells("C3:C4");
             $sheet->setCellValue('C3','Hayvon mahsuloti');
@@ -1150,10 +1151,10 @@ class DirectorController extends Controller
             $sheet->setCellValue('G3','Laboratoriya tekshiruvi');
 
             $sheet->setCellValue('G4','Organoleptik');
-            $sheet->setCellValue('G4','Mikroskopik');
-            $sheet->setCellValue('G4','Mikrobiologik');
-            $sheet->setCellValue('G4','Kimyoviy');
-            $sheet->setCellValue('G4','Radiologik');
+            $sheet->setCellValue('H4','Mikroskopik');
+            $sheet->setCellValue('I4','Mikrobiologik');
+            $sheet->setCellValue('J4','Kimyoviy');
+            $sheet->setCellValue('K4','Radiologik');
 
             $sheet->mergeCells("L3:L4");
             $sheet->setCellValue('L3','Musbat natijalar');
@@ -1162,20 +1163,77 @@ class DirectorController extends Controller
             $sheet->setCellValue('M3','Tekshiruvlar soni');
 
 
-            $sheet->setCellValue('A4','');
-            $sheet->setCellValue('B4','A');
-            $sheet->setCellValue('C4','B');
-            $sheet->setCellValue('D4','1');
-            $sheet->setCellValue('E4','2');
-            $sheet->setCellValue('F4','3');
-            $sheet->setCellValue('G4','4');
-            $sheet->setCellValue('H4','5');
-            $sheet->setCellValue('I4','6');
-            $sheet->setCellValue('J4','7');
-            $sheet->setCellValue('K4','8');
-            $sheet->setCellValue('L4','9');
-            $sheet->setCellValue('M4','10');
+            $sheet->setCellValue('A5','');
+            $sheet->setCellValue('B5','A');
+            $sheet->setCellValue('C5','B');
+            $sheet->setCellValue('D5','1');
+            $sheet->setCellValue('E5','2');
+            $sheet->setCellValue('F5','3');
+            $sheet->setCellValue('G5','4');
+            $sheet->setCellValue('H5','5');
+            $sheet->setCellValue('I5','6');
+            $sheet->setCellValue('J5','7');
+            $sheet->setCellValue('K5','8');
+            $sheet->setCellValue('L5','9');
+            $sheet->setCellValue('M5','10');
 
+            $res = ResultFood::find()
+                ->where('end_date is not null')
+                ->andWhere(['>=','end_date',$model->date_to])
+                ->andWhere(['<=','end_date',$model->date_do])
+                ->andWhere(['org_id'=>Yii::$app->user->identity->empPosts->org_id])
+
+                ->all();
+
+            $lg = 'uz';
+            $key = 0;
+            $models = $res;
+            $row = 5;
+            foreach ($models as $result) {
+                $samp = $result->sample;
+                $row++;
+                $col = 1;
+                $key++;
+                $soat=function($model){
+                    return Soato::Full($model->soato_id);
+                };
+                $anim = "-";
+                if($samp->food->animal_type_id == 'XX'){
+                    $anim = "XX";
+                }elseif(!$samp->food->animal_type_id){
+                    $a = Animaltype::find()->where(['vet4'=>$samp->food->animal_type_id])->all();
+                    $anim = "";
+                    foreach ($a as $i){
+                        $anim .= $i->name_uz.', ';
+                    }
+                }else{
+                    $anim = "-";
+                }
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $samp->category->{'name_'.$lg}.'-'.$samp->food->{'name_'.$lg}, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $anim, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, '1', DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $samp->count, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $samp->total_amount, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->organoleptik, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->mikroskopik, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->mikrobiologik, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->kimyoviy, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->radiologik, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->ads, DataType::TYPE_STRING);
+
+                $cnt = 0;
+                if($result->organoleptik){$cnt++;}
+                if($result->mikroskopik){$cnt++;}
+                if($result->mikrobiologik){$cnt++;}
+                if($result->kimyoviy){$cnt++;}
+                if($result->radiologik){$cnt++;}
+
+
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $cnt, DataType::TYPE_STRING);
+
+
+            }
 
 
 

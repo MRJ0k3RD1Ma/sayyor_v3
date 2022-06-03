@@ -21,13 +21,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($org,'org_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->all(),'id','NAME_FULL'))?>
+    <?php if($model->isNewRecord){?>
+        <?= $form->field($org,'org_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->all(),'id','NAME_FULL'))?>
 
-    <?= $form->field($org,'gov_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Goverments::find()->all(),'id','name_uz'))?>
+        <?= $form->field($org,'gov_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Goverments::find()->all(),'id','name_uz'))?>
 
-    <?= $form->field($org,'post_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\PostList::find()->all(),'id','name'),['prompt'=>Yii::t('cp','Lavozimni tanlang')])?>
-
-    <?php // $form->field($org,'orgtype')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\OrganizationType::find()->all(),'id','name'))?>
+        <?= $form->field($org,'post_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\PostList::find()->all(),'id','name'),['prompt'=>Yii::t('cp','Lavozimni tanlang')])?>
+    <?php }?>
 
 
 

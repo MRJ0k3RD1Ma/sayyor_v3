@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 //'bsual_tag',
                                 //'type_id',
 
-                                ['class' => 'yii\grid\ActionColumn'],
+                                ['class' => 'yii\grid\ActionColumn','template'=>'{view}'],
                             ],
                         ]) ?>
                     </div>

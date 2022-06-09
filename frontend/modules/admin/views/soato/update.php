@@ -10,7 +10,7 @@ $this->title = Yii::t('cp', 'Update Soato: {name}', [
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp', 'Soatos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->MHOBT_cod, 'url' => ['view', 'MHOBT_cod' => $model->MHOBT_cod]];
-$this->params['breadcrumbs'][] = Yii::t('cp', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('cp', 'O`zgartirish');
 ?>
 <div class="soato-update">
 

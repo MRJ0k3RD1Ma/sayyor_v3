@@ -10,7 +10,7 @@ $this->title = Yii::t('cp', 'Update Sample Registration: {name}', [
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp', 'Sample Registrations'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('cp', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('cp', 'O`zgartirish');
 ?>
 <div class="sample-registration-update">
 

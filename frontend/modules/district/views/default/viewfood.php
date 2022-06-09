@@ -13,7 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="food-sampling-certificate-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
 
     <?= DetailView::widget([

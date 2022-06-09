@@ -8,7 +8,7 @@ use yii\helpers\Html;
 $this->title = 'Update Source Message: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Source Messages', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'O`zgartirish';
 ?>
 <div class="source-message-update">
 

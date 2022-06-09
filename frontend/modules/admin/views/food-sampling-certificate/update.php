@@ -10,7 +10,7 @@ $this->title = Yii::t('cp.food_sampling_certificate', 'Update Food Sampling Cert
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.food_sampling_certificate', 'Food Sampling Certificates'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('cp.food_sampling_certificate', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('cp.food_sampling_certificate', 'O`zgartirish');
 ?>
 <div class="food-sampling-certificate-update">
 

@@ -14,10 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="sertificates-view">
 
 
-            <p style="font-weight: bold">
-                <a href="#" class="btn btn-primary"><?= $model->status->icon?> <?= $model->status->name_uz ?></a>
-            </p>
-
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [

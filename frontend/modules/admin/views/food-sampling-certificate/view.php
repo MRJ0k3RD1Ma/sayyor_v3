@@ -17,23 +17,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.food_sampling_certificat
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="food-sampling-certificate-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a(Yii::t('cp', 'Yana qo`shish'), ['create'], ['class' => 'btn btn-success']) ?>
-
-        <?= Html::a(Yii::t('cp.food_sampling_certificate', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('cp.food_sampling_certificate', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('cp.food_sampling_certificate', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-</div>
 <div class="food-sampling-certificate-view">
 
     <?php if ($model->status_id == 0) { ?>

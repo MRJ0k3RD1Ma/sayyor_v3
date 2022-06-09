@@ -10,7 +10,7 @@ $this->title = Yii::t('cp', 'Update Message: {name}', [
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp', 'Messages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id, 'language' => $model->language]];
-$this->params['breadcrumbs'][] = Yii::t('cp', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('cp', 'O`zgartirish');
 ?>
 <div class="card">
     <div class="card-body">

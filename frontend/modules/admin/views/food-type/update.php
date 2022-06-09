@@ -10,7 +10,7 @@ $this->title = Yii::t('food', 'Update Food Type: {name}', [
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('food', 'Food Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('food', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('food', 'O`zgartirish');
 ?>
 <div class="food-type-update">
 

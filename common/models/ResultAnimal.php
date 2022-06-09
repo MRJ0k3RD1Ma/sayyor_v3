@@ -141,4 +141,8 @@ class ResultAnimal extends \yii\db\ActiveRecord
     public function getSample(){
         return $this->hasOne(Samples::className(),['id'=>'sample_id']);
     }
+
+    public function getOrg(){
+        return $this->hasOne(Organizations::className(),['id'=>'org_id']);
+    }
 }

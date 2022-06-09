@@ -9,7 +9,6 @@
 /* @var $SoatoDataProvider ActiveDataProvider */
 /* @var $SoatoModel Soato */
 /* @var $AnimalDataModel SertificatesSearch */
-/* @var $AnimalRegModel SampleRegistrationSearch */
 /* @var $FoodDataModel FoodSamplingCertificateSearch */
 /* @var $FoodRegModel FoodRegistrationSearch */
 

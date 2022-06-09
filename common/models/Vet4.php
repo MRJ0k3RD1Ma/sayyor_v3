@@ -10,7 +10,7 @@ use yii\base\Model;
  */
 class Vet4 extends Model
 {
-    public $date_to,$date_do,$country,$region,$district,$org;
+    public $date_to,$date_do,$country,$region,$district,$org,$type;
 
     /**
      * @return array the validation rules.
@@ -19,7 +19,7 @@ class Vet4 extends Model
     {
         return [
             // name, email, subject and body are required
-            [['country', 'region', 'district', 'org'], 'integer'],
+            [['country', 'region', 'district', 'org','type'], 'integer'],
             [['date_to','date_do'],'required'],
             // email has to be a valid email address
             [['date_to','date_do'], 'safe'],
@@ -38,6 +38,7 @@ class Vet4 extends Model
             'region' => 'Viloyat',
             'district' => 'Tuman',
             'org' => 'Tashkilot',
+            'type' => 'Qidiruv turi',
             'date_to' => 'Dan..',
             'date_do' => '..Gacha',
         ];

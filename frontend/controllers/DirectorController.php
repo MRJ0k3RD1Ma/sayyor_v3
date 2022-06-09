@@ -202,6 +202,7 @@ class DirectorController extends Controller
             $result = ResultAnimal::findOne(['sample_id' => $dest->sample_id]);
             $result->consent_id = $model->director_id;
             $result->creator_id = $model->executor_id;
+            $result->end_date = date('Y-m-d');
             $result->save();
             $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
                 ->innerJoin('tamplate_animal', 'tamplate_animal.id=template_animal_regulations.template_id')
@@ -630,6 +631,7 @@ class DirectorController extends Controller
             $result = ResultFood::findOne(['sample_id' => $dest->sample_id]);
             $result->creator_id = $model->executor_id;
             $result->consept_id = $model->director_id;
+            $result->end_date = date('Y-m-d');
             $result->save();
             $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations', 'template_food_regulations.regulation_id = regulations.id')
                 ->innerJoin('template_food', 'template_food.id=template_food_regulations.template_id')

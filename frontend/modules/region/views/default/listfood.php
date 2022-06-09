@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'code',
                                 'format' => 'html',
                                 'value'=>function ($model){
-                                    return Html::a($model->code,'viewfood?id='.$model->id);
+                                    return Html::a($model->code,'/region/viewfood?id='.$model->id);
                                 }
                             ],
                             'food_id',

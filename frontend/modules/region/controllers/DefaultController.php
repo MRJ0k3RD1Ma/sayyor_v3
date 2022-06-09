@@ -6,6 +6,7 @@ use client\models\search\FoodRegistrationSearch;
 use client\models\search\SampleRegistrationSearch;
 use client\models\search\SertificatesSearch;
 use common\models\Animals;
+use common\models\Animaltype;
 use common\models\CompositeSamples;
 use common\models\DestructionSampleAnimal;
 use common\models\DestructionSampleFood;
@@ -22,6 +23,7 @@ use common\models\ReportAnimal;
 use common\models\ReportDrugs;
 use common\models\ReportFood;
 use common\models\ResultAnimal;
+use common\models\ResultFood;
 use common\models\RouteSert;
 use common\models\SampleRegistration;
 use common\models\Samples;
@@ -953,25 +955,26 @@ class DefaultController extends Controller
         $model->type = 0;
         if($model->load(Yii::$app->request->post())){
 
+
+            $sql = 1;
+            if($model->type == 0){
+                $code = "17".Yii::$app->user->identity->empPosts->org->soato0->region_id;
+                if($model->district > 0){
+                    $code .= $model->district;
+                }
+                $sql = 'org_id in (select id from organizations where soato like "'.$code.'%")';
+
+            }else{
+                if($model->org > 0){
+                    $sql = "org_id={$model->org}";
+                }
+            }
             $res = ResultAnimal::find()
                 ->where('end_date is not null')
                 ->andWhere(['>=','end_date',$model->date_to])
-                ->andWhere(['<=','end_date',$model->date_do]);
-
-                if($model->type == 0){
-                    $code = "17";
-                    if($model->region){
-                        $code = $model->region;
-                    }
-                    if($model->district){
-                        $code = $model->district;
-                    }
-                    $res->andWhere('org_id in (select id from organizations where soato like "'.$code.'%")');
-                }else{
-                    $res->andWhere(['org_id'=>Yii::$app->user->identity->empPosts->org_id]);
-                }
-
-                $res->all();
+                ->andWhere(['<=','end_date',$model->date_do])
+                ->andWhere($sql)
+                ->all();
 
             $speadsheet = new Spreadsheet();
 
@@ -1009,6 +1012,7 @@ class DefaultController extends Controller
             $speadsheet->getActiveSheet()->getColumnDimension('AE')->setWidth(12);
             $speadsheet->getActiveSheet()->getColumnDimension('AF')->setWidth(12);
             $speadsheet->getActiveSheet()->getColumnDimension('AG')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('AH')->setWidth(15);
             $title = date('Y-m-d h:i:s');
 
             $row = 1;
@@ -1019,8 +1023,10 @@ class DefaultController extends Controller
             $sheet->mergeCells("A2:D2");
             $sheet->mergeCells("C2:D2");
             $sheet->mergeCells("E2:L2");
-            $sheet->setCellValue("E2",date('d.m.Y',strtotime($model->date_to)).' - '.date('d.m.Y',strtotime($model->date_do)));
-            $sheet->setCellValue('A2',Organizations::findOne(Yii::$app->user->identity->empPosts->org_id)->NAME_FULL);
+            $sheet->mergeCells("AH3:AH5");
+            $sheet->setCellValue('AH3','Tashkilot nomi');
+            $sheet->setCellValue("A2",date('d.m.Y',strtotime($model->date_to)).' - '.date('d.m.Y',strtotime($model->date_do)));
+//            $sheet->setCellValue('A2',Organizations::findOne(Yii::$app->user->identity->empPosts->org_id)->NAME_FULL);
 
             $sheet->mergeCells("M1:O1");
             $sheet->setCellValue('M1','4vet hisoboti');
@@ -1129,6 +1135,7 @@ class DefaultController extends Controller
             $sheet->setCellValue('AE6','28');
             $sheet->setCellValue('AF6','29');
             $sheet->setCellValue('AG6','30');
+            $sheet->setCellValue('AH6','31');
 
             $lg = 'uz';
             $key = 0;
@@ -1189,6 +1196,7 @@ class DefaultController extends Controller
                 }
                 $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->ads, DataType::TYPE_STRING);
                 $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $cnt, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->org->NAME_FULL, DataType::TYPE_STRING);
 
             }
             $name = 'ExcelReport-' . Yii::$app->formatter->asDatetime(time(), 'php:d_m_Y_h_i_s') . '.xlsx';
@@ -1203,6 +1211,187 @@ class DefaultController extends Controller
         }
         return $this->render('vet4',['model'=>$model,'type'=>'animal']);
     }
+
+    public function actionReportvet4food(){
+
+        $model = new Vet4();
+        $model->type = 0;
+        if($model->load(Yii::$app->request->post())){
+
+
+            $speadsheet = new Spreadsheet();
+
+            $sheet = $speadsheet->getActiveSheet();
+            $speadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+            $speadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+            $speadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+            $speadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(12);
+            $speadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(15);
+
+            $title = date('Y-m-d h:i:s');
+            $row = 1;
+            $col = 1;
+            $sheet->mergeCells("A1:L1");
+            $sheet->setCellValue('A1','Oziq-ovqat havfsizligi ekspertizasi bo`yicha o`tkazilgan tekshiruvlar');
+            $sheet->mergeCells("A2:D2");
+            $sheet->mergeCells("C2:D2");
+            $sheet->mergeCells("E2:L2");
+            $sheet->setCellValue("A2",date('d.m.Y',strtotime($model->date_to)).' - '.date('d.m.Y',strtotime($model->date_do)));
+//            $sheet->setCellValue('A2',Organizations::findOne(Yii::$app->user->identity->empPosts->org_id)->NAME_FULL);
+
+            $sheet->mergeCells("M1:O1");
+            $sheet->setCellValue('M1','4vet hisoboti');
+            $sheet->mergeCells("M2:O2");
+            $sheet->setCellValue('M2',date('Y-m-d h:i:s'));
+
+            $sheet->mergeCells("A3:A4");
+            $sheet->setCellValue('A3','№');
+
+            $sheet->mergeCells("B3:B4");
+            $sheet->setCellValue('B3','Mahsulot guruhi');
+
+            $sheet->mergeCells("C3:C4");
+            $sheet->setCellValue('C3','Hayvon mahsuloti');
+
+            $sheet->mergeCells("D3:D4");
+            $sheet->setCellValue('D3','Namuna soni');
+
+            $sheet->mergeCells("E3:E4");
+            $sheet->setCellValue('E3','Namunadagi mahsulot miqdori');
+
+            $sheet->mergeCells("F3:F4");
+            $sheet->setCellValue('F3','Partiya miqdori');
+
+            $sheet->mergeCells("G3:K3");
+            $sheet->setCellValue('G3','Laboratoriya tekshiruvi');
+
+            $sheet->setCellValue('G4','Organoleptik');
+            $sheet->setCellValue('H4','Mikroskopik');
+            $sheet->setCellValue('I4','Mikrobiologik');
+            $sheet->setCellValue('J4','Kimyoviy');
+            $sheet->setCellValue('K4','Radiologik');
+
+            $sheet->mergeCells("L3:L4");
+            $sheet->setCellValue('L3','Musbat natijalar');
+
+            $sheet->mergeCells("M3:M4");
+            $sheet->setCellValue('M3','Tekshiruvlar soni');
+            $sheet->mergeCells("N3:N4");
+            $sheet->setCellValue('N3','Tashkilot nomi');
+
+
+            $sheet->setCellValue('A5','');
+            $sheet->setCellValue('B5','A');
+            $sheet->setCellValue('C5','B');
+            $sheet->setCellValue('D5','1');
+            $sheet->setCellValue('E5','2');
+            $sheet->setCellValue('F5','3');
+            $sheet->setCellValue('G5','4');
+            $sheet->setCellValue('H5','5');
+            $sheet->setCellValue('I5','6');
+            $sheet->setCellValue('J5','7');
+            $sheet->setCellValue('K5','8');
+            $sheet->setCellValue('L5','9');
+            $sheet->setCellValue('M5','10');
+            $sheet->setCellValue('N5','11');
+
+
+            $sql = 1;
+            if($model->type == 0){
+                $code = "17".Yii::$app->user->identity->empPosts->org->soato0->region_id;
+
+                if($model->district > 0){
+                    $code .= $model->district;
+                }
+                $sql = 'org_id in (select id from organizations where soato like "'.$code.'%")';
+
+            }else{
+                if($model->org > 0){
+                    $sql = "org_id={$model->org}";
+                }
+            }
+            $res = ResultFood::find()
+                ->where('end_date is not null')
+                ->andWhere(['>=','end_date',$model->date_to])
+                ->andWhere(['<=','end_date',$model->date_do])
+                ->andWhere($sql)
+                ->all();
+
+
+            $lg = 'uz';
+            $key = 0;
+            $models = $res;
+            $row = 5;
+            foreach ($models as $result) {
+                $samp = $result->sample;
+                $row++;
+                $col = 1;
+                $key++;
+                $soat=function($model){
+                    return Soato::Full($model->soato_id);
+                };
+                $anim = "-";
+                if($samp->food->animal_type_id == 'XX'){
+                    $anim = "XX";
+                }elseif(!$samp->food->animal_type_id){
+                    $a = Animaltype::find()->where(['vet4'=>$samp->food->animal_type_id])->all();
+                    $anim = "";
+                    foreach ($a as $i){
+                        $anim .= $i->name_uz.', ';
+                    }
+                }else{
+                    $anim = "-";
+                }
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $key, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $samp->category->{'name_'.$lg}.'-'.$samp->food->{'name_'.$lg}, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $anim, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, '1', DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $samp->count, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $samp->total_amount, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->organoleptik, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->mikroskopik, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->mikrobiologik, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->kimyoviy, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->radiologik, DataType::TYPE_STRING);
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->ads, DataType::TYPE_STRING);
+
+                $cnt = 0;
+                if($result->organoleptik){$cnt++;}
+                if($result->mikroskopik){$cnt++;}
+                if($result->mikrobiologik){$cnt++;}
+                if($result->kimyoviy){$cnt++;}
+                if($result->radiologik){$cnt++;}
+
+
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $cnt, DataType::TYPE_STRING);
+
+                $sheet->setCellValueExplicitByColumnAndRow($col++, $row, $result->org->NAME_FULL, DataType::TYPE_STRING);
+
+            }
+
+            $name = 'ExcelReport-' . Yii::$app->formatter->asDatetime(time(), 'php:d_m_Y_h_i_s') . '.xlsx';
+            $writer = new Xlsx($speadsheet);
+            $dir = Yii::getAlias('@tmp/excel');
+            if (!is_dir($dir)) {
+                FileHelper::createDirectory($dir, 0777);
+            }
+            $fileName = $dir . DIRECTORY_SEPARATOR . $name;
+            $writer->save($fileName);
+            return Yii::$app->response->sendFile($fileName);
+
+        }
+        return $this->render('vet4',['model'=>$model,'type'=>'food']);
+    }
+
 
 
 }

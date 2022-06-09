@@ -40,15 +40,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model,'type')->radioList([0=>Yii::t('cp','Manzil kesimida'),1=>Yii::t('cp','Tashkilot kesimida')])?>
 
-                <?= $form->field($model,'country')->dropDownList([17=>'O\'zbekiston Respublikasi'])?>
+               <div id="region" style="display: <?= $model->type==0?'block':'none'?>">
 
-                <?= $form->field($model, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Viloyatni tanlang')]) ?>
+                   <?= $form->field($model, 'district')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>Yii::$app->user->identity->empPosts->org->soato0->region_id])->all(),'district_id','name_lot'),['prompt'=>Yii::t('cp.individuals','Tumanni tanlang')]) ?>
 
-                <?= $form->field($model, 'district')->dropDownList([],['prompt'=>Yii::t('cp.individuals','Tumanni tanlang')]) ?>
+               </div>
 
+                <div id="org" style="display: <?= $model->type==1?'block':'none'?>">
 
+                    <?= $form->field($model,'org')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->where(['type_id'=>1])->andFilterWhere(['like','soato','17'.Yii::$app->user->identity->empPosts->org->soato0->region_id])->all(),'id','NAME_FULL'),['prompt'=>'Tashkilotni tanlang'])?>
 
-                <?= $form->field($model,'org')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->where(['type_id'=>1])->all(),'id','NAME_FULL'),['prompt'=>'Tashkilotni tanlang'])?>
+                </div>
 
 
                 <button type="submit" class="btn btn-success">Hisbotni shakllantirish</button>
@@ -70,5 +72,18 @@ $this->registerJs("
                 $('#vet4-district').empty();
                 $('#vet4-district').append(data);
             })        
-        })");
+        })
+        
+        $('#vet4-type').change(function(){
+            
+            if($('input[type=radio][name=\"Vet4[type]\"]:checked').val() == 1){
+                $('#org').css('display','block');
+                $('#region').css('display','none');
+            }else{
+                $('#org').css('display','none');
+                $('#region').css('display','block');
+            }
+        })
+        
+        ");
 ?>

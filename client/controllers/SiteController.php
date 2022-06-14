@@ -428,6 +428,9 @@ class SiteController extends Controller
         exit;
     }
     public function actionGetQfi($id,$regid){
+        if($regid<10){
+            $regid = "0".$regid;
+        }
         $model = QfiView::find()->where(['district_id'=>$id])->andWhere(['region_id'=>$regid])->all();
         $text = Yii::t('cp.vetsites','- QFYni tanlang -');
         $res = "<option value=''>{$text}</option>";
@@ -446,9 +449,12 @@ class SiteController extends Controller
         exit;
     }
 
-    public function actionGetVet($id,$regid=null){
-//        $model = VetSites::find()->filterWhere(['like','soato','17'.$regid.$id])->all();
-        $model = VetSites::find()->filterWhere(['like','soato',$id])->all();
+    public function actionGetVet($id,$regid){
+        if($regid<10){
+            $regid = "0".$regid;
+        }
+        $model = VetSites::find()->filterWhere(['like','soato','17'.$regid.$id])->all();
+//        $model = VetSites::find()->filterWhere(['like','soato',$id])->all();
         $text = Yii::t('cp.vetsites','- Vet uchastkani tanlang -');
         $res = "<option value=''>{$text}</option>";
         $lang = Yii::$app->language;

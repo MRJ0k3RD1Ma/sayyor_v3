@@ -14,14 +14,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="destruction-sample-animal-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <div class="row">
         <div class="col-md-6">
             <?php if ($model->state_id == 1): ?>
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="<?= Url::to(['director/dest-pdffood', 'id' => $model->id]) ?>" class="btn btn-warning">Dalolatnomani PDF shaklda yuklab olish</a>
+                        <a href="<?= Url::to(['director/dest-pdffood', 'id' => $model->id]) ?>" class="btn btn-warning">Namunani yo'q qilish dalolatnomasini PDF shaklda yuklab olish</a>
                     </div>
                 </div>
             <?php endif; ?>

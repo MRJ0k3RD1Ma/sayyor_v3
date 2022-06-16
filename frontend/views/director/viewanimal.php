@@ -247,7 +247,6 @@ YiiAsset::register($this);
                             $color = [0=>'',1=>'red'];
                             $lg = 'uz';
                             if (Yii::$app->language == 'ru') $lg = 'ru';
-                            $d->ads = 1;
                             if($d->ads){
                                 return '<b style="color:'.$color[$d->ads].'">'.$d->sample->suspectedDisease->{'name_' . $lg}.'-'.$s[$d->ads].'<b>';
                             }else{

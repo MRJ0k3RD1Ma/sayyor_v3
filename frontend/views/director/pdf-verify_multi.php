@@ -151,9 +151,7 @@ $qr =function() use ($samples,$route) {
         <th colspan="3">
             Parametr qiymatlari
         </th>
-        <th rowspan="2">
-            Talabga mosligi
-        </th>
+
     </tr>
     <tr>
         <th>Birlik</th>
@@ -198,49 +196,14 @@ $qr =function() use ($samples,$route) {
             <?php } ?>
 
 
-            <?php if ($item->template->unit->type_id == 1) { ?>
-                <td><?php if(((!$item->template->min) or intval($item->template->min) <= intval($item->result)) and (intval($item->result)<= intval($item->template->max) or (!$item->template->max))){echo 'Ha';}else{echo 'Yo\'q';} ?></td>
-            <?php } elseif ($item->template->unit->type_id == 2) { ?>
-                <td>
-                    <?php if($item->result==$item->template->min){?><?= Yii::$app->params['result'][1] ?><?php }else{?><?= Yii::$app->params['result'][0]?><?php }?>
-                </td>
-            <?php } elseif ($item->template->unit->type_id == 3) { ?>
-                <td><?php if(((!$item->template->min) or intval($item->template->min) <= intval($item->result)) and (intval($item->result)<= intval($item->template->max) or (!$item->template->max))){echo 'Ha';}else{echo 'Yo\'q';} ?></td>
-            <?php } elseif ($item->template->unit->type_id == 4) { ?>
-                <td><?php
-                    $one = true;
-                    if (((!$item->template->min) or intval($item->template->min) <= intval($item->result))
-                        and
-                        (intval($item->result) <= intval($item->template->max) or (!$item->template->max))
-                    ) {
-                        $one = true;
-                    } else {
-                        $one = false;
-                    }
-                    $two = true;
-                    if (((!$item->template->min_1) or intval($item->template->min_1) <= intval($item->result_2))
-                        and
-                        (intval($item->result_2) <= intval($item->template->max_1) or (!$item->template->max_1))
-                    ) {
-                        $two = true;
-                    } else {
-                        $two = false;
-                    }
-
-                    if($one and $two){echo "Ha";}else{echo "Yo'q";}
-
-
-                    ?></td>
-            <?php } ?>
-
 
         </tr>
     <?php endforeach;?>
     </tbody>
 </table>
 
-<?php $ra = [0=>'Tasdiqlanmadi',1=>'Tasdiqlandi'];?>
-<p>Umumlashgan natija: <?= $ra[$anim->ads] ?></p>
+<?php $ra = [0=>'Tasdiqlanmadi',1=>'Tasdiqlandi']; $color = [0=>'',1=>'red'];?>
+<p>Umumlashgan natija: <span style="color: <?= $color[$anim->ads]?>"><?= $ra[$anim->ads] ?></span></p>
 
 <p>Tekshirish sanasi: <?= $route->updated ?></p>
 <p>

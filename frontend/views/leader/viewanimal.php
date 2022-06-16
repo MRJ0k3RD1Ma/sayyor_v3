@@ -224,7 +224,24 @@ YiiAsset::register($this);
                         'reagent_name',
                         'conditions',
                         'end_date',
-                        'ads',
+                        [
+                            'attribute'=>'ads',
+                            'value'=>function($d){
+                                $s = [0=>'Tasdiqlanmadi',1=>'Tasdiqlandi'];
+                                $color = [0=>'',1=>'red'];
+                                $lg = 'uz';
+                                if (Yii::$app->language == 'ru') $lg = 'ru';
+                                if($d->temprature){
+                                    if($d->ads){
+                                        return '<b style="color:'.$color[$d->ads].'">'.$d->sample->suspectedDisease->{'name_' . $lg}.'-'.$s[$d->ads].'<b>';
+                                    }else{
+                                        return $d->sample->suspectedDisease->{'name_' . $lg};
+                                    }
+                                }else{return null;}
+
+                            },
+                            'format'=>'raw'
+                        ],
                     ]
                 ])
                 ?>

@@ -186,7 +186,7 @@ class LeaderController extends Controller
         $model = RouteSert::findOne(['id' => $id]);
         $model->status_id = 6;
         if ($model->save()) {
-            Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq rad etildi'));
+            Yii::$app->session->setFlash('success', Yii::t('leader', 'Natija rad etildi'));
         }
         return $this->redirect(['indexanimal']);
 
@@ -198,7 +198,7 @@ class LeaderController extends Controller
         $model->status_id = 5;
         if ($model->save()) {
 
-            Yii::$app->session->setFlash('success', Yii::t('leader', 'Topshiriq tasdiqlandi'));
+            Yii::$app->session->setFlash('success', Yii::t('leader', 'Natija tasdiqlandi'));
         }
         return $this->redirect(['indexanimal']);
 

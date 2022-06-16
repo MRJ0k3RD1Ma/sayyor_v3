@@ -2,6 +2,7 @@
 
 use common\models\DestructionSampleFood;
 use common\models\FoodRoute;
+use common\models\ResultFood;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -100,15 +101,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php
                         $cnt = 0;
                         $destruction_id = @DestructionSampleFood::findOne(['state_id' => 1, 'sample_id' => $item->id])->id;
-                        $RouteSert = @FoodRoute::findOne(['sample_id' => $item->id, 'status_id' => 3]);
+                        $RouteSert=@ResultFood::find()->where('end_date is not null')->andWhere(['sample_id' => $item->id])->one();
                         ?>
                         <td rowspan="
                             <?= $cnt + 1 ?>">
-                            <div style="margin: 5px;font-color: #ffffff!important;">
+                            <div style="margin: 5px; color: #ffffff!important;">
                                 <?= ($RouteSert) ? Html::a($item->status->icon . ' ' . $item->samp_code, ['/legal/food-pdf', 'id' => $item->id], ['class' => 'btn btn-success']) : $item->status->icon . ' ' . $item->samp_code ?>
                             </div>
                             <div style="margin: 5px;">
-                                <?= ($destruction_id) ? Html::a("Yo'q qilish dalolatnomasi", ['/legal/pdf-food', 'id' => $destruction_id], ['class' => 'btn btn-danger']) : '' ?>
+                                <?= ($destruction_id) ? Html::a("Namunani yo'q qilish dalolatnomasi", ['/legal/pdf-food', 'id' => $destruction_id], ['class' => 'btn btn-danger']) : '' ?>
                             </div>
                         </td>
                         <td><?= $item->category->{'name_'.$lg}.' '.$item->food->{'name_'.$lg} ?></td>

@@ -264,7 +264,7 @@ class IndController extends Controller
         $sample = Samples::find()->where(['samples.sert_id' => $id])->all();
         if (count($sample) == 0) {
             Yii::$app->session->setFlash('error', Yii::t('client', 'Dalolatnomaga namuna biriktirilmagan'));
-            return $this->redirect(['viewfood', 'id' => $id]);
+            return $this->redirect(['view', 'id' => $id]);
         }
         $reg = new SampleRegistration();
         $reg->pnfl = Yii::$app->session->get('doc_pnfl');

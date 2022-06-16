@@ -74,29 +74,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
-           /* [
-                'label'=>Yii::t('client','Arizani kuzatish'),
-                'value'=>function($d){
-                    $result = Builder::create()
-                        ->writer(new PngWriter())
-                        ->writerOptions([])
-                        ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewsert','id'=>$d->id]))
-                        ->encoding(new Encoding('UTF-8'))
-                        ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
-                        ->size(100)
-                        ->margin(3)
-                        ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
-//                        ->logoPath(Yii::$app->basePath.'/web/favicon.ico')
-                        ->labelText('')
-                        ->labelFont(new NotoSans(20))
-                        ->labelAlignment(new LabelAlignmentCenter())
-                        ->build();
-                    return "<img src='{$result->getDataUri()}'>";
-
-                },
-                'format'=>'raw'
-            ],*/
-//            'operator',
         ],
     ]) ?>
 

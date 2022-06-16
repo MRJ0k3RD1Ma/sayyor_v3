@@ -3,6 +3,7 @@
 use common\models\DestructionSampleAnimal;
 
 use common\models\Emlash;
+use common\models\ResultAnimal;
 use common\models\RouteSert;
 use common\models\Vaccination;
 use yii\helpers\Html;
@@ -114,12 +115,12 @@ YiiAsset::register($this);
                     <tr>
                         <?php
                         $destruction_id=@DestructionSampleAnimal::findOne(['state_id' => 1, 'sample_id' => $item->id])->id;
-                        $RouteSert=@RouteSert::findOne(['sample_id' => $item->id,'status_id'=>3]);
+                        $RouteSert=@ResultAnimal::find()->where('end_date is not null')->andWhere(['sample_id' => $item->id])->one();
                         ?>
                         <td rowspan="
                             <?= $cnt + 1 ?>">
                             <?= ($RouteSert)?Html::a($item->status->icon.' '.$item->kod, ['/legal/animal-pdf','id'=>$item->id],['class'=>'btn btn-warning']):$item->status->icon.' '.$item->kod ?>
-                            <?= ($destruction_id)?Html::a("Yo'q qilish dalolatnomasi", ['/legal/pdfdest','id'=>$destruction_id],['class'=>'btn btn-danger']):'' ?>
+                            <?= ($destruction_id)?Html::a("Namunani yo'q qilish dalolatnomasi", ['/legal/pdfdest','id'=>$destruction_id],['class'=>'btn btn-danger']):'' ?>
                         </td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->label ?></td>
                         <td rowspan="<?= $cnt + 1?>"><?= $item->sampleTypeIs->name_uz ?></td>
@@ -150,12 +151,7 @@ YiiAsset::register($this);
                             <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
                             <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
                         </tr>
-                        <tr>
-                            <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>
-                            <td><?= isset($vac[$i]) ? $vac[$i]->disease_date : ' '?></td>
-                            <td><?= isset($eml[$i]) ? $eml[$i]->antibiotic : ' ' ?></td>
-                            <td><?= isset($eml[$i]) ? $eml[$i]->emlash_date : ' '?></td>
-                        </tr>
+
                     <?php endfor; ?>
                 <?php endforeach;?>
 

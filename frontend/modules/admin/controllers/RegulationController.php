@@ -108,8 +108,6 @@ class RegulationController extends Controller
                 $fileName = microtime(true);
                 $file->saveAs('uploads/' . $fileName . '.' . $file->extension);
                 $model->file = $fileName . '.' . $file->extension;
-            } elseif (file_exists('uploads/' . $lastFile)) {
-                unlink(\Yii::$app->basePath . '/web/uploads/' . $lastFile);
             }
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);

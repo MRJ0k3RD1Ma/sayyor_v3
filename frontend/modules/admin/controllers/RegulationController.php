@@ -129,9 +129,7 @@ class RegulationController extends Controller
     public function actionDelete($id)
     {
         $lastFile = Regulations::findOne(['id' => $id])->file;
-        if (file_exists('uploads/' . $lastFile)) {
-            unlink(\Yii::$app->basePath . '/web/uploads/' . $lastFile);
-        }
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

@@ -14,8 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="template-food-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a(Yii::t('cp', 'Shablon qo`shish'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>

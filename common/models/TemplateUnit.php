@@ -43,10 +43,10 @@ class TemplateUnit extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name_uz' => Yii::t('app', 'Name Uz'),
-            'name_ru' => Yii::t('app', 'Name Ru'),
-            'type_id' => Yii::t('app', 'Type ID'),
+            'id' => Yii::t('cp', 'ID'),
+            'name_uz' => Yii::t('cp', 'Nomi(UZ)'),
+            'name_ru' => Yii::t('cp', 'Nomi(RU)'),
+            'type_id' => Yii::t('cp', 'Turi'),
         ];
     }
 

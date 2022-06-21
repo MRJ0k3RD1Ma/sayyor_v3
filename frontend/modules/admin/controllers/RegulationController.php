@@ -70,6 +70,7 @@ class RegulationController extends Controller
     {
         $model = new Regulations();
         $model->status = 1;
+        $model->creator_id = Yii::$app->user->id;
         if ($this->request->isPost && $model->load($this->request->post())) {
             $file = UploadedFile::getInstance($model, 'file');
             if ($file instanceof UploadedFile) {

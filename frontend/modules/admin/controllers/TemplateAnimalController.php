@@ -7,6 +7,7 @@ use common\models\search\TamplateAnimalSearch;
 use common\models\TemplateAnimalRegulations;
 use common\models\TemplateUnit;
 use common\models\TemplateUnitType;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -71,6 +72,8 @@ class TemplateAnimalController extends Controller
     public function actionCreate()
     {
         $model = new TamplateAnimal();
+        $model->creator_id = Yii::$app->user->id;
+        $model->consent_id = Yii::$app->user->id;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {

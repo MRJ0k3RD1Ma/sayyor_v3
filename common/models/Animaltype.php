@@ -31,7 +31,7 @@ class Animaltype extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id','name_uz', 'name_ru','vet4'], 'required'],
+            [['name_uz', 'name_ru','vet4'], 'required'],
             [['id', 'code'], 'integer'],
             [['name_uz'], 'string', 'max' => 100],
             [['name_ru'], 'string', 'max' => 255],

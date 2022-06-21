@@ -108,6 +108,7 @@ class TamplateAnimal extends \yii\db\ActiveRecord
             'state_id' => Yii::t('cp', 'Holati'),
             'true' => Yii::t('cp', 'Minimal'),
             'true1' => Yii::t('cp', 'Maksimal'),
+            'vet4'=>Yii::t('cp','4VET klassifikator kodi')
         ];
     }
 

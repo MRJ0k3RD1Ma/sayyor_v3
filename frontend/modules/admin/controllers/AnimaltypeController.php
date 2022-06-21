@@ -99,7 +99,7 @@ class AnimaltypeController extends Controller
     public function actionCreate()
     {
         $model = new Animaltype();
-
+        $model->id = Animaltype::find()->max('id')+1;
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);

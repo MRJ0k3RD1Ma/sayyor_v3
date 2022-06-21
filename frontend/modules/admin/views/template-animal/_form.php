@@ -96,10 +96,6 @@ use yii\bootstrap4\ActiveForm;
 
             <?= $form->field($model, 'dead_days')->textInput(['type' => 'number']) ?>
 
-            <?= $form->field($model, 'creator_id')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false) ?>
-
-            <?= $form->field($model, 'consent_id')->dropDownList(ArrayHelper::map(\common\models\Employees::find()->all(), 'id', 'name'), ['prompt' => Yii::t('cp', 'Tasdiqlovchini tanlang')]) ?>
-
             <!--Tasdiqlovchi kiritish keyinroq Abduraxmon aytgan roldagi odamga beriladi-->
 
             <?= $form->field($model, 'state_id')->dropDownList(

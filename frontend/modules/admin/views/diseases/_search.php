@@ -44,6 +44,9 @@ use yii\widgets\ActiveForm;
             </div>
 
 
+            <?= Html::a(Yii::t('cp', 'Qo`shish'), ['create'], ['class' => 'btn btn-success']) ?>
+
+
         </div>
     </div>
 

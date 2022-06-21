@@ -5,6 +5,7 @@ namespace app\modules\admin\controllers;
 use common\models\TemplateFood;
 use common\models\search\TemplateFoodSearch;
 use common\models\TemplateFoodRegulations;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

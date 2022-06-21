@@ -55,6 +55,7 @@ class Regulations extends \yii\db\ActiveRecord
             [['created', 'updated'], 'safe'],
             [['name_uz', 'name_ru','file'], 'string', 'max' => 255],
             [['file'],'file'],
+            ['creator_id','default','value'=>Yii::$app->user->id],
             [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['creator_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => StatusList::className(), 'targetAttribute' => ['status' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => RegulationTypes::className(), 'targetAttribute' => ['type_id' => 'id']],

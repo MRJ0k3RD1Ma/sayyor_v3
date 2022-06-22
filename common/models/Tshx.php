@@ -30,6 +30,7 @@ class Tshx extends \yii\db\ActiveRecord
         return [
             [['id', 'code'], 'integer'],
             [['name_uz', 'name_ru'], 'string', 'max' => 255],
+            ['id','default','value'=>Tshx::find()->max('id')>0?Tshx::find()->max('id')+1:1],
         ];
     }
 

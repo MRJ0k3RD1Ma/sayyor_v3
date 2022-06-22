@@ -30,10 +30,11 @@ class Goverments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name_uz', 'name_ru'], 'required'],
+            [['name_uz', 'name_ru'], 'required'],
             [['id', 'code'], 'integer'],
             [['name_uz', 'name_ru'], 'string', 'max' => 255],
             [['id', 'name_uz', 'name_ru'], 'unique', 'targetAttribute' => ['id', 'name_uz', 'name_ru']],
+            ['id','default','value'=>Goverments::find()->max('id')>0?Goverments::find()->max('id')+1:1],
         ];
     }
 

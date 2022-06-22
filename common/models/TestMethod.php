@@ -31,11 +31,13 @@ class TestMethod extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name_uz', 'name_ru'], 'required'],
+            [['name_uz', 'name_ru'], 'required'],
             [['id', 'state'], 'integer'],
             [['name_uz', 'name_ru'], 'string', 'max' => 255],
             [['id', 'name_uz', 'name_ru'], 'unique', 'targetAttribute' => ['id', 'name_uz', 'name_ru']],
             [['state'], 'exist', 'skipOnError' => true, 'targetClass' => StatusList::className(), 'targetAttribute' => ['state' => 'id']],
+            ['id','default','value'=>TestMethod::find()->max('id')>0?TestMethod::find()->max('id')+1:1],
+
         ];
     }
 

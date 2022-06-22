@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Tshx */
+/* @var $model common\models\Tshx */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -12,7 +12,6 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
 
     <?= $form->field($model, 'name_uz')->textInput(['maxlength' => true]) ?>
 

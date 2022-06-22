@@ -30,11 +30,12 @@ class LaboratoryTestType extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name_uz', 'name_ru', 'code'], 'required'],
+            [['name_uz', 'name_ru', 'code'], 'required'],
             [['id', 'code'], 'integer'],
             [['name_uz'], 'string', 'max' => 100],
             [['name_ru'], 'string', 'max' => 255],
             [['id'], 'unique'],
+            ['id','default','value'=>LaboratoryTestType::find()->max('id')>0?LaboratoryTestType::find()->max('id')+1:1],
         ];
     }
 

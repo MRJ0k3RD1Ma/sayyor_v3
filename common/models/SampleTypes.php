@@ -30,12 +30,14 @@ class SampleTypes extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'vet4','name_uz', 'name_ru'], 'required'],
+            [['vet4','name_uz', 'name_ru'], 'required'],
             [['id'], 'integer'],
             [['name_uz', 'name_ru'], 'string', 'max' => 255],
             [['vet4'],'string','max'=>3],
             [['id'], 'unique'],
             [['id', 'name_uz', 'name_ru'], 'unique', 'targetAttribute' => ['id', 'name_uz', 'name_ru']],
+            ['id','default','value'=>SampleTypes::find()->max('id')>0?SampleTypes::find()->max('id')+1:1],
+
         ];
     }
 

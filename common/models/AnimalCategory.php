@@ -30,10 +30,11 @@ class AnimalCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'code', 'name_uz'], 'required'],
+            [['code', 'name_uz'], 'required'],
             [['id', 'code'], 'integer'],
             [['name_uz', 'name_ru'], 'string', 'max' => 255],
             [['id'], 'unique'],
+            ['id','default','value'=>AnimalCategory::find()->max('id')>0?AnimalCategory::find()->max('id')+1:1],
         ];
     }
 

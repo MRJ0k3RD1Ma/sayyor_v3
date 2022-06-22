@@ -29,7 +29,7 @@ class DiseaseGroups extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
+            [['name_uz', 'name_ru'], 'required'],
             [['id'], 'integer'],
             [['name_uz', 'name_ru'], 'string', 'max' => 255],
             [['id'], 'unique'],

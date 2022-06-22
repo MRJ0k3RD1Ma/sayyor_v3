@@ -86,12 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return $d->status->name_uz;
                                 }
                             ],
-                            /* [
-                                 'class' => 'yii\grid\ActionColumn',
-                                 'urlCreator' => function ($action, $model, $key, $index) {
-                                     return \yii\helpers\Url::to([$action, 'id' => $model->id]);
-                                 }
-                             ],*/
+
                         ],
                     ]); ?>
                 </div>

@@ -982,12 +982,12 @@ class DefaultController extends Controller
             $sheet->setCellValue('M2',date('Y-m-d h:i:s'));
 
             $sheet->mergeCells("A3:A5");
-            $sheet->setCellValue('A3','Kasallik, hayvon nomi');
 
             $sheet->mergeCells("B3:B5");
-            $sheet->setCellValue('B3','Kod');
+            $sheet->setCellValue('B3','Kasallik, hayvon nomi');
             $sheet->mergeCells("C3:C5");
-            $sheet->setCellValue('C3','Materiallar soni');
+            $sheet->setCellValue('C3','Kod');
+            $sheet->setCellValue('D3','Materiallar soni');
             $sheet->mergeCells("D3:D5");
             $sheet->setCellValue('A3','');
             $sheet->mergeCells("E3:AE3");

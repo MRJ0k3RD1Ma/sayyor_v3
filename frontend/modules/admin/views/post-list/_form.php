@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'def_role')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Roles::find()->all(),'id','name'),['prompt'=>Yii::t('cp','Huquqini tanlang')]) ?>
+    <?= $form->field($model, 'def_role')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Roles::find()->all(),'id','name')) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('cp', 'Saqlash'), ['class' => 'btn btn-success']) ?>

@@ -2,17 +2,33 @@
 
 namespace frontend\controllers;
 
+use common\models\CompositeSamples;
 use common\models\DistrictView;
 use common\models\EmpPosts;
+use common\models\FoodCompose;
+use common\models\FoodRegistration;
+use common\models\FoodSamples;
 use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\QfiView;
+use common\models\Regulations;
+use common\models\ResultAnimal;
+use common\models\ResultFood;
+use common\models\SampleRegistration;
+use common\models\Samples;
 use common\models\VetSites;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
+use kartik\mpdf\Pdf;
+use Mpdf\MpdfException;
+use PhpOffice\PhpSpreadsheet\Helper\Sample;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -23,6 +39,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -44,7 +61,7 @@ class SiteController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['login'],
+                        'actions' => ['login','viewsertfood'],
                         'roles' => ['?']
                     ],
                 ],
@@ -72,6 +89,212 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+
+
+    public function actionViewsertfood($id)
+    {
+
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . FoodSamples::tableName() . "_" . $id . ".pdf";
+        if(!file_exists($fileName)){
+            $model = FoodSamples::findOne(['id' => $id]);
+            if($model->status_id == 5){
+                $sample = $model;
+                $regisid = FoodCompose::findOne(['sample_id'=>$id])->registration_id;
+                $reg = FoodRegistration::findOne($regisid);
+                $result = ResultFood::findOne(['sample_id'=>$id]);
+                $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_food_regulations', 'template_food_regulations.regulation_id = regulations.id')
+                    ->innerJoin('template_food', 'template_food.id=template_food_regulations.template_id')
+                    ->where('template_food.id in (select result_food_tests.template_id from result_food_tests where result_food_tests.checked = 1 and result_id=' . $result->id . ')')
+                    ->groupBy('regulations.id')->all();
+                $pdf = new Pdf([
+                    'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                    'destination' => Pdf::DEST_BROWSER,
+                    'content' => $this->renderPartial('pdf-verify2', ['model' => $sample, 'regmodel' => $reg, 'docs' => $docs, 'result' => $result]),
+                    'options' => [
+                    ],
+                    'methods' => [
+                        'SetTitle' => "Tekshiruv dalolatnomasi",
+                        'SetHeader' => [' ' . '|| ' . date("r")],
+                        'SetFooter' => ['| {PAGENO} |'],
+                        'SetAuthor' => '@QalandarDev',
+                        'SetCreator' => '@QalandarDev',
+                    ]
+                ]);
+                try {
+                    $upload_dir = Yii::getAlias('@uploads');
+                    $content = $pdf->render();
+                    $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
+                    if (file_exists($fileName)) {
+                        unlink($fileName);
+                    }
+                    $file = fopen($fileName, 'wb+');
+                    fwrite($file, $content);
+                    fclose($file);
+                } catch (MpdfException $e) {
+                    return $e;
+                } catch (CrossReferenceException $e) {
+                    return $e;
+                } catch (PdfTypeException $e) {
+                    return $e;
+                } catch (PdfParserException $e) {
+                    return $e;
+                } catch (InvalidConfigException $e) {
+                    return $e;
+                }
+            }
+            header('Content-Disposition: attachment; name=' . $fileName);
+            $file = fopen($fileName, 'r+');
+            Yii::$app->response->sendFile($fileName, $model::tableName() . "_" . $model->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+        }else{
+            header('Content-Disposition: attachment; name=' . $fileName);
+            $file = fopen($fileName, 'r+');
+            Yii::$app->response->sendFile($fileName, FoodSamples::tableName() . "_" . $id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+        }
+
+    }
+
+
+    public function actionViewsert($id,$type='single')
+    {
+        $tablename = $type=='single'?SampleRegistration::tableName() : Sample::tableName();
+
+        $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $tablename . "_" . $id . ".pdf";
+        if(file_exists($fileName)){
+            header('Content-Disposition: attachment; name=' . $fileName);
+            $file = fopen($fileName, 'r+');
+            Yii::$app->response->sendFile($fileName, $tablename . "_" . $id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+        }else{
+            $model = Samples::findOne(['id' => $id]);
+            $sample = $model;
+            $reg = SampleRegistration::findOne(CompositeSamples::findOne(['sample_id'=>$id])->registration_id);
+            $result = ResultAnimal::findOne(['sample_id'=>$id]);
+            $docs = Regulations::find()->select(['regulations.*'])->innerJoin('template_animal_regulations', 'template_animal_regulations.regulation_id = regulations.id')
+                ->innerJoin('tamplate_animal', 'tamplate_animal.id=template_animal_regulations.template_id')
+                ->where('tamplate_animal.id in (select result_animal_tests.template_id from result_animal_tests where result_animal_tests.checked = 1 and result_id=' . $result->id . ')')
+                ->groupBy('regulations.id')->all();
+
+            if($model->is_group == 0){
+
+                $pdf = new Pdf([
+                    'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                    'destination' => Pdf::DEST_BROWSER,
+                    'content' => $this->renderPartial('pdf-verify', ['model' => $sample, 'regmodel' => $reg, 'docs' => $docs]),
+                    'options' => [
+                    ],
+                    'methods' => [
+                        'SetTitle' => "Ariza",
+                        'SetHeader' => [' ' . '|| ' . date("r")],
+                        'SetFooter' => ['| {PAGENO} |'],
+                        'SetAuthor' => '@QalandarDev',
+                        'SetCreator' => '@QalandarDev',
+                    ]
+                ]);
+
+                try {
+
+                    $upload_dir = Yii::getAlias('@uploads');
+                    $content = $pdf->render();
+                    $fileName = $upload_dir . "/../pdf/" . $sample::tableName() . "_" . $sample->id . ".pdf";
+                    if (file_exists($fileName)) {
+                        unlink($fileName);
+                    }
+                    $file = fopen($fileName, 'wb+');
+
+                    fwrite($file, $content);
+
+                    fclose($file);
+
+                } catch (MpdfException $e) {
+                    return $e;
+                } catch (CrossReferenceException $e) {
+                    return $e;
+                } catch (PdfTypeException $e) {
+                    return $e;
+                } catch (PdfParserException $e) {
+                    return $e;
+                } catch (InvalidConfigException $e) {
+                    return $e;
+                }
+                header('Content-Disposition: attachment; name=' . $fileName);
+                $file = fopen($fileName, 'r+');
+                Yii::$app->response->sendFile($fileName, $sample::tableName() . "_" . $id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+
+            }
+            else{
+
+
+                $fileName = Yii::getAlias('@uploads') . "/../pdf/" . $reg::tableName() . "_" . $reg->id . ".pdf";
+                if(!file_exists($fileName)){
+
+                    $cnt = \common\models\Samples::find()->where(['sert_id'=>$model->sert_id])->andWhere(['<>','status_id',6])->andWhere(['is_group'=>1])->count('id');
+                    $cnt_acc = \common\models\Samples::find()->where(['sert_id'=>$model->sert_id])->andWhere(['is_group'=>1])->andWhere(['<>','status_id',6])->andWhere(['status_id'=>5])->count('id');
+                    // mutipleni yozish garak
+
+                    $regis = $reg;
+
+
+                    if($cnt==$cnt_acc){
+
+                        $pdf = new Pdf([
+                            'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                            'destination' => Pdf::DEST_BROWSER,
+                            'content' => $this->renderPartial('pdf-verify_multi', ['model' => $sample, 'regmodel' => $reg]),
+                            'options' => [
+                            ],
+                            'methods' => [
+                                'SetTitle' => "Ariza",
+                                'SetHeader' => [' ' . '|| ' . date("r")],
+                                'SetFooter' => ['| {PAGENO} |'],
+                                'SetAuthor' => '@QalandarDev',
+                                'SetCreator' => '@QalandarDev',
+                            ]
+                        ]);
+
+                        try {
+
+                            $upload_dir = Yii::getAlias('@uploads');
+                            $content = $pdf->render();
+                            $fileName = $upload_dir . "/../pdf/" . SampleRegistration::tableName() . "_" . $model->registration_id . ".pdf";
+                            if (file_exists($fileName)) {
+                                unlink($fileName);
+                            }
+                            $file = fopen($fileName, 'wb+');
+
+                            fwrite($file, $content);
+
+                            fclose($file);
+
+                        } catch (MpdfException $e) {
+                            return $e;
+                        } catch (CrossReferenceException $e) {
+                            return $e;
+                        } catch (PdfTypeException $e) {
+                            return $e;
+                        } catch (PdfParserException $e) {
+                            return $e;
+                        } catch (InvalidConfigException $e) {
+                            return $e;
+                        }
+                        $u = true;
+                    }else{
+                        $u = false;
+                        Yii::$app->session->setFlash('success', Yii::t('leader', 'Namuna tekshiruv natijasi imzolandi. Namunani yo\'q qilish uchun topshiriq yuborildi. Namuna birlashgan bo`lganligi uchun tayyor emas.'));
+                    }
+                }
+                if($u){
+                    header('Content-Disposition: attachment; name=' . $fileName);
+                    $file = fopen($fileName, 'r+');
+                    Yii::$app->response->sendFile($fileName, SampleRegistration::tableName() . "_" . $reg->id . ".pdf", ['inline' => false, 'mimeType' => 'application/pdf'])->send();
+                }else{
+                    return $this->goBack();
+                }
+            }
+        }
+
+
+
     }
 
     /**

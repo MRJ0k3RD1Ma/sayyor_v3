@@ -18,7 +18,7 @@ $qr =function() use ($model) {
     $data=Builder::create()
         ->writer(new PngWriter())
         ->writerOptions([])
-        ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewdestfood','id'=>$model->sample_id]))
+        ->data(Yii::$app->urlManager->createAbsoluteUrl(['/site/viewdest','id'=>$model->sample_id]))
         ->encoding(new Encoding('UTF-8'))
         ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
         ->size(100)
@@ -37,7 +37,7 @@ $qr =function() use ($model) {
     <tr>
         <th style="width: 50%;height: 100px;text-align: center;vertical-align: middle">
             <?php
-            echo $model->org->NAME_FULL;
+              echo $model->org->NAME_FULL;
             ?>
             <p style="font-size: 12px; font-weight: normal">STIR(INN): <?= $model->org->TIN?> Manzil: <?= Soato::Full($model->org->soato).' '. $model->org->ADDRESS ?> Telefon: <?= $model->org->TELEFON?></p>
         </th>
@@ -49,7 +49,7 @@ $qr =function() use ($model) {
 
 </table>
 <div class="align-content-center" style="text-align: center">
-    <b>NAMUNANI YO'Q QILISH DALOLATNOMASI № <?= $model->code ?></b>
+    <b>NAMUNANI YO'Q QILISH DALOLATNOMASI № № <?= $model->code ?></b>
 </div>
 <br>
 
@@ -73,33 +73,35 @@ $qr =function() use ($model) {
             . $ind->middlename . " "
             . Soato::Full($ind->soato_id,'lot');
     }
-
-
     ?>
 </div>
 
-<b>Tekshiruv obyekti:</b>
-<b>Mahsulot guruhi:</b><?= $model->sample->category->{'name_uz'}.'-'.$model->sample->food->{'name_uz'}?>
-<b>Ishlab chiqaruvchi:</b> <?= $model->sample->producer?>&nbsp;
-<b>Davlat:</b><?= $model->sample->country->name_uz?>&nbsp;
-<b>Soni:</b><?= $model->sample->count.' '.$model->sample->unit->name_uz?>&nbsp;
-<b>Seriya raqami:</b><?= $model->sample->serial_num?>&nbsp;
-<b>Ishlab chiqarilgan sana:</b> <?= @$model->sample->manufacture_date?>&nbsp;
-<b>Muddati:</b> <?= @$model->sample->sell_by?>&nbsp;
-
-
+<div>
+    <?php
+    $lg= 'uz';
+    $res = "";
+    $d = $model->sample;
+    $res .= $d->animal->type->{'name_' . $lg} . ' ';
+    $res .= Yii::t('lab', 'Holati:') . ' ' . $d->animal->cat->{'name_' . $lg} . ' ';
+    $res .= Yii::t('lab', 'Jinsi:') . ' ' . Yii::$app->params['gender'][$d->animal->gender] . ' ';
+    $d1 = new DateTime($d->animal->birthday);
+    $d2 = new DateTime(date('Y-m-d'));
+    $interval = $d1->diff($d2);
+    $diff = $interval->m + ($interval->y * 12);
+    $res .= Yii::t('lab', 'Tug\'ilgan sanasi:') . ' ' . $d->animal->birthday . '(' . $diff . ' oy)';
+    ?>
+    <b>Tekshiruv obyekti: Namuna nomi:</b> <?= $model->sample->sampleTypeIs->name_uz ?> <br>
+    <b>Hayvon ma'lumotlari:</b> <?= $res?>
+</div>
 <br>
+<div>
+    <b>Tasdiqladi:</b> <?= $model->consent->name ?>
+</div>
 <br>
 <div>
     <b>Namuna yo'q qilingan sana:</b> <?= $model->destruction_date ?>
 </div>
-
-<div>
-    <b>Qo'shimcha ma'lumot:</b> <?= $model->ads ?>
-</div>
+<br>
 <div>
     <b>Laborant:</b> <?= $model->creator->name ?>
-</div>
-<div>
-    <b>Tasdiqladi:</b> <?= $model->consent->name ?>
 </div>

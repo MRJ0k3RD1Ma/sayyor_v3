@@ -75,7 +75,7 @@ class RegulationController extends Controller
             $file = UploadedFile::getInstance($model, 'file');
             if ($file instanceof UploadedFile) {
                 $fileName = microtime(true);
-                $file->saveAs('uploads/' . $fileName . '.' . $file->extension);
+                $file->saveAs(Yii::$app->basePath.'/web/uploads/' . $fileName . '.' . $file->extension);
                 $model->file = $fileName . '.' . $file->extension;
             }
             if ($model->save()) {
@@ -106,7 +106,7 @@ class RegulationController extends Controller
             $lastFile = Regulations::findOne(['id' => $model->id])->file;
             if ($file instanceof UploadedFile) {
                 $fileName = microtime(true);
-                $file->saveAs('uploads/' . $fileName . '.' . $file->extension);
+                $file->saveAs(Yii::$app->basePath.'/web/uploads/' . $fileName . '.' . $file->extension);
                 $model->file = $fileName . '.' . $file->extension;
             }
             if ($model->save()) {

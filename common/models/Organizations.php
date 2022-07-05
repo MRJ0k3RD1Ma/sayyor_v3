@@ -63,7 +63,7 @@ class Organizations extends \yii\db\ActiveRecord
     {
         return [
             [['id_from_api', 'TIN', 'NA1_CODE','type_id', 'NS10_CODE', 'NS11_CODE', 'TELEFON', 'GD_TIN', 'GD_TEL_WORK', 'OKED', 'OKPO', 'OKONX', 'soato'], 'integer'],
-            [['TIN',  'NAME_FULL', 'GD_FULL_NAME', 'GD_TIN', 'OKED', 'OKPO', 'OKONX', 'soato', ], 'required'],
+            [['TIN',  'NAME_FULL', 'GD_FULL_NAME', 'soato',], 'required'],
             [['REG_DATE', 'DATE_TIN', 'DATE_END', 'CREATED', 'CHANGED'], 'safe'],
             [['BUDJET'], 'boolean'],
             [['NAME_FULL', 'ADDRESS', 'GD_FULL_NAME', 'GB_FULL_NAME'], 'string', 'max' => 255],
